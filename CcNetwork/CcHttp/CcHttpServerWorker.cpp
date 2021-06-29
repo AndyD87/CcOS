@@ -52,7 +52,8 @@ void CcHttpServerWorker::run()
 #ifdef GENERIC
   m_oData.getResponse().setTransferEncoding(CcHttpTransferEncoding::Chunked);
 #endif // GNERIC
-  while (m_oData.getSocket().isValid())
+  while (isRunning() && 
+         m_oData.getSocket().isValid())
   {
     m_oData.getSocket().setTimeout(m_oData.getServer().getConfig().getComTimeout());
     size_t uiReadData;
@@ -89,6 +90,10 @@ void CcHttpServerWorker::run()
         provider->exec(m_oData);
       }
       finish();
+    }
+    else
+    {
+      m_oData.getSocket().close();
     }
   }
   m_oData.getSocket().close();

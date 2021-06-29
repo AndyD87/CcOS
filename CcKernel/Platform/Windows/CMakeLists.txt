@@ -76,5 +76,6 @@ add_to_kernel_libraries  ( gdiplus
                            ws2_32
                            netapi32
                            version
-                           propsys
+                           wbemuuid
+                           #propsys
 )

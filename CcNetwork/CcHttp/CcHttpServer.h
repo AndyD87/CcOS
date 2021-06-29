@@ -97,14 +97,18 @@ public:
    */
   const CcHandle<IHttpProvider> findProvider(const CcHttpWorkData &oData) const;
 
+  //! Decrement current worker count
+  void decWorker()
+  { if (m_uiWorkerCount > 0) m_uiWorkerCount--; }
+  //! Increment current worker count
+  void incWorker()
+  { m_uiWorkerCount++; }
+
   //! @return Get list of all provider
   const CcList<CcHandle<IHttpProvider>>& getReceiverList();
   //! @return Get current app state
   EState getState() const
   { return m_eState; }
-  //! @return Decrement current worker count
-  void decWorker()
-  { if(m_uiWorkerCount > 0) m_uiWorkerCount--;}
   //! @return Get server configuration
   CcHttpServerConfig& getConfig()
   { return *m_pConfig; }

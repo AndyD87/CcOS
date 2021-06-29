@@ -2584,22 +2584,15 @@ bool CcVariant::set(VARIANT& winVariant, VARENUM winVariantType, size_t uiIndex)
       break;
     case VT_DATE:
     {
-      WORD date;
-      WORD time;
-      if (0 == VariantToDosDateTime(winVariant, &date, &time))
-      {
-        CcDateTime oTime;
-        // Convert dos time
-        oTime.fromDateTime(
-          ((date >> 9 ) & 0x7f) + 1980, // Years sinze 1980
-          ((date >> 5 ) & 0x0f),        // Month as number
-          ((date)       & 0x1f),        // Day as number
-          ((time >> 11) & 0x1f) << 1,   // Seconds devided by 2 <30
-          ((time >> 5 ) & 0x3f),        // Minutes      <60
-          ((time)       & 0x1f)         // Hours of day <24
-        );
-        set(oTime);
-      }
+      SYSTEMTIME sysTime;
+      FILETIME   fileTime;
+      VariantTimeToSystemTime(winVariant.dblVal, &sysTime);
+      SystemTimeToFileTime(&sysTime, &fileTime);
+      CcDateTime oTime(0);
+      SInt64Converter oConverter;
+      oConverter.ui32.H = fileTime.dwHighDateTime;
+      oConverter.ui32.L = fileTime.dwLowDateTime;
+      oTime.setFiletime(oConverter.ui64);
       break;
     }
     default:

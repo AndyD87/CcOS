@@ -598,6 +598,8 @@ public:
     bool bSuccess = false;
     if(uiPos < size())
     {
+      // do not remove more than available
+      uiLen = CCMIN(uiLen, size() - uiPos);
       bSuccess = true;
       TYPE* pOldArray = m_pArray;
       size_t uiOldSize = size();
@@ -636,17 +638,21 @@ public:
    *        std::move will be executed on all objects.
    * @param uiOffsetTo:   Position to start move to
    * @param uiOffsetFrom: Position to start move from
-   * @param uiLength:     Number of elements to move.
+   * @param uiLength:     Number of elements to move. Value larger than size will be reduced to size.
    * @return Reference to this Vector
    */
-  CcVector<TYPE>& move(size_t uiOffsetTo, size_t uiOffsetFrom, size_t uiLength)
+  CcVector<TYPE>& move(size_t uiOffsetTo, size_t uiOffsetFrom, size_t uiLength = SIZE_MAX)
   {
     if (uiOffsetTo < uiOffsetFrom)
     {
+      size_t uiMaxLenght = size() - uiOffsetFrom;
+      if (uiLength > uiMaxLenght) uiLength = uiMaxLenght;
       return move(m_pArray + uiOffsetTo, m_pArray + uiOffsetFrom, uiLength);
     }
     else
     {
+      size_t uiMaxLenght = size() - uiOffsetTo;
+      if (uiLength > uiMaxLenght) uiLength = uiMaxLenght;
       return moveReverse(m_pArray + uiOffsetTo, m_pArray + uiOffsetFrom, uiLength);
     }
   }

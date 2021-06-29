@@ -89,8 +89,7 @@ public:
   { return write(oData.getArray(), oData.size()); }
 
   virtual size_t write(const void* pData, size_t uiLength) override;
-  virtual size_t read(void* pData, size_t uiSize) override
-  { return m_oSocket.read(pData, uiSize); }
+  virtual size_t read(void* pData, size_t uiSize) override;
   virtual CcStatus open(EOpenFlags) override
   { return false; }
   virtual CcStatus close() override

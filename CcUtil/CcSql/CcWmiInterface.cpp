@@ -27,6 +27,7 @@
 #include <cstdio>
 #include <comdef.h>
 #include "CcString.h"
+#include "CcWString.h"
 
 # pragma comment(lib, "wbemuuid.lib")
 
@@ -122,8 +123,8 @@ CcSqlResult CcWmiInterface::query(const CcString& queryString)
   // Use the IWbemServices pointer to make requests of WMI ----
   IEnumWbemClassObject* pEnumerator = nullptr;
   hres = m_pSvc->ExecQuery(
-    bstr_t("WQL"),
-    bstr_t(queryString.getCharString()),
+    bstr_t(L"WQL"),
+    bstr_t(queryString.getWString().getLPCWSTR()),
     WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY,
     nullptr,
     &pEnumerator);

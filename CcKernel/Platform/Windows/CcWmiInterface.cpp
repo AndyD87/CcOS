@@ -31,8 +31,6 @@
 
 #include <wbemidl.h>
 
-# pragma comment(lib, "wbemuuid.lib")
-
 CcWmiInterface::CcWmiInterface() :
   m_pLoc(nullptr),
   m_pSvc(nullptr)
@@ -65,7 +63,7 @@ CcStatus CcWmiInterface::open()
       {
         // Connect to CIM-Server
         hres = m_pLoc->ConnectServer(
-          _bstr_t(L"ROOT\\CIMV2"), // Object path of WMI namespace
+          SysAllocString(L"ROOT\\CIMV2"), // Object path of WMI namespace
           nullptr,                    // User name. nullptr = current user
           nullptr,                    // User password. nullptr = current
           nullptr,                    // Locale. nullptr indicates current
@@ -108,17 +106,25 @@ CcStatus CcWmiInterface::open()
   return true;   // Program successfully completed.
 }
 
-CcStatus CcWmiInterface::close()
+CcStatus CcWmiInterface::close(bool bForce)
 {
-  if (m_pSvc != nullptr)
+  if (bForce)
   {
-    m_pSvc->Release();
     m_pSvc = nullptr;
-  }
-  if (m_pLoc != nullptr)
-  {
-    m_pLoc->Release();
     m_pLoc = nullptr;
+  }
+  else
+  {
+    if (m_pSvc != nullptr)
+    {
+      m_pSvc->Release();
+      m_pSvc = nullptr;
+    }
+    if (m_pLoc != nullptr)
+    {
+      m_pLoc->Release();
+      m_pLoc = nullptr;
+    }
   }
   return true;
 }
@@ -132,8 +138,8 @@ CcWmiResult CcWmiInterface::query(const CcString& queryString)
   if (m_pSvc)
   {
     hres = m_pSvc->ExecQuery(
-      bstr_t("WQL"),
-      bstr_t(queryString.getCharString()),
+      bstr_t(L"WQL"),
+      bstr_t(queryString.getWString().getLPCWSTR()),
       WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY,
       nullptr,
       &pEnumerator);

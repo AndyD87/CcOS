@@ -61,7 +61,7 @@ bool CRemoteDeviceComTest::testStartServer()
     if (m_pDevice->start())
     {
       oStatus = m_pDevice->waitForState(EThreadState::Running);
-      CcKernel::sleep(500);
+      CcKernel::sleep(1000);
     }
   }
   return oStatus;

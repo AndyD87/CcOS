@@ -183,9 +183,9 @@ public:
   CcVector<IDevice*>          oDeviceList;
   CcVector<CcWindowsModule*>  oModules;
 
-  CcSharedPointer<CcWindowsFilesystem>            pFilesystem;
+  CcSharedPointer<CcWindowsFilesystem>   pFilesystem;
   //CcSharedPointer<CcWindowsRegistryFilesystem>  pRegistryFilesystem;
-  CcSharedPointer<INetworkStack> pNetworkStack;
+  CcSharedPointer<CcWindowsNetworkStack> pNetworkStack;
 
   CcThreadManager oThreadManager;
   static FILE*              s_pConsoleFile;

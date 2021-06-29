@@ -59,8 +59,12 @@ CcStatus CcTestSocket::setOptionRaw(int CCUNUSED_PARAM(iLevel), int CCUNUSED_PAR
 
 size_t CcTestSocket::read(void* pBuffer, size_t uSize)
 { 
-  size_t uiData = m_oReadData.read(pBuffer, uSize); 
-  m_oReadData.remove(0, uSize);
+  size_t uiData = SIZE_MAX;
+  if (m_oReadData.size())
+  {
+    uiData = m_oReadData.read(pBuffer, uSize);
+    m_oReadData.remove(0, uSize);
+  }
   return uiData;
 }
 

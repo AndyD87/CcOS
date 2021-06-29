@@ -55,7 +55,7 @@ public:
   /**
   * @brief Disconnect from Interface
   */
-  CcStatus close();
+  CcStatus close(bool bForce = false);
 
   /**
   * @brief Send a query to Database

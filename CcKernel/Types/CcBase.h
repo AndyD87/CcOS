@@ -680,6 +680,57 @@
   #define WINCEXPORT __cdecl //!< Define an WINCEXPORT as __cdecl if not in KernelMode
 #endif
 
+#ifdef __cplusplus
+  /**
+   * @brief Overloaded new method for CcOS to track allocations and
+   *        to share buffer regions over modules
+   * @param uiSize: Number of bytes to allocate
+   * @return Pointer to allocated buffer or nullptr if error
+   */
+  void* WINCEXPORT operator new(std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc);
+
+  /**
+   * @brief Overloaded new method for CcOS to track allocations and
+   *        to share buffer regions over modules
+   * @param uiSize: Number of bytes to allocate
+   * @return Pointer to allocated buffer or nullptr if error
+   */
+  void* WINCEXPORT operator new[](std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc);
+
+  /**
+   * @brief Overloaded delete method for CcOS to track deallocations and
+   *        to manage shared buffer regions over modules
+   * @param pBuffer: Address of memory to delete
+   */
+  void WINCEXPORT operator delete(void* pBuffer) NOEXCEPT;
+
+  /**
+   * @brief Overloaded delete method for CcOS to track deallocations and
+   *        to manage shared buffer regions over modules
+   * @param pBuffer: Address of memory to delete
+   */
+  void WINCEXPORT operator delete[](void* pBuffer) NOEXCEPT;
+
+  // Do not on mingw
+  #if defined(WINDOWS) && !defined(__GNUC__)
+    /**
+     * @brief Overloaded delete method for CcOS to track deallocations and
+     *        to manage shared buffer regions over modules
+     * @param pBuffer: Address of memory to delete
+     * @param uiSize:  Ignored param, pBuffer will be deleted completly
+     */
+    void WINCEXPORT operator delete(void* pBuffer, size_t uiSize) NOEXCEPT;
+
+    /**
+     * @brief Overloaded delete method for CcOS to track deallocations and
+     *        to manage shared buffer regions over modules
+     * @param pBuffer: Address of memory to delete
+     * @param uiSize:  Ignored param, pBuffer will be deleted completly
+     */
+    void WINCEXPORT operator delete[](void* pBuffer, size_t uiSize) NOEXCEPT;
+  #endif
+#endif
+
 // Some frameworks like ESP having their own main implementation
 // If CCOS does remove this by define, this can be revoked here
 #ifdef CCOS_MAIN_REPLACED

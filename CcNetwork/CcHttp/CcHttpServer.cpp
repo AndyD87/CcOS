@@ -70,7 +70,11 @@ CcHttpServer::~CcHttpServer()
 {
   stop();
   size_t uiTimeout = 5;
-  while(m_eState != EState::Stopped && uiTimeout-- && CcKernel::sleep(1000));
+
+  // Wait for worker to be done and onStop is finished.
+  while((m_uiWorkerCount || m_eState != EState::Stopped) && uiTimeout-- && CcKernel::sleep(1000))
+    ;
+
   if(uiTimeout > 5 || 0)
     CCDEBUG("~CcHttpServer Timed out");
   if (m_bConfigOwner)
@@ -185,7 +189,7 @@ void CcHttpServer::run()
                 CCNEWTYPE(worker, CcHttpServerWorker, *this, CcSocket(temp));
                 if(worker->start())
                 {
-                  m_uiWorkerCount++;
+                  incWorker();
                 }
               }
             }

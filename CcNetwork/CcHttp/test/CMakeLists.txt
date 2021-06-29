@@ -12,6 +12,8 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
         "main.cpp"
         "CHttpServerTest.cpp"
         "CHttpServerTest.h"
+        "CHttpServerWorkerTest.cpp"
+        "CHttpServerWorkerTest.h"
         "CHeaderTest.cpp"
         "CHeaderTest.h"
         "CClientTest.cpp"

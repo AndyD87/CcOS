@@ -52,7 +52,14 @@ size_t CcHttpWorkData::readAllContent()
     size_t uiLeftLine     = 0;
     size_t uiLastReadSize = 0;
     bool bDone = false;
-    CcByteArray oBuffer(MAX_TRANSER_BUFFER);
+
+    // Copy incoming data to new array
+    CcByteArray oBuffer(getRequest().getContent());
+    getRequest().getContent().clear();
+
+    // Setup working data
+    uiLastReadSize = oBuffer.size();
+    oBuffer.resize(MAX_TRANSER_BUFFER);
     do
     {
       // Check if next read will 
@@ -63,6 +70,7 @@ size_t CcHttpWorkData::readAllContent()
         {
           // Get Hex value as string from data
           CcString sLength(oBuffer.getArray(), uiPos);
+          oBuffer.move(0, uiPos + CcHttpGlobalStrings::EOL.size());
           bool bOk;
           // Convert hex value to length of next packet
           uiLeftLine = static_cast<size_t>(sLength.toUint64(&bOk, 16));
@@ -88,9 +96,13 @@ size_t CcHttpWorkData::readAllContent()
         }
         else
         {
+          // Add real content to buffer
           getRequest().getContent().append(oBuffer.getArray(), uiLeftLine);
-          oBuffer.move(uiLeftLine, 0, uiLastReadSize - uiLeftLine); 
-          uiLastReadSize -= uiLeftLine;
+          // Move buffer pointer to next chunk
+          size_t uiMoveSize = uiLeftLine + CcHttpGlobalStrings::EOL.size();
+          uiLastReadSize -= uiMoveSize;
+          oBuffer.move(0, uiMoveSize, uiLastReadSize);
+          // Reset line
           uiLeftLine = 0;
         }
       }
@@ -157,6 +169,19 @@ CcString CcHttpWorkData::splitQueryLine(CcString& sPath)
     sPath.remove(uiOffset, sPath.size());
   }
   return sQuery;
+}
+
+size_t CcHttpWorkData::read(void* pData, size_t uiSize)
+{
+  size_t uiReturn = SIZE_MAX;
+  if (m_oRequest.getContent().size())
+  {
+    uiReturn = m_oRequest.getContent().read(pData, uiSize);
+    m_oRequest.getContent().remove(0, uiSize);
+  }
+  else
+    uiReturn = m_oSocket.read(pData, uiSize);
+  return uiReturn;
 }
 
 CcStringMap CcHttpWorkData::parseQueryLine(const CcString& sData)

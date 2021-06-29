@@ -24,16 +24,23 @@
  **/
 #pragma once
 
+#include "CcTesting.h"
 #include "CcBase.h"
 #include "CcByteArray.h"
 #include "Network/ISocket.h"
 
 class IKernel;
 
+#ifdef CC_STATIC
+class CcTestingSHARED ISocket;
+class CcTestingSHARED CcSocketAddressInfo;
+class CcTestingSHARED CcByteArray;
+#endif
+
 /**
  * @brief CcTestSocket is used to used to test if loading libraries is working.
  */
-class CcTestSocket : public ISocket
+class CcTestingSHARED CcTestSocket : public ISocket
 {
 public:
   CcTestSocket();

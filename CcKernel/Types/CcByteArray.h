@@ -208,5 +208,5 @@ public:
   { return s_oEmpty; }
 
 private:
-  static const CcByteArray s_oEmpty;
+  static CcByteArray s_oEmpty;
 };

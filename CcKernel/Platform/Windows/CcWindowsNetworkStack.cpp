@@ -60,7 +60,8 @@ void CcWindowsNetworkStack::deinit()
     delete m_oDevices[0];
     m_oDevices.remove(0);
   }
-  m_oInterface.close();
+  // Force close to avoid using members at the end of live.
+  m_oInterface.close(true);
 }
 
 const CcIpInterface* CcWindowsNetworkStack::getInterfaceForIp(const CcIp& oIp) const
