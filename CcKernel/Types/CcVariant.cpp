@@ -36,7 +36,9 @@
 #include "CcVariantList.h"
 #include "CcStringList.h"
 #include "CcStatic.h"
-#include "propvarutil.h"
+#ifdef WINDOWS
+  #include "propvarutil.h"
+#endif WINDOWS
 
 CcVariant CcVariant::oNullVariant;
 
