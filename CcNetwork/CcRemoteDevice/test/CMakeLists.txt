@@ -8,10 +8,15 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.c"
-        "*.cpp"
-        "*.h")
+  set(SOURCE_FILES
+        ${CMAKE_CURRENT_LIST_DIR}/CRemoteDeviceComTest.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CRemoteDeviceComTest.h
+        ${CMAKE_CURRENT_LIST_DIR}/CRemoteDeviceConfigTest.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CRemoteDeviceConfigTest.h
+        ${CMAKE_CURRENT_LIST_DIR}/CRemoteDeviceServerTest.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CRemoteDeviceServerTest.h
+        ${CMAKE_CURRENT_LIST_DIR}/main.cpp
+  )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 

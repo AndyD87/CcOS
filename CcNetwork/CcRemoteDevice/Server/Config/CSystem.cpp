@@ -105,22 +105,31 @@ const CcConfigBinary::CItem* CSystem::parseBinary(const CcConfigBinary::CItem* p
 
 size_t CSystem::writeBinary(IIo& pStream)
 {
+  size_t uiWrittenTemp = 0;
   size_t uiWritten = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::System);
   if(uiWritten != SIZE_MAX)
   {
-    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Name, sName);
+    uiWrittenTemp = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Name, sName);
+    if (uiWrittenTemp != SIZE_MAX) uiWritten += uiWrittenTemp;
+    else uiWritten = SIZE_MAX;
   }
   if(uiWritten != SIZE_MAX)
   {
-    uiWritten += oWlanClient.writeBinary(pStream);
+    uiWrittenTemp = oWlanClient.writeBinary(pStream);
+    if (uiWrittenTemp != SIZE_MAX) uiWritten += uiWrittenTemp;
+    else uiWritten = SIZE_MAX;
   }
   if(uiWritten != SIZE_MAX)
   {
-    uiWritten += oWlanAccessPoint.writeBinary(pStream);
+    uiWrittenTemp = oWlanAccessPoint.writeBinary(pStream);
+    if (uiWrittenTemp != SIZE_MAX) uiWritten += uiWrittenTemp;
+    else uiWritten = SIZE_MAX;
   }
   if(uiWritten != SIZE_MAX)
   {
-    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End);
+    uiWrittenTemp = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End);
+    if (uiWrittenTemp != SIZE_MAX) uiWritten += uiWrittenTemp;
+    else uiWritten = SIZE_MAX;
   }
   return uiWritten;
 }

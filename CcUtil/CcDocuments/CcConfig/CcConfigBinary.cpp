@@ -102,6 +102,9 @@ const CItemPrivate CcConfigBinary_oBinaryConfigMap[] =
   {CcConfigBinary::EType::IpV4,               sizeof(CcIp),       CcVariant::EType::Ip,           &NDocumentsGlobals::NConfig::IpV4},
   {CcConfigBinary::EType::IpV4Begin,          sizeof(CcIp),       CcVariant::EType::Ip,           &NDocumentsGlobals::NConfig::IpV4Begin},
   {CcConfigBinary::EType::IpV4End,            sizeof(CcIp),       CcVariant::EType::Ip,           &NDocumentsGlobals::NConfig::IpV4End},
+  {CcConfigBinary::EType::User,               UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::User},
+  {CcConfigBinary::EType::Users,              UINT32_MAX,         CcVariant::EType::ByteArray,    &NDocumentsGlobals::NConfig::Users},
+  {CcConfigBinary::EType::Admin,              UINT32_MAX,         CcVariant::EType::String,       &NDocumentsGlobals::NConfig::Admin},
 };
 //! At compile time calculated size of CcConfigBinary_oBinaryConfigMap
 const size_t CcConfigBinary_oBinaryConfigMapSize = sizeof(CcConfigBinary_oBinaryConfigMap) / sizeof(CcConfigBinary_oBinaryConfigMap[0]);

@@ -44,6 +44,9 @@ namespace NDocumentsGlobals
     CcConstString_C(Events,"Events");
     CcConstString_C(Startup,"Startup");
     CcConstString_C(Application,"App");
+    CcConstString_C(User, "User");
+    CcConstString_C(Users, "Users");
+    CcConstString_C(Admin, "Admin");
 
     CcConstString_C(WlanAccessPoint,"WlanAccessPoint");
     CcConstString_C(WlanClient,"WlanClient");

@@ -39,11 +39,14 @@ namespace NDocumentsGlobals
     extern CcDocumentsSHARED CcConstString_H(SwVersion);      //!< String for SwVersion
     extern CcDocumentsSHARED CcConstString_H(Detectable);     //!< String for Detectable
 
-    extern CcDocumentsSHARED CcConstString_H(System);         //!< String for System);
-    extern CcDocumentsSHARED CcConstString_H(Interfaces);     //!< String for Interfaces);
-    extern CcDocumentsSHARED CcConstString_H(Events);         //!< String for Events);
-    extern CcDocumentsSHARED CcConstString_H(Startup);        //!< String for Startup);
-    extern CcDocumentsSHARED CcConstString_H(Application);    //!< String for Application)
+    extern CcDocumentsSHARED CcConstString_H(System);         //!< String for System
+    extern CcDocumentsSHARED CcConstString_H(Interfaces);     //!< String for Interfaces
+    extern CcDocumentsSHARED CcConstString_H(Events);         //!< String for Events
+    extern CcDocumentsSHARED CcConstString_H(Startup);        //!< String for Startup
+    extern CcDocumentsSHARED CcConstString_H(Application);    //!< String for Application
+    extern CcDocumentsSHARED CcConstString_H(User);           //!< String for User
+    extern CcDocumentsSHARED CcConstString_H(Users);          //!< String for Users
+    extern CcDocumentsSHARED CcConstString_H(Admin);          //!< String for Admin
 
     extern CcDocumentsSHARED CcConstString_H(KnownAccessPoints);  //!< String for KnownAccessPoints
     extern CcDocumentsSHARED CcConstString_H(DhcpEnable);         //!< String for DhcpEnable);

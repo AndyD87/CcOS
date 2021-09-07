@@ -88,6 +88,9 @@ public:
     IpV4,
     IpV4Begin,
     IpV4End,
+    User,
+    Users,
+    Admin,
 
     Custom = 0x80000000,      //!< Start address of custom / user defined commands
     Unknown = 0xffffffff,     //!< Unknown Type, or invalid

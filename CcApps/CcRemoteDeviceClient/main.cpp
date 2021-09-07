@@ -39,6 +39,6 @@
  */
 int main(int iArgc, char** ppArgv)
 {
-  CcRemoteDeviceClientApp oServer(iArgc, ppArgv);
-  return oServer.exec().getErrorInt();
+  CcRemoteDeviceClientApp oClient(iArgc, ppArgv);
+  return oClient.exec().getErrorInt();
 }

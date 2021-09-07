@@ -27,7 +27,6 @@
 
 bool IGpioPin::toggle()
 {
-  CCDEBUG("IGpioPin::toggle");
   setValue(!getValue());
   return getValue();
 }

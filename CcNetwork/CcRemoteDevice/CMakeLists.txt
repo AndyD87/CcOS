@@ -7,19 +7,45 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #############################################################################
   # Add source Files
   #############################################################################
-  file (GLOB SOURCE_FILES
-        "${CMAKE_CURRENT_LIST_DIR}/*.c"
-        "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/*.h"
-        "${CMAKE_CURRENT_LIST_DIR}/Server/Config/*.c"
-        "${CMAKE_CURRENT_LIST_DIR}/Server/Config/*.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/Server/Config/*.h"
-        "${CMAKE_CURRENT_LIST_DIR}/Packets/*.c"
-        "${CMAKE_CURRENT_LIST_DIR}/Packets/*.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/Packets/*.h"
-        "${CMAKE_CURRENT_LIST_DIR}/Server/*.c"
-        "${CMAKE_CURRENT_LIST_DIR}/Server/*.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/Server/*.h"
+  set(SOURCE_FILES
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDevice.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceBoardSupport.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceBoardSupport.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceCssProvider.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceCssProvider.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceDiscovery.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceDiscovery.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceGlobals.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceGlobals.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceJsProvider.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceJsProvider.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceServer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceServer.h
+        ${CMAKE_CURRENT_LIST_DIR}/Packets/CPaket.h
+        ${CMAKE_CURRENT_LIST_DIR}/Packets/CRequestDiscover.h
+        ${CMAKE_CURRENT_LIST_DIR}/Packets/CRequestInfo.h
+        ${CMAKE_CURRENT_LIST_DIR}/Packets/CResponseDiscover.h
+        ${CMAKE_CURRENT_LIST_DIR}/Packets/CResponseInfo.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/CConfig.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/CConfig.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/CWorker.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/CWorker.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CEvents.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CEvents.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CInterfaces.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CInterfaces.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CRestApi.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CRestApi.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CStartup.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CStartup.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CSystem.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CSystem.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CUsers.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CUsers.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CWlanAccessPoint.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CWlanAccessPoint.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CWlanClient.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CWlanClient.h
   )
 
   if(CCREMOTEDEVICE_CUSTOM_BOARDSUPPORT)

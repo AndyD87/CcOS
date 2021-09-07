@@ -30,6 +30,7 @@
 #include "Server/Config/CEvents.h"
 #include "Server/Config/CStartup.h"
 #include "Server/Config/CInterfaces.h"
+#include "Server/Config/CUsers.h"
 #include "CcJson/CcJsonDocument.h"
 #include "CcJson/CcJsonObject.h"
 #include "CcVersion.h"
@@ -197,6 +198,7 @@ public:
   Config::CEvents             oEvents;      //!< Events to react on
   Config::CStartup            oStartup;     //!< Startup commands wenn application starts
   Config::CInterfaces         oInterfaces;  //!< Interfaces used within application.
+  Config::CUsers              oUsers;       //!< Users for accessing remote device
 
 private:
   ESource  m_eSource = ESource::Unknown;
