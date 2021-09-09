@@ -34,6 +34,7 @@ CRemoteDeviceConfigTest::CRemoteDeviceConfigTest() :
   CcTest("CRemoteDeviceConfigTest")
 {
   appendTestMethod("configuration from EEPROM", &CRemoteDeviceConfigTest::testEeprom);
+  appendTestMethod("configuration of user settings", &CRemoteDeviceConfigTest::testUserSettings);
 }
 
 CRemoteDeviceConfigTest::~CRemoteDeviceConfigTest()
@@ -56,5 +57,34 @@ bool CRemoteDeviceConfigTest::testEeprom()
   }
 
   CcKernel::removeDevice(CcDevice(&oSimulation, EDeviceType::Eeprom));
+  return bSuccess;
+}
+
+bool CRemoteDeviceConfigTest::testUserSettings()
+{
+  bool bSuccess = false;
+  // Generate default config
+  NRemoteDevice::Server::CConfig oConfig(true);
+  oConfig.oUsers.oUsers.append(NRemoteDevice::Server::Config::CUsers::CCredentials("TestUser", "TestPassword"));
+  oConfig.oUsers.oUsers.append(NRemoteDevice::Server::Config::CUsers::CCredentials("TestUser2", "TestPassword2"));
+  oConfig.oUsers.sAdmin = "TestUser";
+
+  CcByteArray oData;
+  oConfig.writeData(NRemoteDevice::Server::CConfig::ESource::FileJson, oData);
+  CcString sData = oData;
+  CcString sDataToContain = "\"Users\":{\"Admin\":\"TestUser\",{\"Name\":\"TestUser\",\"Password\":\"TestPassword\"},{\"Name\":\"TestUser2\",\"Password\":\"TestPassword2\"}}";
+  if (sData.contains(sDataToContain))
+  {
+    oConfig.writeData(NRemoteDevice::Server::CConfig::ESource::FileBinary, oData);
+    if (oData.find("TestUser") < oData.size() &&
+        oData.find("TestPassword") < oData.size() &&
+        oData.find("TestUser2") < oData.size() &&
+        oData.find("TestPassword2") < oData.size()
+        )
+    {
+      bSuccess = true;
+    }
+  }
+
   return bSuccess;
 }

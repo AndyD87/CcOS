@@ -33,6 +33,8 @@ namespace CcRemoteDeviceGlobals
   extern const CcRemoteDeviceSHARED CcString ProjectName;
   namespace Defaults
   {
+    extern const CcRemoteDeviceSHARED CcString DefaultUserName;
+    extern const CcRemoteDeviceSHARED CcString DefaultUserPassword;
     extern const CcRemoteDeviceSHARED CcString SslKeyFilename;
     extern const CcRemoteDeviceSHARED CcString SslCertificateFilename;
   }

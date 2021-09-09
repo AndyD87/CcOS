@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CRemoteDeviceConfigTest
  **/
-#ifndef H_CRemoteDeviceConfigTest_H_
-#define H_CRemoteDeviceConfigTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -47,6 +46,5 @@ public:
 
 private:
   bool testEeprom();
+  bool testUserSettings();
 };
-
-#endif // H_CRemoteDeviceConfigTest_H_

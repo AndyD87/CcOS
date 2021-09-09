@@ -31,6 +31,8 @@ namespace CcRemoteDeviceGlobals
   const CcString ProjectName("CcRemoteDevice");                 //!< Default project name
   namespace Defaults
   {
+    const CcString DefaultUserName    ("root");                 //!< Default username for server without configuration
+    const CcString DefaultUserPassword("root");                 //!< Default password for DefaultUserName for server without configuration
     const CcString SslKeyFilename("Key.crt");                   //!< Default name for private keys
     const CcString SslCertificateFilename("Certificate.crt");   //!< Default name for certificates
   }

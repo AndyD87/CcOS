@@ -85,6 +85,8 @@ CcRemoteDeviceServer::CcRemoteDeviceServer() :
 {
   m_bConfigOwner = true;
   CCNEW(m_pConfig, CConfig);
+  m_pConfig->oUsers.sAdmin = CcRemoteDeviceGlobals::Defaults::DefaultUserName;
+  m_pConfig->oUsers.oUsers.append(NRemoteDevice::Server::Config::CUsers::CCredentials(CcRemoteDeviceGlobals::Defaults::DefaultUserName, CcRemoteDeviceGlobals::Defaults::DefaultUserPassword));
   init();
 }
 

@@ -166,11 +166,11 @@ void CConfig::write(ESource eSource, const CcString& sPath)
     case ESource::FileBinary:
       if(sPath.length())
       {
-        writeFile(m_eSource, sPath);
+        writeFile(eSource, sPath);
       }
       else
       {
-        writeFile(m_eSource, m_sFilePath);
+        writeFile(eSource, m_sFilePath);
       }
       break;
     default:
@@ -288,6 +288,10 @@ void CConfig::writeJson(IIo& pStream)
     oInterfacesNode.setName(NDocumentsGlobals::NConfig::Interfaces);
     oInterfaces.writeJson(oInterfacesNode);
     oDoc.getJsonNode().object().append(oInterfacesNode);
+    CcJsonNode oUsersNode(EJsonDataType::Object);
+    oUsersNode.setName(NDocumentsGlobals::NConfig::Users);
+    oUsers.writeJson(oUsersNode);
+    oDoc.getJsonNode().object().append(oUsersNode);
     CcJsonNode oAppConfig(EJsonDataType::Object);
     oAppConfig.setName(NDocumentsGlobals::NConfig::Application);
     writeAppConfig(oAppConfig);
@@ -381,45 +385,93 @@ bool CConfig::parseBinary(const void* pvItem, size_t uiMaxSize)
 size_t CConfig::writeBinary(IIo& pStream)
 {
   CCDEBUG("Write Binary");
+  size_t uiWrittenTemp = 0;
   size_t uiWritten = pStream.write(c_aBinaryTag, sizeof(c_aBinaryTag));
   if(uiWritten != SIZE_MAX)
-    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Version, oVersion);
-  if(uiWritten != SIZE_MAX)
-    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::VendorId, oVendorId);
-  if (uiWritten != SIZE_MAX)
-    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::DeviceId, oDeviceId);
-  if (uiWritten != SIZE_MAX)
-    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Variant, sVariant);
-  if (uiWritten != SIZE_MAX)
-    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::SerialNr, uiSerialNr);
-  if (uiWritten != SIZE_MAX)
-    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::SwVersion, oSwVersion);
-  if (uiWritten != SIZE_MAX)
-    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::HwVersion, oHwVersion);
-  if (uiWritten != SIZE_MAX)
-    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Detectable, bDetectable);
-  if (uiWritten != SIZE_MAX)
-    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Port, oAddressInfo.getPort());
-  if (uiWritten != SIZE_MAX)
   {
-    uiWritten += oSystem.writeBinary(pStream);
+    uiWrittenTemp = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Version, oVersion);
+    if (uiWrittenTemp != SIZE_MAX)
+    {
+      uiWritten += uiWrittenTemp;
+      uiWrittenTemp = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::VendorId, oVendorId);
+      if (uiWrittenTemp != SIZE_MAX)
+      {
+        uiWritten += uiWrittenTemp;
+        uiWrittenTemp = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::DeviceId, oDeviceId);
+        if (uiWrittenTemp != SIZE_MAX)
+        {
+          uiWritten += uiWrittenTemp;
+          uiWrittenTemp = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Variant, sVariant);
+          if (uiWrittenTemp != SIZE_MAX)
+          {
+            uiWritten += uiWrittenTemp;
+            uiWrittenTemp = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::SerialNr, uiSerialNr);
+            if (uiWrittenTemp != SIZE_MAX)
+            {
+              uiWritten += uiWrittenTemp;
+              uiWrittenTemp = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::SwVersion, oSwVersion);
+              if (uiWrittenTemp != SIZE_MAX)
+              {
+                uiWritten += uiWrittenTemp;
+                uiWrittenTemp = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::HwVersion, oHwVersion);
+                if (uiWrittenTemp != SIZE_MAX)
+                {
+                  uiWritten += uiWrittenTemp;
+                  uiWrittenTemp = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Detectable, bDetectable);
+                  if (uiWrittenTemp != SIZE_MAX)
+                  {
+                    uiWritten += uiWrittenTemp;
+                    uiWrittenTemp = CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::Port, oAddressInfo.getPort());
+                    if (uiWrittenTemp != SIZE_MAX)
+                    {
+                      uiWritten += uiWrittenTemp;
+                      uiWrittenTemp = oSystem.writeBinary(pStream);
+                      if (uiWrittenTemp != SIZE_MAX)
+                      {
+                        uiWritten += uiWrittenTemp;
+                        uiWrittenTemp = oInterfaces.writeBinary(pStream);
+                        if (uiWrittenTemp != SIZE_MAX)
+                        {
+                          uiWritten += uiWrittenTemp;
+                          uiWrittenTemp = oUsers.writeBinary(pStream);
+                          if (uiWrittenTemp != SIZE_MAX)
+                          {
+                            uiWritten += uiWrittenTemp;
+                            uiWrittenTemp = writeAppConfigBinary(pStream);
+                            if (uiWrittenTemp != SIZE_MAX)
+                            {
+                              uiWritten += uiWrittenTemp;
+                              uiWrittenTemp += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End, nullptr);
+                              if (uiWrittenTemp != SIZE_MAX) uiWritten += uiWrittenTemp;
+                              else                           uiWritten = SIZE_MAX;
+                            }
+                            else uiWritten = SIZE_MAX;
+                          }
+                          else uiWritten = SIZE_MAX;
+                        }
+                        else uiWritten = SIZE_MAX;
+                      }
+                      else uiWritten = SIZE_MAX;
+                    }
+                    else uiWritten = SIZE_MAX;
+                  }
+                  else uiWritten = SIZE_MAX;
+                }
+                else uiWritten = SIZE_MAX;
+              }
+              else uiWritten = SIZE_MAX;
+            }
+            else uiWritten = SIZE_MAX;
+          }
+          else uiWritten = SIZE_MAX;
+        }
+        else uiWritten = SIZE_MAX;
+      }
+      else uiWritten = SIZE_MAX;
+    }
+    else uiWritten = SIZE_MAX;
   }
-  if (uiWritten != SIZE_MAX)
-  {
-    uiWritten += oInterfaces.writeBinary(pStream);
-  }
-  if (uiWritten != SIZE_MAX)
-  {
-    uiWritten += writeAppConfigBinary(pStream);
-  }
-  if (uiWritten != SIZE_MAX)
-  {
-    uiWritten += CcConfigBinary::CItem::write(pStream, CcConfigBinary::EType::End, nullptr);
-  }
-  else
-  {
-    uiWritten = SIZE_MAX;
-  }
+  else uiWritten = SIZE_MAX;
   return uiWritten;
 }
 
