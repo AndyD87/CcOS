@@ -80,6 +80,8 @@ CcStatus CcService::exec()
 
 void CcService::idle()
 {
+  // short delay
+  CcKernel::sleep(1);
 }
 
 void CcService::run()
