@@ -36,6 +36,7 @@
 #include "Network/INetworkStack.h"
 #include "Network/CcIpInterface.h"
 #include "Devices/INetwork.h"
+#include "CcKernel.h"
 
 class CcDhcpServer::CPrivate
 {
@@ -73,34 +74,42 @@ void CcDhcpServer::run()
     }
     oInfo.setIp(CcCommonIps::AnyAddress);
   }
-  CCDEBUG("DHCP-Server starting on Port: " + getConfig().getBindAddress().getPortString());
+  CCDEBUG("DHCP-Server starting on IP: " + oInfo.getIpString());
   if (m_pPrivate->oSocket.open() &&
       m_pPrivate->oSocket.setOption(ESocketOption::Reuse) &&
-      m_pPrivate->oSocket.setOption(ESocketOption::Broadcast) &&
-      m_pPrivate->oSocket.bind(oInfo))
+      m_pPrivate->oSocket.setOption(ESocketOption::Broadcast))
   {
-    if(sDeviceName.length() > 0 )
+    bool bAllOk = m_pPrivate->oSocket.bind(oInfo);
+    if( !bAllOk && !CcKernel::isAdmin() && oInfo.getPort() == CcCommonPorts::DHCP_SRV)
     {
-      CCDEBUG("BindToDevice: " + sDeviceName);
-      m_pPrivate->oSocket.setOption(ESocketOption::BindToDevice, &sDeviceName);
+      oInfo.setPort(CcCommonPorts::DHCP_SRV + CcCommonPorts::CcTestBase);
+      bAllOk = m_pPrivate->oSocket.bind(oInfo);
     }
-    while (getThreadState() == EThreadState::Running)
+    if(bAllOk)
     {
-      CCNEWTYPE(pWorker, NDhcp::NServer::CWorker, *this, m_pPrivate->oData);
-      size_t uiReadSize = m_pPrivate->oSocket.read(pWorker->getPacket()->getPacket(), pWorker->getPacket()->getPacketSize(true));
-      if (uiReadSize != SIZE_MAX)
+      if(sDeviceName.length() > 0 )
       {
-        pWorker->start();
+        CCDEBUG("BindToDevice: " + sDeviceName);
+        m_pPrivate->oSocket.setOption(ESocketOption::BindToDevice, &sDeviceName);
       }
-      else
+      while (getThreadState() == EThreadState::Running)
       {
-        CCDELETE(pWorker);
+        CCNEWTYPE(pWorker, NDhcp::NServer::CWorker, *this, m_pPrivate->oData);
+        size_t uiReadSize = m_pPrivate->oSocket.read(pWorker->getPacket()->getPacket(), pWorker->getPacket()->getPacketSize(true));
+        if (uiReadSize != SIZE_MAX)
+        {
+          pWorker->start();
+        }
+        else
+        {
+          CCDELETE(pWorker);
+        }
       }
     }
-  }
-  else
-  {
-    CCDEBUG("DHCP::run Bind failed");
+    else
+    {
+      CCDEBUG("DHCP::run Bind failed");
+    }
   }
 }
 
@@ -130,7 +139,7 @@ void CcDhcpServer::initPrivate()
   CCNEW(m_pPrivate, CPrivate);
 }
 
-const NDhcp::NServer::CConfig& CcDhcpServer::getConfig()
+const NDhcp::NServer::CConfig& CcDhcpServer::getConfig() const
 {
   return m_pPrivate->oConfig;
 }

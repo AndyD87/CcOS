@@ -63,7 +63,7 @@ public:
   bool loadConfigFile(const CcString& sPath);
 
   size_t write(void* pBuf, size_t uiBufSize);
-  const NDhcp::NServer::CConfig& getConfig();
+  const NDhcp::NServer::CConfig& getConfig() const;
 
 private: // Methods
   void initPrivate();

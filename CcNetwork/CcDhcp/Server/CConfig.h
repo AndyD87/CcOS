@@ -72,6 +72,9 @@ public:
   //! @return Bind address for dhcp listining interface
   const CcSocketAddressInfo& getBindAddress() const
   { return m_oBindAddress; }
+  //! @return Editable bind address for dhcp listining interface
+  CcSocketAddressInfo& getBindAddress()
+  { return m_oBindAddress; }
   //! @return Ip address range begin
   const CcIp& getIpBegin() const
   { return m_oIpBegin; }
