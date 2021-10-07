@@ -117,5 +117,8 @@ const CcString& CcGlobalStrings::Extensions::System::DynamicLibraryCommon  = So;
   const CcString& CcGlobalStrings::Extensions::System::DynamicLibrary = CcGlobalStrings::Extensions::System::DynamicLibraryCommon;
 #endif
 
-CcConstStringClass_C(NoError, "no error", CcGlobalStrings::Error);
+CcConstStringClass_C(NoError,         "no error",                 CcGlobalStrings::Error);
+CcConstStringClass_C(NotPermitted,    "operation not permitted",  CcGlobalStrings::Error);
+CcConstStringClass_C(UndefinedError,  "Undefined error string",   CcGlobalStrings::Error);
+CcConstStringClass_C(AccessDenied,    "Access denied",            CcGlobalStrings::Error);
 

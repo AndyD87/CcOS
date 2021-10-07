@@ -65,6 +65,7 @@ void CcDhcpServer::run()
   CcSocketAddressInfo oInfo = getConfig().getBindAddress();
   if(oInfo.getIp() != CcCommonIps::AnyAddress)
   {
+    CCDEBUG("DHCP-Server starting on IP: " + oInfo.getIpString());
     const CcIpInterface* pInterface =  CcKernel::getNetworkStack()->getInterfaceForIp(oInfo.getIp());
     if(pInterface &&
        pInterface->pDevice
@@ -74,7 +75,6 @@ void CcDhcpServer::run()
     }
     oInfo.setIp(CcCommonIps::AnyAddress);
   }
-  CCDEBUG("DHCP-Server starting on IP: " + oInfo.getIpString());
   if (m_pPrivate->oSocket.open() &&
       m_pPrivate->oSocket.setOption(ESocketOption::Reuse) &&
       m_pPrivate->oSocket.setOption(ESocketOption::Broadcast))

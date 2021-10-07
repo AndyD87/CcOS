@@ -155,6 +155,9 @@ public:
   //! System specific extenstions.
   struct Error
   {
-    static CcKernelSHARED CcConstString_H(NoError); //!< bin
+    static CcKernelSHARED CcConstString_H(NoError);           //!< No error string
+    static CcKernelSHARED CcConstString_H(NotPermitted);      //!< Operation not permitted string
+    static CcKernelSHARED CcConstString_H(UndefinedError);    //!< UndefinedErrorCode
+    static CcKernelSHARED CcConstString_H(AccessDenied);      //!< Access denied
   };
 };

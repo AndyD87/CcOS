@@ -1,5 +1,5 @@
 set(LINUX           TRUE)
-
+add_definitions(-DLINUX)
 
 find_package(KernelHeaders)
 if(KERNELHEADERS_FOUND)

@@ -34,22 +34,24 @@ class CcString;
  */
 enum class EStatus : uint32
 {
-  AllOk           = 0x00000000, //!< No error occured, same as NoError
-  NoError         = 0x00000000, //!< No error occured, same as AllOk
-  Success         = 0x00000000, //!< No error occured, all succeeded, same as AllOk
-  Error           = 0x00000001, //!< Common Error indication if not specified, also set if error is set by boolean
-  NotSupported    = 0x00000002, //!< Common Error a not supported operation
-  InvalidHandle   = 0x00000003, //!< Common Error for usage of an invalid handle
-  TimeoutReached  = 0x00000004, //!< Common Error for reached timeout
-  MoreProcessingRequired = 0x00000005, //!< Common Error for processes has to be continued
-  CreateFailed    = 0x00000006, //!< Creating an object did not finish as expected.
-  CloseFailed     = 0x00000007, //!< Closing a connection or File did not finish as expected.
-  OutOfRange      = 0x00000008, //!< Current request was out of range
-  AlreadyStopped  = 0x00000009, //!< Device or thread ist already stopped, no need to stop again
-  AlreadyStarted  = 0x0000000a, //!< Device or thread ist already started, no need to start again
-  AlreadyRunning  = 0x0000000b, //!< Device or thread ist already running, no need to start again
-  NotFound        = 0x0000000c, //!< Searched item was not found
-  NotStarted      = 0x0000000d, //!< Device or thread is not started but is tried to be used.
+  AllOk                   = 0x00000000, //!< No error occured, same as NoError
+  NoError                 = 0x00000000, //!< No error occured, same as AllOk
+  Success                 = 0x00000000, //!< No error occured, all succeeded, same as AllOk
+  Error                   = 0x00000001, //!< Common Error indication if not specified, also set if error is set by boolean
+  NotSupported            = 0x00000002, //!< Common Error a not supported operation
+  InvalidHandle           = 0x00000003, //!< Common Error for usage of an invalid handle
+  TimeoutReached          = 0x00000004, //!< Common Error for reached timeout
+  MoreProcessingRequired  = 0x00000005, //!< Common Error for processes has to be continued
+  CreateFailed            = 0x00000006, //!< Creating an object did not finish as expected.
+  CloseFailed             = 0x00000007, //!< Closing a connection or File did not finish as expected.
+  OutOfRange              = 0x00000008, //!< Current request was out of range
+  AlreadyStopped          = 0x00000009, //!< Device or thread ist already stopped, no need to stop again
+  AlreadyStarted          = 0x0000000a, //!< Device or thread ist already started, no need to start again
+  AlreadyRunning          = 0x0000000b, //!< Device or thread ist already running, no need to start again
+  NotFound                = 0x0000000c, //!< Searched item was not found
+  NotStarted              = 0x0000000d, //!< Device or thread is not started but is tried to be used.
+  NotPermitted            = 0x0000000e, //!< Current operation is not permitted
+  AccessDenied            = 0x0000000f, //!< Access denied
 
   IoDeviceError   = 0x00020000, //!< Unspecified IO Device error occured
 
