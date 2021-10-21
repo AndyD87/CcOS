@@ -16,40 +16,30 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CHashTest
- **/
-#ifndef H_CHashTest_H_
-#define H_CHashTest_H_
-
-#include "CcBase.h"
-#include "CcTest.h"
-
-/**
- * @brief Class implementation
+ * @brief     Implementation of Class IHash
  */
-class CHashTest : public CcTest<CHashTest>
+#include "Hash/IHash.h"
+
+IHash& IHash::setKey(const void*, size_t)
 {
-public:
-  /**
-   * @brief Constructor
-   */
-  CHashTest();
+  // not supported do nothing
+  return *this;
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CHashTest();
-private:
-  bool testSha256();
-  bool testMd5();
-  bool testMd5Append();
-  bool testSqlEnDecode();
-  bool testIHash();
-};
+}
 
-#endif // H_CHashTest_H_
+const CcByteArray& IHash::encode(const void* pData, size_t uiSize)
+{
+  // not supported return empty array
+  generate(pData, uiSize);
+  return getValue();
+}
+
+const CcByteArray& IHash::decode(const void* , size_t )
+{
+  // not supported return empty array
+  return CcByteArray::getEmpty();
+}

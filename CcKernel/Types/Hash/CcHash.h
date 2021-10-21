@@ -50,38 +50,13 @@ public:
    */
   virtual ~CcHash();
 
-  /**
-   * @brief Fully generate hash value from buffer.
-   *        This method has to reinit if required an finalizes if required.
-   * @param pData: Data to generate hash from.
-   * @param uiSize: Size of pData
-   * @return Handle to this object
-   */
   virtual CcHash& generate(const void* pData, size_t uiSize) override;
-
-  /**
-   * @brief Append buffer to current object.
-   * @param pData: Data to append to current hash from.
-   * @param uiSize: Size of pData
-   * @return Handle to this object
-   */
   virtual CcHash& append(const void* pData, size_t uiSize) override;
-
-  /**
-   * @brief Finalize hash generating.
-   *        After calling this method, the stored Value for getValue is valid.
-   * @param pData: Last data to append to hash value.
-   * @param uiSize: Size of pData
-   * @return Handle to this object
-   */
   virtual CcHash& finalize(const void* pData, size_t uiSize) override;
-
-  /**
-   * @brief Get calculated hash value as ByteArray.
-   *        This Method must be supported from every implementing hash algorithm.
-   * @return
-   */
   virtual const CcByteArray& getValue() override;
+  virtual IHash& setKey(const void* pcData, size_t uiLen) override;
+  virtual const CcByteArray& encode(const void* pcData, size_t uiLen) override;
+  virtual const CcByteArray& decode(const void* pcData, size_t uiLen) override;
 
   /**
    * @brief Get currently set Hashtype
@@ -137,6 +112,30 @@ public:
    */
   inline CcHash& finalize()
   { return finalize(nullptr, 0);}
+
+  /**
+   * @brief Set key if it is supported.
+   * @param oByteArray: Key data to set
+   * @return Handle to this object
+   */
+  inline IHash& setKey(const CcByteArray& oByteArray)
+  { return setKey(oByteArray.getArray(), oByteArray.size()); }
+
+  /**
+   * @brief Encode data and get result as byte array
+   * @param oByteArray: Data to encode
+   * @return Encoded data
+   */
+  inline const CcByteArray& encode(const CcByteArray& oByteArray)
+  { return encode(oByteArray.getArray(), oByteArray.size()); }
+
+  /**
+   * @brief Decode data and get result as byte array if supported
+   * @param oByteArray: Data to decode
+   * @return Decoded data or empty if not supported
+   */
+  inline const CcByteArray& decode(const CcByteArray& oByteArray)
+  { return decode(oByteArray.getArray(), oByteArray.size()); }
 
 private:
   EHashType m_eHashType = EHashType::Unknown; //!< Current object loaded at m_pHashObject

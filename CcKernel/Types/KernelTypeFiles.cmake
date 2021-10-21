@@ -59,9 +59,11 @@ set(KERNEL_TYPE_HEADER
 )
 
 set(KERNEL_TYPE_HASH_HEADER
+    Types/Hash/CcAes.h
     Types/Hash/CcCrc32.h
     Types/Hash/CcHash.h
     Types/Hash/CcMd5.h
+    Types/Hash/CcSqlEnDecode.h
     Types/Hash/CcSha256.h
     Types/Hash/IHash.h
 )
@@ -69,10 +71,14 @@ set(KERNEL_TYPE_HASH_HEADER
 set(KERNEL_TYPE_FILES
       ${KERNEL_TYPE_HEADER}
       ${KERNEL_TYPE_HASH_HEADER}
+      Types/Hash/CcAes.cpp
       Types/Hash/CcCrc32.cpp
       Types/Hash/CcHash.cpp
       Types/Hash/CcMd5.cpp
+      Types/Hash/CcSqlEnDecode.cpp
       Types/Hash/CcSha256.cpp
+      Types/Hash/IHash.cpp
+
       Types/CcArguments.cpp
       Types/CcBinaryStream.cpp
       Types/CcBitmap.cpp

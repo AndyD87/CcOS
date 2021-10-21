@@ -38,6 +38,7 @@ enum class EHashType
   Crc32,
   Md5,
   Sha256,
+  SqlEnDecode,
 };
 
 /**
@@ -83,6 +84,30 @@ public:
    * @return Handle to this object
    */
   virtual IHash& finalize(const void* pcData, size_t uiLen) = 0;
+
+  /**
+   * @brief Set key if it is supported.
+   * @param pcData: Key data to set
+   * @param uiLen:  Size of Key data
+   * @return Handle to this object
+   */
+  virtual IHash& setKey(const void* pcData, size_t uiLen);
+
+  /**
+   * @brief Encode data and get result as byte array
+   * @param pcData: Data to encode
+   * @param uiLen:  Number of bytes in data to encode
+   * @return Encoded data
+   */
+  virtual const CcByteArray &encode(const void* pcData, size_t uiLen);
+
+  /**
+   * @brief Decode data and get result as byte array if supported
+   * @param pcData: Data to decode
+   * @param uiLen:  Number of bytes in data to decode
+   * @return Decoded data or empty if not supported
+   */
+  virtual const CcByteArray& decode(const void* pcData, size_t uiLen);
 
   /**
    * @brief Forward byte array to generation with buffers

@@ -181,6 +181,16 @@ public:
   CcByteArray& operator=(CcString&& oToMove) NOEXCEPT;
 
   /**
+   * @brief Compare internal buffer with \0 terminated string
+   * @param pData: String to compare with
+   * @return true if string and content is same
+   */
+  bool operator==(const char* pData) const;
+
+  inline bool operator==(const CcByteArray& oData) const
+  { return CcVector<char>::operator ==(oData); }
+
+  /**
    * @brief Execute an ordinary read on buffer with size and offset
    * @param pBuffer:  Buffer to write data to
    * @param uSize:    Maximum size of buffer to write

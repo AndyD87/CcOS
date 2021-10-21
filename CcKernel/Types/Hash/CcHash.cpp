@@ -26,6 +26,7 @@
 #include "Hash/CcCrc32.h"
 #include "Hash/CcMd5.h"
 #include "Hash/CcSha256.h"
+#include "Hash/CcSqlEnDecode.h"
 #include "CcGlobalStrings.h"
 #include "CcStatic.h"
 
@@ -77,9 +78,30 @@ const CcByteArray& CcHash::getValue()
   return CcStatic::getConstNullRef<CcByteArray>();
 }
 
+IHash& CcHash::setKey(const void* pData, size_t uiSize)
+{
+  if(m_pHashObject)
+    m_pHashObject->setKey(pData, uiSize);
+  return *this;
+}
+
+const CcByteArray& CcHash::encode(const void* pData, size_t uiSize)
+{
+  if(m_pHashObject)
+    return m_pHashObject->encode(pData, uiSize);
+  return CcByteArray::getEmpty();
+}
+
+const CcByteArray &CcHash::decode(const void* pData, size_t uiSize)
+{
+  if(m_pHashObject)
+    return m_pHashObject->decode(pData, uiSize);
+  return CcByteArray::getEmpty();
+}
+
 bool CcHash::setHashType(EHashType eHashType)
 {
-  bool bRet = true;
+  bool bRet = false;
   CCDELETE(m_pHashObject);
   switch (eHashType)
   {
@@ -95,10 +117,15 @@ bool CcHash::setHashType(EHashType eHashType)
       CCNEW(m_pHashObject, CcSha256);
       m_eHashType = eHashType;
       break;
-    default:
-      bRet = false;
-      m_eHashType = EHashType::Unknown;
+    case EHashType::SqlEnDecode:
+      CCNEW(m_pHashObject, CcSqlEnDecode);
+      m_eHashType = eHashType;
+      break;
+    case EHashType::Unknown:
+      break;
   }
+  if(m_pHashObject)
+    bRet = true;
   return bRet;
 }
 

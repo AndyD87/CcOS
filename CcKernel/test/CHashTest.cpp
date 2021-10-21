@@ -40,6 +40,7 @@ CHashTest::CHashTest() :
   appendTestMethod("Test sha256", &CHashTest::testSha256);
   appendTestMethod("Test md5", &CHashTest::testMd5);
   appendTestMethod("Test md5 append bug", &CHashTest::testMd5Append);
+  appendTestMethod("Test sql encode decode", &CHashTest::testSqlEnDecode);
   appendTestMethod("Test CcHash", &CHashTest::testIHash);
 }
 
@@ -186,6 +187,25 @@ bool CHashTest::testSha256()
       bRet = false;
     }
   }
+  return bRet;
+}
+
+bool CHashTest::testSqlEnDecode()
+{
+  bool bRet = false;
+  CcHash oHash(EHashType::SqlEnDecode);
+  oHash.setKey("testKey", 7);
+  CcByteArray oEncoded = oHash.encode("testData", 8);
+  CcByteArray oDecoded = oHash.decode(oEncoded);
+  CcString sEncodedHex = oEncoded.getHexString();
+  if(sEncodedHex == "4fad044dc8fdbd0c")
+  {
+    if(oDecoded == "testData")
+    {
+      bRet = true;
+    }
+  }
+
   return bRet;
 }
 

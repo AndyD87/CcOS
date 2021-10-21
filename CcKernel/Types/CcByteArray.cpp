@@ -256,6 +256,17 @@ CcByteArray& CcByteArray::operator=(CcString&& oToMove) NOEXCEPT
   return *this;
 }
 
+bool CcByteArray::operator==(const char* pString) const
+{
+  bool bSame = false;
+  size_t uiStrlen = CcStringUtil::strlen(pString);
+  if(uiStrlen == size())
+  {
+    bSame = CcStringUtil::strcmp(getArray(), pString, uiStrlen) == 0;
+  }
+  return bSame;
+}
+
 size_t CcByteArray::read(void* pBuffer, size_t uSize, size_t uiOffset)
 {
   return getCharArray(static_cast<char*>(pBuffer), uSize, uiOffset);

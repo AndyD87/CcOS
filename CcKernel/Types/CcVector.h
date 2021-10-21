@@ -541,6 +541,36 @@ public:
   }
 
   /**
+   * @brief Clear vector an set and set first Object.
+   * @param oToAppend: Object to set
+   * @return Reference to this Vector
+   */
+  inline CcVector<TYPE>& set(const TYPE& oToAppend)
+  {
+    return append(oToAppend);
+  }
+
+  /**
+   * @brief Clear vector an set an Array of Objects
+   * @param oToAppend: Object to set
+   * @param uiCount: Object to set
+   * @return Reference to this Vector
+   */
+  inline CcVector<TYPE>& set(const TYPE* oToAppend, size_t uiCount)
+  {
+    clear();
+    return append(oToAppend, uiCount);
+  }
+
+  /**
+   * @brief Clear vector and set new data copied from another vector
+   * @param oToCopy: Item to add
+   * @return Vector with new data
+   */
+  inline CcVector<TYPE>& set(const CcVector& oToSet)
+  { return operator=(oToSet); }
+
+  /**
    * @brief Get the number of items containing in list.
    * @return Number of Items
    */
