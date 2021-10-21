@@ -34,6 +34,7 @@ CListTest::CListTest() :
 {
   appendTestMethod("Test inserts to list", &CListTest::testInsert);
   appendTestMethod("Test reserve list", &CListTest::testReserve);
+  appendTestMethod("Test remove from list", &CListTest::testRemove);
 }
 
 CListTest::~CListTest()
@@ -88,6 +89,42 @@ bool CListTest::testReserve()
       i++;
     }
     if(oList.at(255) == 255) bSuccess = true;
+  }
+  return bSuccess;
+}
+
+bool CListTest::testRemove()
+{
+  bool bSuccess = false;
+  CcList<int> oIntList;
+  oIntList.prepend(100);
+  oIntList.append(102);
+  oIntList.insert(0, 99);
+  oIntList.insert(2, 101);
+  oIntList.prepend(98);
+  if(oIntList.size() == 5)
+  {
+    oIntList.remove(1);
+    if(oIntList.size() == 4 &&
+       oIntList[0] == 98 &&
+       oIntList[1] == 100
+       )
+    {
+      oIntList.remove(1,2);
+      if(oIntList.size() == 2 &&
+         oIntList[0] == 98 &&
+         oIntList[1] == 102
+         )
+      {
+        oIntList.remove(0);
+        if(oIntList.size() == 1 &&
+           oIntList[0] == 102
+           )
+        {
+          bSuccess = true;
+        }
+      }
+    }
   }
   return bSuccess;
 }

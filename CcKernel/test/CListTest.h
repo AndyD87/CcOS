@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CListTest
  **/
-#ifndef H_CListTest_H_
-#define H_CListTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -48,6 +47,5 @@ public:
 private:
   bool testInsert();
   bool testReserve();
+  bool testRemove();
 };
-
-#endif // H_CListTest_H_

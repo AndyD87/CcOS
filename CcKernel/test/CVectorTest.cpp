@@ -30,6 +30,7 @@ CVectorTest::CVectorTest() :
 {
   appendTestMethod("Test inserts to vector", &CVectorTest::testInsert);
   appendTestMethod("Test reserve vector", &CVectorTest::testReserve);
+  appendTestMethod("Test remove from vector", &CVectorTest::testRemove);
 }
 
 CVectorTest::~CVectorTest()
@@ -68,6 +69,42 @@ bool CVectorTest::testReserve()
       oList[i] = i;
     }
     bSuccess = true;
+  }
+  return bSuccess;
+}
+
+bool CVectorTest::testRemove()
+{
+  bool bSuccess = false;
+  CcList<int> oIntList;
+  oIntList.prepend(100);
+  oIntList.append(102);
+  oIntList.insert(0, 99);
+  oIntList.insert(2, 101);
+  oIntList.prepend(98);
+  if(oIntList.size() == 5)
+  {
+    oIntList.remove(1);
+    if(oIntList.size() == 4 &&
+       oIntList[0] == 98 &&
+       oIntList[1] == 100
+       )
+    {
+      oIntList.remove(1,2);
+      if(oIntList.size() == 2 &&
+         oIntList[0] == 98 &&
+         oIntList[1] == 102
+         )
+      {
+        oIntList.remove(0);
+        if(oIntList.size() == 1 &&
+           oIntList[0] == 102
+           )
+        {
+          bSuccess = true;
+        }
+      }
+    }
   }
   return bSuccess;
 }
