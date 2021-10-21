@@ -54,4 +54,12 @@ public:
   CcGroup& findGroup(const CcString& Groupname);
   //! @copydoc findGroup()
   const CcGroup& findGroup(const CcString& Groupname) const;
+
+
+  /**
+   * @brief Check if group by name is available in List
+   * @param Groupname: Group name to search for
+   * @return Handle to found group.
+   */
+  bool containsGroup(const CcString& Groupname) const;
 };

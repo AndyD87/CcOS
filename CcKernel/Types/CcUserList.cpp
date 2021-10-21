@@ -91,6 +91,20 @@ CcUser* CcUserList::findUserPassword(const CcString& Username, const CcString& P
   return pRet;
 }
 
+bool CcUserList::containsUser(const CcString& Username) const
+{
+  bool bContains = false;
+  for (size_t i = 0; i < size(); i++)
+  {
+    if (at(i)->getUserName() == Username)
+    {
+      bContains = true;
+      break;
+    }
+  }
+  return bContains;
+}
+
 bool CcUserList::setCurrentUser(const CcString& Username)
 {
   CcUser* tempUser = findUser(Username);

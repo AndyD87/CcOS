@@ -76,6 +76,13 @@ public:
    */
   CcUser* findUserPassword(const CcString& Username, const CcString& Password);
 
+  /**
+   * @brief Check if user can be found by name in list
+   * @param Username: Name to serach for
+   * @return true if found, otherwise false
+   */
+  bool containsUser(const CcString& Username) const;
+
   //! @brief Get current used user
   inline CcUser* currentUser() const
   { return m_CurrentUser; }

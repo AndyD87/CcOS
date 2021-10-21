@@ -54,3 +54,17 @@ const CcGroup& CcGroupList::findGroup(const CcString& Username) const
   }
   return CcStatic::getConstNullRef<CcGroup>();
 }
+
+bool CcGroupList::containsGroup(const CcString& Username) const
+{
+  bool bContains = false;
+  for (size_t i = 0; i < size(); i++)
+  {
+    if (at(i).getName() == Username)
+    {
+      bContains = true;
+      break;
+    }
+  }
+  return bContains;
+}

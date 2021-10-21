@@ -94,6 +94,8 @@ CcStatus& CcStatus::setSystemError(uint32 uiError)
   // in EStatus.
   switch (uiError)
   {
+    case 0:    /* No error */
+      m_eError = EStatus::AllOk;
     #ifdef LINUX
     case EHOSTUNREACH:    /* No route to host */
       m_eError = EStatus::NetworkHostNotReachable;
@@ -224,9 +226,6 @@ CcStatus& CcStatus::setSystemError(uint32 uiError)
       case ERROR_FILE_NOT_FOUND:
       case ERROR_PATH_NOT_FOUND:
         m_eError = EStatus::FSFileNotFound; break;
-    #else 
-      case 0:
-
     #endif
     default:
       m_eError = static_cast<EStatus>(static_cast<uint32>(EStatus::SystemError) | uiError); 
