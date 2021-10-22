@@ -96,6 +96,7 @@ CcStatus& CcStatus::setSystemError(uint32 uiError)
   {
     case 0:    /* No error */
       m_eError = EStatus::AllOk;
+      break;
     #ifdef LINUX
     case EHOSTUNREACH:    /* No route to host */
       m_eError = EStatus::NetworkHostNotReachable;
