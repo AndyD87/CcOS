@@ -25,26 +25,27 @@
 #pragma once
 
 #include "CcWindowsGlobals.h"
+#include "CcService.h"
 #include "CcWString.h"
 
 /**
  * @brief Service class, it has to be adopted to  CcOS
  */
-class CcWindowsService
+class CcKernelSHARED CcWindowsService
 {
 public:
   /**
    * @brief Create Service by name
    * @param sName: Target name of service to identify it in system
    */
-  CcWindowsService(const CcWString& sName);
+  CcWindowsService(CcService* pService);
   ~CcWindowsService();
 
   /**
    * @brief Initialize Servce
    * @return True if init succeeded
    */
-  bool init();
+  CcStatus init();
 
   /**
    * @brief Stop command received
@@ -113,7 +114,7 @@ protected: // Methods
    * @param dwArgc: Count of additional arguments for server
    * @param lpszArgv: Additional arguments for server
    */
-  static void WINAPI serviceMain(DWORD dwArgc, LPWSTR *lpszArgv);
+  static void serviceMain(DWORD dwArgc, LPWSTR*lpszArgv);
 
   /**
    * @brief Static interface for windows to submich service commands. They will be forwarded
@@ -141,8 +142,9 @@ private:
 private: // Types
   class CPrivate;
 private: // Member
-  CPrivate* m_pPrivate = nullptr;
-  CcWString m_sName;
+  CPrivate*   m_pPrivate = nullptr;
+  CcService*  m_pService;
+  CcWString   m_sSerivceName;
 
   static CcWindowsService* s_pService;
 };

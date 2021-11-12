@@ -95,7 +95,7 @@ public:
    * @brief Move content of a variant list to this.
    * @param oToMove: List to move from
    */
-  void operator=(CcVariantList&& oToMove)
+  void operator=(CcVariantList&& oToMove) NOEXCEPT
   {
     CcList<CcVariant>::operator=(CCMOVE(oToMove));
   }

@@ -217,6 +217,34 @@ bool CcWindowsServiceControl::create()
   return bRet;
 }
 
+bool CcWindowsServiceControl::remove()
+{
+  bool bRet = false;
+  if (serviceManagerAvailable())
+  {
+    if (this->open())
+    {
+      if (FALSE == DeleteService(m_pPrivate->hService))
+      {
+        uint32 uiError = GetLastError();
+        if (ERROR_SERVICE_MARKED_FOR_DELETE == uiError)
+        {
+          bRet = true;
+        }
+        else
+        {
+          CCDEBUG(CcString::fromNumber(uiError));
+        }
+      }
+      else
+      {
+        bRet = true;
+      }
+    }
+  }
+  return bRet;
+}
+
 bool CcWindowsServiceControl::open()
 {
   bool bRet = false;

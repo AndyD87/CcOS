@@ -122,7 +122,7 @@ public:
    * @param oToMove: Handle to copy pointer from
    * @return Handle to this
    */
-  CcHandle<TYPE>& operator=(CcHandle<TYPE>&& oToMove)
+  CcHandle<TYPE>& operator=(CcHandle<TYPE>&& oToMove) NOEXCEPT
   { if (this != &oToMove) { m_pPointer = oToMove.m_pPointer; oToMove.m_pPointer = nullptr;} return *this; }
 
   //! @copydoc copy()

@@ -46,7 +46,7 @@ CcSqlEnDecode& CcSqlEnDecode::append(const void *pData, size_t uiSize)
   {
     m_uiShift^=(uint) (Random()*255.0);
     uchar idx= pcData[0];
-    *pcOutput++ = m_oEncodeBuffer[idx] ^ m_uiShift;
+    *pcOutput++ = m_oEncodeBuffer[idx] ^ static_cast<uchar>(m_uiShift);
     m_uiShift^= idx;
     pcData++;
   }
@@ -89,7 +89,7 @@ const CcByteArray &CcSqlEnDecode::decode(const void* pData, size_t uiSize)
   for (size_t i=0; i < uiSize; i++)
   {
     m_uiShift^=(uint32)(Random()*255.0);
-    uchar idx= pcData[0] ^ m_uiShift;
+    uchar idx= pcData[0] ^ static_cast<uchar>(m_uiShift);
     *pcOutput = m_oDecodeBuffer[idx];
     m_uiShift^= *pcOutput++;
     pcData++;
@@ -115,7 +115,7 @@ void CcSqlEnDecode::initRandom()
     m_oDecodeBuffer[+i]=a;
   }
   for (uint16 i=0 ; i < CcSqlEnDecode_CryptoBufferSize ; i++)
-   m_oEncodeBuffer[m_oDecodeBuffer[i]]=i;
+   m_oEncodeBuffer[m_oDecodeBuffer[i]]=static_cast<uchar>(i);
   m_uiShift=0;
 }
 

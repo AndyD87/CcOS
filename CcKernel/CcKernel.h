@@ -48,6 +48,7 @@ class CcGroupList;
 class ISharedMemory;
 class IKernel;
 class CcDevice;
+class CcService;
 enum class ESocketType;
 
 CCEXTERNC_BEGIN
@@ -120,7 +121,7 @@ public: // Methods
    * @brief Initialize Kernel to run as Service
    * @return true if CLI is available and started
    */
-  static int initService();
+  static CcStatus initService(CcService* pService);
 
   /**
    * @brief Check if current privelegues are admin privilegues

@@ -66,10 +66,10 @@ private: // Methods
 
 private:
 
-  uchar        m_oEncodeBuffer[CcSqlEnDecode_CryptoBufferSize];
-  uchar        m_oDecodeBuffer[CcSqlEnDecode_CryptoBufferSize];
-  uint32       m_uiShift;
-  uint32       m_uiKey[2];  //!< Key Size is always 2
+  uchar        m_oEncodeBuffer[CcSqlEnDecode_CryptoBufferSize]  = {0}; //!< Temporary buffer for encoding
+  uchar        m_oDecodeBuffer[CcSqlEnDecode_CryptoBufferSize]  = {0}; //!< Temporary buffer for decoding
+  uint32       m_uiShift                                        = {0}; //!< Current location in coding buffer
+  uint32       m_uiKey[2]                                       = {0}; //!< Key Size is always 2
 
   CcByteArray  m_oValue;    //!< Encoded or decoded output
 };

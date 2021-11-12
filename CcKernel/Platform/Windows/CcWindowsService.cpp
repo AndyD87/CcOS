@@ -1,17 +1,33 @@
 #include "CcWindowsService.h"
 #include "CcStatic.h"
+#include "CcService.h"
 
 CcWindowsService* CcWindowsService::s_pService = nullptr;
 
 class CcWindowsService::CPrivate
 {
 public:
-  SERVICE_STATUS oStaus;
+  SERVICE_STATUS oStaus         = {0};
   SERVICE_STATUS_HANDLE hStatus = NULL;
 };
 
-CcWindowsService::CcWindowsService(const CcWString& sName) : 
-  m_sName(sName)
+void CcWindowsService::serviceMain(DWORD dwArgc, LPWSTR* lpszArgv)
+{
+  if (dwArgc == 1)
+  {
+    s_pService->m_sSerivceName = lpszArgv[0];
+  }
+
+  if (s_pService)
+  {
+    SERVICE_STATUS_HANDLE hStatus = RegisterServiceCtrlHandlerExW(s_pService->m_sSerivceName.getWcharString(), CcWindowsService::serviceCtrlHandler, s_pService);
+    s_pService->setStatusHandle(hStatus);
+    s_pService->start();
+  }
+}
+
+CcWindowsService::CcWindowsService(CcService* pService) :
+  m_pService(pService)
 {
   CCNEW(m_pPrivate, CPrivate);
   m_pPrivate->hStatus = NULL;
@@ -39,28 +55,30 @@ CcWindowsService::CcWindowsService(const CcWString& sName) :
 
 CcWindowsService::~CcWindowsService()
 {
+  CCDELETE(m_pService);
   CCDELETE(m_pPrivate);
 }
 
-bool CcWindowsService::init()
+CcStatus CcWindowsService::init()
 {
-  bool bRet = false;
+  CcStatus bRet = false;
 
   s_pService = this;
+  m_sSerivceName.fromString(m_pService->getName());
 
   SERVICE_TABLE_ENTRYW serviceTable[] =
   {
-    {const_cast<wchar_t*>(m_sName.getWcharString()) , CcWindowsService::serviceMain},
+    {m_sSerivceName.getLPWSTR(), CcWindowsService::serviceMain},
     {NULL, NULL}
   };
+
   if (StartServiceCtrlDispatcherW(serviceTable) == FALSE)
   {
     DWORD uError = GetLastError();
     if (uError == ERROR_FAILED_SERVICE_CONTROLLER_CONNECT)
     {
       // We are running on console not as service
-      bRet = true;
-      s_pService->serviceMain(0, nullptr);
+      bRet = m_pService->run();
     }
   }
   else
@@ -72,24 +90,27 @@ bool CcWindowsService::init()
 
 void CcWindowsService::onStop()
 {
-
+  m_pService->eventStop();
 }
 
 void CcWindowsService::onStart()
 {
+  m_pService->eventStart();
 }
 
 void CcWindowsService::onPause()
 {
-
+  m_pService->eventPause();
 }
 
 void CcWindowsService::onContinue()
 {
+  
 }
 
 void CcWindowsService::onShutdown()
 {
+
 }
 
 DWORD CcWindowsService::onCustomCommand(DWORD dwCtrl, DWORD dwEventType, PVOID pEventData)
@@ -107,7 +128,6 @@ DWORD CcWindowsService::onCommand(DWORD dwCtrl, DWORD dwEventType, PVOID pEventD
   CCUNUSED(pEventData);
   return TYPE_MAX(DWORD);
 }
-
 
 DWORD CcWindowsService::command(DWORD dwCtrl, DWORD dwEventType, PVOID pEventData)
 {
@@ -148,20 +168,6 @@ void CcWindowsService::setStatus(DWORD dwCurrentState, DWORD dwWin32ExitCode, DW
 
   // Report the status of the service to the SCM.
   SetServiceStatus(m_pPrivate->hStatus, &m_pPrivate->oStaus);
-}
-
-void CcWindowsService::serviceMain(DWORD dwArgc, LPWSTR *lpszArgv)
-{
-  CCUNUSED(lpszArgv);
-  CCUNUSED(dwArgc);
-  if (s_pService == nullptr)
-  {
-    CCNEW(s_pService, CcWindowsService, L"");
-  }
-
-  SERVICE_STATUS_HANDLE hStatus = RegisterServiceCtrlHandlerExW(s_pService->m_sName.getWcharString(), CcWindowsService::serviceCtrlHandler, s_pService);
-  s_pService->setStatusHandle(hStatus);
-  s_pService->start();
 }
 
 DWORD  CcWindowsService::serviceCtrlHandler(DWORD dwControl, DWORD dwEventType, PVOID pEventData, PVOID pContext)

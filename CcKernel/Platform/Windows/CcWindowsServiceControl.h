@@ -69,6 +69,13 @@ public:
    * @return True if creation succeeded
    */
   bool create();
+
+  /**
+   * @brief Remove an existing service from system
+   * @return True if removing succeeded
+   */
+  bool remove();
+
   /**
    * @brief Open service if already existing.
    * @return True if service was opened succeeded

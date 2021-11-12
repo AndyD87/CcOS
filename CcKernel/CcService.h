@@ -75,10 +75,12 @@ public:
    */
   virtual void eventStop();
 
+  CcStatus run();
+
   CcStatus exec();
 
-  static CcService* getInstance()
-  { return s_pInstance; }
+  //! @return Get current name of Service
+  const CcString& getName() { return m_sServiceName; }
 
 protected:
   /**
@@ -89,13 +91,10 @@ protected:
   virtual void idle();
 
 private:
-  void run();
   bool onLoop();
   void onStop();
 
 private:
   CcSharedPointer<CcApp>  m_oApplication;
   CcString                m_sServiceName;
-
-  static CcService*       s_pInstance;
 };

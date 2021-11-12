@@ -234,9 +234,9 @@ CcFileInfoList CcWindowsFile::getFileList() const
         {
           CcString sFilename(FileData.cFileName);
           CcFileInfo oFileInfo;
-          oFileInfo.setFlags(EFileAttributes::GlobalRead | EFileAttributes::GlobalWrite | EFileAttributes::UserRead | EFileAttributes::UserWrite | EFileAttributes::GroupRead | EFileAttributes::GroupWrite);
+          oFileInfo.setFlags(EFileAttributes::EFlags::GlobalRead | EFileAttributes::EFlags::GlobalWrite | EFileAttributes::EFlags::UserRead | EFileAttributes::EFlags::UserWrite | EFileAttributes::EFlags::GroupRead | EFileAttributes::EFlags::GroupWrite);
           if (FileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-            oFileInfo.addFlags(EFileAttributes::Directory);
+            oFileInfo.addFlags(EFileAttributes::EFlags::Directory);
           size_t uiNameLength = CcStringUtil::strlen(FileData.cFileName);
           oFileInfo.name().fromUnicode(FileData.cFileName, uiNameLength);
           oFileInfo.setUserId(1000);
@@ -344,15 +344,15 @@ CcFileInfo CcWindowsFile::getInfo() const
     if (fileAttr.dwFileAttributes != INVALID_FILE_ATTRIBUTES &&
       !(fileAttr.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
     {
-      oFileInfo.setFlags(EFileAttributes::UserRead | EFileAttributes::UserWrite | EFileAttributes::GroupRead | EFileAttributes::GroupWrite | EFileAttributes::GlobalRead | EFileAttributes::GlobalWrite);
+      oFileInfo.setFlags(EFileAttributes::EFlags::UserRead | EFileAttributes::EFlags::UserWrite | EFileAttributes::EFlags::GroupRead | EFileAttributes::EFlags::GroupWrite | EFileAttributes::EFlags::GlobalRead | EFileAttributes::EFlags::GlobalWrite);
       oFileInfo.setIsFile(true);
     }
     else
     {
-      oFileInfo.setFlags( EFileAttributes::UserExecute | EFileAttributes::UserRead | EFileAttributes::UserWrite | 
-                          EFileAttributes::GroupExecute | EFileAttributes::GroupRead | EFileAttributes::GroupWrite | 
-                          EFileAttributes::GlobalExecute | EFileAttributes::GlobalRead | EFileAttributes::GlobalWrite |
-                          EFileAttributes::Directory);
+      oFileInfo.setFlags(EFileAttributes::EFlags::UserExecute | EFileAttributes::EFlags::UserRead | EFileAttributes::EFlags::UserWrite |
+                         EFileAttributes::EFlags::GroupExecute | EFileAttributes::EFlags::GroupRead | EFileAttributes::EFlags::GroupWrite |
+                         EFileAttributes::EFlags::GlobalExecute | EFileAttributes::EFlags::GlobalRead | EFileAttributes::EFlags::GlobalWrite |
+                         EFileAttributes::EFlags::Directory);
       oFileInfo.setIsFile(false);
     }
     EFileAccess eAccess = (_waccess(getWindowsPath().getWcharString(), 4)) ? EFileAccess::R : EFileAccess::None;

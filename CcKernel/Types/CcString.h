@@ -1435,8 +1435,8 @@ public:
 
   inline const char*    getLPCSTR() const
   { return getCharString(); }
-  inline char *         getLPSTR()
-  { return getCharString(); }
+  inline char *         getLPSTR() const
+  { return const_cast<char*>(getCharString()); }
 #endif
 
 private: // methods

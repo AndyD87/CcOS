@@ -122,3 +122,6 @@ CcConstStringClass_C(NotPermitted,    "operation not permitted",  CcGlobalString
 CcConstStringClass_C(UndefinedError,  "Undefined error string",   CcGlobalStrings::Error);
 CcConstStringClass_C(AccessDenied,    "Access denied",            CcGlobalStrings::Error);
 
+CcConstStringClass_C(DefaultRebootMessage, "Reboot initiated by CcOS", CcGlobalStrings::System);
+CcConstStringClass_C(DefaultShutdownMessage, "Shutdown initiated by CcOS", CcGlobalStrings::System);
+

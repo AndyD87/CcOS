@@ -669,7 +669,11 @@
 #define CCSIZEOFARRAY(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 
 #ifndef _GLIBCXX_THROW
-  #define _GLIBCXX_THROW(BLAH)  //!< Define an empty _GLIBCXX_THROW if not existing
+  #ifdef _MSC_VER
+    #define _GLIBCXX_THROW(BLAH) __null //!< Define an empty _GLIBCXX_THROW if not existing
+  #else
+    #define _GLIBCXX_THROW(BLAH)        //!< Define an empty _GLIBCXX_THROW if not existing
+  #endif
 #endif
 #ifndef _GLIBCXX_USE_NOEXCEPT
   #define _GLIBCXX_USE_NOEXCEPT //!< Define an empty _GLIBCXX_USE_NOEXCEPT if not existing

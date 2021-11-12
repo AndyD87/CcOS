@@ -141,8 +141,8 @@ public:
   /**
    * @brief Copy Constructor
    */
-  CcVariant(CcVariant&& sToMove)
-    { *this = CCMOVE(sToMove);}
+  CcVariant(CcVariant&& sToMove) NOEXCEPT
+  { *this = CCMOVE(sToMove);}
 
   /**
    * @brief Copy Constructor

@@ -111,7 +111,7 @@ public:
    * @param oToMove:  Object to move data from
    * @return return handle to this
    */
-  CcStringList& operator=(CcStringList&& oToMove)
+  CcStringList& operator=(CcStringList&& oToMove) NOEXCEPT
   { CcStringList_BaseType<CcString>::operator=(CCMOVE(oToMove)); return *this; }
 
 };

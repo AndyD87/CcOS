@@ -72,23 +72,23 @@ bool CcFileInfo::operator!=(const CcFileInfo& oToCompare) const
 bool CcFileInfo::isDir() const
 {
   bool bRet =false;
-  bRet = IS_FLAG_SET(m_uiFlags, EFileAttributes::Directory);
+  bRet = IS_FLAG_SET(m_uiFlags, EFileAttributes::EFlags::Directory);
   return bRet;
 }
 
 bool CcFileInfo::isFile() const
 {
   bool bRet =false;
-  bRet = IS_FLAG_NOT_SET(m_uiFlags, EFileAttributes::Directory);
+  bRet = IS_FLAG_NOT_SET(m_uiFlags, EFileAttributes::EFlags::Directory);
   return bRet;
 }
 
 void CcFileInfo::setIsFile(bool bIsFile)
 {
   if (bIsFile)
-    m_uiFlags &= ~EFileAttributes::Directory;
+    m_uiFlags &= ~EFileAttributes::EFlags::Directory;
   else
-    m_uiFlags |= EFileAttributes::Directory;
+    m_uiFlags |= EFileAttributes::EFlags::Directory;
 }
 
 void CcFileInfo::setFlags(EFileAttributes uiFlags)
@@ -144,43 +144,43 @@ CcString CcFileInfo::getAttributesString() const
 CcString CcFileInfo::getAttributesString(EFileAttributes uiAttributes)
 {
   CcString sRet("----------");
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::Directory))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::Directory))
   {
     sRet[0] = 'd';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserExecute))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::UserExecute))
   {
     sRet[1] = 'x';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserRead))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::UserRead))
   {
     sRet[2] = 'r';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserWrite))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::UserWrite))
   {
     sRet[3] = 'w';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupExecute))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GroupExecute))
   {
     sRet[4] = 'x';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupRead))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GroupRead))
   {
     sRet[5] = 'r';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupWrite))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GroupWrite))
   {
     sRet[6] = 'w';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalExecute))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GlobalExecute))
   {
     sRet[7] = 'x';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalRead))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GlobalRead))
   {
     sRet[8] = 'r';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalWrite))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GlobalWrite))
   {
     sRet[9] = 'w';
   }

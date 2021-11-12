@@ -96,7 +96,7 @@ public:
    *        The rights are generated from basic EFileAccess.
    *        Additionaly information is available with directory flag as type.
    */
-  enum EFlags : uint16
+  enum class EFlags : uint16
   {
     None          = static_cast<uint16>(EFileAccess::None),
     GlobalExecute = static_cast<uint16>(EFileAccess::X),

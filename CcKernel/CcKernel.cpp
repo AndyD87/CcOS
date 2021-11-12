@@ -219,9 +219,9 @@ bool CcKernel::deinitCLI()
   return CcKernelPrivate::pPrivate->pSystem->deinitCLI();
 }
 
-int CcKernel::initService()
+CcStatus CcKernel::initService(CcService* pService)
 {
-  return CcKernelPrivate::pPrivate->pSystem->initService();
+  return CcKernelPrivate::pPrivate->pSystem->serviceInit(pService);
 }
 
 bool CcKernel::isAdmin()
@@ -632,13 +632,17 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
  * @param uiSize: Number of bytes to allocate
  * @return Pointer to allocated buffer or nullptr if error
  */
-void* operator new(std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
+void* operator new(std::size_t uiSize) __null//_GLIBCXX_THROW(std::bad_alloc)
 {
-  if (CcKernelPrivate::pPrivate)
-    return CcKernelPrivate::pPrivate->opNew(uiSize);
-  else
-    // redirect to malloc if instance not yet set or already removed
-    return malloc(uiSize);
+  if (uiSize > 0)
+  {
+    if (CcKernelPrivate::pPrivate)
+      return CcKernelPrivate::pPrivate->opNew(uiSize);
+    else
+      // redirect to malloc if instance not yet set or already removed
+      return malloc(uiSize);
+  }
+  return nullptr;
 }
 
 /**

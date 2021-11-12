@@ -30,6 +30,7 @@
 #include "CcFileSystem.h"
 #include "CcDeviceList.h"
 #include "CcMapCommon.h"
+#include "CcGlobalStrings.h"
 
 //forward declarations
 class CcProcess;
@@ -43,6 +44,7 @@ class INetworkStack;
 class IModuleBase;
 class IKernel;
 class CcDevice;
+class CcService;
 
 /**
  * @brief Main System class.
@@ -94,7 +96,9 @@ public:
    *        A service supports notifications and signals from system.
    * @return 0 if Service was initialized successfully
    */
-  int  initService();
+  CcStatus  serviceInit(CcService* pService);
+
+  CcStatus  serviceDelete(CcService* pService);
 
   /**
    * @brief Check if calling application is runnig with elevated privilegues.
@@ -247,6 +251,13 @@ public:
   CcStatus setWorkingDir(const CcString& sPath);
 
   /**
+   * @brief Set new name for this PC. This will take effekt after restarting.
+   * @param sName: New name for PC
+   * @return Status of operation
+   */
+  CcStatus setName(const CcString& sName);
+
+  /**
    * @brief Register a device to be called on system idle method
    * @param pDevice: Device to call on idle
    */
@@ -257,6 +268,10 @@ public:
    * @param pDevice: Device to remove from idle
    */
   bool deregisterForIdle(IDevice* pDevice);
+
+  CcStatus restart(const CcString& sMessage = CcGlobalStrings::System::DefaultRebootMessage, bool bForce = true);
+  CcStatus shutdown(const CcString& sMessage = CcGlobalStrings::System::DefaultShutdownMessage, bool bForce = true);
+
 public: // Types
   class CPrivate;
 private: // Member

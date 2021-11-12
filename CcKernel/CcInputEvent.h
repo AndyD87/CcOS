@@ -174,7 +174,7 @@ public:
   EKey getKey() const
   { return static_cast<EKey>(uiKey); }
 
-  uint32 uiKey; //!< Key as num of EKey
+  uint32 uiKey = 0; //!< Key as num of EKey
 };
 
 /**

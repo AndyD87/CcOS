@@ -160,4 +160,10 @@ public:
     static CcKernelSHARED CcConstString_H(UndefinedError);    //!< UndefinedErrorCode
     static CcKernelSHARED CcConstString_H(AccessDenied);      //!< Access denied
   };
+
+  struct System
+  {
+    static CcKernelSHARED CcConstString_H(DefaultShutdownMessage);       //!< Default message to be displayed on shutdown
+    static CcKernelSHARED CcConstString_H(DefaultRebootMessage);         //!< Default message to be displayed on reboot
+  };
 };

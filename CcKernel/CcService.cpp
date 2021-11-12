@@ -26,34 +26,27 @@
 #include "CcKernel.h"
 #include "CcEventHandler.h"
 
-CcService* CcService::s_pInstance(nullptr);
-
 CcService::CcService(CcSharedPointer<CcApp> pApplication) :
   m_oApplication(pApplication)
 {
   if (m_oApplication.isValid())
     m_sServiceName = m_oApplication->getName();
-  if (s_pInstance == nullptr)
-    s_pInstance = this;
 }
 
 CcService::CcService(const CcString& sServiceName, CcSharedPointer<CcApp> pApplication) :
   m_oApplication(pApplication),
   m_sServiceName(sServiceName)
 {
-  if (s_pInstance == nullptr)
-    s_pInstance = this;
 }
 
 CcService::~CcService()
 {
-  if (s_pInstance == this)
-    s_pInstance = nullptr;
 }
 
 void CcService::eventStart()
 {
-
+  if (m_oApplication.isValid())
+    m_oApplication->start();
 }
 
 void CcService::eventPause()
@@ -63,19 +56,13 @@ void CcService::eventPause()
 
 void CcService::eventStop()
 {
-
+  if (m_oApplication.isValid())
+    m_oApplication->stop();
 }
 
 CcStatus CcService::exec()
 {
-  CcStatus oStatus;
-  if (m_oApplication.isValid())
-    m_oApplication->start();
-  loop();
-  if (m_oApplication.isValid())
-    oStatus = m_oApplication->getExitCode();
-  return oStatus;
-
+  return CcStatus(CcKernel::initService(this));
 }
 
 void CcService::idle()
@@ -84,11 +71,12 @@ void CcService::idle()
   CcKernel::sleep(1);
 }
 
-void CcService::run()
+CcStatus CcService::run()
 {
   eventStart();
   loop();
   eventStop();
+  return m_oApplication->getExitCode();
 }
 
 bool CcService::onLoop()

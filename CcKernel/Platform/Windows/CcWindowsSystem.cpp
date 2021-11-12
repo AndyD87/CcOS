@@ -36,6 +36,7 @@
 #include "CcFileSystem.h"
 #include "CcWindowsTouch.h"
 #include "CcWindowsService.h"
+#include "CcWindowsServiceControl.h"
 #include "CcWindowsTimer.h"
 #include "CcWindowsPipe.h"
 #include "CcWindowsFile.h"
@@ -174,10 +175,10 @@ public:
     return dwReturn;
   }
 
-  CcVector<IDevice*>        oIdleList;
+  CcVector<IDevice*>      oIdleList;
 #ifdef CC_STATIC
-  CcWindowsSharedMemory     *pProcMemory;
-  bool bProcMemoryCreated = false;
+  CcWindowsSharedMemory*  pProcMemory = nullptr;
+  bool                    bProcMemoryCreated = false;
 #endif
 
   CcVector<IDevice*>          oDeviceList;
@@ -191,11 +192,14 @@ public:
   static FILE*              s_pConsoleFile;
   static CcThreadManager*   s_pThreadManager;
   static CcStatus           s_oCurrentExitCode;
+  static CcWindowsService*  s_pService;
 };
 
 FILE*             CcSystem::CPrivate::s_pConsoleFile;
 CcThreadManager*  CcSystem::CPrivate::s_pThreadManager;
 CcStatus          CcSystem::CPrivate::s_oCurrentExitCode;
+CcWindowsService* CcSystem::CPrivate::s_pService;
+
 
 CcSystem::CcSystem()
 {
@@ -272,6 +276,8 @@ void CcSystem::init()
 
 void CcSystem::deinit()
 {
+  if (CPrivate::s_pService)
+    CCDELETE(CPrivate::s_pService);
   deinitCLI();
   m_pPrivate->deinitNetworkStack();
   m_pPrivate->deinitFilesystem();
@@ -343,16 +349,16 @@ bool CcSystem::deinitCLI()
   return bRet;
 }
 
-int CcSystem::initService()
+CcStatus CcSystem::serviceInit(CcService* pService)
 {
-#if CC_AVOID_UWP
-  return 0;
-#else
-  if (FreeConsole() == 0)
-    return 0;
-  else
-    return -1;
-#endif
+  CPrivate::s_pService = new CcWindowsService(pService);
+  return CPrivate::s_pService->init();
+}
+
+CcStatus CcSystem::serviceDelete(CcService* pService)
+{
+  CcWindowsServiceControl oControl(pService->getName());
+  return oControl.remove();
 }
 
 bool CcSystem::isAdmin()
@@ -924,6 +930,18 @@ CcStatus CcSystem::setWorkingDir(const CcString& sPath)
   return oOk;
 }
 
+CcStatus CcSystem::setName(const CcString& sName)
+{
+  CcStatus oOk(false);
+  CcString sNewPath = sName;
+  CcWString oPath = sNewPath.getWString();
+  if (FALSE == SetComputerNameExW(ComputerNamePhysicalDnsHostname, oPath.getWcharString()))
+  {
+    CCDEBUG(CcString::fromNumber(GetLastError()));
+  }
+  return oOk;
+}
+
 void CcSystem::registerForIdle(IDevice* pDevice)
 {
   m_pPrivate->oIdleList.append(pDevice);
@@ -932,4 +950,106 @@ void CcSystem::registerForIdle(IDevice* pDevice)
 bool CcSystem::deregisterForIdle(IDevice* pDevice)
 {
   return m_pPrivate->oIdleList.removeItem(pDevice);
+}
+
+CcStatus CcSystem::shutdown(const CcString& sMessage, bool bForce)
+{
+  CcStatus oOk(false);
+  HANDLE hToken;
+  TOKEN_PRIVILEGES tkp;
+  CcStatic_memsetZeroObject(tkp);
+
+  // Get a token for this process. 
+  if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
+  {
+
+  }
+  else
+  {
+    // Get the LUID for the shutdown privilege. 
+    if (!LookupPrivilegeValueW(NULL, SE_SHUTDOWN_NAME, &tkp.Privileges[0].Luid))
+    {
+      CCDEBUG(CcString::fromNumber(GetLastError()));
+    }
+    else
+    {
+      tkp.PrivilegeCount = 1;
+      tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+      if (!AdjustTokenPrivileges(hToken, FALSE, &tkp, 0, (PTOKEN_PRIVILEGES) NULL, 0))
+      {
+        CCDEBUG(CcString::fromNumber(GetLastError()));
+      }
+      else
+      {
+        if (!InitiateSystemShutdownExA(
+          nullptr,
+          sMessage.getLPSTR(),
+          0,
+          bForce,
+          false,
+          SHTDN_REASON_MINOR_MAINTENANCE
+        ))
+        {
+          CCDEBUG(CcString::fromNumber(GetLastError()));
+        }
+        else
+        {
+          oOk = true;
+        }
+      }
+    }
+  }
+
+  return oOk;
+}
+
+CcStatus CcSystem::restart(const CcString& sMessage, bool bForce)
+{
+  CcStatus oOk(false);
+  HANDLE hToken;
+  TOKEN_PRIVILEGES tkp;
+  CcStatic_memsetZeroObject(tkp);
+
+  // Get a token for this process. 
+  if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
+  {
+
+  }
+  else
+  {
+    // Get the LUID for the shutdown privilege. 
+    if (!LookupPrivilegeValueW(NULL, SE_SHUTDOWN_NAME, &tkp.Privileges[0].Luid))
+    {
+      CCDEBUG(CcString::fromNumber(GetLastError()));
+    }
+    else
+    {
+      tkp.PrivilegeCount = 1;
+      tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+      if (!AdjustTokenPrivileges(hToken, FALSE, &tkp, 0, (PTOKEN_PRIVILEGES) NULL, 0))
+      {
+        CCDEBUG(CcString::fromNumber(GetLastError()));
+      }
+      else
+      {
+        if(!InitiateSystemShutdownExA(
+          nullptr,
+          sMessage.getLPSTR(),
+          0,
+          bForce,
+          true,
+          SHTDN_REASON_MINOR_MAINTENANCE
+        ))
+        {
+          CCDEBUG(CcString::fromNumber(GetLastError()));
+        }
+        else
+        {
+          oOk = true;
+        }
+      }
+    }
+  }
+
+  return oOk;
 }

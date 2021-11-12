@@ -40,6 +40,7 @@ class CcKernelSHARED IKernel
 {
 public:
   IKernel() = default;
+
   /**
    * @brief Kernel interface with CPrivate as context info
    * @param pContex: Imported kernel private data.
@@ -48,6 +49,7 @@ public:
     pBaseObject(this),
     pContext(pContex)
   { }
+
   IKernel*          pBaseObject = nullptr;  //!< Kernel interface
   CcKernelPrivate*  pContext    = nullptr;  //!< Kernel private data
 };
