@@ -40,6 +40,7 @@ public:
   CcList<CcTestFramework::FTestCreate> m_oTestlist;
   CcLog       m_oLogFile;
   bool        m_bLogFileEnabled = false;
+  size_t      m_uiRepeats = 1;
 };
 
 CcTestFramework::CPrivate* CcTestFramework::s_pPrivate = nullptr;
@@ -57,8 +58,28 @@ CcTestFramework::CPrivate& CcTestFramework::getPrivate()
 
 bool CcTestFramework::init(int iArgc, char** ppArgv)
 {
+  bool bRet = true;
   getPrivate().m_oArguments.init(iArgc, ppArgv);
-  return true;
+  for (size_t i = 0; i < getPrivate().m_oArguments.size(); i++)
+  {
+    if (getPrivate().m_oArguments[i].compareInsensitve("repeats"))
+    {
+      getPrivate().m_oArguments.remove(i);
+      if (i < getPrivate().m_oArguments.size())
+      {
+        getPrivate().m_uiRepeats = getPrivate().m_oArguments[i].toUint32(&bRet);
+        if (!bRet)
+          CCERROR("Failed to parse repeats value");
+      }
+      else
+      {
+        CCERROR("integer value required after repeates argument");
+        bRet = false;
+      }
+    }
+  }
+  CcTestFramework::s_bSuccess &= bRet;
+  return bRet;
 }
 
 int CcTestFramework::deinit(bool bStopKernel)
@@ -168,10 +189,13 @@ void CcTestFramework::addTest(FTestCreate fTestCreate)
 bool CcTestFramework::runTests()
 {
   s_bSuccess = true;
-  for (FTestCreate& fTestCreate : getPrivate().m_oTestlist)
+  while (getPrivate().m_uiRepeats-- && CcTestFramework::s_bSuccess)
   {
-    if (runTest(fTestCreate) == false)
-      break;
+    for (FTestCreate& fTestCreate : getPrivate().m_oTestlist)
+    {
+      if (runTest(fTestCreate) == false)
+        break;
+    }
   }
   return s_bSuccess;
 }
