@@ -78,26 +78,26 @@ CcFileInfo CcLinuxFile::getInfo() const
 
     if (S_ISDIR(sStat.st_mode))
     {
-      oFileInfo.addFlags(EFileAttributes::Directory);
+      oFileInfo.addFlags(EFileAttributes::EFlags::Directory);
     }
     if (sStat.st_mode & S_IRUSR)
-      oFileInfo.addFlags(EFileAttributes::UserRead);
+      oFileInfo.addFlags(EFileAttributes::EFlags::UserRead);
     if (sStat.st_mode & S_IWUSR)
-      oFileInfo.addFlags(EFileAttributes::UserWrite);
+      oFileInfo.addFlags(EFileAttributes::EFlags::UserWrite);
     if (sStat.st_mode & S_IXUSR)
-      oFileInfo.addFlags(EFileAttributes::UserExecute);
+      oFileInfo.addFlags(EFileAttributes::EFlags::UserExecute);
     if (sStat.st_mode & S_IRGRP)
-      oFileInfo.addFlags(EFileAttributes::GroupRead);
+      oFileInfo.addFlags(EFileAttributes::EFlags::GroupRead);
     if (sStat.st_mode & S_IWGRP)
-      oFileInfo.addFlags(EFileAttributes::GroupWrite);
+      oFileInfo.addFlags(EFileAttributes::EFlags::GroupWrite);
     if (sStat.st_mode & S_IXGRP)
-      oFileInfo.addFlags(EFileAttributes::GroupExecute);
+      oFileInfo.addFlags(EFileAttributes::EFlags::GroupExecute);
     if (sStat.st_mode & S_IROTH)
-      oFileInfo.addFlags(EFileAttributes::GlobalRead);
+      oFileInfo.addFlags(EFileAttributes::EFlags::GlobalRead);
     if (sStat.st_mode & S_IWOTH)
-      oFileInfo.addFlags(EFileAttributes::GlobalWrite);
+      oFileInfo.addFlags(EFileAttributes::EFlags::GlobalWrite);
     if (sStat.st_mode & S_IXOTH)
-      oFileInfo.addFlags(EFileAttributes::GlobalExecute);
+      oFileInfo.addFlags(EFileAttributes::EFlags::GlobalExecute);
     EFileAccess eAccess = (access(m_sPath.getCharString(), R_OK))?EFileAccess::R : EFileAccess::None;
     eAccess |= (access(m_sPath.getCharString(), W_OK))?EFileAccess::W : EFileAccess::None;
     eAccess |= (access(m_sPath.getCharString(), X_OK))?EFileAccess::X : EFileAccess::None;
@@ -445,23 +445,23 @@ CcStatus CcLinuxFile::ioControl(uint32 cmd, const void *pInArg, size_t uiInSize,
 CcStatus CcLinuxFile::setAttributes(EFileAttributes uiAttributes)
 {
   mode_t uiMode = 0;
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserRead))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::UserRead))
     uiMode = S_IRUSR;
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserWrite))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::UserWrite))
     uiMode = S_IWUSR;
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserExecute))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::UserExecute))
     uiMode = S_IXUSR;
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupRead))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GroupRead))
     uiMode = S_IRGRP;
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupWrite))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GroupWrite))
     uiMode = S_IWGRP;
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupExecute))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GroupExecute))
     uiMode = S_IXGRP;
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalRead))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GlobalRead))
     uiMode = S_IROTH;
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalWrite))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GlobalWrite))
     uiMode = S_IWOTH;
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalExecute))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GlobalExecute))
     uiMode = S_IXOTH;
   int iResult = chmod(m_sPath.getCharString(), uiMode);
   if (iResult == 0)

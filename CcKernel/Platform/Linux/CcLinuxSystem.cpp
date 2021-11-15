@@ -50,6 +50,7 @@
 #include "CcStringUtil.h"
 #include "IModuleBase.h"
 #include "CcThreadManager.h"
+#include "CcService.h"
 
 #include <time.h>
 #include <pthread.h>
@@ -71,8 +72,7 @@ public:
   void initTimer();
   void initDisplay();
   void initNetworkStack();
-  
-  
+
   static void *ThreadFunction(void *Param)
   {
     IThread *pThreadObject = static_cast<IThread *>(Param);
@@ -97,6 +97,8 @@ public:
 
 CcThreadManager*  CcSystem::CPrivate::s_pThreadManager(nullptr);
 CcStringMap       CcSystem::CPrivate::m_oEnvValues;
+
+CcSharedPointer<CcService>  m_pService;
 
 /**
  * @brief Signal handler for os transmitted signals
@@ -201,9 +203,48 @@ bool CcSystem::deinitCLI()
   return false;
 }
 
-int CcSystem::initService()
+CcStatus CcSystem::serviceInit(CcService* pService)
 {
-  return fork();
+  CcStatus oSuccess = EStatus::Error;
+  pid_t pid = fork();
+
+  if(pid < 0 )
+  {
+    CCDEBUG("Failed to fork process.");
+  }
+  else if(pid > 0)
+  {
+    // We are in parent
+    oSuccess = true;
+  }
+  else
+  {
+    // We are in child
+    m_pService = pService;
+    oSuccess   = m_pService->run();
+  }
+
+  return oSuccess;
+}
+
+CcStatus CcSystem::serviceDelete(CcService* pService)
+{
+  if(pService)
+  {
+    if(m_pService == pService)
+    {
+      m_pService.clear();
+    }
+    else
+    {
+      CCDELETE(pService);
+    }
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 bool CcSystem::isAdmin()

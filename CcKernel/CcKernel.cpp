@@ -624,7 +624,9 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
   }
 }
 
-#include <new>
+#ifndef GENERIC
+  #include <new>
+#endif
 
 /**
  * @brief Overloaded new method for CcOS to track allocations and
@@ -632,7 +634,7 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
  * @param uiSize: Number of bytes to allocate
  * @return Pointer to allocated buffer or nullptr if error
  */
-void* operator new(std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
+void* operator new(std::size_t uiSize) CCTHROW_BAD_ALLOC
 {
   if (uiSize > 0)
   {
@@ -642,7 +644,11 @@ void* operator new(std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
       // redirect to malloc if instance not yet set or already removed
       return malloc(uiSize);
   }
+#ifndef GENERIC
   throw std::bad_alloc();
+#else
+  return nullptr;
+#endif
 }
 
 /**
@@ -651,7 +657,7 @@ void* operator new(std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
  * @param uiSize: Number of bytes to allocate
  * @return Pointer to allocated buffer or nullptr if error
  */
-void* operator new[](std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
+void* operator new[](std::size_t uiSize) CCTHROW_BAD_ALLOC
 {
   if (uiSize > 0)
   {
@@ -661,7 +667,12 @@ void* operator new[](std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
       // redirect to malloc if instance not yet set or already removed
       return malloc(uiSize);
   }
+#ifndef GENERIC
   throw std::bad_alloc();
+#else
+  return nullptr;
+#endif
+
 }
 
 /**
@@ -726,4 +737,3 @@ void operator delete[](void* pBuffer, size_t uiSize) NOEXCEPT
     free(pBuffer);
 }
 #endif
-

@@ -420,15 +420,15 @@ bool CFileTest::testAttributes()
     if(oFile.open(EOpenFlags::Write | EOpenFlags::Attributes))
     {
       if(oFile.write("test", 4) &&
-         oFile.setAttributes(EFileAttributes::None))
+         oFile.setAttributes(EFileAttributes::EFlags::None))
       {
         CcFileInfo oFileInfo = oFile.getInfo();
-        if(oFileInfo.getAttributes() == EFileAttributes::None &&
+        if(oFileInfo.getAttributes() == EFileAttributes::EFlags::None &&
            oFileInfo.getAttributesString() == "----------")
         {
           bSuccess = true;
         }
-        if(bSuccess && !oFile.setAttributes(EFileAttributes::UserRead | EFileAttributes::UserWrite))
+        if(bSuccess && !oFile.setAttributes(EFileAttributes::EFlags::UserRead | EFileAttributes::EFlags::UserWrite))
         {
           bSuccess = false;
         }
@@ -437,7 +437,7 @@ bool CFileTest::testAttributes()
         {
           bSuccess = false;
         }
-        if(bSuccess && !oFile.setAttributes(EFileAttributes::GroupRead | EFileAttributes::GroupWrite))
+        if(bSuccess && !oFile.setAttributes(EFileAttributes::EFlags::GroupRead | EFileAttributes::EFlags::GroupWrite))
         {
           bSuccess = false;
         }
@@ -446,7 +446,7 @@ bool CFileTest::testAttributes()
         {
           bSuccess = false;
         }
-        if(bSuccess && !oFile.setAttributes(EFileAttributes::GroupRead | EFileAttributes::GroupWrite))
+        if(bSuccess && !oFile.setAttributes(EFileAttributes::EFlags::GroupRead | EFileAttributes::EFlags::GroupWrite))
         {
           bSuccess = false;
         }

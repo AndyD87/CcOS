@@ -668,13 +668,17 @@
 //! @param ARRAY: Array to get number of items from
 #define CCSIZEOFARRAY(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 
-#ifndef _GLIBCXX_THROW
+#ifndef CCTHROW_BAD_ALLOC
   #ifdef _MSC_VER
-    #define _GLIBCXX_THROW(BLAH) __null //!< Define an empty _GLIBCXX_THROW if not existing
+    #define CCTHROW_BAD_ALLOC        //!< Define an empty CCTHROW_BAD_ALLOC if not existing
   #elif defined(WIN32)
-    #define _GLIBCXX_THROW(BLAH)        //!< Define an empty _GLIBCXX_THROW if not existing
+    #define CCTHROW_BAD_ALLOC        //!< Define an empty CCTHROW_BAD_ALLOC if not existing
+  #elif defined(GENERIC)
+    #define CCTHROW_BAD_ALLOC NOEXCEPT //!< Define noexceptional CCTHROW_BAD_ALLOC if we are on generic
+  #elif defined(__GNUC__) || defined(__GNUG__)
+    #define CCTHROW_BAD_ALLOC _GLIBCXX_THROW(std::bad_alloc) //!< Use _GLIBCXX_THROW macro for gcc
   #else
-    #define _GLIBCXX_THROW(BLAH)        //!< Define an empty _GLIBCXX_THROW if not existing
+    #define CCTHROW_BAD_ALLOC        //!< Define an empty CCTHROW_BAD_ALLOC if not existing
   #endif
 #endif
 #ifndef _GLIBCXX_USE_NOEXCEPT

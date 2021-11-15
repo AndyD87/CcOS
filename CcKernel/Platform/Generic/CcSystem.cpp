@@ -27,6 +27,7 @@
 #include "CcString.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
+#include "CcService.h"
 #include "CcDateTime.h"
 #include "CcFileSystem.h"
 #include "IDevice.h"
@@ -278,9 +279,17 @@ bool CcSystem::deinitCLI()
   return false;
 }
 
-int CcSystem::initService()
+CcStatus CcSystem::serviceInit(CcService* pService)
 {
-  return 1;
+  // Single service, check later if we have to create a thread for a service.
+  pService->run();
+  return true;
+}
+
+CcStatus CcSystem::serviceDelete(CcService* pService)
+{
+  CCDELETE(pService);
+  return true;
 }
 
 bool CcSystem::isAdmin()
