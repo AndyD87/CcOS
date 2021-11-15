@@ -30,3 +30,9 @@
 CCEXTERNC_BEGIN
 #include <windows.h>
 CCEXTERNC_END
+
+#ifndef UNICODE
+  #define FORCE_UNICODE(quote) L"" quote
+#else
+  #define FORCE_UNICODE(quote)     quote
+#endif

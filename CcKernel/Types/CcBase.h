@@ -671,6 +671,8 @@
 #ifndef _GLIBCXX_THROW
   #ifdef _MSC_VER
     #define _GLIBCXX_THROW(BLAH) __null //!< Define an empty _GLIBCXX_THROW if not existing
+  #elif defined(WIN32)
+    #define _GLIBCXX_THROW(BLAH)        //!< Define an empty _GLIBCXX_THROW if not existing
   #else
     #define _GLIBCXX_THROW(BLAH)        //!< Define an empty _GLIBCXX_THROW if not existing
   #endif

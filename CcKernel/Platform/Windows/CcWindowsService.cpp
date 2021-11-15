@@ -7,7 +7,7 @@ CcWindowsService* CcWindowsService::s_pService = nullptr;
 class CcWindowsService::CPrivate
 {
 public:
-  SERVICE_STATUS oStaus         = {0};
+  SERVICE_STATUS oStaus         = {};
   SERVICE_STATUS_HANDLE hStatus = NULL;
 };
 

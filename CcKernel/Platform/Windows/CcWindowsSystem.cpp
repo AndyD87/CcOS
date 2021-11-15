@@ -967,7 +967,7 @@ CcStatus CcSystem::shutdown(const CcString& sMessage, bool bForce)
   else
   {
     // Get the LUID for the shutdown privilege. 
-    if (!LookupPrivilegeValueW(NULL, SE_SHUTDOWN_NAME, &tkp.Privileges[0].Luid))
+    if (!LookupPrivilegeValueW(NULL, FORCE_UNICODE(SE_SHUTDOWN_NAME), &tkp.Privileges[0].Luid))
     {
       CCDEBUG(CcString::fromNumber(GetLastError()));
     }
@@ -1018,7 +1018,7 @@ CcStatus CcSystem::restart(const CcString& sMessage, bool bForce)
   else
   {
     // Get the LUID for the shutdown privilege. 
-    if (!LookupPrivilegeValueW(NULL, SE_SHUTDOWN_NAME, &tkp.Privileges[0].Luid))
+    if (!LookupPrivilegeValueW(NULL, FORCE_UNICODE(SE_SHUTDOWN_NAME), &tkp.Privileges[0].Luid))
     {
       CCDEBUG(CcString::fromNumber(GetLastError()));
     }

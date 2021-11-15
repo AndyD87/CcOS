@@ -50,27 +50,27 @@ public:
   /**
    * @brief Stop command received
    */
-  virtual void onStop();
+  void onStop();
 
   /**
    * @brief Start command received
    */
-  virtual void onStart();
+  void onStart();
 
   /**
    * @brief Pause command received
    */
-  virtual void onPause();
+  void onPause();
 
   /**
    * @brief Continue command received
    */
-  virtual void onContinue();
+  void onContinue();
 
   /**
    * @brief System shutdown command received
    */
-  virtual void onShutdown();
+  void onShutdown();
 
   /**
    * @brief Incomming system command like device or system actions
