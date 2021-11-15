@@ -114,7 +114,7 @@ protected: // Methods
    * @param dwArgc: Count of additional arguments for server
    * @param lpszArgv: Additional arguments for server
    */
-  static void serviceMain(DWORD dwArgc, LPWSTR*lpszArgv);
+  static void WINAPI serviceMain(DWORD dwArgc, LPWSTR*lpszArgv);
 
   /**
    * @brief Static interface for windows to submich service commands. They will be forwarded
