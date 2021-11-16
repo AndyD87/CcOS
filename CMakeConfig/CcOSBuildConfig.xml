@@ -624,5 +624,16 @@
         <Platform>Linux</Platform>
       </Platforms>
     </Project>
+    <Project>
+      <Name>wiringPi</Name>
+      <Version></Version>
+      <Active>1</Active>
+      <Prebuild>false</Prebuild>
+      <Static>false</Static>
+      <StaticRuntime>true</StaticRuntime>
+      <Platforms>
+        <Platform>Linux</Platform>
+      </Platforms>
+    </Project>
   </Directory>
 </CcOSBuildConfig>

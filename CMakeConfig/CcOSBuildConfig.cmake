@@ -61,6 +61,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcModule
@@ -245,6 +250,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcKernel
@@ -442,6 +452,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcGui
@@ -504,6 +519,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcTestModule
@@ -561,6 +581,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcTftp
@@ -618,6 +643,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcMqtt
@@ -675,6 +705,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcDocuments
@@ -772,6 +807,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcDhcp
@@ -843,6 +883,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcTesting
@@ -900,6 +945,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcOSBuildConfig
@@ -971,6 +1021,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcAppInterfaces
@@ -1028,6 +1083,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcKernelModuleInterface
@@ -1085,6 +1145,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcDhcpServer
@@ -1142,6 +1207,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcFs
@@ -1199,6 +1269,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcHash
@@ -1256,6 +1331,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcKernelModuleTestDriver
@@ -1313,6 +1393,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcOSBuildConfigApp
@@ -1384,6 +1469,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcOSModuleLoader
@@ -1441,6 +1531,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcOSResourceApp
@@ -1498,6 +1593,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcVDisk
@@ -1555,6 +1655,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # jpeg
@@ -1594,6 +1699,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcMedia
@@ -1651,6 +1761,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # openssl
@@ -1695,6 +1810,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcSsl
@@ -1766,6 +1886,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcFtp
@@ -1823,6 +1948,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcHttp
@@ -1914,6 +2044,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcRemoteDevice
@@ -2009,6 +2144,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcShell
@@ -2066,6 +2206,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcBitcoin
@@ -2151,6 +2296,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcRemoteDeviceServer
@@ -2208,6 +2358,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcRemoteDeviceClient
@@ -2279,6 +2434,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # sqlite3
@@ -2336,6 +2496,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcSql
@@ -2393,6 +2558,11 @@ if(WINDOWS)
       message(FATAL_ERROR "mtp not allowed on Windows")
     endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
 endif(WINDOWS)
 ################################################################################
@@ -4674,6 +4844,40 @@ if(LINUX)
     endif(${CCOS_CCAPPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_CCAPPS_CCVDISK_ACTIVE)
 
+  ################################################################################
+  # wiringPi
+  ################################################################################
+  if(NOT DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    set(CCOS_THIRDPARTY_WIRINGPI_ACTIVE 1)
+  endif(NOT DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+  if(NOT DEFINED CCOS_THIRDPARTY_WIRINGPI_VERSION)
+    set(CCOS_THIRDPARTY_WIRINGPI_VERSION 0.0.0.0)
+  endif(NOT DEFINED CCOS_THIRDPARTY_WIRINGPI_VERSION)
+  if(NOT DEFINED CCOS_THIRDPARTY_WIRINGPI_PREBUILD)
+    set(CCOS_THIRDPARTY_WIRINGPI_PREBUILD false)
+  endif(NOT DEFINED CCOS_THIRDPARTY_WIRINGPI_PREBUILD)
+  if(NOT DEFINED CCOS_THIRDPARTY_WIRINGPI_STATIC)
+    set(CCOS_THIRDPARTY_WIRINGPI_STATIC false)
+  endif(NOT DEFINED CCOS_THIRDPARTY_WIRINGPI_STATIC)
+  if(NOT DEFINED CCOS_THIRDPARTY_WIRINGPI_STATICRUNTIME)
+    set(CCOS_THIRDPARTY_WIRINGPI_STATICRUNTIME true)
+  endif(NOT DEFINED CCOS_THIRDPARTY_WIRINGPI_STATICRUNTIME)
+  # Check if required because of income dependencies
+  if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} EQUAL 1)
+  endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/ThirdParty/wiringPi")
+  if(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+    if(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcFs not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCFS_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCFS_ACTIVE)
+  if(DEFINED CCOS_CCAPPS_CCVDISK_ACTIVE)
+    if(${CCOS_CCAPPS_CCVDISK_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcVDisk not allowed on Linux")
+    endif(${CCOS_CCAPPS_CCVDISK_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCAPPS_CCVDISK_ACTIVE)
+
 endif(LINUX)
 ################################################################################
 # Config Check for cmake builds
@@ -4978,6 +5182,11 @@ if(GENERIC)
       message(FATAL_ERROR "sqlite3 not allowed on Generic")
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Generic")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcKernel
@@ -5285,6 +5494,11 @@ if(GENERIC)
       message(FATAL_ERROR "sqlite3 not allowed on Generic")
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Generic")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcGui
@@ -5457,6 +5671,11 @@ if(GENERIC)
       message(FATAL_ERROR "sqlite3 not allowed on Generic")
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Generic")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcMqtt
@@ -5624,6 +5843,11 @@ if(GENERIC)
       message(FATAL_ERROR "sqlite3 not allowed on Generic")
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Generic")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcDocuments
@@ -5831,6 +6055,11 @@ if(GENERIC)
       message(FATAL_ERROR "sqlite3 not allowed on Generic")
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Generic")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcDhcp
@@ -6012,6 +6241,11 @@ if(GENERIC)
       message(FATAL_ERROR "sqlite3 not allowed on Generic")
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Generic")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcTesting
@@ -6179,6 +6413,11 @@ if(GENERIC)
       message(FATAL_ERROR "sqlite3 not allowed on Generic")
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Generic")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcDhcpServer
@@ -6346,6 +6585,11 @@ if(GENERIC)
       message(FATAL_ERROR "sqlite3 not allowed on Generic")
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Generic")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # jpeg
@@ -6495,6 +6739,11 @@ if(GENERIC)
       message(FATAL_ERROR "sqlite3 not allowed on Generic")
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Generic")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcHttp
@@ -6696,6 +6945,11 @@ if(GENERIC)
       message(FATAL_ERROR "sqlite3 not allowed on Generic")
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Generic")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcRemoteDevice
@@ -6901,6 +7155,11 @@ if(GENERIC)
       message(FATAL_ERROR "sqlite3 not allowed on Generic")
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Generic")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
   ################################################################################
   # CcBitcoin
@@ -7096,5 +7355,10 @@ if(GENERIC)
       message(FATAL_ERROR "sqlite3 not allowed on Generic")
     endif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Generic")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
 
 endif(GENERIC)
