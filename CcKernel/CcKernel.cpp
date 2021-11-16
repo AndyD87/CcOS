@@ -636,19 +636,11 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
  */
 void* operator new(std::size_t uiSize) CCTHROW_BAD_ALLOC
 {
-  if (uiSize > 0)
-  {
-    if (CcKernelPrivate::pPrivate)
-      return CcKernelPrivate::pPrivate->opNew(uiSize);
-    else
-      // redirect to malloc if instance not yet set or already removed
-      return malloc(uiSize);
-  }
-#ifndef GENERIC
-  throw std::bad_alloc();
-#else
-  return nullptr;
-#endif
+  if (CcKernelPrivate::pPrivate)
+    return CcKernelPrivate::pPrivate->opNew(uiSize);
+  else
+    // redirect to malloc if instance not yet set or already removed
+    return malloc(uiSize);
 }
 
 /**
@@ -659,20 +651,11 @@ void* operator new(std::size_t uiSize) CCTHROW_BAD_ALLOC
  */
 void* operator new[](std::size_t uiSize) CCTHROW_BAD_ALLOC
 {
-  if (uiSize > 0)
-  {
-    if (CcKernelPrivate::pPrivate)
-      return CcKernelPrivate::pPrivate->opNew(uiSize);
-    else
-      // redirect to malloc if instance not yet set or already removed
-      return malloc(uiSize);
-  }
-#ifndef GENERIC
-  throw std::bad_alloc();
-#else
-  return nullptr;
-#endif
-
+  if (CcKernelPrivate::pPrivate)
+    return CcKernelPrivate::pPrivate->opNew(uiSize);
+  else
+    // redirect to malloc if instance not yet set or already removed
+    return malloc(uiSize);
 }
 
 /**

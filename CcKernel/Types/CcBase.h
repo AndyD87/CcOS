@@ -697,7 +697,7 @@
    * @param uiSize: Number of bytes to allocate
    * @return Pointer to allocated buffer or nullptr if error
    */
-  void* WINCEXPORT operator new(std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc);
+  void* WINCEXPORT operator new(std::size_t uiSize) CCTHROW_BAD_ALLOC;
 
   /**
    * @brief Overloaded new method for CcOS to track allocations and
@@ -705,7 +705,7 @@
    * @param uiSize: Number of bytes to allocate
    * @return Pointer to allocated buffer or nullptr if error
    */
-  void* WINCEXPORT operator new[](std::size_t uiSize) _GLIBCXX_THROW(std::bad_alloc);
+  void* WINCEXPORT operator new[](std::size_t uiSize) CCTHROW_BAD_ALLOC;
 
   /**
    * @brief Overloaded delete method for CcOS to track deallocations and
