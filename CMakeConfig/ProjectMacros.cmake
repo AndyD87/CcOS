@@ -1,6 +1,22 @@
 set(CCOS_CMAKECONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig)
 
 ################################################################################
+# Set Filters to keep FolderStructurs for IDEs like VisualStudios
+################################################################################
+macro( CcOSGetKnownBoard BoardName TargetDir )
+  string(TOLOWER ${BoardName} BoardNameLower)
+  if   (${BoardNameLower} STREQUAL "orangepizero")
+    set(${TargetDir} "CMakeConfig/Boards/OrangePi/Zero/Config.cmake")
+  elseif(${BoardNameLower} STREQUAL "stm32f4discovery")
+    set(${TargetDir} "CMakeConfig/Boards/ST/STM32F4Discovery/Config.cmake")
+  elseif(${BoardNameLower} STREQUAL "stm32f3discovery")
+    set(${TargetDir} "CMakeConfig/Boards/ST/STM32F3Discovery/Config.cmake")
+  else()
+    set(${TargetDir} "")
+  endif()
+endmacro()
+  
+################################################################################
 # Setup default installation targets for a project
 ################################################################################
 macro(CcOSSetInstall ProjectName )

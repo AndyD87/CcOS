@@ -38,7 +38,10 @@ message("- Cache directory: ${CC_CACHE_DIR}")
 ################################################################################
 # Load Board settings if defined
 if(DEFINED CCOS_BOARD)
-  if(${CCOS_BOARD} MATCHES "/Config.cmake")
+  CcOSGetKnownBoard(${CCOS_BOARD} BoardDir)
+  if(NOT ${BoardDir} STREQUAL "")
+    include(${BoardDir})
+  elseif(${CCOS_BOARD} MATCHES "/Config.cmake")
     include(${CMAKE_CURRENT_LIST_DIR}/${CCOS_BOARD})
   else()
     include(${CMAKE_CURRENT_LIST_DIR}/${CCOS_BOARD}/Config.cmake)
