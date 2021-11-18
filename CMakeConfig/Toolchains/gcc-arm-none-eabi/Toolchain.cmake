@@ -5,7 +5,8 @@ if( WIN32 )
 
   CcDownloadAndExtract( "gcc-arm-none-eabi"
                         "${GCC_DIR}"
-                        "https://coolcow.de/projects/ThirdParty/gcc-arm-none-eabi/binaries/8.2018.4/gcc-arm-none-eabi_windows.zip")
+                        "https://coolcow.de/projects/ThirdParty/gcc-arm-none-eabi/binaries/8.2018.4/gcc-arm-none-eabi_windows.zip"
+                        "fa5c5b10b19ccf2172dc7c649e8ef3afd1e835a4")
   CcLoadMakeProgram()
 
   # specify the cross compiler
@@ -28,7 +29,8 @@ else()
 
   CcDownloadAndExtract( "gcc-arm-none-eabi"
                         "${GCC_DIR}"
-                        "https://coolcow.de/projects/ThirdParty/gcc-arm-none-eabi/binaries/8.2018.4/gcc-arm-none-eabi_linux.tar.bz2")
+                        "https://coolcow.de/projects/ThirdParty/gcc-arm-none-eabi/binaries/8.2018.4/gcc-arm-none-eabi_linux.tar.bz2"
+                        "a2e8f2a16c1e034b664512946ff3448216422c08")
 
   # specify the cross compiler
   set(CMAKE_ASM_COMPILER ${GCC_DIR}/gcc-arm-none-eabi-8-2018-q4-major/bin/arm-none-eabi-as     CACHE INTERNAL "")

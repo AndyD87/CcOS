@@ -479,6 +479,15 @@ if(NOT CC_MACRO_LOADED)
   endmacro(CcRemoveString)
 
   ################################################################################
+  # Remove File if exists
+  ################################################################################
+  macro(CcRemoveFile Target)
+    if(EXISTS ${Target})
+      file(REMOVE ${Target})
+    endif()
+  endmacro(CcRemoveFile)
+
+  ################################################################################
   # Download an archive and extract
   # If this direcotry exists, the download will be skipped.
   # If an error or interruption occured, the download will repeated next time.
@@ -488,8 +497,12 @@ if(NOT CC_MACRO_LOADED)
   #                       ${TargetDir}.zipped
   #                       ${TargetDir}.progress
   # @param SourceUrl: Url to download package from
+  # @param Sha1Hash:  Verify downloaded package by sha1 hash
   ################################################################################
-  macro(CcDownloadAndExtract TargetName TargetDir SourceUrl )
+  function(CcDownloadAndExtract TargetName TargetDir SourceUrl)
+    if(${ARGC} GREATER 3)
+      set(Sha1Hash ${ARGV3})
+    endif()
     set(TargetZipFile "${TargetDir}.zipped")
     set(TargetProgress "${TargetDir}.progress")
     if(EXISTS ${TargetProgress})
@@ -510,29 +523,40 @@ if(NOT CC_MACRO_LOADED)
         file( DOWNLOAD ${SourceUrl}
               ${TargetZipFile}
               INACTIVITY_TIMEOUT 5     # Maximum 5 Seconds inactivity
-	      TIMEOUT            1800  # 30 Minute for download
+              TIMEOUT            1800  # 30 Minute for download
               STATUS DOWNLOAD_STATUS
-	)
+        )
         list(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)
         if(NOT ${NUMERIC_STATUS} EQUAL 0)
-          file(REMOVE ${TargetZipFile})
+          CcRemoveFile(${TargetZipFile})
+          CcRemoveFile(${TargetProgress})
           message(FATAL_ERROR "- Download result: ${DOWNLOAD_STATUS}")
         else()
-          message("- Download succeeded, extracting")
+          message("- Download succeeded")
+          if(Sha1Hash)
+            message("- Verifiy file")
+            file(SHA1 ${TargetZipFile} FILE_HASH)
+            if(${Sha1Hash} STREQUAL ${FILE_HASH})
+                message("- File verified")
+            else()
+              CcRemoveFile(${TargetZipFile})
+              CcRemoveFile(${TargetProgress})
+              message(FATAL_ERROR "- File verification failed ${Sha1Hash} != ${FILE_HASH}")
+            endif()
+          endif()
         endif()
       endif()
 
       if(EXISTS ${TargetZipFile})
+        message("- Extract ${TargetZipFile}")
         file(MAKE_DIRECTORY ${TargetDir})
         execute_process(COMMAND ${CMAKE_COMMAND} -E tar xf ${TargetZipFile}
                         WORKING_DIRECTORY                  ${TargetDir}
                         RESULT_VARIABLE TargetZipFile_EXTRACT_RESULT)
         if(${TargetZipFile_EXTRACT_RESULT} EQUAL 0)
           message("- Extracting succeeded")
-          file(REMOVE ${TargetZipFile})
-          if(EXISTS ${TargetProgress})
-            file(REMOVE ${TargetProgress})
-          endif()
+          CcRemoveFile(${TargetZipFile})
+          CcRemoveFile(${TargetProgress})
         else()
           file(REMOVE ${TargetZipFile})
           file(REMOVE_RECURSE ${TargetDir})
@@ -542,7 +566,7 @@ if(NOT CC_MACRO_LOADED)
     else(NOT EXISTS ${TargetDir})
       message("- Download ${TargetName} not required: ${TargetDir}")
     endif()
-  endmacro()
+  endfunction()
 
   ################################################################################
   # Download an archive and extract
