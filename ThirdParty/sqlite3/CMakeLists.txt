@@ -3,12 +3,13 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set(CURRENT_PROJECT sqlite3)
 
   find_package ( SQLite3 QUIET )
-  
+
   if(SQLite3_FOUND)
     message(FATAL_ERROR "- SQLite3 found")
-    set(SQLite3_LIBRARIES    ${CURRENT_PROJECT}     PARENT_SCOPE)
-    set(SQLite3_INCLUDE_DIR  ${SQLite3_INCLUDE_DIR} PARENT_SCOPE)
-    set(SQLite3_LIB_DIR      ${SQLite3_LIB_DIR}     PARENT_SCOPE)
+    add_library(_sqlite3 INTERFACE)
+    target_include_directories(_sqlite3 INTERFACE ${SQLite3_INCLUDE_DIR})
+    target_link_libraries     (_sqlite3 INTERFACE ${SQLite3_LIBRARIES})
+    add_library(CcOS::ThirParty::sqlite3 ALIAS _sqlite3)
   else()
     if( DEFINED GCC )
       # avoid fall through warning for GCC
@@ -22,16 +23,16 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     set(SQLite3_VERSION_MINOR    34    )
     set(SQLite3_VERSION_PATCH     0    )
     set(SQLite3_VERSION_BUILD     0    )
-    
+
     set(SQLite3_VERSION_CMAKE     ${SQLite3_VERSION_MAJOR}.${SQLite3_VERSION_MINOR}.${SQLite3_VERSION_PATCH})
-    
+
     set(SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/sqlite3.c")
     list(APPEND SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/sqlite3.h")
 
     message("- SQLite3 not found, create project")
-  
+
     include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
-  
+
     if( DEFINED WINDOWS)
       configure_file( ${CMAKE_CURRENT_SOURCE_DIR}/Sqlite3Version.rc.in ${CMAKE_CURRENT_SOURCE_DIR}/Sqlite3Version.rc.tmp @ONLY)
       CcMoveFile(${CMAKE_CURRENT_SOURCE_DIR}/Sqlite3Version.rc.tmp ${CMAKE_CURRENT_SOURCE_DIR}/Sqlite3Version.rc)
@@ -46,30 +47,29 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       set(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}   -fPIC")
       set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
     endif()
-  
+
     CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES} )
-    
+
     set_target_properties(  ${ProjectName} PROPERTIES
                             VERSION SQLite3_VERSION_CMAKE
                             SOVERSION SQLite3_VERSION_CMAKE)
-  
+
     set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/ThirdParty")
-  
+
     if( NOT DEFINED WINDOWS)
       target_link_libraries( ${CURRENT_PROJECT} LINK_PUBLIC "dl")
     endif()
-  
+
     #################
     # Post configuration steps
     #################
     CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
     CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE)
-    
+
     #################
     # Data for CcSql
     #################
-    set(SQLite3_LIBRARIES    ${CURRENT_PROJECT}           PARENT_SCOPE)
-    set(SQLite3_INCLUDE_DIR  ${CMAKE_CURRENT_SOURCE_DIR}  PARENT_SCOPE)
-    set(SQLite3_LIB_DIR      ${SQLite3_LIB_DIR}           PARENT_SCOPE)
+    add_library(_sqlite3 INTERFACE)
+    add_library(CcOS::ThirParty::sqlite3 ALIAS ${CURRENT_PROJECT})
   endif()
 endif()

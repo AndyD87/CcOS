@@ -78,7 +78,7 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       add_custom_target("${CURRENT_PROJECT}_Resources" DEPENDS  ${CURRENT_PROJECT_RESOURCE_FILES})
       set_target_properties("${CURRENT_PROJECT}_Resources" PROPERTIES FOLDER "CcOS/Resources/${CURRENT_PROJECT_IDE_PATH}")
   endif()
-  
+
   source_group("Resources" FILES ${CURRENT_PROJECT_RESOURCE_FILES})
 
   #############################################################################
@@ -102,7 +102,7 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${OPENSLL_INCLUDE_DIR} )
+  CcOSTargetIncludeDirs( ${CURRENT_PROJECT})
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
   CcSetFiltersByFolders(${SOURCE_FILES})
 

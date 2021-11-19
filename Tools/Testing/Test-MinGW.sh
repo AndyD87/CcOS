@@ -64,6 +64,7 @@ else
     echo "MinGW 64bit not found"
 fi
 
+# Setup MinGW, Installation must be done before (sudo apt-get install mingw-w64)
 # 32 bit version
 export CC=i686-w64-mingw32-gcc
 export CXX=i686-w64-mingw32-g++

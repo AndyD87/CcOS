@@ -29,9 +29,9 @@
 #include "CcDateTime.h"
 #include <fcntl.h>
 #include <stdio.h>
+#include <sys/socket.h>
 #include "errno.h"
 #include "CcStatic.h"
-
 
 ILinuxSocket::ILinuxSocket(ESocketType eType) :
   ISocket(eType),
@@ -142,36 +142,48 @@ CcStatus ILinuxSocket::setOption(ESocketOption eOption, void* pData, size_t uiDa
     }
     case ESocketOption::Reuse:
     {
-      int32 iEnable = 1;
-      if (pData != nullptr && uiDataLen >= sizeof(int32))
-      {
-        iEnable = *static_cast<int32*>(pData);
-      }
-      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
-      if(oStatus)
-      {
-        oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
-      }
+      #if defined(SO_REUSEPORT) && defined(SO_REUSEADDR)
+        int32 iEnable = 1;
+        if (pData != nullptr && uiDataLen >= sizeof(int32))
+        {
+          iEnable = *static_cast<int32*>(pData);
+        }
+        oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
+        if(oStatus)
+        {
+          oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
+        }
+      #else 
+        oStatus = EStatus::NotSupported;
+      #endif
       break;
     }
     case ESocketOption::ReuseAddress:
     {
-      int32 iEnable = 1;
-      if (pData != nullptr && uiDataLen >= sizeof(int32))
-      {
-        iEnable = *static_cast<int32*>(pData);
-      }
-      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
+      #ifdef SO_REUSEADDR
+        int32 iEnable = 1;
+        if (pData != nullptr && uiDataLen >= sizeof(int32))
+        {
+          iEnable = *static_cast<int32*>(pData);
+        }
+        oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
+      #else 
+        oStatus = EStatus::NotSupported;
+      #endif
       break;
     }
     case ESocketOption::ReusePort:
     {
-      int32 iEnable = 1;
-      if (pData != nullptr && uiDataLen >= sizeof(int32))
-      {
-        iEnable = *static_cast<int32*>(pData);
-      }
-      oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
+      #ifdef SO_REUSEPORT
+        int32 iEnable = 1;
+        if (pData != nullptr && uiDataLen >= sizeof(int32))
+        {
+          iEnable = *static_cast<int32*>(pData);
+        }
+        oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEPORT, &iEnable, sizeof(iEnable));
+      #else 
+        oStatus = EStatus::NotSupported;
+      #endif
       break;
     }
     default:

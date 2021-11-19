@@ -27,14 +27,14 @@ elseif(${CCOS_CCNETWORK_CCSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 
-  target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
+  target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                   CcKernel
-                                  ${OPENSSL_LIBRARIES} )
+                                  CcOS::ThirParty::ssl )
 
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${OPENSLL_INCLUDE_DIR} )
+  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 
   ########

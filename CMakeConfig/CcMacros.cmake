@@ -392,6 +392,16 @@ if(NOT CC_MACRO_LOADED)
   endmacro()
 
   ################################################################################
+  # Copy all files from a direcotry in another one
+  ################################################################################
+  macro( CcCopyDirectoryContent DIRECTORY_SRC DIRECTORY_TARGET)
+    FILE(GLOB _CONTENT_LIST "${DIRECTORY_SRC}/*")
+    foreach(_CONTENT ${_CONTENT_LIST})
+      file(COPY "${_CONTENT}" DESTINATION "${DIRECTORY_TARGET}")
+    endforeach()
+  endmacro()
+
+  ################################################################################
   # Setup Wix Tools for generating an MSI for windows
   ################################################################################
   macro( CcLoadWixTools )
@@ -859,7 +869,7 @@ if(NOT CC_MACRO_LOADED)
       set(${VAR} ${VALUE})
     endif(NOT DEFINED ${VAR})
   endmacro()
-  
+
   ################################################################################
   # Setup Version Variables by Version Number
   ################################################################################
@@ -871,7 +881,7 @@ if(NOT CC_MACRO_LOADED)
     set( ${VarName}_VERSION_DOT   ${Major}.${Minor}.${Patch}.${Build}  )
     set( ${VarName}_VERSION_COLON ${Major},${Minor},${Patch},${Build}  )
   endmacro(CcGenerateVersion)
-  
+
   ################################################################################
   # Update Output binary path in all configurations and append relative path.
   ################################################################################
@@ -896,7 +906,7 @@ if(NOT CC_MACRO_LOADED)
     message("-- Generate VersionFile: ${VersionFileName} with ${Version_MAJOR}.${Version_MINOR}.${Version_PATCH}.${Version_BUILD}")
     configure_file( ${CC_MACRO_DIR}/InputFiles/Version.h.in ${CMAKE_CURRENT_BINARY_DIR}/${VersionFileName}.h.tmp @ONLY IMMEDIATE)
     CcCopyFile(${CMAKE_CURRENT_BINARY_DIR}/${VersionFileName}.h.tmp ${CMAKE_CURRENT_BINARY_DIR}/${VersionFileName}.h)
-    
+
     include_directories(${CMAKE_CURRENT_BINARY_DIR})
     if(DEFINED SOURCE_FILES)
       list(APPEND SOURCE_FILES "${CMAKE_CURRENT_BINARY_DIR}/${VersionFileName}.h")

@@ -117,6 +117,9 @@
 #elif defined(_WIN32)
   // Support for MinGW
   #ifdef __GNUC__
+    #ifndef MINGW
+      #define MINGW         //!< Define mingw detecten for later use
+    #endif
     #ifndef _WIN32_WINNT
       #define _WIN32_WINNT _WIN32_WINNT_VISTA //!< Set minimum version to Windows Vista
     #endif
@@ -669,7 +672,7 @@
 #define CCSIZEOFARRAY(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 
 #ifndef CCTHROW_BAD_ALLOC
-  #ifdef _MSC_VER
+  #if defined(_MSC_VER) || defined(__clang__)
     #define CCTHROW_BAD_ALLOC        //!< Define an empty CCTHROW_BAD_ALLOC if not existing
   #elif defined(WIN32)
     #define CCTHROW_BAD_ALLOC        //!< Define an empty CCTHROW_BAD_ALLOC if not existing

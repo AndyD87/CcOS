@@ -43,20 +43,14 @@ else()
   CcDownloadAndExtract( "ArmbianSysroot"
                         "${SYSROOT_DIR}"
                         "https://coolcow.de/projects/ThirdParty/Armbian/binaries/0.0.0.1/focal-minimal-armhf.7efc0a5812b095319a8270f8c5f2bdd7.tar.lz4"
-                        "f5c5236cdc3ada323b8db1f7ca02e7b62a6d56c6")
+                        "f5c5236cdc3ada323b8db1f7ca02e7b62a6d56c6"
+  )
 
-  #foreach(TARGET  EXE SHARED STATIC MODULE)
-  #	set(CMAKE_${TARGET}_LINKER_FLAGS_INIT "-L\"${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf\"")
-  #  set(CMAKE_${TARGET}_LINKER_FLAGS "-L\"${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf\"")
-  #	set(CMAKE_${TARGET}_LINKER_FLAGS_INIT "-L\"${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf\"" CACHE INTERNAL "")
-  #	set(CMAKE_${TARGET}_LINKER_FLAGS "-L\"${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf\"" CACHE INTERNAL "")
-  #endforeach()
+  # Prepare Sysroot
+  CcCopyDirectoryContent("${SYSROOT_DIR}/usr/include/arm-linux-gnueabihf" "${SYSROOT_DIR}/usr/include")
+  CcCopyDirectoryContent("${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf" "${SYSROOT_DIR}/usr/lib")
 
-  #foreach(TARGET  EXE SHARED STATIC MODULE)
-  #	message(${CMAKE_${TARGET}_LINKER_FLAGS_INIT})
-  #endforeach()
-
-  set(CMAKE_FIND_ROOT_PATH ${SYSROOT_DIR})
+  set(CMAKE_FIND_ROOT_PATH ${SYSROOT_DIR}/usr)
 
   # search for programs in the build host directories
   set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER             CACHE INTERNAL "")
