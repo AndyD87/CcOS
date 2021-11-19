@@ -8,7 +8,7 @@ TARGET_DIR_FIXED="$TARGET_DIR$SOLUTION_POSTFIX"
 rm -rf "$TARGET_DIR_FIXED"
 mkdir "$TARGET_DIR_FIXED"
 cd "$TARGET_DIR_FIXED"
-cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/.." -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/ST/STM32F3Discovery -DCMAKE_BUILD_TYPE=Debug
+cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/.." -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=OrangePiZero -DCMAKE_BUILD_TYPE=Debug
 if [ $? -ne 0 ]
 then
     exit -1
@@ -32,7 +32,7 @@ rm -rf "$TARGET_DIR_FIXED"
 mkdir "$TARGET_DIR_FIXED"
 cd "$TARGET_DIR_FIXED"
 
-cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/.." -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/ST/STM32F3Discovery -DCMAKE_BUILD_TYPE=Release
+cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/.." -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=OrangePiZero -DCMAKE_BUILD_TYPE=Release
 if [ $? -ne 0 ]
 then
     exit -1

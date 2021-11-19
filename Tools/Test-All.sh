@@ -18,14 +18,18 @@ sh Test-Gcc.sh
 if [ $? -ne 0 ]
 then
     exit -1
+    echo Test-Gcc.sh failed >> Test.log
 fi
+echo Test-Gcc.sh succeeded > Test.log
 
 # Test clang build
 sh Test-Clang.sh
 if [ $? -ne 0 ]
 then
     exit -1
+    echo Test-Clang.sh failed >> Test.log
 fi
+echo Test-Clang.sh succeeded >> Test.log
 
 ARCHITECTURE=$(uname -m)
 if matches $ARCHITECTURE "x64" || matches $ARCHITECTURE "x86"
@@ -37,39 +41,30 @@ then
     if [ $? -ne 0 ]
     then
         exit -1
+        echo Test-MinGW.sh failed >> Test.log
     fi
+    echo Test-MinGW.sh succeeded >> Test.log
 
-    # Use STM32F4Discovery-Build for testing generic
-    sh Test-STM32F4Discovery.sh
+    # Use STM32 Boards
+    sh Test-ST.sh
     if [ $? -ne 0 ]
     then
         exit -1
+        echo Test-ST.sh failed >> Test.log
     fi
+    echo Test-ST.sh succeeded >> Test.log
 
-    # Use STM32F3Discovery-Build for testing generic
-    sh Test-STM32F3Discovery.sh
+    # Use OrangePi Boards
+    sh Test-OrangePi.sh
     if [ $? -ne 0 ]
     then
         exit -1
+        echo Test-OrangePi.sh failed >> Test.log
     fi
-
-    # Use STM32F220GEval-Build for testing generic
-    sh Test-STM32F220GEval.sh
-    if [ $? -ne 0 ]
-    then
-        exit -1
-    fi
-
-    echo Test-ESP8266
-    # Use ESP8266 with Xtensa chip for testing
-    sh Test-ESP8266.sh
-    if [ $? -ne 0 ]
-    then
-        exit -1
-    fi
+    echo Test-OrangePi.sh succeeded >> Test.log
 elif matches $ARCHITECTURE "arm"
 then
-    echo "Run Tests available on arm"
+    echo "Run cross compile tests not available on arm"
 else
-    echo "arch found"
+    echo "Run cross compile tests not available on current architecture"
 fi
