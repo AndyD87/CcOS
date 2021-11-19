@@ -7,14 +7,18 @@ if(WIN32)
 else()
 
   set( CMAKE_SYSTEM_NAME  Linux )
-  set( LINARO_GCC_DIR "${CC_CACHE_DIR}/Toolchains/gcc-linaro-arm-linux-gnueabihf" )
+  set( LINARO_GCC_VERSION  "4.8.2014.4" )
+  set( LINARO_GCC_DIR "${CC_CACHE_DIR}/Toolchains/gcc-linaro-arm-linux-gnueabihf/${LINARO_GCC_VERSION}" )
 
   CcDownloadAndExtract( "linaro-gcc-arm-none-eabi"
                         "${LINARO_GCC_DIR}"
-                        "https://releases.linaro.org/archive/13.04/components/toolchain/binaries/gcc-linaro-arm-linux-gnueabihf-4.7-2013.04-20130415_linux.tar.xz")
+                        "https://releases.linaro.org/archive/14.04/components/toolchain/binaries/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux.tar.xz"
+                        "50984b5565c1ed476d01213c49ad838e129bbde3"
+                        "https://coolcow.de/projects/ThirdParty/gcc-linaro-arm-linux-gnueabihf/binaries/${LINARO_GCC_VERSION}/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux.tar.xz"
+  )
   CcLoadMakeProgram()
 
-  set( LINARO_GCC_BIN_DIR "${LINARO_GCC_DIR}/gcc-linaro-arm-linux-gnueabihf-4.7-2013.04-20130415_linux/bin" )
+  set( LINARO_GCC_BIN_DIR "${LINARO_GCC_DIR}/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin" )
   # specify the cross compiler
   set(CMAKE_ASM_COMPILER ${LINARO_GCC_BIN_DIR}/arm-linux-gnueabihf-as     CACHE INTERNAL "")
   set(CMAKE_C_COMPILER   ${LINARO_GCC_BIN_DIR}/arm-linux-gnueabihf-gcc    CACHE INTERNAL "")
@@ -41,16 +45,16 @@ else()
                         "https://coolcow.de/projects/ThirdParty/Armbian/binaries/0.0.0.1/focal-minimal-armhf.7efc0a5812b095319a8270f8c5f2bdd7.tar.lz4"
                         "f5c5236cdc3ada323b8db1f7ca02e7b62a6d56c6")
 
-  foreach(TARGET  EXE SHARED STATIC MODULE)
-  	set(CMAKE_${TARGET}_LINKER_FLAGS_INIT "-L\"${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf\"")
-    set(CMAKE_${TARGET}_LINKER_FLAGS "-L\"${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf\"")
-  	set(CMAKE_${TARGET}_LINKER_FLAGS_INIT "-L\"${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf\"" CACHE INTERNAL "")
-  	set(CMAKE_${TARGET}_LINKER_FLAGS "-L\"${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf\"" CACHE INTERNAL "")
-  endforeach()
+  #foreach(TARGET  EXE SHARED STATIC MODULE)
+  #	set(CMAKE_${TARGET}_LINKER_FLAGS_INIT "-L\"${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf\"")
+  #  set(CMAKE_${TARGET}_LINKER_FLAGS "-L\"${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf\"")
+  #	set(CMAKE_${TARGET}_LINKER_FLAGS_INIT "-L\"${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf\"" CACHE INTERNAL "")
+  #	set(CMAKE_${TARGET}_LINKER_FLAGS "-L\"${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf\"" CACHE INTERNAL "")
+  #endforeach()
 
-  foreach(TARGET  EXE SHARED STATIC MODULE)
-  	message(${CMAKE_${TARGET}_LINKER_FLAGS_INIT})
-  endforeach()
+  #foreach(TARGET  EXE SHARED STATIC MODULE)
+  #	message(${CMAKE_${TARGET}_LINKER_FLAGS_INIT})
+  #endforeach()
 
   set(CMAKE_FIND_ROOT_PATH ${SYSROOT_DIR})
 
