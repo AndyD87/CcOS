@@ -392,7 +392,7 @@ if(NOT CC_MACRO_LOADED)
   endmacro()
 
   ################################################################################
-  # Copy all files from a direcotry in another one
+  # Copy all content from a direcotry in another one
   ################################################################################
   macro( CcCopyDirectoryContent DIRECTORY_SRC DIRECTORY_TARGET)
     FILE(GLOB _CONTENT_LIST "${DIRECTORY_SRC}/*")

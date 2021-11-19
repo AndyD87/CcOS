@@ -7,18 +7,18 @@ if(WIN32)
 else()
 
   set( CMAKE_SYSTEM_NAME  Linux )
-  set( LINARO_GCC_VERSION  "4.8.2014.4" )
+  set( LINARO_GCC_VERSION  "4.8.2015.6" )
   set( LINARO_GCC_DIR "${CC_CACHE_DIR}/Toolchains/gcc-linaro-arm-linux-gnueabihf/${LINARO_GCC_VERSION}" )
 
   CcDownloadAndExtract( "linaro-gcc-arm-none-eabi"
                         "${LINARO_GCC_DIR}"
-                        "https://releases.linaro.org/archive/14.04/components/toolchain/binaries/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux.tar.xz"
-                        "50984b5565c1ed476d01213c49ad838e129bbde3"
-                        "https://coolcow.de/projects/ThirdParty/gcc-linaro-arm-linux-gnueabihf/binaries/${LINARO_GCC_VERSION}/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux.tar.xz"
+                        "https://releases.linaro.org/archive/15.06/components/toolchain/binaries/4.8/arm-linux-gnueabihf/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabihf.tar.xz"
+                        "9e4495bfe35a88d8fc8f3ed7427fb25c5a23fd9c"
+                        "https://coolcow.de/projects/ThirdParty/gcc-linaro-arm-linux-gnueabihf/binaries/${LINARO_GCC_VERSION}/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabihf.tar.xz"
   )
   CcLoadMakeProgram()
 
-  set( LINARO_GCC_BIN_DIR "${LINARO_GCC_DIR}/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin" )
+  set( LINARO_GCC_BIN_DIR "${LINARO_GCC_DIR}/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabihf/bin" )
   # specify the cross compiler
   set(CMAKE_ASM_COMPILER ${LINARO_GCC_BIN_DIR}/arm-linux-gnueabihf-as     CACHE INTERNAL "")
   set(CMAKE_C_COMPILER   ${LINARO_GCC_BIN_DIR}/arm-linux-gnueabihf-gcc    CACHE INTERNAL "")
