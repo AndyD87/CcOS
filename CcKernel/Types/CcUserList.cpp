@@ -37,6 +37,15 @@ CcUserList::CcUserList(const CcUserList& oToCopy) :
   m_pReference->referenceCountIncrement();
 }
 
+
+CcUserList& CcUserList::operator=(const CcUserList& oToCopy)
+{
+  m_pReference = oToCopy.m_pReference;
+  m_CurrentUser = oToCopy.m_CurrentUser;
+  m_pReference->referenceCountIncrement();
+  return *this;
+}
+
 CcUserList::~CcUserList()
 {
   if (m_pReference)

@@ -57,7 +57,7 @@ public:
    * @param oToCopy: List to copy from
    * @return Handle to this.
    */
-  CcUserList& operator=(const CcUserList& oToCopy) = default;
+  CcUserList& operator=(const CcUserList& oToCopy);
 
   /**
    * @brief Find user in list by name
