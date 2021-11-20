@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CRemoteDeviceComTest
  **/
-#ifndef H_CRemoteDeviceComTest_H_
-#define H_CRemoteDeviceComTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -54,5 +53,3 @@ private:
 
   CcRemoteDeviceServer* m_pDevice = nullptr;
 };
-
-#endif // H_CRemoteDeviceComTest_H_

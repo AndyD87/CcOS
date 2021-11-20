@@ -45,10 +45,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceDiscovery():
-    m_oSocket(ESocketType::UDP)
-  {}
-
+  CcRemoteDeviceDiscovery();
   /**
    * @brief Destructor
    */
@@ -68,6 +65,10 @@ public:
    */
   bool bind();
 
+  CcSocketAddressInfo& getAddressInfo()
+  { return m_oSocketAddressInfo; }
+
 private:
-  CcSocket m_oSocket;
+  CcSocket            m_oSocket;
+  CcSocketAddressInfo m_oSocketAddressInfo;
 };

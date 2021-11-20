@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcRemoteDeviceServer
  **/
-#ifndef H_CcRemoteDeviceServer_H_
-#define H_CcRemoteDeviceServer_H_
+#pragma once
 
 #include "CcRemoteDevice.h"
 #include "Server/CConfig.h"
@@ -112,5 +111,3 @@ private:
   CcVector<CcRestApiApplicationStatus::IPublisher*> m_oStatusPublisher;
   NHttp::Application::RestApiWebframework::CcHttpWebframework* m_pHttpServer = nullptr;
 };
-
-#endif // H_CcRemoteDeviceServer_H_

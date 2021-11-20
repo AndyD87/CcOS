@@ -30,9 +30,11 @@
 #include "CcRemoteDeviceDiscovery.h"
 #include "Server/CConfig.h"
 #include "Network/CcCommonPorts.h"
+#include "CcIp.h"
 
 //! Test port to bind and connection on running unit test
-static const uint16 CRemoteDeviceComTest_uiTestPort = CcCommonPorts::CcRemoteDevice + CcCommonPorts::CcTestBase;
+static const uint16 CRemoteDeviceComTest_uiTestPort     = CcCommonPorts::CcRemoteDevice + CcCommonPorts::CcTestBase;
+static const uint16 CRemoteDeviceComTest_uiHttpTestPort = CcCommonPorts::HTTP           + CcCommonPorts::CcTestBase;
 
 CRemoteDeviceComTest::CRemoteDeviceComTest() :
   CcTest("CRemoteDeviceComTest")
@@ -56,8 +58,9 @@ bool CRemoteDeviceComTest::testStartServer()
   CcStatus oStatus = false;
   if(m_pDevice)
   {
-    m_pDevice->getConfig().oInterfaces.oHttpServer.getAddressInfo().setPort(CRemoteDeviceComTest_uiTestPort);
+    m_pDevice->getConfig().oInterfaces.oHttpServer.getAddressInfo().setPort(CRemoteDeviceComTest_uiHttpTestPort);
     m_pDevice->getConfig().oAddressInfo.setPort(CRemoteDeviceComTest_uiTestPort);
+    m_pDevice->getConfig().oAddressInfo.setIp(CcIp("127.0.0.1"));
     if (m_pDevice->start())
     {
       oStatus = m_pDevice->waitForState(EThreadState::Running);
@@ -71,6 +74,7 @@ bool CRemoteDeviceComTest::testDiscover()
 {
   CcStatus oStatus = EStatus::NotFound;
   CcRemoteDeviceDiscovery oDiscvover;
+  oDiscvover.getAddressInfo().setIp(CcIp("127.0.0.1"));
   if (0 < oDiscvover.findAllDevices(CRemoteDeviceComTest_uiTestPort))
   {
     oStatus = true;

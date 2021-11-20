@@ -32,12 +32,19 @@
 #include "CcRemoteDeviceGlobals.h"
 #include "CcByteArray.h"
 #include "Packets/CRequestDiscover.h"
+#include "CcIp.h"
+#include "Network/CcCommonPorts.h"
+
+CcRemoteDeviceDiscovery::CcRemoteDeviceDiscovery():
+  m_oSocket(ESocketType::UDP),
+  m_oSocketAddressInfo(ESocketType::UDP, CcCommonIps::Broadcast, CcCommonPorts::CcRemoteDevice)
+{}
 
 size_t CcRemoteDeviceDiscovery::findAllDevices(uint16 uiPort, const CcDateTime& oWaitTime)
 {
   clear();
-  CcSocketAddressInfo oSocketAddressInfo(ESocketType::UDP, CcCommonIps::Broadcast, uiPort);
-  m_oSocket.setPeerInfo(oSocketAddressInfo);
+  m_oSocketAddressInfo.setPort(uiPort);
+  m_oSocket.setPeerInfo(m_oSocketAddressInfo);
   CcDateTime oStop = CcKernel::getUpTime();
   oStop += oWaitTime;
   if (m_oSocket.open())
