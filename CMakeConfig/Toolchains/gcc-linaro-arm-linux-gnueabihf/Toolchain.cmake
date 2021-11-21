@@ -26,32 +26,6 @@ else()
   set(CMAKE_AR           ${LINARO_GCC_BIN_DIR}/arm-linux-gnueabihf-ar     CACHE INTERNAL "")
   set(GCC_SIZE           ${LINARO_GCC_BIN_DIR}/arm-linux-gnueabihf-size   CACHE INTERNAL "")
 
-  # use sysroot from minimal build at
-  #  https://github.com/armbian/build.git
-  # echo "PACKAGE_LIST_ADDITIONAL=\"$PACKAGE_LIST_ADDITIONAL libssl-dev\"" > userpatches/lib.config
-  #   ./compile.sh \
-  #     BOARD=orangepizero \
-  #     BRANCH=current \
-  #     RELEASE=focal \
-  #     BUILD_MINIMAL=yes \
-  #     BUILD_DESKTOP=no \
-  #     KERNEL_ONLY=no \
-  #     KERNEL_CONFIGURE=no \
-  #
-
-  set(SYSROOT_DIR "${CC_CACHE_DIR}/Sysroot/Armbian" )
-  CcDownloadAndExtract( "ArmbianSysroot"
-                        "${SYSROOT_DIR}"
-                        "https://coolcow.de/projects/ThirdParty/Armbian/binaries/0.0.0.1/focal-minimal-armhf.7efc0a5812b095319a8270f8c5f2bdd7.tar.lz4"
-                        "f5c5236cdc3ada323b8db1f7ca02e7b62a6d56c6"
-  )
-
-  # Prepare Sysroot
-  CcCopyDirectoryContent("${SYSROOT_DIR}/usr/include/arm-linux-gnueabihf" "${SYSROOT_DIR}/usr/include")
-  CcCopyDirectoryContent("${SYSROOT_DIR}/usr/lib/arm-linux-gnueabihf" "${SYSROOT_DIR}/usr/lib")
-
-  set(CMAKE_FIND_ROOT_PATH ${SYSROOT_DIR}/usr)
-
   # search for programs in the build host directories
   set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER             CACHE INTERNAL "")
   # for libraries and headers in the target directories
