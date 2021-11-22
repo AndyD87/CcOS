@@ -574,7 +574,7 @@ if(NOT CC_MACRO_LOADED)
         endif()
       endif()
     else(NOT EXISTS ${TargetDir})
-      message("- Download ${TargetName} not required: ${TargetDir}")
+      message("- Download ${TargetName} already available at ${TargetDir}")
     endif()
   endfunction()
 
@@ -910,6 +910,19 @@ if(NOT CC_MACRO_LOADED)
     include_directories(${CMAKE_CURRENT_BINARY_DIR})
     if(DEFINED SOURCE_FILES)
       list(APPEND SOURCE_FILES "${CMAKE_CURRENT_BINARY_DIR}/${VersionFileName}.h")
+    endif()
+  endmacro()
+
+  ################################################################################
+  # Check if a string has a specific part at the beginning.
+  # usage: CcStringStartsWith( HAYSTACK NEEDLE )
+  ################################################################################
+  macro(CcStringStartsWith OUTPUT HAYSTACK NEEDLE)
+    string(FIND "${HAYSTACK}" "${NEEDLE}" out)
+    if("${out}" EQUAL 0)
+      set(${OUTPUT} TRUE)
+    else()
+      set(${OUTPUT} FALSE)
     endif()
   endmacro()
 endif(NOT CC_MACRO_LOADED)

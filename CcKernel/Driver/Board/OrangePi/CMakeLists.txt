@@ -2,15 +2,9 @@
 # Check if Modules are required for Applications by reading config
 ################################################################################
 
-add_subdirectory(ST)
-
 if(DEFINED CCOS_BOARD_TYPE)
-  CcStringStartsWith(TYPE_START ${CCOS_BOARD_TYPE} "ORANGEPI")
-  if(${TYPE_START})
-    message("Hallo Orange pi")
-    add_subdirectory(OrangePi)
-  else()
-    message("Hallo ${TYPE_START}")
+  if(${CCOS_BOARD_TYPE} STREQUAL "ORANGEPI_ZERO")
+    add_subdirectory(Zero)
   endif()
 endif()
   
