@@ -156,34 +156,37 @@ CcKernel::CcKernel()
 
 CcKernel::~CcKernel()
 {
-  // Shutdown will be done by OS`s atexit function wich will call shutdown
-  // Just on generic we have to call it here.
-  shutdown();
+  if (s_bShutdownInProgress == false)
+  {
+    // Shutdown will be done by OS`s atexit function wich will call shutdown
+    // Just on generic we have to call it here.
+    shutdown();
 
-  #ifdef MEMORYMONITOR_ENABLED
-  #ifdef MEMORYMONITOR_CHECK_KERNEL
-    // Wait for workers to be ended
-  #ifdef WINDOWS
-    Sleep(20);
-  #elif defined(LINUX)
-    usleep(20000);
-  #endif
-    if (CcMemoryMonitor::getAllocationCount())
-    {
-      CcStdOut oOut;
-      CcMemoryMonitor::printLeft(static_cast<IIo*>(&oOut));
-      exit(-1);
-    }
-    // Wait for all io is realy done and shutdown is realy complete
-  #ifdef WINDOWS
-    Sleep(20);
-  #elif defined(LINUX)
-    usleep(20000);
-  #endif
-    CcMemoryMonitor::disable();
-  #endif
-    CcMemoryMonitor::deinit();
-  #endif
+    #ifdef MEMORYMONITOR_ENABLED
+    #ifdef MEMORYMONITOR_CHECK_KERNEL
+      // Wait for workers to be ended
+    #ifdef WINDOWS
+      Sleep(20);
+    #elif defined(LINUX)
+      usleep(20000);
+    #endif
+      if (CcMemoryMonitor::getAllocationCount())
+      {
+        CcStdOut oOut;
+        CcMemoryMonitor::printLeft(static_cast<IIo*>(&oOut));
+        exit(-1);
+      }
+      // Wait for all io is realy done and shutdown is realy complete
+    #ifdef WINDOWS
+      Sleep(20);
+    #elif defined(LINUX)
+      usleep(20000);
+    #endif
+      CcMemoryMonitor::disable();
+    #endif
+      CcMemoryMonitor::deinit();
+    #endif
+  }
 }
 
 void CcKernel::delayMs(uint32 uiDelay)
@@ -596,11 +599,13 @@ void CcKernel::message(EMessage eType)
   switch(eType)
   {
     case EMessage::Warning:
-      CcKernelPrivate::pPrivate->pSystem->warning();
+      if(CcKernelPrivate::pPrivate && CcKernelPrivate::pPrivate->pSystem)
+        CcKernelPrivate::pPrivate->pSystem->warning();
       break;
     case EMessage::Error:
     default:
-      CcKernelPrivate::pPrivate->pSystem->error();
+      if(CcKernelPrivate::pPrivate && CcKernelPrivate::pPrivate->pSystem)
+        CcKernelPrivate::pPrivate->pSystem->error();
 #ifdef DEBUG
       // Stuck on error!
       while(1);

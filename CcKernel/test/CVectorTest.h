@@ -27,6 +27,8 @@
 
 #include "CcBase.h"
 #include "CcTest.h"
+#include "CcVector.h"
+#include "CcString.h"
 
 /**
  * @brief Class implementation
@@ -45,7 +47,10 @@ public:
   virtual ~CVectorTest();
 
 private:
+  CcVector<CcVector<CcString>> m_oTestCc = {{"Hallo", "du"}, {"da"}};
+
   bool testInsert();
   bool testReserve();
   bool testRemove();
+  bool testInitializerList();
 };

@@ -493,6 +493,18 @@ public:
   }
 
   /**
+   * @brief Create a list from an braces initalized list like CcList o = {TYPE, TYPE};
+   * @param oList: Initialized list to import
+   */
+  CcList(std::initializer_list<TYPE> oList)
+  {
+    for (const TYPE& e : oList)
+    {
+        append(e);
+    }
+  }
+
+  /**
    * @brief Destructor
    */
   ~CcList()
@@ -1137,6 +1149,20 @@ public:
     clear();
     return append(oToSet);
   }
+
+  /**
+   * @brief Create a list from an braces initalized list like CcList o = {TYPE, TYPE};
+   * @param oList: Initialized list to import
+   */
+  void operator=(std::initializer_list<TYPE> oList)
+  {
+    clear();
+    for (const TYPE& e : oList)
+    {
+        append(e);
+    }
+  }
+
 
 private:
   CItem* prvtItemAt(size_t uiPos) const

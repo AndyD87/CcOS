@@ -59,9 +59,7 @@ public:
   CcMqttClientConfig& getConfig()
   { return m_oConfig; }
 
-private: // Types
-  class CPrivate;
 private: // Member
-  CPrivate* m_pPrivate = nullptr;
-  CcMqttClientConfig m_oConfig;
+  CcMqttClientConfig  m_oConfig;
+  CcSocket            m_oSocket;
 };

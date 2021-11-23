@@ -25,6 +25,8 @@
 #include "OrangePiZero.h"
 #include "IDriver.h"
 
+#include "OrangePiZeroBoardSupport.h"
+
 class CcByteArray;
 
 /**
@@ -45,4 +47,7 @@ public:
 
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
+
+private:
+  OrangePiZeroBoardSupport m_oBoardSetup;
 };

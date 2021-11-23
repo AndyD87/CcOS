@@ -35,6 +35,7 @@ CListTest::CListTest() :
   appendTestMethod("Test inserts to list", &CListTest::testInsert);
   appendTestMethod("Test reserve list", &CListTest::testReserve);
   appendTestMethod("Test remove from list", &CListTest::testRemove);
+  appendTestMethod("Test imported data from braces list", &CListTest::testInitializerList);
 }
 
 CListTest::~CListTest()
@@ -125,6 +126,18 @@ bool CListTest::testRemove()
         }
       }
     }
+  }
+  return bSuccess;
+}
+
+bool CListTest::testInitializerList()
+{
+  bool bSuccess = false;
+  if(m_oTestCc[0][0] == "Hallo" &&
+     m_oTestCc[0][1] == "du"    &&
+     m_oTestCc[1][0] == "da")
+  {
+    bSuccess = true;
   }
   return bSuccess;
 }

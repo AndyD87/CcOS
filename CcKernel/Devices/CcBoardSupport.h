@@ -16,35 +16,34 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CMqttClientTest
- **/
+ * @brief     Class CcBoardSupport
+ */
 #pragma once
 
 #include "CcBase.h"
-#include "CcTest.h"
+#include "Devices/IBoardSupport.h"
+#include "CcDevice.h"
 
 /**
- * @brief Class implementation
+ * @brief Communication Device for I2C
  */
-class CMqttClientTest : public CcTest<CMqttClientTest>
+class CcKernelSHARED CcBoardSupport : public CcDevice
 {
 public:
   /**
-   * @brief Constructor
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
    */
-  CMqttClientTest();
+  CcBoardSupport(const CcDevice& oHandle) :
+    CcDevice(oHandle)
+  {}
+  virtual ~CcBoardSupport() = default;
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CMqttClientTest();
-
-private:
-  bool testStartStop();
-  bool testStartStopLoop();
+  //! @return Get basic device handle
+  IBoardSupport* getDevice() const
+  { return CcDevice::getDevice<IBoardSupport>(); }
 };

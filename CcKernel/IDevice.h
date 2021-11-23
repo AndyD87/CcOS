@@ -54,7 +54,8 @@ enum class EDeviceType
   WlanClient,       //!< Generated Client from IWlan
   Eeprom,           //!< Eeprom or flash device with device informations.
   Clock,            //!< Clock generator
-  Usb
+  Usb,              //!< Usb Device
+  BoardSupport      //!< Board support device to enable or disable Functions and Ports
 };
 
 /**

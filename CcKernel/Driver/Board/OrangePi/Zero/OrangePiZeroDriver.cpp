@@ -41,7 +41,6 @@ OrangePiZeroDriver::~OrangePiZeroDriver()
 
 CcStatus OrangePiZeroDriver::entry()
 {
-  // Load all leds:
   wiringPiSetup();
   CcDevice hDevice(new OrangePiZeroLed(0), EDeviceType::Led);
   CcKernel::addDevice(hDevice);

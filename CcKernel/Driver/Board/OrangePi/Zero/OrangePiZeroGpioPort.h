@@ -24,7 +24,6 @@
 #pragma once
 
 #include "CcBase.h"
-#include "STM32F407.h"
 #include "Devices/IGpioPort.h"
 
 //! _Number of pins per port
@@ -42,7 +41,7 @@ public: //methods
    * @brief Initialize interface by number:
    * @param uiPort: Target port number
    */
-  OrangePiZeroGpioPort(uint8 uiPort);
+  OrangePiZeroGpioPort();
   virtual ~OrangePiZeroGpioPort();
 
   virtual CcStatus setState(EState eState) override;
@@ -73,6 +72,5 @@ public: //methods
   virtual bool setSpeedValue(size_t uiPin, size_t uiValue) override;
 
 private: // Member
-  GPIO_TypeDef* m_pPort;
   IGpioPin*     m_aPins[NUMBER_OF_PINS] = {nullptr};
 };

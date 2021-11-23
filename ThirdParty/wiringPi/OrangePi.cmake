@@ -45,10 +45,6 @@ set(SOURCE_FILES
   source/wiringPi/wpiExtensions.c
 )
 
-
-# Setup source directory for include
-include_directories(source/wiringPi)
-
 # Setup default definitions, board specific includes has to be done before, look at CMakeLists.txt
 add_definitions(-D_GNU_SOURCE -DCONFIG_ORANGEPI)
 
@@ -62,3 +58,6 @@ set_target_properties(wiringPi PROPERTIES VERSION ${WIRINGPI_VERSION})
 
 # Setup depending libs
 target_link_libraries(wiringPi PUBLIC m pthread rt crypt)
+
+# Setup source directory for include
+target_include_directories(wiringPi PUBLIC source/wiringPi)

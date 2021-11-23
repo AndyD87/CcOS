@@ -26,6 +26,7 @@
 #include "CcKernel.h"
 #include "CcString.h"
 #include "CcMqttClient.h"
+#include "CcDateTime.h"
 
 CMqttClientTest::CMqttClientTest() :
   CcTest("CMqttClientTest")
@@ -57,6 +58,7 @@ bool CMqttClientTest::testStartStopLoop()
     if (i % 10)
       CcKernel::sleep(i % 10);
     oClient.stop();
+    bSuccess = oClient.waitForExit(CcDateTime(CcDateTimeFromSeconds(1)));
   }
     return bSuccess;
 }

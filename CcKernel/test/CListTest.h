@@ -27,6 +27,8 @@
 
 #include "CcBase.h"
 #include "CcTest.h"
+#include "CcList.h"
+#include "CcString.h"
 
 /**
  * @brief Class implementation
@@ -45,7 +47,10 @@ public:
   virtual ~CListTest(void );
 
 private:
+  CcList<CcList<CcString>> m_oTestCc = {{"Hallo", "du"}, {"da"}};
+
   bool testInsert();
   bool testReserve();
   bool testRemove();
+  bool testInitializerList();
 };

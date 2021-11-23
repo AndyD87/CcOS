@@ -2,6 +2,7 @@
 # Add Source Files
 ########
 set( SOURCE_FILES
+      ${CMAKE_CURRENT_LIST_DIR}/CcBoardSupport.h
       ${CMAKE_CURRENT_LIST_DIR}/CcDeviceCamera.h
       ${CMAKE_CURRENT_LIST_DIR}/CcDeviceClock.h
       ${CMAKE_CURRENT_LIST_DIR}/CcDeviceCpu.h
@@ -31,6 +32,8 @@ set( SOURCE_FILES
       ${CMAKE_CURRENT_LIST_DIR}/CcGpioPortPin.cpp
       ${CMAKE_CURRENT_LIST_DIR}/CcGpioPortPin.h
       ${CMAKE_CURRENT_LIST_DIR}/Devices.h
+      ${CMAKE_CURRENT_LIST_DIR}/IBoardSupport.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/IBoardSupport.h
       ${CMAKE_CURRENT_LIST_DIR}/ICamera.cpp
       ${CMAKE_CURRENT_LIST_DIR}/ICamera.h
       ${CMAKE_CURRENT_LIST_DIR}/IClock.cpp

@@ -136,4 +136,5 @@ private:
   CcConstStringClass_H(sEeprom);
   CcConstStringClass_H(sClock);
   CcConstStringClass_H(sUsb);
+  CcConstStringClass_H(sBoardSupport);
 };

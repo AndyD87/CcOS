@@ -32,6 +32,71 @@
       -->
   <Name>CcOS</Name>
   <Version>1.0.12.0</Version>
+  <Directory>
+    <Name>ThirdParty</Name>
+    <Project>
+      <Name>jpeg</Name>
+      <Version></Version>
+      <Active>1</Active>
+      <Prebuild>false</Prebuild>
+      <Static>false</Static>
+      <StaticRuntime>true</StaticRuntime>
+      <Platforms>
+        <Platform>Windows</Platform>
+        <Platform>Linux</Platform>
+        <Platform>Generic</Platform>
+      </Platforms>
+    </Project>
+    <Project>
+      <Name>openssl</Name>
+      <Version>1.1.0.5</Version>
+      <Active>1</Active>
+      <Prebuild>true</Prebuild>
+      <Static>true</Static>
+      <StaticRuntime>true</StaticRuntime>
+      <Platforms>
+        <Platform>Windows</Platform>
+        <Platform>Linux</Platform>
+      </Platforms>
+    </Project>
+    <Project>
+      <Name>mtp</Name>
+      <Version>1.1.10</Version>
+      <Active>1</Active>
+      <Prebuild>true</Prebuild>
+      <Static>true</Static>
+      <StaticRuntime>true</StaticRuntime>
+      <Platforms>
+        <Platform>Linux</Platform>
+      </Platforms>
+    </Project>
+    <Project>
+      <Name>sqlite3</Name>
+      <Version></Version>
+      <Active>1</Active>
+      <Prebuild>false</Prebuild>
+      <Static>false</Static>
+      <StaticRuntime>true</StaticRuntime>
+      <Dependencies>
+        <Dependency>CcKernel</Dependency>
+      </Dependencies>
+      <Platforms>
+        <Platform>Windows</Platform>
+        <Platform>Linux</Platform>
+      </Platforms>
+    </Project>
+    <Project>
+      <Name>wiringPi</Name>
+      <Version></Version>
+      <Active>1</Active>
+      <Prebuild>false</Prebuild>
+      <Static>false</Static>
+      <StaticRuntime>true</StaticRuntime>
+      <Platforms>
+        <Platform>Linux</Platform>
+      </Platforms>
+    </Project>
+  </Directory>
   <Project>
     <Name>CcKernel</Name>
     <Version></Version>
@@ -568,71 +633,6 @@
       <Platforms>
         <Platform>Windows</Platform>
         <!--<Platform>Linux</Platform>-->
-      </Platforms>
-    </Project>
-  </Directory>
-  <Directory>
-    <Name>ThirdParty</Name>
-    <Project>
-      <Name>jpeg</Name>
-      <Version></Version>
-      <Active>1</Active>
-      <Prebuild>false</Prebuild>
-      <Static>false</Static>
-      <StaticRuntime>true</StaticRuntime>
-      <Platforms>
-        <Platform>Windows</Platform>
-        <Platform>Linux</Platform>
-        <Platform>Generic</Platform>
-      </Platforms>
-    </Project>
-    <Project>
-      <Name>openssl</Name>
-      <Version>1.1.0.5</Version>
-      <Active>1</Active>
-      <Prebuild>true</Prebuild>
-      <Static>true</Static>
-      <StaticRuntime>true</StaticRuntime>
-      <Platforms>
-        <Platform>Windows</Platform>
-        <Platform>Linux</Platform>
-      </Platforms>
-    </Project>
-    <Project>
-      <Name>mtp</Name>
-      <Version>1.1.10</Version>
-      <Active>1</Active>
-      <Prebuild>true</Prebuild>
-      <Static>true</Static>
-      <StaticRuntime>true</StaticRuntime>
-      <Platforms>
-        <Platform>Linux</Platform>
-      </Platforms>
-    </Project>
-    <Project>
-      <Name>sqlite3</Name>
-      <Version></Version>
-      <Active>1</Active>
-      <Prebuild>false</Prebuild>
-      <Static>false</Static>
-      <StaticRuntime>true</StaticRuntime>
-      <Dependencies>
-        <Dependency>CcKernel</Dependency>
-      </Dependencies>
-      <Platforms>
-        <Platform>Windows</Platform>
-        <Platform>Linux</Platform>
-      </Platforms>
-    </Project>
-    <Project>
-      <Name>wiringPi</Name>
-      <Version></Version>
-      <Active>1</Active>
-      <Prebuild>false</Prebuild>
-      <Static>false</Static>
-      <StaticRuntime>true</StaticRuntime>
-      <Platforms>
-        <Platform>Linux</Platform>
       </Platforms>
     </Project>
   </Directory>

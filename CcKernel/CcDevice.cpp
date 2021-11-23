@@ -53,26 +53,27 @@
 uint32 CcDevice::s_uiId = 0;
 CcDevice CcDevice::NullDevice(nullptr);
 
-CcConstStringClass_C(sAll       ,"All", CcDevice);
-CcConstStringClass_C(sCpu       ,"Cpu", CcDevice);
-CcConstStringClass_C(sUart      ,"Uart", CcDevice);
-CcConstStringClass_C(sSpi       ,"Spi", CcDevice);
-CcConstStringClass_C(sI2C       ,"I2C", CcDevice);
-CcConstStringClass_C(sDisplay   ,"Display", CcDevice);
-CcConstStringClass_C(sTouchPanel,"TouchPanel", CcDevice);
-CcConstStringClass_C(sNetwork   ,"Network", CcDevice);
-CcConstStringClass_C(sTimer     ,"Timer", CcDevice);
-CcConstStringClass_C(sCamera    ,"Camera", CcDevice);
-CcConstStringClass_C(sLed       ,"Led", CcDevice);
-CcConstStringClass_C(sHdd       ,"Hdd", CcDevice);
-CcConstStringClass_C(sGpioPort  ,"GpioPort", CcDevice);
-CcConstStringClass_C(sGpioPin   ,"GpioPin", CcDevice);
+CcConstStringClass_C(sAll             ,"All", CcDevice);
+CcConstStringClass_C(sCpu             ,"Cpu", CcDevice);
+CcConstStringClass_C(sUart            ,"Uart", CcDevice);
+CcConstStringClass_C(sSpi             ,"Spi", CcDevice);
+CcConstStringClass_C(sI2C             ,"I2C", CcDevice);
+CcConstStringClass_C(sDisplay         ,"Display", CcDevice);
+CcConstStringClass_C(sTouchPanel      ,"TouchPanel", CcDevice);
+CcConstStringClass_C(sNetwork         ,"Network", CcDevice);
+CcConstStringClass_C(sTimer           ,"Timer", CcDevice);
+CcConstStringClass_C(sCamera          ,"Camera", CcDevice);
+CcConstStringClass_C(sLed             ,"Led", CcDevice);
+CcConstStringClass_C(sHdd             ,"Hdd", CcDevice);
+CcConstStringClass_C(sGpioPort        ,"GpioPort", CcDevice);
+CcConstStringClass_C(sGpioPin         ,"GpioPin", CcDevice);
 CcConstStringClass_C(sWlan            ,"Wlan", CcDevice);
 CcConstStringClass_C(sWlanClient      ,"WlanClient", CcDevice);
 CcConstStringClass_C(sWlanAccessPoint ,"WlanAccessPoint", CcDevice);
-CcConstStringClass_C(sEeprom    ,"Eeprom", CcDevice);
-CcConstStringClass_C(sClock     ,"Clock", CcDevice);
-CcConstStringClass_C(sUsb       ,"Usb", CcDevice);
+CcConstStringClass_C(sEeprom          ,"Eeprom", CcDevice);
+CcConstStringClass_C(sClock           ,"Clock", CcDevice);
+CcConstStringClass_C(sUsb             ,"Usb", CcDevice);
+CcConstStringClass_C(sBoardSupport    , "BoardSupport", CcDevice);
 
 const CcString& CcDevice::getTypeString(EDeviceType eType)
 {
@@ -118,6 +119,8 @@ const CcString& CcDevice::getTypeString(EDeviceType eType)
       return sClock;
     case EDeviceType::Usb:
       return sUsb;
+    case EDeviceType::BoardSupport:
+      return sBoardSupport;
   }
   return sAll;
 }
@@ -126,26 +129,27 @@ EDeviceType CcDevice::getTypeFromString(const CcString& sType, bool* bOk)
 {
   EDeviceType eType = EDeviceType::All;
   if (bOk != nullptr) *bOk = true;
-  if      (sType == sAll       )  eType = EDeviceType::All;
-  else if (sType == sCpu       )  eType = EDeviceType::Cpu;
-  else if (sType == sUart      )  eType = EDeviceType::Uart;
-  else if (sType == sSpi       )  eType = EDeviceType::Spi;
-  else if (sType == sI2C       )  eType = EDeviceType::I2C;
-  else if (sType == sDisplay   )  eType = EDeviceType::Display;
-  else if (sType == sTouchPanel)  eType = EDeviceType::TouchPanel;
-  else if (sType == sNetwork   )  eType = EDeviceType::Network;
-  else if (sType == sTimer     )  eType = EDeviceType::Timer;
-  else if (sType == sCamera    )  eType = EDeviceType::Camera;
-  else if (sType == sLed       )  eType = EDeviceType::Led;
-  else if (sType == sHdd       )  eType = EDeviceType::Hdd;
-  else if (sType == sGpioPort  )  eType = EDeviceType::GpioPort;
-  else if (sType == sGpioPin   )  eType = EDeviceType::GpioPin;
-  else if (sType == sWlan      )  eType = EDeviceType::Wlan;
-  else if (sType == sWlanAccessPoint) eType = EDeviceType::WlanAccessPoint;
-  else if (sType == sWlanClient)  eType = EDeviceType::WlanClient;
-  else if (sType == sEeprom    )  eType = EDeviceType::Eeprom;
-  else if (sType == sClock     )  eType = EDeviceType::Clock;
-  else if (sType == sUsb       )  eType = EDeviceType::Usb;
+  if      (sType == sAll            )  eType = EDeviceType::All;
+  else if (sType == sCpu            )  eType = EDeviceType::Cpu;
+  else if (sType == sUart           )  eType = EDeviceType::Uart;
+  else if (sType == sSpi            )  eType = EDeviceType::Spi;
+  else if (sType == sI2C            )  eType = EDeviceType::I2C;
+  else if (sType == sDisplay        )  eType = EDeviceType::Display;
+  else if (sType == sTouchPanel     )  eType = EDeviceType::TouchPanel;
+  else if (sType == sNetwork        )  eType = EDeviceType::Network;
+  else if (sType == sTimer          )  eType = EDeviceType::Timer;
+  else if (sType == sCamera         )  eType = EDeviceType::Camera;
+  else if (sType == sLed            )  eType = EDeviceType::Led;
+  else if (sType == sHdd            )  eType = EDeviceType::Hdd;
+  else if (sType == sGpioPort       )  eType = EDeviceType::GpioPort;
+  else if (sType == sGpioPin        )  eType = EDeviceType::GpioPin;
+  else if (sType == sWlan           )  eType = EDeviceType::Wlan;
+  else if (sType == sWlanAccessPoint)  eType = EDeviceType::WlanAccessPoint;
+  else if (sType == sWlanClient     )  eType = EDeviceType::WlanClient;
+  else if (sType == sEeprom         )  eType = EDeviceType::Eeprom;
+  else if (sType == sClock          )  eType = EDeviceType::Clock;
+  else if (sType == sUsb            )  eType = EDeviceType::Usb;
+  else if (sType == sBoardSupport   )  eType = EDeviceType::BoardSupport;
   else if (bOk != nullptr) *bOk = false;
   return eType;
 }

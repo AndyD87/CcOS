@@ -31,22 +31,13 @@
 #include "CcSslSocket.h"
 #endif // CCSSL_ENABLED
 
-class CcMqttClient::CPrivate
-{
-public:
-  CcSocket oSocket;
-};
-
 CcMqttClient::CcMqttClient() :
   CcApp(CcMqttGlobals::Strings::ClientApplicationName)
 {
-  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcMqttClient::~CcMqttClient()
 {
-  waitForExit();
-  CCDELETE(m_pPrivate);
 }
 
 void CcMqttClient::run()
@@ -55,22 +46,25 @@ void CcMqttClient::run()
   #ifdef CCSSL_ENABLED
     if (m_oConfig.isSsl())
     {
+      CcSslSocket *pSocket = nullptr;
       if(isRunning())
-        CCNEWTYPE(pSocket, CcSslSocket);
-      if(isRunning())
-        m_pPrivate->oSocket = pSocket;
+        CCNEW(pSocket, CcSslSocket);
+      if(isRunning() && pSocket)
+        m_oSocket = pSocket;
+      else if(pSocket)
+        CCDELETE(pSocket);
     }
     else
     {
-        m_pPrivate->oSocket = CcKernel::getSocket(ESocketType::TCP);
+        m_oSocket = CcKernel::getSocket(ESocketType::TCP);
     }
   #else
-    m_pPrivate->oSocket = CcKernel::getSocket(ESocketType::TCP);
+    m_oSocket = CcKernel::getSocket(ESocketType::TCP);
   #endif // CCSSL_ENABLED
-  m_pPrivate->oSocket.setPeerInfo(getConfig().getAddressInfo());
+  m_oSocket.setPeerInfo(getConfig().getAddressInfo());
   while(isRunning())
   {
-    if (m_pPrivate->oSocket.connect())
+    if (m_oSocket.connect())
     {
 
     }
@@ -84,7 +78,7 @@ void CcMqttClient::run()
 
 void CcMqttClient::onStop()
 {
-  m_pPrivate->oSocket.close();
+  m_oSocket.close();
 }
 
 bool CcMqttClient::connect()

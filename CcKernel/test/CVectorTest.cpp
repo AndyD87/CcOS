@@ -31,6 +31,7 @@ CVectorTest::CVectorTest() :
   appendTestMethod("Test inserts to vector", &CVectorTest::testInsert);
   appendTestMethod("Test reserve vector", &CVectorTest::testReserve);
   appendTestMethod("Test remove from vector", &CVectorTest::testRemove);
+  appendTestMethod("Test imported data from braces list", &CVectorTest::testInitializerList);
 }
 
 CVectorTest::~CVectorTest()
@@ -105,6 +106,18 @@ bool CVectorTest::testRemove()
         }
       }
     }
+  }
+  return bSuccess;
+}
+
+bool CVectorTest::testInitializerList()
+{
+  bool bSuccess = false;
+  if(m_oTestCc[0][0] == "Hallo" &&
+     m_oTestCc[0][1] == "du"    &&
+     m_oTestCc[1][0] == "da")
+  {
+    bSuccess = true;
   }
   return bSuccess;
 }

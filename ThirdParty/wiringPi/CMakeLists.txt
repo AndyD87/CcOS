@@ -7,19 +7,19 @@ elseif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Search for installed wiring Pi
   find_package ( wiringPi QUIET )
 
-  if(WIRINGPI_FOUND)
-    add_library(CcOS::ThirdParty::wiringPi ALIAS wiringPi)
-  else()
-    # Wiring pi not found download and add for build
-    # Defined board type is required.
-    if(NOT CCOS_BOARD_TYPE)
-      message(FATAL_ERROR "Wiring Pi requires defined board type ${CCOS_BOARD_TYPE}")
-    elseif(${CCOS_BOARD_TYPE} STREQUAL "ORANGEPI_ZERO")
-      add_definitions(-DCONFIG_ORANGEPI_ZERO)
-      include (OrangePi.cmake)
+  if(DEFINED CCOS_BOARD_TYPE)
+    if(WIRINGPI_FOUND)
       add_library(CcOS::ThirdParty::wiringPi ALIAS wiringPi)
     else()
-      message(FATAL_ERROR "Wiring Pi requires defined board type ${CCOS_BOARD_TYPE}")
+      # Wiring pi not found download and add for build
+      # Defined board type is required.
+      if(${CCOS_BOARD_TYPE} STREQUAL "ORANGEPI_ZERO")
+        add_definitions(-DCONFIG_ORANGEPI_ZERO)
+        include (OrangePi.cmake)
+        add_library(CcOS::ThirdParty::wiringPi ALIAS wiringPi)
+      else()
+        message(FATAL_ERROR "Wiring Pi requires defined board type ${CCOS_BOARD_TYPE}")
+      endif()
     endif()
   endif()
 endif()

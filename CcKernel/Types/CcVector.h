@@ -22,10 +22,10 @@
  * @par       Language: C++11
  * @brief     Class CcVector
  */
-#ifndef H_CcVector_H_
-#define H_CcVector_H_
+#pragma once
 
 #include "CcBase.h"
+#include <initializer_list>
 
 /**
  * @brief Vector class with own implementation
@@ -379,6 +379,18 @@ public:
   CcVector(const CcVector &oToCopy)
   {
     operator=(oToCopy);
+  }
+
+  /**
+   * @brief Create a list from an braces initalized list like CcVector o = {TYPE, TYPE};
+   * @param oList: Initialized list to import
+   */
+  CcVector(std::initializer_list<TYPE> oList)
+  {
+    for (const TYPE& e : oList)
+    {
+        append(e);
+    }
   }
 
   /**
@@ -977,6 +989,19 @@ public:
   }
 
   /**
+   * @brief Create a list from an braces initalized list like CcList o = {TYPE, TYPE};
+   * @param oList: Initialized list to import
+   */
+  void operator=(std::initializer_list<TYPE> oList)
+  {
+    clear();
+    for (const TYPE& e : oList)
+    {
+        append(e);
+    }
+  }
+
+  /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
    * @return true if they are the same, otherwise false
@@ -1072,5 +1097,3 @@ private:
   TYPE* m_pArray = nullptr; //!< Operating array to work on in vector
   size_t m_uiSize = 0;      //!< Number of items available in m_pArray
 };
-
-#endif // H_CcVector_H_

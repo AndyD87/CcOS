@@ -27,7 +27,7 @@
 
 #include "wiringPi.h"
 
-OrangePiZeroGpioPort::OrangePiZeroGpioPort(uint8 uiPort)
+OrangePiZeroGpioPort::OrangePiZeroGpioPort()
 {
 }
 
