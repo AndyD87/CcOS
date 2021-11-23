@@ -33,7 +33,7 @@
  * @param uiSize: Number of bytes to allocate
  * @return Pointer to allocated buffer or nullptr if error
  */
-void* WINCEXPORT operator new(size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
+void* WINCEXPORT operator new(size_t uiSize) CCTHROW_BAD_ALLOC
 {
     return CcMalloc_malloc(uiSize);
 }
@@ -44,7 +44,7 @@ void* WINCEXPORT operator new(size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
  * @param uiSize: Number of bytes to allocate
  * @return Pointer to allocated buffer or nullptr if error
  */
-void* WINCEXPORT operator new[](size_t uiSize) _GLIBCXX_THROW(std::bad_alloc)
+void* WINCEXPORT operator new[](size_t uiSize) CCTHROW_BAD_ALLOC
 {
     return CcMalloc_malloc(uiSize);
 }
@@ -99,11 +99,11 @@ void WINCEXPORT operator delete[](void *pBuffer, size_t CCUNUSED_PARAM(uiSize)) 
  * @param uiCount:  Number of Elements in Array
  * @param pDtor:    Pointer to destructor method
  */
-void WINCEXPORT __ehvec_dtor(
+extern "C" void __stdcall __ehvec_dtor(
   void*       pArray,
   size_t      uiSize,
   size_t      uiCount,
-  void(WINCEXPORT *pDtor)(void*)
+  void(__thiscall *pDtor)(void*)
 )
 {
   _Analysis_assume_(uiCount > 0);
@@ -135,12 +135,12 @@ void WINCEXPORT __ehvec_dtor(
  * @param uiCount:  Number of Elements in Array
  * @param pDtor:    Pointer to destructor method
  */
-void WINCEXPORT __ehvec_ctor(
+extern "C" void __stdcall __ehvec_ctor(
   void*       pArray,                // Pointer to array to destruct
   size_t      uiSize,               // Size of each element (including padding)
   size_t      uiCount,              // Number of elements in the array
-  void(WINCEXPORT *pCtor)(void*),   // Constructor to call
-  void(WINCEXPORT *pDtor)(void*)    // Destructor to call should exception be thrown
+  void(__thiscall *pCtor)(void*),   // Constructor to call
+  void(__thiscall *pDtor)(void*)    // Destructor to call should exception be thrown
 )
 {
   size_t uiPos = 0;      // Count of elements constructed
