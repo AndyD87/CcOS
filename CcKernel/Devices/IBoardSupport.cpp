@@ -24,6 +24,21 @@
  */
 #include "Devices/IBoardSupport.h"
 
+IBoardSupport::CHwDevice  IBoardSupport::InvalidDevice;
+IBoardSupport::CHwPin     IBoardSupport::InvalidPin;
+IBoardSupport::CHwPort    IBoardSupport::InvalidPort;
+
+
+IBoardSupport::CHwPin& IBoardSupport::CHwPort::getHwPin(uint16 uiPin)
+{
+  if(oHwPins.size() > uiPin)
+  {
+    return oHwPins[uiPin];
+  }
+  return InvalidPin;
+}
+
+
 IBoardSupport::~IBoardSupport()
 {
   for(CHwDevice& pHwDevice : m_oHwDevices)
@@ -46,14 +61,106 @@ uint32 IBoardSupport::getDeviceSize(EDeviceType eDeviceType) const
   return uiSize;
 }
 
-IBoardSupport::CHwDevice& IBoardSupport::getHwDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber)
+IBoardSupport::CHwDevice& IBoardSupport::getHwDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber, uint32& uiFunctionNr)
 {
+  uiFunctionNr = 0;
   for(IBoardSupport::CHwDevice& oDevice : m_oHwDevices)
   {
     if(oDevice.eDevice == eDeviceType && oDevice.uiDeviceNr == uiDeviceNumber)
     {
       return oDevice;
     }
+    uiFunctionNr++;
   }
   return InvalidDevice;
+}
+
+IBoardSupport::CHwPort& IBoardSupport::getHwPort(uint16 uiPort)
+{
+  for(IBoardSupport::CHwPort& oDevice : m_oHwPorts)
+  {
+    if(oDevice.uiPortNr == uiPort)
+    {
+      return oDevice;
+    }
+  }
+  return InvalidPort;
+}
+
+bool IBoardSupport::verifyFreePort(const CHwDevice& oHwDevice)
+{
+  bool bFree = true;
+  for(const CHwDevice::CPort& oPort : oHwDevice.oRequiredPins)
+  {
+    for(uint16 uiPin : oPort.oPins)
+    {
+      CHwPort& oHwPort = getHwPort(oPort.uiPort);
+      if(&oHwPort != &InvalidPort)
+      {
+        CHwPin& oHwPin = oHwPort.getHwPin(uiPin);
+        if(&oHwPin != &InvalidPin)
+        {
+          if(oHwPin.uiSelectedDeviceNr < m_oHwDevices.size())
+          {
+            bFree = false;
+            break;
+          }
+        }
+        else
+        {
+          bFree = false;
+          break;
+        }
+      }
+      else
+      {
+        bFree = false;
+        break;
+      }
+    }
+    if(bFree == false)
+      break;
+  }
+  return bFree;
+}
+
+bool IBoardSupport::setHwDeviceUsage(const CHwDevice &oHwDevice, uint32 uiUsedFunction)
+{
+  bool bFree = true;
+  for(const CHwDevice::CPort& oPort : oHwDevice.oRequiredPins)
+  {
+    for(uint16 uiPin : oPort.oPins)
+    {
+      CHwPort& oHwPort = getHwPort(oPort.uiPort);
+      if(&oHwPort != &InvalidPort)
+      {
+        CHwPin& oHwPin = oHwPort.getHwPin(uiPin);
+        if(&oHwPin != &InvalidPin)
+        {
+          if(oHwPin.uiSelectedDeviceNr >= m_oHwDevices.size())
+          {
+            oHwPin.uiSelectedDeviceNr = uiUsedFunction;
+          }
+          else
+          {
+            bFree = false;
+            break;
+          }
+        }
+        else
+        {
+          bFree = false;
+          break;
+        }
+      }
+      else
+      {
+        bFree = false;
+        break;
+      }
+    }
+    if(bFree == false)
+      break;
+  }
+  return bFree;
 }

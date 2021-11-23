@@ -80,8 +80,10 @@ CcBoardSupportSimulation::~CcBoardSupportSimulation()
 CcDevice CcBoardSupportSimulation::createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber)
 {
   CcDevice oDevice;
-  CHwDevice& rDevice = getHwDevice(eDeviceType, uiDeviceNumber);
-  if(&rDevice != &InvalidDevice)
+  uint32 uiId = UINT32_MAX;
+  CHwDevice& rDevice = getHwDevice(eDeviceType, uiDeviceNumber, uiId);
+  if(&rDevice != &InvalidDevice &&
+     verifyFreePort(rDevice))
   {
     switch (eDeviceType)
     {
@@ -92,6 +94,7 @@ CcDevice CcBoardSupportSimulation::createDevice(EDeviceType eDeviceType, uint32 
           CcSpiSimulation* pSpi = new CcSpiSimulation();
           rDevice.pDevice = pSpi;
           oDevice = pSpi;
+          setHwDeviceUsage(rDevice, uiId);
         }
         else
         {
@@ -106,6 +109,7 @@ CcDevice CcBoardSupportSimulation::createDevice(EDeviceType eDeviceType, uint32 
           CcI2CSimulation* pSpi = new CcI2CSimulation();
           rDevice.pDevice = pSpi;
           oDevice = pSpi;
+          setHwDeviceUsage(rDevice, uiId);
         }
         else
         {

@@ -87,7 +87,7 @@ protected:
     IDevice*        pDevice     = nullptr;
     CcVector<CPort> oRequiredPins;
     CcVector<CPort> oOptionalPins;
-  } InvalidDevice;
+  };
 
   class CHwPin
   {
@@ -97,17 +97,17 @@ protected:
             uint16 uiSoftwarePin,
             CcVector<uint32> oSupportedDevices,
             CcString sDescription) :
-      m_oSupportedDevices(oSupportedDevices),
-      m_uiSoftwarePort(uiSoftwarePort),
-      m_uiSoftwarePin(uiSoftwarePin),
-      m_sDescription(sDescription)
+      oSupportedDevices(oSupportedDevices),
+      uiSoftwarePort(uiSoftwarePort),
+      uiSoftwarePin(uiSoftwarePin),
+      sDescription(sDescription)
     {}
-  private:
-    uint32 m_uiSelectedDeviceNr = UINT32_MAX;           //!< Number of Device in board support list this pin is mapped to, or UINT32_MAX if not.
-    CcVector<uint32> m_oSupportedDevices;
-    uint16 m_uiSoftwarePort       = UINT16_MAX;
-    uint16 m_uiSoftwarePin        = UINT16_MAX;
-    CcString m_sDescription;
+
+    uint32 uiSelectedDeviceNr = UINT32_MAX;           //!< Number of Device in board support list this pin is mapped to, or UINT32_MAX if not.
+    CcVector<uint32> oSupportedDevices;
+    uint16 uiSoftwarePort       = UINT16_MAX;
+    uint16 uiSoftwarePin        = UINT16_MAX;
+    CcString sDescription;
   };
 
   class CHwPort
@@ -118,6 +118,9 @@ protected:
       uiPortNr(uiPort),
       oHwPins(oHwPins)
     {}
+
+    CHwPin& getHwPin(uint16 uiPort);
+
     uint32            uiPortNr = UINT32_MAX;
     CcVector<CHwPin>  oHwPins;
   };
@@ -128,9 +131,16 @@ protected:
     m_oHwPorts(oPorts)
   {}
 
-  CHwDevice& getHwDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber);
+  CHwDevice& getHwDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber, uint32 &uiFunctionNr);
+  CHwPort&   getHwPort(uint16 uiPort);
+  bool verifyFreePort(const CHwDevice& oHwDevice);
+  bool setHwDeviceUsage(const CHwDevice& oHwDevice, uint32 uiUsedFunction);
 
 protected:
   CcVector<CHwDevice>    m_oHwDevices;
   CcVector<CHwPort>      m_oHwPorts;
+
+  static CHwDevice InvalidDevice;
+  static CHwPin InvalidPin;
+  static CHwPort InvalidPort;
 };

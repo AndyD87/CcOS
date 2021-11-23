@@ -72,6 +72,7 @@ bool CBoardSupportTest::testCreateDevices()
   CcDevice oI2CDevice = m_pSimulation->createDevice(EDeviceType::I2C, 0);
   if(oSpiDevice.isValid())
   {
+    // I2C shouldn't be created because it's pins are crossing spi.
     if(!oI2CDevice.isValid())
     {
       bRet = true;
