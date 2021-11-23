@@ -1,4 +1,4 @@
-message("- Crosscompiling Toolchain for Raspberry activated")
+message("- Setup orangepi zero board")
 set(CCOS_BOARD_TYPE "ORANGEPI_ZERO")
 
 if(EXISTS /etc/armbian-release)

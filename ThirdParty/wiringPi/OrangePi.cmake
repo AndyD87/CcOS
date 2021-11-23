@@ -5,6 +5,7 @@ CcGitClone(${WRINIGPI_SOURCE_DIR} https://github.com/orangepi-xunlong/wiringOP.g
 
 # Setup source files as made in Makefile
 set(SOURCE_FILES
+  source/wiringPi/wiringPi.h
   source/wiringPi/ads1115.c
   source/wiringPi/bmp180.c
   source/wiringPi/drcNet.c

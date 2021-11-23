@@ -10,7 +10,6 @@ elseif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   if(WIRINGPI_FOUND)
     add_library(CcOS::ThirdParty::wiringPi ALIAS wiringPi)
   else()
-
     # Wiring pi not found download and add for build
     # Defined board type is required.
     if(NOT CCOS_BOARD_TYPE)

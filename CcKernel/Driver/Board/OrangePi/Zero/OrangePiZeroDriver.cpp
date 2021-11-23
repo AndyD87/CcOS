@@ -29,6 +29,8 @@
 #include "OrangePiZeroLed.h"
 #include "CcDevice.h"
 
+#include "wiringPi.h"
+
 OrangePiZeroDriver::OrangePiZeroDriver()
 {
 }
@@ -40,6 +42,7 @@ OrangePiZeroDriver::~OrangePiZeroDriver()
 CcStatus OrangePiZeroDriver::entry()
 {
   // Load all leds:
+  wiringPiSetup();
   CcDevice hDevice(new OrangePiZeroLed(0), EDeviceType::Led);
   CcKernel::addDevice(hDevice);
   return true;
