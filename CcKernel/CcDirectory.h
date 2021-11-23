@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcDirectory
  */
-#ifndef H_CcDirectory_H_
-#define H_CcDirectory_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -42,7 +41,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcDirectory( const CcString& sPath = "") : m_Path(sPath)
+  CcDirectory( const CcString& sPath = "") : m_sPath(sPath)
     {}
 
   /**
@@ -195,7 +194,5 @@ public:
   static CcFileInfoList getFileList(const CcString& sPathToDirectory);
 
 protected: //Variables
-  CcString m_Path;      //!< Path to File as String
+  CcString m_sPath;      //!< Path to File as String
 };
-
-#endif // H_CcDirectory_H_

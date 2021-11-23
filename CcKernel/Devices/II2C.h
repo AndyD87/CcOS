@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class II2C
  */
-#ifndef H_II2C_H_
-#define H_II2C_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IDevice.h"
@@ -45,5 +44,3 @@ public:
    */
   virtual ~II2C();
 };
-
-#endif // H_II2C_H_

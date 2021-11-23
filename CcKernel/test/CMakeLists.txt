@@ -11,6 +11,8 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   set( SOURCE_FILES
           ${CMAKE_CURRENT_LIST_DIR}/CBaseTest.cpp
           ${CMAKE_CURRENT_LIST_DIR}/CBaseTest.h
+          ${CMAKE_CURRENT_LIST_DIR}/CBoardSupportTest.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/CBoardSupportTest.h
           ${CMAKE_CURRENT_LIST_DIR}/CBufferTest.cpp
           ${CMAKE_CURRENT_LIST_DIR}/CBufferTest.h
           ${CMAKE_CURRENT_LIST_DIR}/CByteArrayTest.cpp

@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CBaseTest
  **/
-#ifndef H_CBaseTest_H_
-#define H_CBaseTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -48,5 +47,3 @@ private:
   bool testAlignment();
   bool testTypeMacro();
 };
-
-#endif // H_CBaseTest_H_

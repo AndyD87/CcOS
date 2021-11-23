@@ -17,23 +17,38 @@
 /**
  * @file
  *
- * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcEventActionList
  */
 #pragma once
 
-//! Forward Declaration
 #include "CcBase.h"
-#include "CcEventAction.h"
-#include "CcList.h"
+#include "CcTest.h"
+
+class CcBoardSupportSimulation;
 
 /**
- * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
+ * @brief Class implementation
  */
-class CcKernelSHARED CcEventActionList : public CcList<CcEventAction*>
+class CBoardSupportTest : public CcTest<CBoardSupportTest>
 {
 public:
+  /**
+   * @brief Constructor
+   */
+  CBoardSupportTest();
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~CBoardSupportTest();
+
+private:
+  CcBoardSupportSimulation* m_pSimulation = nullptr;
+
+private:
+  bool testSimulationSetup();
+  bool testVerifySetup();
+  bool testCreateDevices();
+  bool testSimulationRemoving();
 };

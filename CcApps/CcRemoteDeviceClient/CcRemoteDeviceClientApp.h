@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CcRemoteDeviceClientApp
  **/
-#ifndef H_CcRemoteDeviceClientApp_H_
-#define H_CcRemoteDeviceClientApp_H_
+#pragma once
 
 #include "CcGuiApplication.h"
 #include "CcArguments.h"
@@ -66,5 +65,3 @@ private:
   CcArguments           m_oArguments;
   bool                  m_bNoGui = false;
 };
-
-#endif // H_CcRemoteDeviceClientApp_H_

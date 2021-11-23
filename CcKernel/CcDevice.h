@@ -109,7 +109,6 @@ public:
    * @return
    */
   static EDeviceType getTypeFromString(const CcString& sType, bool* bOk = nullptr);
-
 public:
   static CcDevice NullDevice;   //!< Default nullptr device to avoid crashes on access.
 private:

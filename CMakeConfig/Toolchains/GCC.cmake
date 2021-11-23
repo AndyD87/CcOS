@@ -142,6 +142,9 @@ endif()
 if(NOT CC_OUTPUT_PREFIX)
   string( TOLOWER ${CMAKE_BUILD_TYPE} BUILD_TYPE_LOWER )
   set(CC_OUTPUT_PREFIX "${CC_BUILD_ARCH}_${BUILD_TYPE_LOWER}")
+  if(CCOS_BOARD_TYPE)
+    set(CC_OUTPUT_PREFIX "${CC_OUTPUT_PREFIX}_${CCOS_BOARD_TYPE}")
+  endif(CCOS_BOARD_TYPE)
 
   # Set runtime output dir to root/output if no other location was defined
   if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)

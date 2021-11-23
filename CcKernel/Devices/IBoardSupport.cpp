@@ -22,12 +22,38 @@
  * @par       Language: C++11
  * @brief     Class IBoardSupport
  */
-#include "IBoardSupport.h"
-
-IBoardSupport::IBoardSupport()
-{
-}
+#include "Devices/IBoardSupport.h"
 
 IBoardSupport::~IBoardSupport()
 {
+  for(CHwDevice& pHwDevice : m_oHwDevices)
+  {
+    CCDELETE(pHwDevice.pDevice);
+  }
+  m_oHwDevices.clear();
+}
+
+uint32 IBoardSupport::getDeviceSize(EDeviceType eDeviceType) const
+{
+  uint32 uiSize = 0;
+  for(IBoardSupport::CHwDevice& oDevice : m_oHwDevices)
+  {
+    if(oDevice.eDevice == eDeviceType)
+    {
+      uiSize++;
+    }
+  }
+  return uiSize;
+}
+
+IBoardSupport::CHwDevice& IBoardSupport::getHwDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber)
+{
+  for(IBoardSupport::CHwDevice& oDevice : m_oHwDevices)
+  {
+    if(oDevice.eDevice == eDeviceType && oDevice.uiDeviceNr == uiDeviceNumber)
+    {
+      return oDevice;
+    }
+  }
+  return InvalidDevice;
 }

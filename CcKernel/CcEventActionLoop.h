@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcEventActionLoop
  */
-#ifndef H_CcEventActionLoop_H_
-#define H_CcEventActionLoop_H_
+#pragma once
 
 //! Forward Declaration
 #include "CcBase.h"
@@ -63,5 +62,3 @@ public:
 private:
   CcEventActionList m_oEvents;
 };
-
-#endif // H_CcEventActionLoop_H_

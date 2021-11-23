@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CGuiWindowTest
  **/
-#ifndef H_CGuiWindowTest_H_
-#define H_CGuiWindowTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -48,5 +47,3 @@ public:
 private:
   bool testCreateWindow();
 };
-
-#endif // H_CGuiWindowTest_H_

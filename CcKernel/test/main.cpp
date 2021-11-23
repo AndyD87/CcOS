@@ -52,6 +52,7 @@
 #include "CSystemTest.h"
 #include "CGenericMallocTest.h"
 #include "CWorkerTest.h"
+#include "CBoardSupportTest.h"
 
 #include "CcTestFramework.h"
 #include "CcMemoryMonitor.h"
@@ -79,6 +80,7 @@ int main(int iArgc, char** ppArgv)
   CcTestFramework_addTest(CSystemTest);
   CcTestFramework_addTest(CVectorTest);
   CcTestFramework_addTest(CListTest);
+  CcTestFramework_addTest(CBoardSupportTest);
   CcTestFramework_addTest(CThreadTest);
   CcTestFramework_addTest(CWorkerTest);
   CcTestFramework_addTest(CUuidTest);
@@ -100,6 +102,7 @@ int main(int iArgc, char** ppArgv)
   CcTestFramework_addTest(CMutexTest);
   CcTestFramework_addTest(CStringListTest);
   CcTestFramework_addTest(CGenericMallocTest);
+
   CcTestFramework::runTests();
 
   // Shutdown kernel in Testframework deinit to check if all running threads

@@ -31,7 +31,7 @@
 
 bool CcDirectory::exists()
 {
-  CcFile cFile(m_Path);
+  CcFile cFile(m_sPath);
   return cFile.isDir();
 }
 
@@ -90,7 +90,7 @@ bool CcDirectory::create(const CcString& sPathToFile, bool bRecursive, bool bFai
 
 bool CcDirectory::create(bool bRecursive, bool bFaileOnExists)
 {
-  return create(m_Path, bRecursive, bFaileOnExists);
+  return create(m_sPath, bRecursive, bFaileOnExists);
 }
 
 bool CcDirectory::move(const CcString& sPathToDirectoryFrom, const CcString& sPathToDirectoryTo)
@@ -101,7 +101,7 @@ bool CcDirectory::move(const CcString& sPathToDirectoryFrom, const CcString& sPa
 
 bool CcDirectory::move(const CcString& sPathToDirectoryTo)
 {
-  CcFile oFile(m_Path);
+  CcFile oFile(m_sPath);
   return oFile.move(sPathToDirectoryTo);
 }
 
@@ -113,17 +113,17 @@ bool CcDirectory::remove(const CcString& sPathToFile)
 bool CcDirectory::copy(const CcString& sPathToFile)
 {
   bool bRet = false;
-  if (CcFile::isFile(m_Path))
+  if (CcFile::isFile(m_sPath))
   {
-    bRet = CcFile::copy(m_Path, sPathToFile);
+    bRet = CcFile::copy(m_sPath, sPathToFile);
   }
   else if (CcDirectory::exists(sPathToFile) || CcDirectory::create(sPathToFile, true))
   {
     bRet = true;
-    CcFileInfoList oFileList = CcDirectory::getFileList(m_Path);
+    CcFileInfoList oFileList = CcDirectory::getFileList(m_sPath);
     for (CcFileInfo& oFile : oFileList)
     {
-      CcString sNextDirFrom = m_Path;
+      CcString sNextDirFrom = m_sPath;
       CcString sNextDirTo = sPathToFile;
       sNextDirFrom.appendPath(oFile.getName());
       sNextDirTo.appendPath(oFile.getName());
@@ -165,10 +165,10 @@ bool CcDirectory::remove(bool bRecursive)
 {
   if (bRecursive)
   {
-    CcFileInfoList oFileList = CcDirectory::getFileList(m_Path);
+    CcFileInfoList oFileList = CcDirectory::getFileList(m_sPath);
     for (CcFileInfo& oFile : oFileList)
     {
-      CcString sNextDirFrom = m_Path;
+      CcString sNextDirFrom = m_sPath;
       sNextDirFrom.appendPath(oFile.getName());
       if (oFile.isDir())
       {
@@ -186,24 +186,24 @@ bool CcDirectory::remove(bool bRecursive)
       }
     }
   }
-  return CcFileSystem::remove(m_Path);
+  return CcFileSystem::remove(m_sPath);
 }
 
 bool CcDirectory::clear(bool bRecursive)
 {
-  CcFileInfoList oFileList = CcDirectory::getFileList(m_Path);
+  CcFileInfoList oFileList = CcDirectory::getFileList(m_sPath);
   for (CcFileInfo& oFile : oFileList)
   {
     if (oFile.isFile())
     {
-      CcString sFileToDelete = m_Path;
+      CcString sFileToDelete = m_sPath;
       sFileToDelete.appendPath(oFile.getName());
       if (!CcFile::remove(sFileToDelete))
         return false;
     }
     else if(bRecursive)
     {
-      CcString sFileToDelete = m_Path;
+      CcString sFileToDelete = m_sPath;
       sFileToDelete.appendPath(oFile.getName());
       if (!CcDirectory::remove(sFileToDelete, true))
         return false;
@@ -221,7 +221,7 @@ bool CcDirectory::clear(const CcString& sPath, bool bRecursive)
 bool CcDirectory::setCreated(const CcDateTime& oCreated)
 {
   bool bRet = false;
-  CcFile oFile(m_Path);
+  CcFile oFile(m_sPath);
   if (oFile.open(EOpenFlags::Write | EOpenFlags::Attributes | EOpenFlags::ShareWrite))
   {
     if (oFile.setCreated(oCreated))
@@ -236,7 +236,7 @@ bool CcDirectory::setCreated(const CcDateTime& oCreated)
 bool CcDirectory::setModified(const CcDateTime& oModified)
 {
   bool bRet = false;
-  CcFile oFile(m_Path);
+  CcFile oFile(m_sPath);
   if (oFile.open(EOpenFlags::Write | EOpenFlags::Attributes | EOpenFlags::ShareWrite))
   {
     if (oFile.setModified(oModified))
@@ -250,19 +250,19 @@ bool CcDirectory::setModified(const CcDateTime& oModified)
 
 bool CcDirectory::setUserId(uint32 uiUserId)
 {
-  CcFile oFile(m_Path);
+  CcFile oFile(m_sPath);
   return oFile.setUserId(uiUserId);
 }
 
 bool CcDirectory::setGroupId(uint32 uiGroupId)
 {
-  CcFile oFile(m_Path);
+  CcFile oFile(m_sPath);
   return oFile.setGroupId(uiGroupId);
 }
 
 CcFileInfoList CcDirectory::getFileList()
 {
-  CcFile cFile(m_Path);
+  CcFile cFile(m_sPath);
   return cFile.getFileList();
 }
 

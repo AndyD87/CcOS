@@ -16,24 +16,11 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcEventActionList
+ * @brief     Class CcI2CSimulation
  */
-#pragma once
 
-//! Forward Declaration
-#include "CcBase.h"
-#include "CcEventAction.h"
-#include "CcList.h"
-
-/**
- * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
- */
-class CcKernelSHARED CcEventActionList : public CcList<CcEventAction*>
-{
-public:
-};
+#include "Devices/Simulations/CcI2CSimulation.h"

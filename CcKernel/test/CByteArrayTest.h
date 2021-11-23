@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CByteArrayTest
  **/
-#ifndef H_CByteArrayTest_H_
-#define H_CByteArrayTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -48,5 +47,3 @@ public:
 private:
   bool testStringConversions();
 };
-
-#endif // H_CByteArrayTest_H_

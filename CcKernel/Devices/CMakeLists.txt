@@ -79,12 +79,16 @@ set( SOURCE_FILES
       ${CMAKE_CURRENT_LIST_DIR}/IWlanAccessPoint.h
       ${CMAKE_CURRENT_LIST_DIR}/IWlanClient.h
       ${CMAKE_CURRENT_LIST_DIR}/com.h
+      ${CMAKE_CURRENT_LIST_DIR}/Simulations/CcBoardSupportSimulation.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/Simulations/CcBoardSupportSimulation.h
       ${CMAKE_CURRENT_LIST_DIR}/Simulations/CcClockSimulation.cpp
       ${CMAKE_CURRENT_LIST_DIR}/Simulations/CcClockSimulation.h
       ${CMAKE_CURRENT_LIST_DIR}/Simulations/CcEepromSimulation.cpp
       ${CMAKE_CURRENT_LIST_DIR}/Simulations/CcEepromSimulation.h
       ${CMAKE_CURRENT_LIST_DIR}/Simulations/CcGpioPortSimulation.cpp
       ${CMAKE_CURRENT_LIST_DIR}/Simulations/CcGpioPortSimulation.h
+      ${CMAKE_CURRENT_LIST_DIR}/Simulations/CcI2CSimulation.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/Simulations/CcI2CSimulation.h
       ${CMAKE_CURRENT_LIST_DIR}/Simulations/CcSpiSimulation.cpp
       ${CMAKE_CURRENT_LIST_DIR}/Simulations/CcSpiSimulation.h
 )

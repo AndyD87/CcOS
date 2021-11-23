@@ -31,6 +31,8 @@
 #include "CcArray.h"
 #include "CcVector.h"
 #include "CcString.h"
+#include "CcDevice.h"
+#include "CcDeviceList.h"
 
 /**
  * @brief Communication Device for I2C
@@ -38,48 +40,97 @@
 class CcKernelSHARED IBoardSupport : public IDevice
 {
 public:
-  /**
-   * @brief Constructor
-   */
-  IBoardSupport();
-
-  /**
-   * @brief Destructor
-   */
   virtual ~IBoardSupport();
 
-  class CPortPin
-  {
-  public:
-    uint16 uiPort;
-    uint16 uiPin;
-  };
+  uint32 getDeviceSize() const
+  { return static_cast<uint32>(m_oHwDevices.size()); }
 
-  class CFunction
+  /**
+   * @brief Get number of Devices available on board of specific type
+   * @param eDeviceType: Type of Device to search for
+   * @return Number of available Devices
+   */
+  uint32 getDeviceSize(EDeviceType eDeviceType) const;
+
+  virtual CcDevice createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber) = 0;
+
+protected:
+  class CHwDevice
   {
   public:
-    EDeviceType           eFunction;
-    uint16                uiFunctionNr;
-    CcVector<CPortPin>    oRequiredPins;
-    CcVector<CPortPin>    oOptinalPins;
-  };
+    class CPort
+    {
+    public:
+      CPort() = default;
+      CPort(uint16 uiPort, const CcVector<uint16>& oPins) :
+        uiPort(uiPort),
+        oPins(oPins)
+      {}
+
+      uint16 uiPort = UINT16_MAX;
+      CcVector<uint16> oPins;
+    };
+
+    CHwDevice() = default;
+    CHwDevice(EDeviceType eDevice,
+              uint16      uiDeviceNr,
+              const CcVector<CPort>& oRequiredPins,
+              const CcVector<CPort>& oOptionalPins) :
+      eDevice(eDevice),
+      uiDeviceNr(uiDeviceNr),
+      oRequiredPins(oRequiredPins),
+      oOptionalPins(oOptionalPins)
+    {}
+
+    EDeviceType     eDevice     = EDeviceType::Unknown;
+    uint16          uiDeviceNr  = 0;
+    IDevice*        pDevice     = nullptr;
+    CcVector<CPort> oRequiredPins;
+    CcVector<CPort> oOptionalPins;
+  } InvalidDevice;
 
   class CHwPin
   {
   public:
-    uint32 uiFunctionNr   = UINT32_MAX;           //!< Number of function in board support list this pin is mapped to, or UINT32_MAX if not.
-    CcVector<EDeviceType> oSupportedFunctions;
-    uint16 uiSoftwarePort = UINT16_MAX;
-    uint16 uiSoftwarePin  = UINT16_MAX;
-    CcString sDescription;
+    CHwPin() = default;
+    CHwPin( uint16 uiSoftwarePort,
+            uint16 uiSoftwarePin,
+            CcVector<uint32> oSupportedDevices,
+            CcString sDescription) :
+      m_oSupportedDevices(oSupportedDevices),
+      m_uiSoftwarePort(uiSoftwarePort),
+      m_uiSoftwarePin(uiSoftwarePin),
+      m_sDescription(sDescription)
+    {}
+  private:
+    uint32 m_uiSelectedDeviceNr = UINT32_MAX;           //!< Number of Device in board support list this pin is mapped to, or UINT32_MAX if not.
+    CcVector<uint32> m_oSupportedDevices;
+    uint16 m_uiSoftwarePort       = UINT16_MAX;
+    uint16 m_uiSoftwarePin        = UINT16_MAX;
+    CcString m_sDescription;
   };
 
   class CHwPort
   {
-    CcVector<CHwPin> oHwPins;
+  public:
+    CHwPort() = default;
+    CHwPort(uint32 uiPort, CcVector<CHwPin> oHwPins) :
+      uiPortNr(uiPort),
+      oHwPins(oHwPins)
+    {}
+    uint32            uiPortNr = UINT32_MAX;
+    CcVector<CHwPin>  oHwPins;
   };
 
+
+  IBoardSupport(const CcVector<CHwDevice>& oDevices, const CcVector<CHwPort>& oPorts) :
+    m_oHwDevices(oDevices),
+    m_oHwPorts(oPorts)
+  {}
+
+  CHwDevice& getHwDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber);
+
 protected:
-  CcVector<CFunction>    m_oFunctions;
-  CcVector<CHwPort>      m_oPorts;
+  CcVector<CHwDevice>    m_oHwDevices;
+  CcVector<CHwPort>      m_oHwPorts;
 };

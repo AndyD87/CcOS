@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcFileInfo
  **/
-#ifndef H_CcFileInfo_H_
-#define H_CcFileInfo_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -154,5 +153,3 @@ private:
   EFileAccess m_eAccess     = EFileAccess::None;
   uint64      m_uiFileSize = 0;
 };
-
-#endif // H_CcFileInfo_H_

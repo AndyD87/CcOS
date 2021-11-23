@@ -32,47 +32,6 @@
 
 OrangePiZeroBoardSupport::OrangePiZeroBoardSupport()
 {
-  /*m_oPorts =
-              {
-                // Port
-                {
-                  // Pin
-                  {
-                    UINT32_MAX,
-                    {},
-                    UINT16_MAX,
-                    UINT16_MAX,
-                    "3V3"
-                  },
-                  // Pin
-                  {
-                    UINT32_MAX,
-                    {},
-                    UINT16_MAX,
-                    UINT16_MAX,
-                    "GND"
-                  },
-                },
-                // Port
-                {
-                  // Pin
-                  {
-                    UINT32_MAX,
-                    {},
-                    UINT16_MAX,
-                    UINT16_MAX,
-                    "3V3"
-                  },
-                  // Pin
-                  {
-                    UINT32_MAX,
-                    {},
-                    UINT16_MAX,
-                    UINT16_MAX,
-                    "GND"
-                  },
-                }
-              };*/
 }
 
 OrangePiZeroBoardSupport::~OrangePiZeroBoardSupport()

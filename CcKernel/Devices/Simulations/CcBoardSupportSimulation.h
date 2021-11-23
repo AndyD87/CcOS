@@ -16,24 +16,36 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcEventActionList
+ * @brief     Class CcSpiSimulation
  */
 #pragma once
 
-//! Forward Declaration
 #include "CcBase.h"
-#include "CcEventAction.h"
-#include "CcList.h"
+#include "Devices/IBoardSupport.h"
 
 /**
- * @brief Class for writing Output to Log. Additionally it handles Debug and Verbose output
+ * @brief Setup test hardware board with:
+ *        - 2 Hardware ports
+ *        - 20 Pins each port
+ *        - 3 Example Functions with I2C, SPI and UART
+ *        - I2C and SPI are Multiplexed and mapped to 16 GPIO Pins each port
  */
-class CcKernelSHARED CcEventActionList : public CcList<CcEventAction*>
+class CcBoardSupportSimulation : public IBoardSupport
 {
 public:
+  /**
+   * @brief Constructor
+   */
+  CcBoardSupportSimulation();
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcBoardSupportSimulation();
+
+  virtual CcDevice createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber) override;
 };
