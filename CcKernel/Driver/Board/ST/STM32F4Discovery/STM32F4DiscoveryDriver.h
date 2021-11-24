@@ -20,9 +20,7 @@
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */
-
-#ifndef H_STM32F4DiscoveryDriver_H_
-#define H_STM32F4DiscoveryDriver_H_
+#pragma once
 
 #include "STM32F4Discovery.h"
 #include "IDriver.h"
@@ -48,5 +46,3 @@ public:
   virtual CcStatus entry() override;
   virtual CcStatus unload() override;
 };
-
-#endif // H_STM32F4DiscoveryDriver_H_

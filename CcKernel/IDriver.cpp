@@ -20,35 +20,18 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class OrangePiZeroDriver
+ * @brief     Class IDriver
  */
 
-#include "OrangePiZero.h"
-#include "OrangePiZeroDriver.h"
-#include "CcKernel.h"
-#include "OrangePiZeroLed.h"
-#include "CcDevice.h"
-#include "OrangePiZeroBoardSupport.h"
+#include "IDriver.h"
 
-#include "wiringPi.h"
-
-OrangePiZeroDriver::OrangePiZeroDriver()
+CcStatus IDriver::unload()
 {
-}
-
-OrangePiZeroDriver::~OrangePiZeroDriver()
-{
-}
-
-CcStatus OrangePiZeroDriver::entry()
-{
-  wiringPiSetup();
-  CcDevice hDevice(new OrangePiZeroLed(0), EDeviceType::Led);
-  CcKernel::addDevice(hDevice);
-  return true;
-}
-
-CcStatus OrangePiZeroDriver::unload()
-{
-  return true;
+  CcStatus oStatus;
+  for(IDevice* pDevice : m_oDevices)
+  {
+    CCDELETE(pDevice);
+  }
+  m_oDevices.clear();
+  return oStatus;
 }

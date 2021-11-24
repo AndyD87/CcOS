@@ -26,6 +26,13 @@
 
 #include "CcBase.h"
 #include "CcStatus.h"
+#include "CcDevice.h"
+#include "CcVector.h"
+
+#ifdef _MSC_VER
+template class CcKernelSHARED CcVector<IDevice*>;
+#endif
+
 
 /**
  * @brief Default Class to create a Application
@@ -46,6 +53,12 @@ public:
 
   /**
    * @brief Unload will be called when driver will be removed.
+   *        All devices in m_oDevices will be deleted here.
+   *        If overloaded the derived class has to delete it self or has to call this method.
    */
-  virtual CcStatus unload() = 0;
+  virtual CcStatus unload();
+
+protected:
+  CcVector<IDevice*> m_oDevices;  //!< Storage of all devices created by this driver
+                                  //! They will be deleted on unload
 };

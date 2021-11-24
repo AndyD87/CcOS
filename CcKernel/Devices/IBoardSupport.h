@@ -75,7 +75,7 @@ protected:
     CHwDevice(EDeviceType eDevice,
               uint16      uiDeviceNr,
               const CcVector<CPort>& oRequiredPins,
-              const CcVector<CPort>& oOptionalPins) :
+              const CcVector<CPort>& oOptionalPins = {}) :
       eDevice(eDevice),
       uiDeviceNr(uiDeviceNr),
       oRequiredPins(oRequiredPins),

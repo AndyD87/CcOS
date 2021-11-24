@@ -22,6 +22,7 @@
  * @par       Language: C++11
  * @brief     Implementation of class OrangePiZeroGpioPort
  **/
+#include <cstddef>
 #include <OrangePiZeroGpioPort.h>
 #include "CcKernel.h"
 

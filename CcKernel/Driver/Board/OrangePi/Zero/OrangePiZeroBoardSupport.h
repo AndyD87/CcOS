@@ -40,4 +40,6 @@ public:
    * @brief Destructor
    */
   virtual ~OrangePiZeroBoardSupport();
+
+  virtual CcDevice createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber) override;
 };

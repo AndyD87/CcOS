@@ -27,9 +27,7 @@
 #include "Devices/IGpioPort.h"
 
 //! _Number of pins per port
-#define NUMBER_OF_PINS 32
-
-class IGpioPin;
+#define NUMBER_OF_PINS 17
 
 /**
  * @brief Port interfaces for STM32F407

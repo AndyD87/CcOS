@@ -104,6 +104,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcThreadManager.cpp
     CcTimer.cpp
     IDevice.cpp
+    IDriver.cpp
     IModuleBase.cpp
     IThread.cpp
     IWaitable.cpp
