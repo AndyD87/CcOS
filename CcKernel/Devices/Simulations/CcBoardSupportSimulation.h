@@ -34,7 +34,7 @@
  *        - 3 Example Functions with I2C, SPI and UART
  *        - I2C and SPI are Multiplexed and mapped to 16 GPIO Pins each port
  */
-class CcBoardSupportSimulation : public IBoardSupport
+class CcKernelSHARED CcBoardSupportSimulation : public IBoardSupport
 {
 public:
   /**

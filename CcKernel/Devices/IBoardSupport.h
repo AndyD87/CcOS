@@ -55,10 +55,10 @@ public:
   virtual CcDevice createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber) = 0;
 
 protected:
-  class CHwDevice
+  class CcKernelSHARED CHwDevice
   {
   public:
-    class CPort
+    class CcKernelSHARED CPort
     {
     public:
       CPort() = default;
@@ -68,7 +68,11 @@ protected:
       {}
 
       uint16 uiPort = UINT16_MAX;
-      CcVector<uint16> oPins;
+      typedef CcVector<uint16> CPinList;
+      #ifdef _MSC_VER
+        class CcKernelSHARED CPinList;
+      #endif
+      CPinList oPins;
     };
 
     CHwDevice() = default;
@@ -85,11 +89,16 @@ protected:
     EDeviceType     eDevice     = EDeviceType::Unknown;
     uint16          uiDeviceNr  = 0;
     IDevice*        pDevice     = nullptr;
+    
+    typedef CcVector<CPort> CPortList;
+    #ifdef _MSC_VER
+      class CcKernelSHARED CPortList;
+    #endif
     CcVector<CPort> oRequiredPins;
     CcVector<CPort> oOptionalPins;
   };
 
-  class CHwPin
+  class CcKernelSHARED CHwPin
   {
   public:
     CHwPin() = default;
@@ -104,13 +113,17 @@ protected:
     {}
 
     uint32 uiSelectedDeviceNr = UINT32_MAX;           //!< Number of Device in board support list this pin is mapped to, or UINT32_MAX if not.
-    CcVector<uint32> oSupportedDevices;
+    typedef CcVector<uint32> CDeviceList;
+    #ifdef _MSC_VER
+      class CcKernelSHARED CDeviceList;
+    #endif
+    CDeviceList oSupportedDevices;
     uint16 uiSoftwarePort       = UINT16_MAX;
     uint16 uiSoftwarePin        = UINT16_MAX;
     CcString sDescription;
   };
 
-  class CHwPort
+  class CcKernelSHARED CHwPort
   {
   public:
     CHwPort() = default;
@@ -122,7 +135,11 @@ protected:
     CHwPin& getHwPin(uint16 uiPort);
 
     uint32            uiPortNr = UINT32_MAX;
-    CcVector<CHwPin>  oHwPins;
+    typedef CcVector<CHwPin> CPinList;
+    #ifdef _MSC_VER
+      class CcKernelSHARED CPinList;
+    #endif
+    CPinList  oHwPins;
   };
 
 
@@ -137,8 +154,19 @@ protected:
   bool setHwDeviceUsage(const CHwDevice& oHwDevice, uint32 uiUsedFunction);
 
 protected:
-  CcVector<CHwDevice>    m_oHwDevices;
-  CcVector<CHwPort>      m_oHwPorts;
+
+  //! Define list of hw devices to execute
+  typedef CcVector<CHwDevice> CHwDeviceList;
+  #ifdef _MSC_VER
+    class CcKernelSHARED CHwDeviceList;
+  #endif
+    //! Define list of hw ports to execute
+  typedef CcVector<CHwPort> CHwPortList;
+  #ifdef _MSC_VER
+    class CcKernelSHARED CHwPortList;
+  #endif
+  CHwDeviceList    m_oHwDevices;
+  CHwPortList      m_oHwPorts;
 
   static CHwDevice InvalidDevice;
   static CHwPin InvalidPin;
