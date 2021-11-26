@@ -294,10 +294,11 @@ size_t CcStringUtil::findNextNotWhiteSpace(const wchar_t* pcString, size_t uiLen
     switch (pcString[i])
     {
       case ' ':
-      case '\t':
-      case '\n':
       case '\r':
+      case '\n':
+      case '\t':
       case '\f':
+      case '\b':
       case '\v':
         continue;
       default:
@@ -313,7 +314,10 @@ bool CcStringUtil::isWhiteSpace(const wchar_t toTest)
   if (toTest == ' ' ||
     toTest == '\r' ||
     toTest == '\n' ||
-    toTest == '\t'
+    toTest == '\t' ||
+    toTest == '\f' ||
+    toTest == '\b' ||
+    toTest == '\v'
     )
     bRet = true;
   return bRet;
@@ -608,6 +612,19 @@ CcString CcStringUtil::encodeBase58(const CcByteArray& toEncode)
 CcByteArray CcStringUtil::decodeBase58(const CcString& toDecode)
 {
   return decodeBaseX(toDecode, CcStringUtil_pszBase58, 58);
+}
+
+CcString CcStringUtil::escapeString(const CcString& toDecode)
+{
+  CcString sReturn = toDecode;
+  sReturn.replace("\"", "\"");
+  sReturn.replace("\\", "\\\\");
+  sReturn.replace("\r", "\\\r");
+  sReturn.replace("\n", "\\\n");
+  sReturn.replace("\b", "\\\b");
+  sReturn.replace("\t", "\\\t");
+  sReturn.replace("\f", "\\\f");
+  return sReturn;
 }
 
 CcString CcStringUtil::getExtensionFromPath(const CcString& sPath)

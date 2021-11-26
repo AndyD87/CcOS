@@ -743,6 +743,8 @@ CcString& CcString::set(const char *toSet, size_t length)
 CcString& CcString::set(const CcByteArray &toSet, size_t uiPos, size_t uiLength)
 {
   clear();
+  if (uiLength == SIZE_MAX)
+    uiLength = toSet.size() - uiPos;
   return append(toSet, uiPos, uiLength);
 }
 

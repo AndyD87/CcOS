@@ -289,6 +289,13 @@ public:
   static CcByteArray decodeBase58(const CcString& toDecode);
 
   /**
+   * @brief Escape string by adding \ to this signs: \,"
+   * @param toDecode: String to decode
+   * @return Decoded data as binary array
+   */
+  static CcString escapeString(const CcString& toDecode);
+
+  /**
    * @brief Get file extension from Path
    * @param sPath: path to extract extension from
    * @return Found extension or full path if not found

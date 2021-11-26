@@ -139,7 +139,7 @@ bool CcHttpClient::exec(EHttpRequestType eRequestType, const CcByteArray& oData)
           }
           if (oStatus && oData.size())
           {
-            if (m_Socket.writeArray(oData))
+            if (!m_Socket.writeArray(oData))
             {
               CCDEBUG("Failed to write additional data");
               oStatus = false;

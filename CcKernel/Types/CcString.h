@@ -70,16 +70,14 @@ public:
    * @brief Create a string and copy content from another
    * @param sToCopy: Another string to copy content from
    */
-  CcString(const CcString& sToCopy) :
-    CcString()
+  CcString(const CcString& sToCopy)
   { operator=(sToCopy); }
 
   /**
    * @brief Create a string and move content from another
    * @param sToMove: Another string to move content from
    */
-  CcString(CcString&& sToMove) NOEXCEPT :
-    CcString()
+  CcString(CcString&& sToMove) NOEXCEPT
   { operator=(CCMOVE(sToMove)); }
 
   /**
@@ -136,7 +134,7 @@ public:
    * @param baString: ByteArray to import as String
    */
   CcString(CcByteArray&& baString)
-    { operator=(CCMOVE(baString)); }
+  { operator=(CCMOVE(baString)); }
 
   /**
    * @brief Clean up and free all requested Memory
