@@ -56,6 +56,7 @@ int main(int iArgc, char** ppArgv)
       char pChar;
       pInterface->read(&pChar, 0);
       pInterface->read(&pChar, 1);
+      pInterface->readRegister8(0x00, &pChar, 1);
     }
   }
   return iRet;

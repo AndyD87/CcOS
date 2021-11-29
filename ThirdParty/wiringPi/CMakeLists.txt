@@ -21,5 +21,7 @@ elseif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         message(FATAL_ERROR "Wiring Pi requires defined board type ${CCOS_BOARD_TYPE}")
       endif()
     endif()
+
+    CcOSSetInstall(${CURRENT_PROJECT})
   endif()
 endif()

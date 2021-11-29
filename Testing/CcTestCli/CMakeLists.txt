@@ -33,3 +33,4 @@ set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "Testing")
 #################
 CcOSExeSettings(${CURRENT_PROJECT})
 CcSetFiltersByFolders(${SOURCE_FILES})
+CcOSSetInstall(${CURRENT_PROJECT})

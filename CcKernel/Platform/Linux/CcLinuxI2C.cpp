@@ -44,11 +44,18 @@ public:
     II2CSlave(uiAddress)
   {
     // open a channel to the I2C device
-    m_iDevice = open(pDevice.getCharString(), uiAddress);
+    m_iDevice = open(pDevice.getCharString(), O_RDWR);
 
     if (m_iDevice < 0)
     {
       CCERROR(CcString("Could not open i2c device ") << uiAddress << " " << CcString::fromNumber(errno));
+    }
+    else
+    {
+      if (ioctl(m_iDevice, I2C_SLAVE, uiAddress) < 0)
+      {
+        CCERROR(CcString("Could not open i2c slave device ") << uiAddress << " " << CcString::fromNumber(errno));
+      }
     }
   }
 
@@ -190,11 +197,12 @@ public:
         }
         else
         {
-          CcStatic::memcpy(puBuffer, data.block + 1, data.block[0]);
-          puBuffer    += data.block[0];
-          uiReturn    += data.block[0];
-          uiSize      -= data.block[0];
-          uiRegister  += data.block[0];
+          uiTransferSize = CCMIN(uiTransferSize, data.block[0]);
+          CcStatic::memcpy(puBuffer, data.block + 1, uiTransferSize);
+          puBuffer    += uiTransferSize;
+          uiReturn    += uiTransferSize;
+          uiSize      -= uiTransferSize;
+          uiRegister  += uiTransferSize;
         }
       }
     }

@@ -42,7 +42,7 @@ OrangePiZeroDriver::~OrangePiZeroDriver()
 
 CcStatus OrangePiZeroDriver::entry()
 {
-  wiringPiSetup();
+  //wiringPiSetup();
   CcDevice hDevice(new OrangePiZeroLed(0), EDeviceType::Led);
   CcKernel::addDevice(hDevice);
   return true;
