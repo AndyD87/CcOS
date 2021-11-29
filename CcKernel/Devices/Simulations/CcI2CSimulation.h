@@ -31,6 +31,29 @@
 /**
  * @brief Control the Input and Output ports on device
  */
+class CcKernelSHARED CcI2CSlaveSimulation : public II2CSlave
+{
+public:
+  CcI2CSlaveSimulation(uint16 uiAddress) :
+    II2CSlave(uiAddress)
+  {}
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcI2CSlaveSimulation() = default;
+
+  virtual size_t read(void* pBuffer, size_t uSize) override;
+  virtual size_t write(const void* pBuffer, size_t uSize) override;
+
+private:
+  CcByteArray m_oData;
+};
+
+
+/**
+ * @brief Control the Input and Output ports on device
+ */
 class CcKernelSHARED CcI2CSimulation : public II2C
 {
 public:
@@ -39,5 +62,6 @@ public:
    */
   virtual ~CcI2CSimulation() = default;
 
-private:
+  virtual I2CSlave* createInterface(uint16 uiAddress) override;
+
 };

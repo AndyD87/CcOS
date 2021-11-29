@@ -24,3 +24,23 @@
  */
 
 #include "Devices/Simulations/CcI2CSimulation.h"
+
+size_t CcI2CSlaveSimulation::read(void* pBuffer, size_t uSize)
+{
+  return m_oData.read(pBuffer, uSize);
+}
+
+size_t CcI2CSlaveSimulation::write(const void* pBuffer, size_t uSize)
+{
+  return m_oData.write(pBuffer, uSize);
+}
+
+I2CSlave* CcI2CSimulation::createInterface(uint16 uiAddress)
+{
+  I2CSlave* pSlave = nullptr;
+  if(getState() == EState::Running)
+  {
+    CCNEWTYPE(pOpiSlave, CcI2CSlaveSimulation, uiAddress);
+  }
+  return pSlave;
+}

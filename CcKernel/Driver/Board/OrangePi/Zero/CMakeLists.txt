@@ -11,6 +11,8 @@ set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/OrangePiZeroGpioPort.h
         ${CMAKE_CURRENT_LIST_DIR}/OrangePiZeroLed.cpp
         ${CMAKE_CURRENT_LIST_DIR}/OrangePiZeroLed.h
+        ${CMAKE_CURRENT_LIST_DIR}/OrangePiZeroI2C.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/OrangePiZeroI2C.h
 )
 
 add_to_driver_headers("Board/OrangePi/Zero/OrangePiZeroDriver.h")

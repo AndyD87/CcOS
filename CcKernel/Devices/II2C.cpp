@@ -31,3 +31,47 @@ II2C::II2C()
 II2C::~II2C()
 {
 }
+
+II2CSlave::~II2CSlave()
+{
+}
+
+size_t II2CSlave::readRegister8(uint8 uiRegister, void* pBuffer, size_t uiSize)
+{
+  size_t uiRead = write(&uiRegister, sizeof(uiRegister));
+  if(uiRead == sizeof(uiRegister))
+  {
+    uiRead = read(pBuffer, uiSize);
+  }
+  return uiRead;
+}
+
+size_t II2CSlave::readRegister16(uint16 uiRegister, void* pBuffer, size_t uiSize)
+{
+  size_t uiRead = write(&uiRegister, sizeof(uiRegister));
+  if(uiRead == sizeof(uiRegister))
+  {
+    uiRead = read(pBuffer, uiSize);
+  }
+  return uiRead;
+}
+
+size_t II2CSlave::writeRegister8(uint8 uiRegister, void* pBuffer, size_t uiSize)
+{
+  size_t uiWritten = write(&uiRegister, sizeof(uiRegister));
+  if(uiWritten == sizeof(uiRegister))
+  {
+    uiWritten = write(pBuffer, uiSize);
+  }
+  return uiWritten;
+}
+
+size_t II2CSlave::writeRegister16(uint16 uiRegister, void* pBuffer, size_t uiSize)
+{
+  size_t uiWritten = write(&uiRegister, sizeof(uiRegister));
+  if(uiWritten == sizeof(uiRegister))
+  {
+    uiWritten = write(pBuffer, uiSize);
+  }
+  return uiWritten;
+}

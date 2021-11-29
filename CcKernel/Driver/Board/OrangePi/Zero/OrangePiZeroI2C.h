@@ -16,34 +16,43 @@
  **/
 /**
  * @file
- *
+ * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
+ * @brief     Class OrangePiZeroI2C
  */
 #pragma once
 
-#include "OrangePiZero.h"
-#include "Devices/IBoardSupport.h"
-#include "OrangePiZeroGpioPort.h"
+#include "CcBase.h"
+#include "Devices/II2C.h"
+#include "CcByteArray.h"
+
+class OrangePiZeroBoardSupport;
 
 /**
- * @brief Setup hardware for orange pi zero board.
+ * @brief Control the Input and Output ports on device
  */
-class OrangePiZeroBoardSupport : public IBoardSupport
+class CcKernelSHARED OrangePiZeroI2C : public II2C
 {
 public:
-  /**
-   * @brief Constructor
-   */
-  OrangePiZeroBoardSupport();
+  class CSlave;
+
+  OrangePiZeroI2C(OrangePiZeroBoardSupport* pBoard, uint8 uiNr) :
+    m_pBoard(pBoard),
+    m_uiNr(uiNr)
+  {}
 
   /**
    * @brief Destructor
    */
-  virtual ~OrangePiZeroBoardSupport();
+  virtual ~OrangePiZeroI2C();
 
-  virtual CcDevice createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber) override;
+  virtual CcStatus setState(EState eState);
+
+  virtual I2CSlave* createInterface(uint16 uiAddress) override;
 
 private:
-  OrangePiZeroGpioPort m_oGpio;
+  OrangePiZeroBoardSupport* m_pBoard;
+  uint8                     m_uiNr;
 };

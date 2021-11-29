@@ -48,7 +48,7 @@ OrangePiZeroBoardSupport::OrangePiZeroBoardSupport()  :
                   CHwPin(NP, NP, {},         "5V"),
                   CHwPin( 0,  8, {},         "PS12/I2C0_SDA"),
                   CHwPin(NP, NP, {},         "5V"),
-                  CHwPin( 0,  9, {},         "PA11/I2C0_SDA"),
+                  CHwPin( 0,  9, {},         "PA11/I2C0_SDC"),
                   CHwPin(NP, NP, {},         "GND"),
                   CHwPin( 0,  7, {},         "PA06/PWM1"),
                   CHwPin( 0, 15, {},         "PG06/UART1_TX"),
@@ -61,7 +61,7 @@ OrangePiZeroBoardSupport::OrangePiZeroBoardSupport()  :
                   CHwPin( 0,  3, {},         "PA00/UART2_CTS"),
                   CHwPin( 0,  4, {},         "PA19/I2C1_SDA"),
                   CHwPin(NP, NP, {},         "3V3"),
-                  CHwPin( 0,  5, {},         "PA18/I2C1_SDK"),
+                  CHwPin( 0,  5, {},         "PA18/I2C1_SDC"),
                   CHwPin( 0, 12, {},         "PA15/SPI_MOSI"),
                   CHwPin(NP, NP, {},         "GND"),
                   CHwPin( 0, 13, {},         "PA16/SPI_MISO"),
@@ -109,18 +109,6 @@ CcDevice OrangePiZeroBoardSupport::createDevice(EDeviceType eDeviceType, uint32 
     {
       case EDeviceType::GpioPort:
       {
-        if(rDevice.pDevice == nullptr)
-        {
-          CCNEWTYPE(pGpio, OrangePiZeroGpioPort);
-          rDevice.pDevice = pGpio;
-          oDevice.set(pGpio, EDeviceType::GpioPort);
-          CcKernel::addDevice(oDevice);
-          setHwDeviceUsage(rDevice, uiId);
-        }
-        else
-        {
-          oDevice = rDevice.pDevice;
-        }
         break;
       }
       case EDeviceType::Spi:
