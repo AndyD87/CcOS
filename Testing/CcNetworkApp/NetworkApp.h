@@ -25,8 +25,7 @@
  *
  *  Example GUI-Application with Menue Structure and Application Loader
  */
-#ifndef H_NetworkApp_H_
-#define H_NetworkApp_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcApp.h"
@@ -63,5 +62,3 @@ private:
 
   CcHandle<IHttpPathProvider> m_CameraProvider = NULL;
 };
-
-#endif // H_NetworkApp_H_

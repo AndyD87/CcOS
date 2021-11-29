@@ -212,14 +212,6 @@ public:
   void sleep(uint32 uiTimeoutMs);
 
   /**
-   * @brief Get device by type and index of found devices
-   * @param eType:  Type of device to get
-   * @param uiNr:   Index of device on system.
-   * @return Found device or invalid device if not
-   */
-  const CcDevice& getDevice(EDeviceType eType, size_t uiNr);
-
-  /**
    * @brief Get device by type and name
    * @param eType:  Type of device to get
    * @param sName:  Name of device to search for

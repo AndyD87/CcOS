@@ -3,6 +3,8 @@
 ########
 set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/CcLinux.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcLinuxBoardSupport.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcLinuxBoardSupport.h
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxFile.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxFile.h
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxFilesystem.cpp
@@ -11,6 +13,8 @@ set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxGpioPin.h
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxGpioPort.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxGpioPort.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcLinuxI2C.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcLinuxI2C.h
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxLed.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxLed.h
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxModule.cpp

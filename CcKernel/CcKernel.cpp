@@ -52,6 +52,7 @@
 #include "CcVersion.h"
 #include "IModuleBase.h"
 #include "CcDevice.h"
+#include "Devices/CcBoardSupport.h"
 
 #ifdef LINUX
   #include <unistd.h>
@@ -366,21 +367,25 @@ bool CcKernel::getDebug()
   return CcKernelPrivate::pPrivate->m_bDebug;
 }
 
-const CcDevice& CcKernel::getDevice(EDeviceType Type, size_t nr)
+const CcDevice& CcKernel::getDevice(EDeviceType eType, size_t nr)
 {
 #ifdef GENERIC
   // because nummerated devices are only in Kernel no system is requested
   return CcKernelPrivate::pPrivate->m_DeviceList.getDevice(Type, nr);
 #else
-  CcDevice& oHandle = CcKernelPrivate::pPrivate->m_DeviceList.getDevice(Type, nr);
-  if (oHandle.isValid() == false)
+  CcDevice& oHandle = CcKernelPrivate::pPrivate->m_DeviceList.getDevice(eType, nr);
+  if (oHandle.isValid() == false && eType != EDeviceType::BoardSupport)
   {
-    oHandle = CcKernelPrivate::pPrivate->pSystem->getDevice(Type, nr);
+    CcBoardSupport oBoardSupport = CcKernel::getDevice(EDeviceType::BoardSupport);
+    if(oBoardSupport.isValid())
+    {
+      oHandle = oBoardSupport.getDevice()->createDevice(eType, nr);
+    }
   }
   if (oHandle.isValid() == false)
   {
-    CcKernelPrivate::pPrivate->m_oDriverList.load(Type);
-    oHandle = CcKernelPrivate::pPrivate->m_DeviceList.getDevice(Type, nr);
+    CcKernelPrivate::pPrivate->m_oDriverList.load(eType);
+    oHandle = CcKernelPrivate::pPrivate->m_DeviceList.getDevice(eType, nr);
   }
   return oHandle;
 #endif

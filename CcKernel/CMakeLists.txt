@@ -3,7 +3,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   # Define public header
   ########
-  set (HEADER_FILES
+  set (KERNEL_HEADER_FILES
     CcAppDirectories.h
     CcApp.h
     CcAppKnownList.h
@@ -205,14 +205,14 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} KERNEL_SOURCE_FILES)
   endif()
   
-  CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${KERNEL_SOURCE_FILES} ${KERNEL_TYPE_FILES} )
+  CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${KERNEL_SOURCE_FILES} ${KERNEL_HEADER_FILES} ${KERNEL_TYPE_FILES} )
 
   if(${KERNEL_DEPENDENCIES})
     add_dependencies(${CURRENT_PROJECT} ${KERNEL_DEPENDENCIES})
   endif()
 
   set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS")
-  set_target_properties( ${CURRENT_PROJECT} PROPERTIES PUBLIC_HEADER "${HEADER_FILES}")
+  set_target_properties( ${CURRENT_PROJECT} PROPERTIES PUBLIC_HEADER "${KERNEL_HEADER_FILES}")
   
   install( FILES ${KERNEL_TYPE_HEADER}
            DESTINATION  include/${CURRENT_PROJECT}/Types
@@ -236,7 +236,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Post configuration steps
   #################
   CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${KERNEL_INCLUDES})
-  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${KERNEL_SOURCE_FILES} ${KERNEL_TYPE_FILES})
+  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${KERNEL_SOURCE_FILES} ${KERNEL_HEADER_FILES}  ${KERNEL_TYPE_FILES})
 
   ########
   # Add an unity-test, if available

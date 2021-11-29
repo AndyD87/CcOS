@@ -62,6 +62,6 @@ public:
    */
   virtual ~CcI2CSimulation() = default;
 
-  virtual I2CSlave* createInterface(uint16 uiAddress) override;
+  virtual II2CSlave* createInterface(uint16 uiAddress) override;
 
 };

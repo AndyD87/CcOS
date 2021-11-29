@@ -35,9 +35,9 @@ size_t CcI2CSlaveSimulation::write(const void* pBuffer, size_t uSize)
   return m_oData.write(pBuffer, uSize);
 }
 
-I2CSlave* CcI2CSimulation::createInterface(uint16 uiAddress)
+II2CSlave* CcI2CSimulation::createInterface(uint16 uiAddress)
 {
-  I2CSlave* pSlave = nullptr;
+  II2CSlave* pSlave = nullptr;
   if(getState() == EState::Running)
   {
     CCNEWTYPE(pOpiSlave, CcI2CSlaveSimulation, uiAddress);

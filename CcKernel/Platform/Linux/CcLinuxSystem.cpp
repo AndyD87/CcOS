@@ -42,6 +42,7 @@
 #include "CcLinuxSharedMemory.h"
 #include "CcLinuxNetworkStack.h"
 #include "CcLinuxModule.h"
+#include "CcLinuxBoardSupport.h"
 #include "CcDirectory.h"
 #include "CcKernel.h"
 #include "CcProcess.h"
@@ -83,6 +84,7 @@ public:
     return pReturn;
   }
 
+  CcLinuxBoardSupport       oBoardSupport;
   CcLinuxNetworkStack*      pNetworkStack;
   IFileSystem*              pFilesystem;
   CcDeviceList              oDeviceList;
@@ -165,10 +167,12 @@ void CcSystem::init()
   }
   signal(SIGPIPE, SIG_IGN);
   m_pPrivate->initSystem();
+  CcKernel::addDevice(CcDevice(&m_pPrivate->oBoardSupport, EDeviceType::BoardSupport));
 }
 
 void CcSystem::deinit()
 {
+  CcKernel::removeDevice(CcDevice(&m_pPrivate->oBoardSupport, EDeviceType::BoardSupport));
   m_pPrivate->oThreadManager.closeAll();
   CcFileSystem::removeMountPoint("/");
   
@@ -439,13 +443,6 @@ CcDateTime CcSystem::getUpTime()
 void CcSystem::sleep(uint32 timeoutMs)
 {
   usleep(1000 * timeoutMs);
-}
-
-const CcDevice& CcSystem::getDevice(EDeviceType Type, size_t uiNr)
-{
-  CCUNUSED(Type);
-  CCUNUSED(uiNr);
-  return CcDevice::NullDevice;
 }
 
 const CcDevice& CcSystem::getDevice(EDeviceType Type, const CcString& sName)

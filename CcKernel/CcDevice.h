@@ -79,6 +79,13 @@ public:
    */
   CcDevice& operator=(IDevice* pDevice)
   { CcHandle<IDevice>::operator =(pDevice); return *this;}
+
+  bool operator==(const CcDevice& oDevice) const
+  { return m_eType == oDevice.m_eType && ptr() == oDevice.ptr(); }
+
+  bool operator==(const IDevice* pDevice) const
+  { return ptr() == pDevice; }
+
   //! @return Get type of current handle
   EDeviceType getType() const
   { return m_eType; }
@@ -109,6 +116,7 @@ public:
    * @return
    */
   static EDeviceType getTypeFromString(const CcString& sType, bool* bOk = nullptr);
+
 public:
   static CcDevice NullDevice;   //!< Default nullptr device to avoid crashes on access.
 private:

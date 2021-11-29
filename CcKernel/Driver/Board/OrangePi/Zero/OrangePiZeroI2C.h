@@ -27,20 +27,19 @@
 #include "CcBase.h"
 #include "Devices/II2C.h"
 #include "CcByteArray.h"
+#include "CcLinuxI2C.h"
 
 class OrangePiZeroBoardSupport;
 
 /**
  * @brief Control the Input and Output ports on device
  */
-class CcKernelSHARED OrangePiZeroI2C : public II2C
+class CcKernelSHARED OrangePiZeroI2C : public CcLinuxI2C
 {
 public:
-  class CSlave;
-
   OrangePiZeroI2C(OrangePiZeroBoardSupport* pBoard, uint8 uiNr) :
-    m_pBoard(pBoard),
-    m_uiNr(uiNr)
+    CcLinuxI2C(uiNr),
+    m_pBoard(pBoard)
   {}
 
   /**
@@ -48,11 +47,6 @@ public:
    */
   virtual ~OrangePiZeroI2C();
 
-  virtual CcStatus setState(EState eState);
-
-  virtual I2CSlave* createInterface(uint16 uiAddress) override;
-
 private:
   OrangePiZeroBoardSupport* m_pBoard;
-  uint8                     m_uiNr;
 };

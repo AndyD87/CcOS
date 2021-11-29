@@ -16,42 +16,30 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2017
+ *
  * @author    Andreas Dirmeier
- * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class II2C
  */
-#include "II2C.h"
+#pragma once
 
-II2C::II2C()
-{
-}
+#include "CcLinux.h"
+#include "Devices/IBoardSupport.h"
 
-II2C::~II2C()
+/**
+ * @brief Setup hardware for orange pi zero board.
+ */
+class CcLinuxBoardSupport : public IBoardSupport
 {
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CcLinuxBoardSupport();
 
-II2CSlave::~II2CSlave()
-{
-}
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcLinuxBoardSupport();
 
-size_t II2CSlave::readRegister8(uint8 uiRegister, void* pBuffer, size_t uiSize)
-{
-  size_t uiRead = write(&uiRegister, sizeof(uiRegister));
-  if(uiRead == sizeof(uiRegister))
-  {
-    uiRead = read(pBuffer, uiSize);
-  }
-  return uiRead;
-}
-
-size_t II2CSlave::writeRegister8(uint8 uiRegister, void* pBuffer, size_t uiSize)
-{
-  size_t uiWritten = write(&uiRegister, sizeof(uiRegister));
-  if(uiWritten == sizeof(uiRegister))
-  {
-    uiWritten = write(pBuffer, uiSize);
-  }
-  return uiWritten;
-}
+  virtual CcDevice createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber) override;
+};

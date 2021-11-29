@@ -20,38 +20,37 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class II2C
+ * @brief     Class CcLinuxI2C
  */
-#include "II2C.h"
+#pragma once
 
-II2C::II2C()
-{
-}
+#include "CcBase.h"
+#include "Devices/II2C.h"
+#include "CcByteArray.h"
 
-II2C::~II2C()
-{
-}
+class OrangePiZeroBoardSupport;
 
-II2CSlave::~II2CSlave()
+/**
+ * @brief Control the Input and Output ports on device
+ */
+class CcKernelSHARED CcLinuxI2C : public II2C
 {
-}
+public:
+  class CSlave;
 
-size_t II2CSlave::readRegister8(uint8 uiRegister, void* pBuffer, size_t uiSize)
-{
-  size_t uiRead = write(&uiRegister, sizeof(uiRegister));
-  if(uiRead == sizeof(uiRegister))
-  {
-    uiRead = read(pBuffer, uiSize);
-  }
-  return uiRead;
-}
+  CcLinuxI2C(uint8 uiNr) :
+    m_uiNr(uiNr)
+  {}
 
-size_t II2CSlave::writeRegister8(uint8 uiRegister, void* pBuffer, size_t uiSize)
-{
-  size_t uiWritten = write(&uiRegister, sizeof(uiRegister));
-  if(uiWritten == sizeof(uiRegister))
-  {
-    uiWritten = write(pBuffer, uiSize);
-  }
-  return uiWritten;
-}
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcLinuxI2C() = default;
+
+  virtual CcStatus setState(EState eState);
+
+  virtual II2CSlave* createInterface(uint16 uiAddress) override;
+
+private:
+  uint8                     m_uiNr;
+};
