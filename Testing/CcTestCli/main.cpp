@@ -53,10 +53,14 @@ int main(int iArgc, char** ppArgv)
     II2CSlave* pInterface = oI2CDevice.getDevice()->createInterface(0x20);
     if(pInterface)
     {
-      char pChar;
+      char pChar[16];
       pInterface->read(&pChar, 0);
       pInterface->read(&pChar, 1);
-      pInterface->readRegister8(0x00, &pChar, 1);
+      pInterface->readRegister8(0x00, pChar, 16);
+      for(int i = 0; i < 16; i++)
+      {
+        CCDEBUG("Register: " + CcString::fromNumber(i) + " " + CcString::fromNumber(pChar[i], 16).fillBeginUpToLength("0",2));
+      }
     }
   }
   return iRet;
