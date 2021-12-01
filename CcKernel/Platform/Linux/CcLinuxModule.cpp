@@ -46,7 +46,7 @@ CcLinuxModule::~CcLinuxModule()
   resetHandles();
 }
 
-CcStatus CcLinuxModule::loadModule(const CcString& sName, const IKernel& oKernel)
+CcStatus CcLinuxModule::loadModule(const CcString& sName, IKernel& oKernel)
 {
   m_sName = sName;
   CcStatus oStatus(false);

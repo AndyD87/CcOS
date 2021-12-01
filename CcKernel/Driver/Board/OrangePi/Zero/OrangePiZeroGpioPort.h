@@ -42,7 +42,7 @@ public: //methods
   OrangePiZeroGpioPort();
   virtual ~OrangePiZeroGpioPort();
 
-  virtual CcStatus setState(EState eState) override;
+  virtual CcStatus onState(EState eState) override;
 
   virtual uint8 count() const override
   { return NUMBER_OF_PINS;}

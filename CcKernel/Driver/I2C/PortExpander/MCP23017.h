@@ -25,31 +25,40 @@
 #pragma once
 
 #include "CcBase.h"
-#include "IDevice.h"
 #include "CcByteArray.h"
+#include "Devices/IGpioPort.h"
 
-class II2C;
+class II2CSlave;
 class IGpioPort;
 class IGpioPin;
 
 /**
  * @brief Class impelmentation
  */
-class MCP23017 : public IDevice
+class MCP23017 : public IGpioPort
 {
 public:
   /**
    * @brief Constructor
    */
-  MCP23017(II2C* pI2CDevice);
+  MCP23017(II2CSlave* pI2CDevice);
 
   /**
    * @brief Destructor
    */
   virtual ~MCP23017();
 
+  virtual CcStatus onState(EState eState) override;
 
+  virtual inline uint8 count() const override
+  { return 16; }
+  virtual bool setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
+  virtual IGpioPin::EDirection getDirection(size_t uiPin) override;
+  virtual bool setValue(size_t uiPin, bool bValue) override;
+  virtual bool getValue(size_t uiPin) override;
 
 private:
-  II2C* m_pII2CDevice;
+
+private:
+  II2CSlave* m_pII2CDevice;
 };

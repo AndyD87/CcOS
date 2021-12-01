@@ -65,6 +65,12 @@ OrangePiZeroLed::~OrangePiZeroLed()
   CCDELETE(m_pPrivate);
 }
 
+CcStatus OrangePiZeroLed::onState(EState eState)
+{
+  CCUNUSED(eState);
+  return CcStatus();
+}
+
 CcStatus OrangePiZeroLed::setMaxBirghtness(uint16 uiBrightness)
 {
   CcStatus oSuccess = false;

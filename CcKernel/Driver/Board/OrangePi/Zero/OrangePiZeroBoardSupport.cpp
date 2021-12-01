@@ -97,6 +97,12 @@ OrangePiZeroBoardSupport::~OrangePiZeroBoardSupport()
 {
 }
 
+CcStatus OrangePiZeroBoardSupport::onState(EState eState)
+{
+  CCUNUSED(eState);
+  return CcStatus();
+}
+
 CcDevice OrangePiZeroBoardSupport::createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber)
 {
   CcDevice oDevice;

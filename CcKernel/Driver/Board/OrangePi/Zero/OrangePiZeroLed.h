@@ -45,6 +45,8 @@ public:
    */
   virtual ~OrangePiZeroLed();
 
+  virtual CcStatus onState(EState eState) override;
+
   virtual CcStatus setMaxBirghtness(uint16 uiBrightness) override;
 
   virtual CcStatus on(uint16 uiBrightness = 0) override;

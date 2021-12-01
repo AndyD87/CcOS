@@ -95,7 +95,7 @@ public:
   virtual void idle(){}
 
   //! @return Get current state of device. This can be overloaded from device.
-  virtual EState getState() const
+  EState getState() const
   { return m_eState; }
 
   /**
@@ -124,7 +124,15 @@ public:
    * @param eState: New state as enum to set
    * @return Status value for reporting success or known error.
    */
-  virtual CcStatus setState(EState eState);
+  CcStatus setState(EState eState);
+
+  /**
+   * @brief On state method will be called on every changed state.
+   *        It can be handled by the derived classed if action is needed.
+   * @param eState: New state of device
+   * @return Success if state was set successfully, if error occured device will be called with EState::Stop.
+   */
+  virtual CcStatus onState(EState eState) { CCUNUSED(eState); return CcStatus(); }
 
   //! @return True if device state is >EState::Starting
   bool isStarted()

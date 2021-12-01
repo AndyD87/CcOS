@@ -63,12 +63,13 @@ public:
 
   /**
    * @brief Initialize basic settings for General Purpose Input Output of single pin
+   *        If not overrided, the method will forward to setPinsDirection with one pin
    * @param uiPin:      Target pin to set
    * @param eDirection: New configuration for pin to set.
    * @param uiValue:    Additional context value to set, specific on cpu/board. Default 0
    * @return true if Configuration was set successfully.
    */
-  virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue = 0) = 0;
+  virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue = 0);
 
   /**
    * @brief Get current direction of Pin

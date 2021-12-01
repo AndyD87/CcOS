@@ -44,9 +44,9 @@ OrangePiZeroGpioPort::~OrangePiZeroGpioPort()
   }
 }
 
-CcStatus OrangePiZeroGpioPort::setState(EState eState)
+CcStatus OrangePiZeroGpioPort::onState(EState eState)
 {
-  CcStatus oStatus = false;
+  CcStatus oStatus;
   switch(eState)
   {
     case EState::Start:
@@ -59,7 +59,7 @@ CcStatus OrangePiZeroGpioPort::setState(EState eState)
       oStatus = true;
       break;
     default:
-      oStatus = EStatus::NotSupported;
+      break;
   }
   return oStatus;
 }

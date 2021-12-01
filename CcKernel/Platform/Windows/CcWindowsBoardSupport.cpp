@@ -70,7 +70,7 @@ CcDevice CcWindowsBoardSupport::createDevice(EDeviceType eDeviceType, size_t uiD
         if (uiDeviceNumber == 0)
         {
           CCNEWTYPE(pTimer, CcWindowsTimer);
-          m_oHwDevices.append(CHwDevice(eDeviceType, uiDeviceNumber, {}, {}));
+          m_oHwDevices.append(CHwDevice(eDeviceType, uiDeviceNumber, {}, {}, pTimer));
           oDevice.set(pTimer, eDeviceType);
           return CcKernel::addDevice(CcDevice(pTimer, eDeviceType));
         }

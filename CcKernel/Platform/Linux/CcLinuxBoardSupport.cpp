@@ -46,34 +46,43 @@ CcLinuxBoardSupport::~CcLinuxBoardSupport()
 {
 }
 
-CcDevice CcLinuxBoardSupport::createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber)
+CcDevice CcLinuxBoardSupport::createDevice(EDeviceType eDeviceType, size_t uiDeviceNumber)
 {
   CcDevice oDevice;
-  uint32 uiId = UINT32_MAX;
-  switch (eDeviceType)
+  size_t uiFunctionNr = SIZE_MAX;
+  CHwDevice& rHwDevice = getHwDevice(eDeviceType, uiDeviceNumber, uiFunctionNr);
+  if (&rHwDevice == &InvalidDevice)
   {
-    case EDeviceType::GpioPort:
+    switch (eDeviceType)
     {
-      break;
-    }
-    case EDeviceType::Spi:
-    {
-      break;
-    }
-    case EDeviceType::I2C:
-    {
-      CcLinuxI2C* pI2C = new CcLinuxI2C(uiDeviceNumber);
-      if(pI2C)
+      case EDeviceType::GpioPort:
       {
-        oDevice = pI2C;
-        oDevice->start();
+        break;
       }
-      break;
+      case EDeviceType::Spi:
+      {
+        break;
+      }
+      case EDeviceType::I2C:
+      {
+        CcLinuxI2C* pI2C = new CcLinuxI2C(uiDeviceNumber);
+        if(pI2C)
+        {
+          m_oHwDevices.append(CHwDevice(eDeviceType, uiDeviceNumber, {}, {}, pI2C));
+          oDevice = pI2C;
+          oDevice->start();
+        }
+        break;
+      }
+      default:
+      {
+        CCDEBUG("Requested device not found");
+      }
     }
-    default:
-    {
-      CCDEBUG("Requested device not found");
-    }
+  }
+  else
+  {
+    oDevice.set(rHwDevice.pDevice, rHwDevice.eDevice);
   }
   return oDevice;
 }

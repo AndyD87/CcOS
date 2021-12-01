@@ -23,15 +23,173 @@
  * @brief     Implemtation of class MCP23017
  */
 #include "MCP23017.h"
-#include "Devices/ISpi.h"
+#include "Devices/II2C.h"
 #include "Devices/IGpioPin.h"
 #include "CcConversionTables.h"
 
-MCP23017::MCP23017(II2C* pII2CDevice) :
+#define REGISTER_IODIRA     0x00
+#define REGISTER_IODIRB     0x01
+#define REGISTER_IPOLA      0x02
+#define REGISTER_IPOLB      0x03
+#define REGISTER_IOCON      0x05
+#define REGISTER_GPIOA      0x08
+#define REGISTER_GPIOB      0x09
+#define REGISTER_OLATA      0x14
+#define REGISTER_OLATB      0x15
+
+#define REGISTER_IOCON_BANK 0x80
+
+MCP23017::MCP23017(II2CSlave* pII2CDevice) :
   m_pII2CDevice(pII2CDevice)
 {
+
 }
 
 MCP23017::~MCP23017()
 {
+}
+
+CcStatus MCP23017::onState(EState eState)
+{
+  CcStatus oStatus;
+  switch(eState)
+  {
+    case EState::Start:
+      oStatus = true;
+      if(m_pII2CDevice)
+      {
+        // Make sure IOCON.BANK is 0
+        uint8 uiValue = 0x00;
+        m_pII2CDevice->readRegister8(REGISTER_IOCON, &uiValue, 1);
+        if(IS_FLAG_SET(uiValue, REGISTER_IOCON_BANK))
+        {
+          uiValue &= ~REGISTER_IOCON_BANK;
+          m_pII2CDevice->writeRegister8(REGISTER_IOCON, &uiValue, 1);
+        }
+      }
+      break;
+    case EState::Pause:
+      oStatus = true;
+      break;
+    case EState::Stop:
+      oStatus = true;
+      break;
+    default:
+      break;
+  }
+  return oStatus;
+}
+
+bool MCP23017::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
+{
+  CCUNUSED(uiValue);
+  bool bSuccess = true;
+  switch(eDirection)
+  {
+    case IGpioPin::EDirection::Output:
+      if(m_pII2CDevice)
+      {
+        // Make sure IOCON.BANK is 0
+        uint8 uiValue = 0x00;
+        if(1 == m_pII2CDevice->readRegister8(REGISTER_IODIRA, &uiValue, 1))
+        {
+          uiValue &= ~static_cast<uint8>(uiPinMask);
+          m_pII2CDevice->writeRegister8(REGISTER_IODIRA, &uiValue, 1);
+        }
+        if(1 == m_pII2CDevice->readRegister8(REGISTER_IODIRB, &uiValue, 1))
+        {
+          uiValue &= ~static_cast<uint8>(uiPinMask >> 8);
+          m_pII2CDevice->writeRegister8(REGISTER_IODIRB, &uiValue, 1);
+        }
+      }
+      else
+      {
+        bSuccess = false;
+      }
+      break;
+    case IGpioPin::EDirection::Input:
+      if(m_pII2CDevice)
+      {
+        // Make sure IOCON.BANK is 0
+        uint8 uiValue = 0x00;
+        if(1 == m_pII2CDevice->readRegister8(REGISTER_IODIRA, &uiValue, 1))
+        {
+          uiValue |= static_cast<uint8>(uiPinMask);
+          m_pII2CDevice->writeRegister8(REGISTER_IODIRA, &uiValue, 1);
+        }
+        if(1 == m_pII2CDevice->readRegister8(REGISTER_IODIRB, &uiValue, 1))
+        {
+          uiValue |= static_cast<uint8>(uiPinMask >> 8);
+          m_pII2CDevice->writeRegister8(REGISTER_IODIRB, &uiValue, 1);
+        }
+      }
+      else
+      {
+        bSuccess = false;
+      }
+      break;
+    default:
+      bSuccess = false;
+  }
+
+  return bSuccess;
+}
+
+IGpioPin::EDirection MCP23017::getDirection(size_t uiPin)
+{
+  uint8 uiValue = 0x00;
+  if(uiPin < 8 && 1 == m_pII2CDevice->readRegister8(REGISTER_IODIRA, &uiValue, 1))
+  {
+    return (IS_FLAG_SET(1 << uiPin, uiValue)) ? IGpioPin::EDirection::Input : IGpioPin::EDirection::Output;
+  }
+  else if(uiPin < 16 && 1 == m_pII2CDevice->readRegister8(REGISTER_IODIRB, &uiValue, 1))
+  {
+    return (IS_FLAG_SET(1 << (uiPin - 8), uiValue)) ? IGpioPin::EDirection::Input : IGpioPin::EDirection::Output;
+  }
+  return IGpioPin::EDirection::Unknown;
+}
+
+bool MCP23017::setValue(size_t uiPin, bool bValue)
+{
+  if(m_pII2CDevice)
+  {
+    // Make sure IOCON.BANK is 0
+    uint8 uiValue = 0x00;
+    if(uiPin < 8 && 1 == m_pII2CDevice->readRegister8(REGISTER_OLATA, &uiValue, 1))
+    {
+      if(bValue)
+        uiValue |= static_cast<uint8>(1 << uiPin);
+      else
+        uiValue &= ~static_cast<uint8>(1 << uiPin);
+      m_pII2CDevice->writeRegister8(REGISTER_IODIRA, &uiValue, 1);
+    }
+    else if(uiPin < 16 && 1 == m_pII2CDevice->readRegister8(REGISTER_OLATB, &uiValue, 1))
+    {
+      if(bValue)
+        uiValue |= static_cast<uint8>(1 << (uiPin-8));
+      else
+        uiValue &= ~static_cast<uint8>(1 << (uiPin-8));
+      m_pII2CDevice->writeRegister8(REGISTER_OLATB, &uiValue, 1);
+    }
+  }
+  return bValue;
+}
+
+bool MCP23017::getValue(size_t uiPin)
+{
+  bool bValue = false;
+  if(m_pII2CDevice)
+  {
+    // Make sure IOCON.BANK is 0
+    uint8 uiValue = 0x00;
+    if(uiPin < 8 && 1 == m_pII2CDevice->readRegister8(REGISTER_OLATA, &uiValue, 1))
+    {
+      bValue = IS_FLAG_SET(uiValue, (1 << uiPin));
+    }
+    else if(uiPin < 16 && 1 == m_pII2CDevice->readRegister8(REGISTER_OLATB, &uiValue, 1))
+    {
+      bValue = IS_FLAG_SET(uiValue, (1 << (uiPin - 8)));
+    }
+  }
+  return bValue;
 }

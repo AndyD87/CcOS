@@ -41,5 +41,5 @@ public:
    */
   virtual ~CcLinuxBoardSupport();
 
-  virtual CcDevice createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber) override;
+  virtual CcDevice createDevice(EDeviceType eDeviceType, size_t uiDeviceNumber) override;
 };

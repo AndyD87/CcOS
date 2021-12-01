@@ -72,7 +72,7 @@ CcLinuxTimer::~CcLinuxTimer()
   CCDELETE(m_pPrivate);
 }
 
-CcStatus CcLinuxTimer::setState(EState eState)
+CcStatus CcLinuxTimer::onState(EState eState)
 {
   CcStatus oStatus;
   switch (eState)
@@ -126,10 +126,6 @@ CcStatus CcLinuxTimer::setState(EState eState)
     }
     default:
       break;
-  }
-  if (oStatus)
-  {
-    oStatus = IDevice::setState(eState);
   }
   return oStatus;
 }

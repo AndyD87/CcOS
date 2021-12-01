@@ -42,6 +42,8 @@ public:
    */
   virtual ~OrangePiZeroBoardSupport();
 
+  virtual CcStatus onState(EState eState) override;
+
   virtual CcDevice createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber) override;
 
 private:

@@ -47,7 +47,7 @@ public:
    * @param oKernel:  Kernel to pass to module
    * @return Status of operation
    */
-  CcStatus loadModule(const CcString& sName, const IKernel& oKernel);
+  CcStatus loadModule(const CcString& sName, IKernel &oKernel);
 
   /**
    * @brief Unload an already loaded module from system

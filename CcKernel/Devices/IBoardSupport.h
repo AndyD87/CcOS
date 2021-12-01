@@ -79,16 +79,17 @@ protected:
     CHwDevice(EDeviceType eDevice,
               size_t      uiDeviceNr,
               const CcVector<CPort>& oRequiredPins,
-              const CcVector<CPort>& oOptionalPins = {}) :
+              const CcVector<CPort>& oOptionalPins = {},
+              IDevice*               pDevice = nullptr) :
       eDevice(eDevice),
       uiDeviceNr(uiDeviceNr),
       oRequiredPins(oRequiredPins),
-      oOptionalPins(oOptionalPins)
+      oOptionalPins(oOptionalPins),
+      pDevice(pDevice)
     {}
 
     EDeviceType     eDevice     = EDeviceType::Unknown;
     size_t          uiDeviceNr  = 0;
-    IDevice*        pDevice     = nullptr;
     
     typedef CcVector<CPort> CPortList;
     #ifdef _MSC_VER
@@ -96,6 +97,7 @@ protected:
     #endif
     CcVector<CPort> oRequiredPins;
     CcVector<CPort> oOptionalPins;
+    IDevice*        pDevice     = nullptr;
   };
 
   class CcKernelSHARED CHwPin

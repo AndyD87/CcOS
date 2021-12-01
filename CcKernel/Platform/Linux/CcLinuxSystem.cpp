@@ -638,7 +638,7 @@ CcGroupList CcSystem::getGroupList()
   return oGroups;
 }
 
-CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
+CcStatus CcSystem::loadModule(const CcString& sPath, IKernel& oKernel)
 {
   CCNEWTYPE(pModule, CcLinuxModule);
   CcStatus oStatus(false);

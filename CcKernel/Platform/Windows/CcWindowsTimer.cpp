@@ -67,7 +67,7 @@ CcWindowsTimer::~CcWindowsTimer()
   CCDELETE(m_pPrivate);
 }
 
-CcStatus CcWindowsTimer::setState(EState eState)
+CcStatus CcWindowsTimer::onState(EState eState)
 {
   CcStatus oStatus;
   switch (eState)
@@ -138,10 +138,6 @@ CcStatus CcWindowsTimer::setState(EState eState)
     }
     default:
       break;
-  }
-  if (oStatus)
-  {
-    oStatus = IDevice::setState(eState);
   }
   return oStatus;
 }
