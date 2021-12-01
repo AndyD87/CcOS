@@ -114,13 +114,14 @@ endmacro()
 ################################################################################
 # Choose Driver depending on OS
 ################################################################################
+add_subdirectory(Board)
 add_subdirectory(Camera)
 add_subdirectory(CPU)
-add_subdirectory(Board)
+add_subdirectory(Display)
+add_subdirectory(I2C)
 add_subdirectory(Network)
 add_subdirectory(SPI)
 add_subdirectory(Wlan)
-add_subdirectory(Display)
 
 ################################################################################
 # Write Data to Driverload.cpp
