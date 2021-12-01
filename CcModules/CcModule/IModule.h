@@ -81,7 +81,7 @@ public:
    *        The Kernel is now on all modules the same.
    * @param oKernel: Target Kernel to set
    */
-  virtual void setKernel(const IKernel& oKernel) override final;
+  virtual void setKernel(IKernel& oKernel) override final;
 
 private:
   static CcVector<IModule*>* s_pInstances;  //!< All created instances

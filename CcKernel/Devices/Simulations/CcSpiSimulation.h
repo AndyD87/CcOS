@@ -47,8 +47,8 @@ public:
   virtual size_t writeRead(void* pBuffer, size_t uSize) override;
 
 private:
-  EMode       m_eMode;
-  uint32      m_uiFrequency;
+  EMode       m_eMode       = EMode::Undefined;
+  uint32      m_uiFrequency = 0;
   CcByteArray m_oDataIn;
   CcByteArray m_oDataOut;
 };

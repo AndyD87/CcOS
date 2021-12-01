@@ -44,7 +44,7 @@ public:
      * @param pForward:   Next element in list
      * @param pBackward:  Previously element in list
      */
-    inline CItem(CItem* pForward, CItem* pBackward) : pForward(pForward), pBackward(pBackward) {}
+    inline CItem(CItem* pForward, CItem* pBackward) : pForward(pForward), pBackward(pBackward), oItem() {}
 
     /**
      * @brief Create initialized Item with backward and forward information.

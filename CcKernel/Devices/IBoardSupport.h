@@ -42,17 +42,17 @@ class CcKernelSHARED IBoardSupport : public IDevice
 public:
   virtual ~IBoardSupport();
 
-  uint32 getDeviceSize() const
-  { return static_cast<uint32>(m_oHwDevices.size()); }
+  size_t getDeviceSize() const
+  { return m_oHwDevices.size(); }
 
   /**
    * @brief Get number of Devices available on board of specific type
    * @param eDeviceType: Type of Device to search for
    * @return Number of available Devices
    */
-  uint32 getDeviceSize(EDeviceType eDeviceType) const;
+  size_t getDeviceSize(EDeviceType eDeviceType) const;
 
-  virtual CcDevice createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber) = 0;
+  virtual CcDevice createDevice(EDeviceType eDeviceType, size_t uiDeviceNumber) = 0;
 
 protected:
   class CcKernelSHARED CHwDevice
@@ -77,7 +77,7 @@ protected:
 
     CHwDevice() = default;
     CHwDevice(EDeviceType eDevice,
-              uint16      uiDeviceNr,
+              size_t      uiDeviceNr,
               const CcVector<CPort>& oRequiredPins,
               const CcVector<CPort>& oOptionalPins = {}) :
       eDevice(eDevice),
@@ -87,7 +87,7 @@ protected:
     {}
 
     EDeviceType     eDevice     = EDeviceType::Unknown;
-    uint16          uiDeviceNr  = 0;
+    size_t          uiDeviceNr  = 0;
     IDevice*        pDevice     = nullptr;
     
     typedef CcVector<CPort> CPortList;
@@ -104,7 +104,7 @@ protected:
     CHwPin() = default;
     CHwPin( uint16 uiSoftwarePort,
             uint16 uiSoftwarePin,
-            CcVector<uint32> oSupportedDevices,
+            CcVector<size_t> oSupportedDevices,
             CcString sDescription) :
       oSupportedDevices(oSupportedDevices),
       uiSoftwarePort(uiSoftwarePort),
@@ -112,8 +112,8 @@ protected:
       sDescription(sDescription)
     {}
 
-    uint32 uiSelectedDeviceNr = UINT32_MAX;           //!< Number of Device in board support list this pin is mapped to, or UINT32_MAX if not.
-    typedef CcVector<uint32> CDeviceList;
+    size_t uiSelectedDeviceNr = SIZE_MAX;           //!< Number of Device in board support list this pin is mapped to, or SIZE_MAX if not.
+    typedef CcVector<size_t> CDeviceList;
     #ifdef _MSC_VER
       class CcKernelSHARED CDeviceList;
     #endif
@@ -148,10 +148,10 @@ protected:
     m_oHwPorts(oPorts)
   {}
 
-  CHwDevice& getHwDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber, uint32 &uiFunctionNr);
+  CHwDevice& getHwDevice(EDeviceType eDeviceType, size_t uiDeviceNumber, size_t&uiFunctionNr);
   CHwPort&   getHwPort(uint16 uiPort);
   bool verifyFreePort(const CHwDevice& oHwDevice);
-  bool setHwDeviceUsage(const CHwDevice& oHwDevice, uint32 uiUsedFunction);
+  bool setHwDeviceUsage(const CHwDevice& oHwDevice, size_t uiUsedFunction);
 
 protected:
 
@@ -168,7 +168,7 @@ protected:
   CHwDeviceList    m_oHwDevices;
   CHwPortList      m_oHwPorts;
 
-  static CHwDevice InvalidDevice;
-  static CHwPin InvalidPin;
-  static CHwPort InvalidPort;
+  static CHwDevice  InvalidDevice;
+  static CHwPin     InvalidPin;
+  static CHwPort    InvalidPort;
 };

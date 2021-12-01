@@ -36,8 +36,8 @@
 #include "CcFileSystem.h"
 #include "CcWindowsTouch.h"
 #include "CcWindowsService.h"
+#include "CcWindowsBoardSupport.h"
 #include "CcWindowsServiceControl.h"
-#include "CcWindowsTimer.h"
 #include "CcWindowsPipe.h"
 #include "CcWindowsFile.h"
 #include "CcWindowsFilesystem.h"
@@ -188,7 +188,8 @@ public:
   //CcSharedPointer<CcWindowsRegistryFilesystem>  pRegistryFilesystem;
   CcSharedPointer<CcWindowsNetworkStack> pNetworkStack;
 
-  CcThreadManager oThreadManager;
+  CcThreadManager           oThreadManager;
+  CcWindowsBoardSupport     m_oBoardSupport;
   static FILE*              s_pConsoleFile;
   static CcThreadManager*   s_pThreadManager;
   static CcStatus           s_oCurrentExitCode;
@@ -214,7 +215,7 @@ CcSystem::CcSystem()
     {
       if (m_pPrivate->pProcMemory->claim(EOpenFlags::Read))
       {
-        CcKernel::setInterface(static_cast<IKernel*>(m_pPrivate->pProcMemory->getBuffer())->pBaseObject);
+        CcKernel::setInterface(static_cast<IKernel*>(m_pPrivate->pProcMemory->getBuffer()));
       }
     }
     else
@@ -222,7 +223,7 @@ CcSystem::CcSystem()
       if (m_pPrivate->pProcMemory->open(EOpenFlags::ReadWrite))
       {
         m_pPrivate->bProcMemoryCreated = true;
-        CcStatic::memcpy(m_pPrivate->pProcMemory->getBuffer(), CcKernel::getInterface().pBaseObject, sizeof(IKernel));
+        CcStatic::memcpy(m_pPrivate->pProcMemory->getBuffer(), &CcKernel::getInterface(), sizeof(IKernel));
       }
     }
   #endif
@@ -387,6 +388,7 @@ bool CcSystem::isAdmin()
 
 void CcSystem::CPrivate::initSystem()
 {
+  CcKernel::addDevice(CcDevice(&m_oBoardSupport, EDeviceType::BoardSupport));
 }
 
 void CcSystem::CPrivate::initFilesystem()
@@ -622,30 +624,6 @@ void CcSystem::sleep(uint32 timeoutMs)
 {
   DWORD dwTemp =  timeoutMs;
   Sleep(CCMAX(dwTemp,1));
-}
-
-const CcDevice& CcSystem::getDevice(EDeviceType Type, size_t uiNr)
-{
-  CCUNUSED(uiNr);
-  switch (Type)
-  {
-    case EDeviceType::WlanClient:
-
-      break;
-    case EDeviceType::Timer:
-    {
-      if (uiNr == 0)
-      {
-        CCNEWTYPE(pTimer, CcWindowsTimer);
-        m_pPrivate->oDeviceList.append(static_cast<IDevice*>(pTimer));
-        return CcKernel::addDevice(CcDevice(pTimer, EDeviceType::Timer));
-      }
-      break;
-    }
-    default:
-      break;
-  }
-  return CcDevice::NullDevice;
 }
 
 const CcDevice& CcSystem::getDevice(EDeviceType Type, const CcString& Name)
@@ -890,7 +868,7 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
-CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
+CcStatus CcSystem::loadModule(const CcString& sPath, IKernel& oKernel)
 {
   CCNEWTYPE(pModule, CcWindowsModule);
   CcStatus oStatus(false);

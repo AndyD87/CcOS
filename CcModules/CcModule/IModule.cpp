@@ -112,17 +112,17 @@ void IModule::deinitStatic()
   }
 }
 
-void IModule::setKernel(const IKernel& oKernel)
+void IModule::setKernel(IKernel& oKernel)
 {
   if (s_pInstances)
   {
     if (s_pInstances->size() == 0)
     {
-#ifndef CC_STATIC
-      CcKernel::setInterface(oKernel.pBaseObject);
-#else
-      CCUNUSED(oKernel);
-#endif
+      #ifndef CC_STATIC
+        CcKernel::setInterface(&oKernel);
+      #else
+        CCUNUSED(oKernel);
+      #endif
     }
     s_pInstances->append(this);
   }

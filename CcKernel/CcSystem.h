@@ -233,7 +233,7 @@ public:
    * @param oKernel:  Kernel interface for common memory rang
    * @return Status of operation
    */
-  CcStatus loadModule(const CcString& sPath, const IKernel& oKernel);
+  CcStatus loadModule(const CcString& sPath, IKernel& oKernel);
 
   /**
    * @brief Change working directory for current application

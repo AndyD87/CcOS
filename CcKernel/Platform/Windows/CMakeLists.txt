@@ -3,6 +3,8 @@
 ########
 set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/CcWindows.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcWindowsBoardSupport.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcWindowsBoardSupport.h
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsFile.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsFile.h
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsFilesystem.cpp

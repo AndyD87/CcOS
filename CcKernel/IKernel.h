@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class IKernel
  */
-#ifndef H_IKernel_H_
-#define H_IKernel_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IDevice.h"
@@ -46,12 +45,8 @@ public:
    * @param pContex: Imported kernel private data.
    */
   IKernel(CcKernelPrivate* pContex) :
-    pBaseObject(this),
     pContext(pContex)
   { }
 
-  IKernel*          pBaseObject = nullptr;  //!< Kernel interface
   CcKernelPrivate*  pContext    = nullptr;  //!< Kernel private data
 };
-
-#endif // H_IKernel_H_

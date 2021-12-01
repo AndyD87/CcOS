@@ -410,7 +410,7 @@ const CcDevice& CcKernel::getDevice(EDeviceType Type, const CcString& Name)
   return CcKernelPrivate::pPrivate->pSystem->getDevice(Type, Name);
 }
 
-const IKernel& CcKernel::getInterface()
+IKernel& CcKernel::getInterface()
 {
   return CcKernelPrivate::oInstance.m_oInterfaceModule;
 }
@@ -445,6 +445,7 @@ const CcDevice& CcKernel::addDevice(const CcDevice& Device)
       oEntry.getValue().call(Device.ptr());
     }
   }
+  CcKernelPrivate::pPrivate->m_DeviceList.unlock();
   return oDevice;
 }
 

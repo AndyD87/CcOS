@@ -48,9 +48,9 @@ IBoardSupport::~IBoardSupport()
   m_oHwDevices.clear();
 }
 
-uint32 IBoardSupport::getDeviceSize(EDeviceType eDeviceType) const
+size_t IBoardSupport::getDeviceSize(EDeviceType eDeviceType) const
 {
-  uint32 uiSize = 0;
+  size_t uiSize = 0;
   for(IBoardSupport::CHwDevice& oDevice : m_oHwDevices)
   {
     if(oDevice.eDevice == eDeviceType)
@@ -61,7 +61,7 @@ uint32 IBoardSupport::getDeviceSize(EDeviceType eDeviceType) const
   return uiSize;
 }
 
-IBoardSupport::CHwDevice& IBoardSupport::getHwDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber, uint32& uiFunctionNr)
+IBoardSupport::CHwDevice& IBoardSupport::getHwDevice(EDeviceType eDeviceType, size_t uiDeviceNumber, size_t& uiFunctionNr)
 {
   uiFunctionNr = 0;
   for(IBoardSupport::CHwDevice& oDevice : m_oHwDevices)
@@ -124,7 +124,7 @@ bool IBoardSupport::verifyFreePort(const CHwDevice& oHwDevice)
   return bFree;
 }
 
-bool IBoardSupport::setHwDeviceUsage(const CHwDevice &oHwDevice, uint32 uiUsedFunction)
+bool IBoardSupport::setHwDeviceUsage(const CHwDevice &oHwDevice, size_t uiUsedFunction)
 {
   bool bFree = true;
   for(const CHwDevice::CPort& oPort : oHwDevice.oRequiredPins)

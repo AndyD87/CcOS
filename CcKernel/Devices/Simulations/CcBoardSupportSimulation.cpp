@@ -77,10 +77,10 @@ CcBoardSupportSimulation::~CcBoardSupportSimulation()
 {
 }
 
-CcDevice CcBoardSupportSimulation::createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber)
+CcDevice CcBoardSupportSimulation::createDevice(EDeviceType eDeviceType, size_t uiDeviceNumber)
 {
   CcDevice oDevice;
-  uint32 uiId = UINT32_MAX;
+  size_t uiId = SIZE_MAX;
   CHwDevice& rDevice = getHwDevice(eDeviceType, uiDeviceNumber, uiId);
   if(&rDevice != &InvalidDevice &&
      verifyFreePort(rDevice))

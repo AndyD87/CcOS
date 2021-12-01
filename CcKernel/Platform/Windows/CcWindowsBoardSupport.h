@@ -16,40 +16,30 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2017
+ *
  * @author    Andreas Dirmeier
- * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class MCP23017
- **/
+ */
 #pragma once
 
-#include "CcBase.h"
-#include "IDevice.h"
-#include "CcByteArray.h"
-
-class II2C;
-class IGpioPort;
-class IGpioPin;
+#include "CcWindows.h"
+#include "Devices/IBoardSupport.h"
 
 /**
- * @brief Class impelmentation
+ * @brief Setup hardware for orange pi zero board.
  */
-class MCP23017 : public IDevice
+class CcWindowsBoardSupport : public IBoardSupport
 {
 public:
   /**
    * @brief Constructor
    */
-  MCP23017(II2C* pI2CDevice);
+  CcWindowsBoardSupport();
 
   /**
    * @brief Destructor
    */
-  virtual ~MCP23017();
+  virtual ~CcWindowsBoardSupport();
 
-
-
-private:
-  II2C* m_pII2CDevice;
+  virtual CcDevice createDevice(EDeviceType eDeviceType, size_t uiDeviceNumber) override;
 };

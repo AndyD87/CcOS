@@ -47,5 +47,5 @@ public:
    */
   virtual ~CcBoardSupportSimulation();
 
-  virtual CcDevice createDevice(EDeviceType eDeviceType, uint32 uiDeviceNumber) override;
+  virtual CcDevice createDevice(EDeviceType eDeviceType, size_t uiDeviceNumber) override;
 };

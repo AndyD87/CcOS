@@ -289,7 +289,7 @@ public: // Methods
    * @brief Get Kernel interface for memory operations
    * @return Handle to Interface with kernel operators
    */
-  static const IKernel& getInterface();
+  static IKernel& getInterface();
 
   /**
    * @brief Override kernel interface.
