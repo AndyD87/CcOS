@@ -45,7 +45,7 @@ public: //methods
   STM32F407SystemGpioPort(uint8 uiPort);
   virtual ~STM32F407SystemGpioPort();
 
-  virtual CcStatus setState(EState eState) override;
+  virtual CcStatus onState(EState eState) override;
 
   virtual uint8 count() const override
   { return NUMBER_OF_PINS;}

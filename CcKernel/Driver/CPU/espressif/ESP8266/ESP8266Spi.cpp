@@ -51,8 +51,9 @@ ESP8266Spi::~ESP8266Spi()
   s_pSpi = nullptr;
 }
 
-CcStatus ESP8266Spi::setState(EState eState)
+CcStatus ESP8266Spi::onState(EState eState)
 {
+  CcStatus oStatus;
   switch(eState)
   {
     case EState::Start:
@@ -75,7 +76,7 @@ CcStatus ESP8266Spi::setState(EState eState)
       // Do nothing
       break;
   }
-  return ISpi::setState(eState);
+  return oStatus;
 }
 
 CcStatus ESP8266Spi::setMode(EMode eMode)

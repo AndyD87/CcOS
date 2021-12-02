@@ -91,7 +91,7 @@ CcStatus WindowsWlanDriver::unload()
 {
   for (WindowsWlanClient* pClient : m_pPrivate->oClients)
   {
-    pClient->setState(IDevice::EState::Stopping);
+    pClient->stop();
     CcKernel::removeDevice(CcDevice(pClient, EDeviceType::WlanClient));
     CCDELETE(pClient);
   }

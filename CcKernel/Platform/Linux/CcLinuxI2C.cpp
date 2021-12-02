@@ -253,7 +253,7 @@ private:
   int m_iDevice = -1;
 };
 
-CcStatus CcLinuxI2C::setState(EState eState)
+CcStatus CcLinuxI2C::onState(EState eState)
 {
   CcStatus oReturn;
   switch(eState)
@@ -261,19 +261,14 @@ CcStatus CcLinuxI2C::setState(EState eState)
     case EState::Start:
     {
       CcString sPath("/dev/i2c-" + CcString::fromNumber(m_uiNr));
-      if(CcFile::exists(sPath))
-      {
-        oReturn = IDevice::setState(EState::Run);
-      }
-      else
+      if(!CcFile::exists(sPath))
       {
         oReturn = EStatus::FSFileNotFound;
-        IDevice::setState(EState::Stopped);
       }
       break;
     }
     default:
-      oReturn = IDevice::setState(eState);
+      break;
   }
   return oReturn;
 }

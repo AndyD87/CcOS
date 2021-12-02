@@ -83,7 +83,7 @@ STM32F407SystemGpioPort::~STM32F407SystemGpioPort()
   }
 }
 
-CcStatus STM32F407SystemGpioPort::setState(EState eState)
+CcStatus STM32F407SystemGpioPort::onState(EState eState)
 {
   CcStatus oStatus = false;
   switch(eState)
@@ -98,7 +98,7 @@ CcStatus STM32F407SystemGpioPort::setState(EState eState)
       oStatus = true;
       break;
     default:
-      oStatus = EStatus::NotSupported;
+      break;
   }
   return oStatus;
 }

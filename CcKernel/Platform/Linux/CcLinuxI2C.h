@@ -47,7 +47,7 @@ public:
    */
   virtual ~CcLinuxI2C() = default;
 
-  virtual CcStatus setState(EState eState);
+  virtual CcStatus onState(EState eState) override;
 
   virtual II2CSlave* createInterface(uint16 uiAddress) override;
 

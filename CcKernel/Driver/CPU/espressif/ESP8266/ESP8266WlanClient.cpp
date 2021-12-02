@@ -60,7 +60,7 @@ bool ESP8266WlanClient::isConnected()
   return false;
 }
 
-CcStatus ESP8266WlanClient::setState(EState eState)
+CcStatus ESP8266WlanClient::onState(EState eState)
 {
   CcStatus oStatus;
   switch(eState)
@@ -122,10 +122,6 @@ CcStatus ESP8266WlanClient::setState(EState eState)
     }
     default:
       break;
-  }
-  if(oStatus)
-  {
-    oStatus = IDevice::setState(eState);
   }
   return oStatus;
 }

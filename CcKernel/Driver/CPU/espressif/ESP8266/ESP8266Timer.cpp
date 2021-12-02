@@ -48,7 +48,7 @@ ESP8266Timer::~ESP8266Timer()
   hw_timer_deinit();
 }
 
-CcStatus ESP8266Timer::setState(EState eState)
+CcStatus ESP8266Timer::onState(EState eState)
 {
   CcStatus oStatus;
   switch(eState)
@@ -66,10 +66,6 @@ CcStatus ESP8266Timer::setState(EState eState)
     }
     default:
       break;
-  }
-  if(oStatus)
-  {
-    oStatus = IDevice::setState(eState);
   }
   return oStatus;
 }

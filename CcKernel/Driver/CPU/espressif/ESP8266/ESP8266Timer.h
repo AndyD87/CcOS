@@ -36,7 +36,7 @@ public:
   ESP8266Timer();
   virtual ~ESP8266Timer();
 
-  virtual CcStatus setState(EState eState) override;
+  virtual CcStatus onState(EState eState) override;
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
 
   /**

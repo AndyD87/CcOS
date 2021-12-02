@@ -52,7 +52,7 @@ ESP8266WlanAccessPoint::~ESP8266WlanAccessPoint()
   CCDELETE(m_pPrivate);
 }
 
-CcStatus ESP8266WlanAccessPoint::setState(EState eState)
+CcStatus ESP8266WlanAccessPoint::onState(EState eState)
 {
   CcStatus oStatus;
   switch(eState)
@@ -115,10 +115,6 @@ CcStatus ESP8266WlanAccessPoint::setState(EState eState)
     }
     default:
       break;
-  }
-  if(oStatus)
-  {
-    oStatus = IDevice::setState(eState);
   }
   return oStatus;
 }

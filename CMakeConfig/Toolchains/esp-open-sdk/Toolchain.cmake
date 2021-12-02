@@ -8,6 +8,7 @@ else()
   CcDownloadAndExtract( "esp-open-sdk"
                         "${GCC_DIR}"
                         "https://coolcow.de/projects/ThirdParty/esp-open-sdk/binaries/1.22.0.0/Ubuntu-x64.tar.gz"
+                        "a97823f9da1776bfef62a9e196f8d04cd0bacafc"
                         "https://dl.espressif.com/dl/xtensa-lx106-elf-linux64-1.22.0-92-g8facf4c-5.2.0.tar.gz"
   )
 

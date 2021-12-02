@@ -41,7 +41,7 @@ public:
   ESP8266WlanAccessPoint(ESP8266Wlan* pAdapter);
   virtual ~ESP8266WlanAccessPoint() override;
 
-  virtual CcStatus setState(EState eState) override;
+  virtual CcStatus onState(EState eState) override;
   virtual const CcMacAddress& getMacAddress() override;
   virtual bool isConnected() override;
   virtual CcStatus setCredentials(const CcString& sSsid, const CcString& sPassord) override;

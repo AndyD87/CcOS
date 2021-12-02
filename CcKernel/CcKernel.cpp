@@ -369,10 +369,6 @@ bool CcKernel::getDebug()
 
 const CcDevice& CcKernel::getDevice(EDeviceType eType, size_t nr)
 {
-#ifdef GENERIC
-  // because nummerated devices are only in Kernel no system is requested
-  return CcKernelPrivate::pPrivate->m_DeviceList.getDevice(Type, nr);
-#else
   CcDevice& oHandle = CcKernelPrivate::pPrivate->m_DeviceList.getDevice(eType, nr);
   if (oHandle.isValid() == false && eType != EDeviceType::BoardSupport)
   {
@@ -388,7 +384,6 @@ const CcDevice& CcKernel::getDevice(EDeviceType eType, size_t nr)
     oHandle = CcKernelPrivate::pPrivate->m_DeviceList.getDevice(eType, nr);
   }
   return oHandle;
-#endif
 }
 
 CcDeviceList CcKernel::getDevices(EDeviceType Type)

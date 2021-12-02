@@ -41,7 +41,7 @@ public: //methods
   STM32F407Usb();
   virtual ~STM32F407Usb();
 
-  virtual CcStatus setState(EState eState) override;
+  virtual CcStatus onState(EState eState) override;
   virtual bool setType(EType eType) override;
   virtual EType getType() override;
 

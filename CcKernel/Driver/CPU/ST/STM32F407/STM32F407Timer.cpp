@@ -64,7 +64,7 @@ CcStatus STM32F407Timer::setTimeout(const CcDateTime& oTimeout)
   return oState;
 }
 
-CcStatus STM32F407Timer::setState(EState eState)
+CcStatus STM32F407Timer::onState(EState eState)
 {
   CcStatus oStatus(false);
   switch(eState)
@@ -90,10 +90,6 @@ CcStatus STM32F407Timer::setState(EState eState)
     }
     default:
       break;
-  }
-  if(oStatus)
-  {
-    oStatus = IDevice::setState(eState);
   }
   return oStatus;
 }

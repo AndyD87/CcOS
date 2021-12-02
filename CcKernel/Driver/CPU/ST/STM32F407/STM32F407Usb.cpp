@@ -602,7 +602,7 @@ STM32F407Usb::~STM32F407Usb()
   deregisterIdle();
 }
 
-CcStatus STM32F407Usb::setState(EState eState)
+CcStatus STM32F407Usb::onState(EState eState)
 {
   CcStatus oStatus;
   switch (eState)
@@ -649,7 +649,6 @@ CcStatus STM32F407Usb::setState(EState eState)
       }
       break;
     default:
-      oStatus = EStatus::CommandUnknownParameter;
       break;
   }
   return oStatus;

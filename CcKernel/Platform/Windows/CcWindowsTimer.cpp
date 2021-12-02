@@ -55,15 +55,15 @@ VOID CALLBACK CcWindowsTimer::CPrivate::TimerRoutine(PVOID lpParam, BOOLEAN Time
   }
 }
 
-CcWindowsTimer::CcWindowsTimer() 
+CcWindowsTimer::CcWindowsTimer()
 {
   CCNEW(m_pPrivate, CPrivate, this);
 }
 
-CcWindowsTimer::~CcWindowsTimer() 
+CcWindowsTimer::~CcWindowsTimer()
 {
   if (getState() != EState::Stopped)
-    setState(EState::Stop);
+    stop();
   CCDELETE(m_pPrivate);
 }
 
@@ -96,12 +96,12 @@ CcStatus CcWindowsTimer::onState(EState eState)
         {
           // Set a timer to call the timer routine in 10 seconds.
           if (!CreateTimerQueueTimer(
-                &m_pPrivate->hTimer, 
-                m_pPrivate->hTimerQueue, 
-                (WAITORTIMERCALLBACK) CcWindowsTimer::CPrivate::TimerRoutine, 
+                &m_pPrivate->hTimer,
+                m_pPrivate->hTimerQueue,
+                (WAITORTIMERCALLBACK) CcWindowsTimer::CPrivate::TimerRoutine,
                 m_pPrivate,
                 static_cast<DWORD>(m_pPrivate->oTimeout.getTimestampMs()),
-                0, 
+                0,
                 0)
           )
           {

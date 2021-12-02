@@ -45,7 +45,7 @@ public:
   ESP8266Spi(ESP8266Driver* pDriver);
   virtual ~ESP8266Spi();
 
-  virtual CcStatus setState(EState eState) override;
+  virtual CcStatus onState(EState eState) override;
   virtual CcStatus setMode(EMode eMode) override;
   virtual CcStatus setFrequency(uint32 uiFrequency) override;
   virtual uint32 getFrequency() override;

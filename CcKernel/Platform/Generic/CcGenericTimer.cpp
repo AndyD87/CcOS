@@ -66,7 +66,7 @@ CcGenericTimer::~CcGenericTimer()
   CCDELETE(m_pPrivate);
 }
 
-CcStatus CcGenericTimer::setState(EState eState)
+CcStatus CcGenericTimer::onState(EState eState)
 {
   CcStatus oStatus;
   switch (eState)
@@ -82,10 +82,6 @@ CcStatus CcGenericTimer::setState(EState eState)
     }
     default:
       break;
-  }
-  if (oStatus)
-  {
-    oStatus = IDevice::setState(eState);
   }
   return oStatus;
 }

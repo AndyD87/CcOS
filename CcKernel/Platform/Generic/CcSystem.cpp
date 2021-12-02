@@ -348,13 +348,6 @@ void CcSystem::sleep(uint32 timeoutMs)
 }
 #endif
 
-const CcDevice& CcSystem::getDevice(EDeviceType Type, size_t uiNr)
-{
-  CCUNUSED(Type);
-  CCUNUSED(uiNr);
-  return CcDevice::NullDevice;
-}
-
 const CcDevice& CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 {
   CCUNUSED(Type);
@@ -487,7 +480,7 @@ CcGroupList CcSystem::getGroupList()
   return CcGroupList();
 }
 
-CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
+CcStatus CcSystem::loadModule(const CcString& sPath, IKernel& oKernel)
 {
   CCUNUSED(sPath);
   CCUNUSED(oKernel);

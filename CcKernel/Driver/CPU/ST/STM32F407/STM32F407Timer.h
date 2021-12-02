@@ -36,7 +36,7 @@ public: //methods
   STM32F407Timer();
   virtual ~STM32F407Timer();
 
-  virtual CcStatus setState(EState eState) override;
+  virtual CcStatus onState(EState eState) override;
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
 
   virtual bool timeout() override;

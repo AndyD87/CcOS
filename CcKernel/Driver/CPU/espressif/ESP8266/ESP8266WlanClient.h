@@ -42,7 +42,7 @@ public:
   virtual ~ESP8266WlanClient() override;
   virtual const CcMacAddress& getMacAddress() override;
   virtual bool isConnected() override;
-  virtual CcStatus setState(EState eState) override;
+  virtual CcStatus onState(EState eState) override;
   virtual CcStatus login(const CcString& sSsid, const CcString& sPassord) override;
 
   /**

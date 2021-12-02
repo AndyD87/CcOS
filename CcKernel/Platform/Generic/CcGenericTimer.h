@@ -39,7 +39,7 @@ public: //methods
   CcGenericTimer();
   virtual ~CcGenericTimer();
 
-  virtual CcStatus setState(EState eState) override;
+  virtual CcStatus onState(EState eState) override;
   virtual CcStatus setTimeout(const CcDateTime& oTimeout) override;
 
 private: //methods
