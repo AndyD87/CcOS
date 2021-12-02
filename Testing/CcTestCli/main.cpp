@@ -27,6 +27,7 @@
 #include "CcKernel.h"
 #include "Devices/CcBoardSupport.h"
 #include "Devices/CcDeviceI2C.h"
+#include "Driver/I2C/PortExpander/MCP23017.h"
 
 /**
  * @brief Default application entry point
@@ -53,14 +54,36 @@ int main(int iArgc, char** ppArgv)
     II2CSlave* pInterface = oI2CDevice.getDevice()->createInterface(0x20);
     if(pInterface)
     {
+      CCDEBUG("Check interface register");
       char pChar[16];
       pInterface->read(&pChar, 0);
       pInterface->read(&pChar, 1);
       pInterface->readRegister8(0x00, pChar, 16);
+
+
       for(int i = 0; i < 16; i++)
       {
-        CCDEBUG("Register: " + CcString::fromNumber(i) + " " + CcString::fromNumber(pChar[i], 16).fillBeginUpToLength("0",2));
+        CCDEBUG("  Register: " + CcString::fromNumber(i) + " " + CcString::fromNumber(pChar[i], 16).fillBeginUpToLength("0",2));
       }
+
+      CCDEBUG("");
+      CCDEBUG("Setup PortExpander");
+      MCP23017 oPortexpander(pInterface);
+      if(oPortexpander.start())
+      {
+        CCDEBUG("Setup 8 Pins output");
+        if (oPortexpander.setDirection(0xff, IGpioPin::EDirection::Output))
+        {
+          CCDEBUG("Read register again");
+          for (int i = 0; i < 16; i++)
+          {
+            CCDEBUG("  Register: " + CcString::fromNumber(i) + " " + CcString::fromNumber(pChar[i], 16).fillBeginUpToLength("0", 2));
+          }
+        }
+
+      }
+
+
     }
   }
   return iRet;

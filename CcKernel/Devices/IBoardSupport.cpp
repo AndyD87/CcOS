@@ -24,10 +24,17 @@
  */
 #include "Devices/IBoardSupport.h"
 
+// Disable known bug warning in VS 2015 for init static variables
+#if _MSC_VER == 1900
+  #pragma warning(push) 
+  #pragma warning(disable:4592)
+#endif
 IBoardSupport::CHwDevice  IBoardSupport::InvalidDevice;
 IBoardSupport::CHwPin     IBoardSupport::InvalidPin;
 IBoardSupport::CHwPort    IBoardSupport::InvalidPort;
-
+#if _MSC_VER == 1900
+  #pragma warning(pop) 
+#endif
 
 IBoardSupport::CHwPin& IBoardSupport::CHwPort::getHwPin(uint16 uiPin)
 {

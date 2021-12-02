@@ -62,7 +62,7 @@ const size_t IGpioPort::Pin31 = 0x80000000;
 
 bool IGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue)
 {
-  return setPinsDirection(1 << uiPin, eDirection, uiValue);
+  return setPinsDirection(static_cast<size_t>(1) << uiPin, eDirection, uiValue);
 }
 
 IGpioPin* IGpioPort::getPin(uint8 uiNr)

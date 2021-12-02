@@ -80,16 +80,14 @@ CcStatus MCP23017::onState(EState eState)
   return oStatus;
 }
 
-bool MCP23017::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue)
+bool MCP23017::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t)
 {
-  CCUNUSED(uiValue);
   bool bSuccess = true;
   switch(eDirection)
   {
     case IGpioPin::EDirection::Output:
       if(m_pII2CDevice)
       {
-        // Make sure IOCON.BANK is 0
         uint8 uiValue = 0x00;
         if(1 == m_pII2CDevice->readRegister8(REGISTER_IODIRA, &uiValue, 1))
         {
@@ -110,7 +108,6 @@ bool MCP23017::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirectio
     case IGpioPin::EDirection::Input:
       if(m_pII2CDevice)
       {
-        // Make sure IOCON.BANK is 0
         uint8 uiValue = 0x00;
         if(1 == m_pII2CDevice->readRegister8(REGISTER_IODIRA, &uiValue, 1))
         {
@@ -138,13 +135,16 @@ bool MCP23017::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirectio
 IGpioPin::EDirection MCP23017::getDirection(size_t uiPin)
 {
   uint8 uiValue = 0x00;
-  if(uiPin < 8 && 1 == m_pII2CDevice->readRegister8(REGISTER_IODIRA, &uiValue, 1))
+  if (m_pII2CDevice)
   {
-    return (IS_FLAG_SET(1 << uiPin, uiValue)) ? IGpioPin::EDirection::Input : IGpioPin::EDirection::Output;
-  }
-  else if(uiPin < 16 && 1 == m_pII2CDevice->readRegister8(REGISTER_IODIRB, &uiValue, 1))
-  {
-    return (IS_FLAG_SET(1 << (uiPin - 8), uiValue)) ? IGpioPin::EDirection::Input : IGpioPin::EDirection::Output;
+    if (uiPin < 8 && 1 == m_pII2CDevice->readRegister8(REGISTER_IODIRA, &uiValue, 1))
+    {
+      return (IS_FLAG_SET(1 << uiPin, uiValue)) ? IGpioPin::EDirection::Input : IGpioPin::EDirection::Output;
+    }
+    else if (uiPin < 16 && 1 == m_pII2CDevice->readRegister8(REGISTER_IODIRB, &uiValue, 1))
+    {
+      return (IS_FLAG_SET(1 << (uiPin - 8), uiValue)) ? IGpioPin::EDirection::Input : IGpioPin::EDirection::Output;
+    }
   }
   return IGpioPin::EDirection::Unknown;
 }
