@@ -35,7 +35,7 @@ class IGpioPin;
 /**
  * @brief Class impelmentation
  */
-class MCP23017 : public IGpioPort
+class CcKernelSHARED MCP23017 : public IGpioPort
 {
 public:
   /**
@@ -56,7 +56,7 @@ public:
   virtual IGpioPin::EDirection getDirection(size_t uiPin) override;
   virtual bool setPinValue(size_t uiPin, bool bValue) override;
   virtual bool getPinValue(size_t uiPin) override;
-
+  virtual bool setValue(size_t uiValue) override;
 private:
 
 private:

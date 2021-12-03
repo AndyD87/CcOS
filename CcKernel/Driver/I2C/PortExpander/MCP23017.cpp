@@ -193,3 +193,27 @@ bool MCP23017::getPinValue(size_t uiPin)
   }
   return bValue;
 }
+
+bool MCP23017::setValue(size_t uiValue)
+{
+  bool bSuccess = true;
+  if (m_pII2CDevice)
+  {
+    // Make sure IOCON.BANK is 0
+    uint8 uiNewValue = static_cast<uint8>(uiValue);
+    if (1 != m_pII2CDevice->writeRegister8(REGISTER_OLATA, &uiNewValue, sizeof(uiNewValue)))
+    {
+      bSuccess = false;
+    }
+    uiNewValue = static_cast<uint8>(uiValue >> 8);
+    if (1 != m_pII2CDevice->writeRegister8(REGISTER_OLATB, &uiNewValue, sizeof(uiNewValue)))
+    {
+      bSuccess = false;
+    }
+  }
+  else
+  {
+    bSuccess = false;
+  }
+  return bSuccess;
+}

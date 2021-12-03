@@ -71,7 +71,7 @@ int main(int iArgc, char** ppArgv)
         CCDEBUG("Setup 8 Pins output");
         if (oPortexpander.setPinsDirection(0xff, IGpioPin::EDirection::Output))
         {
-          oPortexpander.setValue(0x5555, true);
+          oPortexpander.setValue(0x5555);
           CCDEBUG("Read register again");
           pInterface->readRegister8(0x00, pChar, 16);
           for (int i = 0; i < 16; i++)

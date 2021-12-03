@@ -77,3 +77,14 @@ bool IGpioPort::setSpeedValue(size_t uiPin, size_t uiValue)
   CCUNUSED(uiValue);
   return false;
 }
+
+bool IGpioPort::setValue(size_t uiValue)
+{
+  bool bSuccess = true;
+  for (size_t uiPos = 0; uiPos < count(); uiPos++)
+  {
+    bSuccess &= setPinValue(uiPos, uiValue & 1);
+    uiValue >>= 1;
+  }
+  return bSuccess;
+}

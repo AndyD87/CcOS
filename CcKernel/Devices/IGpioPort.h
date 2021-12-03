@@ -101,6 +101,8 @@ public:
    */
   virtual bool setSpeedValue(size_t uiPin, size_t uiValue);
 
+  virtual bool setValue(size_t uiValue);
+
   static const size_t Pin0;  //!< Intger value for pin 00
   static const size_t Pin1;  //!< Intger value for pin 01
   static const size_t Pin2;  //!< Intger value for pin 02
