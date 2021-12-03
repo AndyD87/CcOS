@@ -115,7 +115,7 @@ IGpioPin::EDirection OrangePiZeroGpioPort::getDirection(size_t uiPin)
   return eDirection;
 }
 
-bool OrangePiZeroGpioPort::setValue(size_t uiPin, bool bValue)
+bool OrangePiZeroGpioPort::setPinValue(size_t uiPin, bool bValue)
 {
   bool bRet = false;
   IGpioPin* pPin = getPin(uiPin);
@@ -127,7 +127,7 @@ bool OrangePiZeroGpioPort::setValue(size_t uiPin, bool bValue)
   return bRet;
 }
 
-bool OrangePiZeroGpioPort::getValue(size_t uiPin)
+bool OrangePiZeroGpioPort::getPinValue(size_t uiPin)
 {
   bool bRet = false;
   IGpioPin* pPin = getPin(uiPin);

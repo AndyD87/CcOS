@@ -154,7 +154,7 @@ IGpioPin::EDirection STM32F407SystemGpioPort::getDirection(size_t uiPin)
   return eDirection;
 }
 
-bool STM32F407SystemGpioPort::setValue(size_t uiPin, bool bValue)
+bool STM32F407SystemGpioPort::setPinValue(size_t uiPin, bool bValue)
 {
   bool bRet = false;
   IGpioPin* pPin = getPin(uiPin);
@@ -166,7 +166,7 @@ bool STM32F407SystemGpioPort::setValue(size_t uiPin, bool bValue)
   return bRet;
 }
 
-bool STM32F407SystemGpioPort::getValue(size_t uiPin)
+bool STM32F407SystemGpioPort::getPinValue(size_t uiPin)
 {
   bool bRet = false;
   IGpioPin* pPin = getPin(uiPin);

@@ -83,14 +83,14 @@ public:
    * @param bValue: High(true) or Low(false) value to set.
    * @return true if operation succeeded
    */
-  virtual bool setValue(size_t uiPin, bool bValue) = 0;
+  virtual bool setPinValue(size_t uiPin, bool bValue) = 0;
 
   /**
    * @brief Set value of one specific pin.
    * @param uiPin: Target pin to get value
    * @return True if value is High, otherwise False for Low
    */
-  virtual bool getValue(size_t uiPin) = 0;
+  virtual bool getPinValue(size_t uiPin) = 0;
 
   /**
    * @brief Set Speed value for one pin.

@@ -133,7 +133,7 @@ IGpioPin::EDirection STM32F207IGSystemGpioPort::getDirection(size_t uiPin)
   return eDirection;
 }
 
-bool STM32F207IGSystemGpioPort::setValue(size_t uiPin, bool bValue)
+bool STM32F207IGSystemGpioPort::setPinValue(size_t uiPin, bool bValue)
 {
   bool bRet = false;
   IGpioPin* pPin = getPin(uiPin);
@@ -145,7 +145,7 @@ bool STM32F207IGSystemGpioPort::setValue(size_t uiPin, bool bValue)
   return bRet;
 }
 
-bool STM32F207IGSystemGpioPort::getValue(size_t uiPin)
+bool STM32F207IGSystemGpioPort::getPinValue(size_t uiPin)
 {
   bool bRet = false;
   IGpioPin* pPin = getPin(uiPin);

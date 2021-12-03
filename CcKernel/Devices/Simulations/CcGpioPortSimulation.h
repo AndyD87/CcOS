@@ -58,8 +58,8 @@ public:
    */
   virtual IGpioPin::EDirection getDirection(size_t uiPin) override;
 
-  virtual bool setValue(size_t uiPin, bool bValue) override;
-  virtual bool getValue(size_t uiPin) override;
+  virtual bool setPinValue(size_t uiPin, bool bValue) override;
+  virtual bool getPinValue(size_t uiPin) override;
 private:
   bool                  m_aValues[32] = {0};
   IGpioPin::EDirection  m_eDirections[32] = {IGpioPin::EDirection::Input};

@@ -157,7 +157,7 @@ IGpioPin::EDirection ESP8266GpioPort::getDirection(size_t uiPin)
   return eDirection;
 }
 
-bool ESP8266GpioPort::setValue(size_t uiPin, bool bValue)
+bool ESP8266GpioPort::setPinValue(size_t uiPin, bool bValue)
 {
   if(uiPin < count())
   {
@@ -169,7 +169,7 @@ bool ESP8266GpioPort::setValue(size_t uiPin, bool bValue)
   }
 }
 
-bool ESP8266GpioPort::getValue(size_t uiPin)
+bool ESP8266GpioPort::getPinValue(size_t uiPin)
 {
   return gpio_get_level(static_cast<gpio_num_t>(uiPin)) != 0;
 }

@@ -94,7 +94,7 @@ IGpioPin::EDirection CcLinuxGpioPort::getDirection(size_t uiPin)
   return getPin(uiPin)->getDirection();
 }
 
-bool CcLinuxGpioPort::setValue(size_t uiPin, bool bValue)
+bool CcLinuxGpioPort::setPinValue(size_t uiPin, bool bValue)
 {
   if(uiPin < count())
   {
@@ -104,7 +104,7 @@ bool CcLinuxGpioPort::setValue(size_t uiPin, bool bValue)
   return false;
 }
 
-bool CcLinuxGpioPort::getValue(size_t uiPin)
+bool CcLinuxGpioPort::getPinValue(size_t uiPin)
 {
   return getPin(uiPin)->getValue();
 }

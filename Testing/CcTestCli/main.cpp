@@ -56,10 +56,7 @@ int main(int iArgc, char** ppArgv)
     {
       CCDEBUG("Check interface register");
       char pChar[16];
-      pInterface->read(&pChar, 0);
-      pInterface->read(&pChar, 1);
       pInterface->readRegister8(0x00, pChar, 16);
-
 
       for(int i = 0; i < 16; i++)
       {
@@ -72,9 +69,11 @@ int main(int iArgc, char** ppArgv)
       if(oPortexpander.start())
       {
         CCDEBUG("Setup 8 Pins output");
-        if (oPortexpander.setDirection(0xff, IGpioPin::EDirection::Output))
+        if (oPortexpander.setPinsDirection(0xff, IGpioPin::EDirection::Output))
         {
+          oPortexpander.setValue(0x5555, true);
           CCDEBUG("Read register again");
+          pInterface->readRegister8(0x00, pChar, 16);
           for (int i = 0; i < 16; i++)
           {
             CCDEBUG("  Register: " + CcString::fromNumber(i) + " " + CcString::fromNumber(pChar[i], 16).fillBeginUpToLength("0", 2));

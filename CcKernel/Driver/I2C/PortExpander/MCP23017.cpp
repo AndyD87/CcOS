@@ -149,7 +149,7 @@ IGpioPin::EDirection MCP23017::getDirection(size_t uiPin)
   return IGpioPin::EDirection::Unknown;
 }
 
-bool MCP23017::setValue(size_t uiPin, bool bValue)
+bool MCP23017::setPinValue(size_t uiPin, bool bValue)
 {
   if(m_pII2CDevice)
   {
@@ -175,7 +175,7 @@ bool MCP23017::setValue(size_t uiPin, bool bValue)
   return bValue;
 }
 
-bool MCP23017::getValue(size_t uiPin)
+bool MCP23017::getPinValue(size_t uiPin)
 {
   bool bValue = false;
   if(m_pII2CDevice)

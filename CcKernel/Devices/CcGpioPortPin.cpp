@@ -38,12 +38,12 @@ CcGpioPortPin::EDirection CcGpioPortPin::getDirection()
 
 void CcGpioPortPin::setValue(bool bValue)
 {
-  m_pPort->setValue(m_uiPinNr, bValue);
+  m_pPort->setPinValue(m_uiPinNr, bValue);
 }
 
 bool CcGpioPortPin::getValue()
 {
-  return m_pPort->getValue(m_uiPinNr);
+  return m_pPort->getPinValue(m_uiPinNr);
 }
 
 bool CcGpioPortPin::setSpeedValue(size_t uiValue)

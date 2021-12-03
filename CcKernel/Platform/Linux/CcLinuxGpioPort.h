@@ -44,8 +44,8 @@ public:
   virtual bool setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
   virtual bool setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue = 0) override;
   virtual IGpioPin::EDirection getDirection(size_t uiPin) override;
-  virtual bool setValue(size_t uiPin, bool bValue) override;
-  virtual bool getValue(size_t uiPin) override;
+  virtual bool setPinValue(size_t uiPin, bool bValue) override;
+  virtual bool getPinValue(size_t uiPin) override;
 private:
   /**
    * @brief Connection pin nr in /sys and pin intercace.

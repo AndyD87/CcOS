@@ -61,8 +61,8 @@ public: //methods
    */
   virtual IGpioPin::EDirection getDirection(size_t uiPin) override;
 
-  virtual bool setValue(size_t uiPin, bool bValue) override;
-  virtual bool getValue(size_t uiPin) override;
+  virtual bool setPinValue(size_t uiPin, bool bValue) override;
+  virtual bool getPinValue(size_t uiPin) override;
   virtual bool setSpeedValue(size_t uiPin, size_t uiValue) override;
 
 private: // Member
