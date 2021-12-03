@@ -56,9 +56,9 @@ int main(int iArgc, char** ppArgv)
     {
       CCDEBUG("Check interface register");
       char pChar[16];
-      pInterface->readRegister8(0x00, pChar, 16);
+      pInterface->readRegister8(0x00, pChar, 0x20);
 
-      for(int i = 0; i < 16; i++)
+      for(int i = 0; i < 0x20; i++)
       {
         CCDEBUG("  Register: " + CcString::fromNumber(i) + " " + CcString::fromNumber(pChar[i], 16).fillBeginUpToLength("0",2));
       }
@@ -73,8 +73,8 @@ int main(int iArgc, char** ppArgv)
         {
           oPortexpander.setValue(0x5555);
           CCDEBUG("Read register again");
-          pInterface->readRegister8(0x00, pChar, 16);
-          for (int i = 0; i < 16; i++)
+          pInterface->readRegister8(0x00, pChar, 0x20);
+          for (int i = 0; i < 0x20; i++)
           {
             CCDEBUG("  Register: " + CcString::fromNumber(i) + " " + CcString::fromNumber(pChar[i], 16).fillBeginUpToLength("0", 2));
           }

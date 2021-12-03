@@ -45,8 +45,6 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       target_link_libraries     (_ssl INTERFACE ${OPENSSL_LIBRARIES})
       add_library(CcOS::ThirParty::ssl ALIAS _ssl)
       
-      set_property( TARGET _ssl PROPERTY FOLDER "CcOS/ThirdParty")
-
       #message(FATAL_ERROR "${OPENSSL_STATIC_TYPE}")
 
       if("${OPENSSL_STATIC_TYPE}" STREQUAL SHARED)
@@ -54,6 +52,8 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
           add_custom_target(_ssl_copy ALL)
 
           add_dependencies(_ssl _ssl_copy)
+          
+          set_property( TARGET _ssl_copy PROPERTY FOLDER "CcOS/ThirdParty")
 
           file (GLOB OPENSLL_BIN_FILES "${OPENSLL_BIN_DIR}/*.dll")
           foreach(OPENSLL_BIN_FILE ${OPENSLL_BIN_FILES})
@@ -79,9 +79,6 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       target_include_directories(_ssl INTERFACE ${OPENSSL_INCLUDE_DIR})
       target_link_libraries     (_ssl INTERFACE ${OPENSSL_LIBRARIES})
       add_library(CcOS::ThirParty::ssl ALIAS _ssl)
-      
-      set_property( TARGET _ssl PROPERTY FOLDER "CcOS/ThirdParty")
-
     else()
       message( FATAL_ERROR "SSL marked as required, but not found on system. Please install libssl-dev" )
     endif()
