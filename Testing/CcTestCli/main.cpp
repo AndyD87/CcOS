@@ -71,12 +71,19 @@ int main(int iArgc, char** ppArgv)
         CCDEBUG("Setup 8 Pins output");
         if (oPortexpander.setPinsDirection(0xff, IGpioPin::EDirection::Output))
         {
-          oPortexpander.setValue(0x5555);
-          CCDEBUG("Read register again");
-          pInterface->readRegister8(0x00, pChar, 0x20);
-          for (int i = 0; i < 0x20; i++)
+          for(int iAlternate = 0; ;iAlternate++)
           {
-            CCDEBUG("  Register: " + CcString::fromNumber(i) + " " + CcString::fromNumber(pChar[i], 16).fillBeginUpToLength("0", 2));
+            if(iAlternate & 1)
+              oPortexpander.setValue(0x5555);
+            else
+              oPortexpander.setValue(0x5555);
+            CcKernel::sleep(1000);
+            CCDEBUG("Read register again");
+            pInterface->readRegister8(0x00, pChar, 0x20);
+            for (int i = 0; i < 0x20; i++)
+            {
+              CCDEBUG("  Register: " + CcString::fromNumber(i) + " " + CcString::fromNumber(pChar[i], 16).fillBeginUpToLength("0", 2));
+            }
           }
         }
 
