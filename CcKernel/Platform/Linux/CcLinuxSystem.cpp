@@ -231,6 +231,11 @@ CcStatus CcSystem::serviceInit(CcService* pService)
   return oSuccess;
 }
 
+CcStatus CcSystem::serviceCreate(CcService* pService)
+{
+  return false;
+}
+
 CcStatus CcSystem::serviceDelete(CcService* pService)
 {
   if(pService)

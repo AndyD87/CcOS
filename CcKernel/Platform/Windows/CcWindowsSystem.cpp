@@ -356,6 +356,12 @@ CcStatus CcSystem::serviceInit(CcService* pService)
   return CPrivate::s_pService->init();
 }
 
+CcStatus CcSystem::serviceCreate(CcService* pService)
+{
+  CcWindowsServiceControl oControl(pService->getName());
+  return oControl.create();
+}
+
 CcStatus CcSystem::serviceDelete(CcService* pService)
 {
   CcWindowsServiceControl oControl(pService->getName());
