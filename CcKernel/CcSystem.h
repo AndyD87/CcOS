@@ -98,6 +98,7 @@ public:
    */
   CcStatus  serviceInit(CcService* pService);
 
+  CcStatus  serviceCreate(CcService* pService);
   CcStatus  serviceDelete(CcService* pService);
 
   /**
