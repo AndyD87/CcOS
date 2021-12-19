@@ -311,6 +311,27 @@ public:
   { m_iTimeStampUs += iTimeStamp; return *this; }
 
   /**
+   * @brief Add hours to current time, negative values are also valid;
+   * @param iHours: number of hours to add
+   * @return Handle to this
+   */
+  CcDateTime& addHours(int64 iHours);
+
+  /**
+   * @brief Add minutes to current time, negative values are also valid;
+   * @param iMinutes: number of minutes to add
+   * @return Handle to this
+   */
+  CcDateTime& addMinutes(int64 iMinutes);
+
+  /**
+   * @brief Add days to current time, negative values are also valid;
+   * @param iDays: number of days to add
+   * @return Handle to this
+   */
+  CcDateTime& addDays(int64 iDays);
+
+  /**
    * @brief Add another timestamp to this timestamp
    * @param oDateTimeToAdd: timestamp to add
    * @return Handle to this
@@ -374,6 +395,12 @@ public:
    * @return String parsed as defined in format
    */
   CcString getString(const CcString& sFormat) const;
+
+  /**
+   * @brief Strip years and months and days to get pure day time
+   * @return Current date time as day time.
+   */
+  CcDateTime getDayTime();
 
   /**
    * @brief Get sql datetime format.

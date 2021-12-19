@@ -266,6 +266,24 @@ CcDateTime& CcDateTime::add(const CcDateTime &oDateTimeToAdd)
   return *this;
 }
 
+CcDateTime& CcDateTime::addHours(int64 iHours)
+{
+  m_iTimeStampUs += iHours * 60 * 60 * 1000 * 1000;
+  return *this;
+}
+
+CcDateTime& CcDateTime::addMinutes(int64 iHours)
+{
+  m_iTimeStampUs += iHours * 60 * 1000 * 1000;
+  return *this;
+}
+
+CcDateTime& CcDateTime::addDays(int64 iDays)
+{
+  m_iTimeStampUs += iDays * 24 * 60 * 60 * 1000 * 1000;
+  return *this;
+}
+
 CcDateTime& CcDateTime::subSeconds(int64 iTimeStamp)
 {
   m_iTimeStampUs -= 1000000 * iTimeStamp;
@@ -432,6 +450,11 @@ CcString CcDateTime::getString(const CcString& sFormat) const
     sRet = sRet.replace("uuu", sMicroSecond);
   }
   return sRet;
+}
+
+CcDateTime CcDateTime::getDayTime()
+{
+  return CcDateTimeFromUSeconds(m_iTimeStampUs % (24ll * 60 * 60 * 1000 * 1000));
 }
 
 CcString CcDateTime::getSqlDateTime(uint8 uiPrecision) const
