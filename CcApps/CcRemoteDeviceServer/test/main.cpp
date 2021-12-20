@@ -25,11 +25,8 @@
 
 #include "CcBase.h"
 #include "CcKernel.h"
-#include "CcConsole.h"
-#include "Types/CcArguments.h"
-#include "CcFile.h"
-#include "CcGlobalStrings.h"
-#include "CcRemoteDeviceServerService.h"
+#include "CcTestFramework.h"
+#include "CTestRemoteDeviceService.h"
 
 /**
  * @brief Default application entry point
@@ -39,7 +36,9 @@
  */
 int main(int iArgc, char** ppArgv)
 {
-  CcArguments oArguments(iArgc, ppArgv);
-  CcRemoteDeviceServerService* pSerivce = new CcRemoteDeviceServerService(oArguments);
-  return pSerivce->exec().getErrorInt();
+  CcTestFramework::init(iArgc, ppArgv);
+  CcTestFramework_addTest(CTestRemoteDeviceService);
+
+  CcTestFramework::runTests();
+  return CcTestFramework::deinit();
 }

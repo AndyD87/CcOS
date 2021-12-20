@@ -49,6 +49,7 @@ class ISharedMemory;
 class IKernel;
 class CcDevice;
 class CcService;
+class CcServiceSystem;
 enum class ESocketType;
 
 CCEXTERNC_BEGIN
@@ -225,6 +226,12 @@ public: // Methods
    * @return Handle to System.
    */
   static CcSystem &getSystem();
+
+  /**
+   * @brief Get the System, for calling System-Methods directly if required
+   * @return Handle to System.
+   */
+  static CcServiceSystem &getServiceSystem();
 
   /**
    * @brief Get System Time

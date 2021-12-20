@@ -35,6 +35,7 @@ set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsSocketTcp.h
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsSocketUdp.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsSocketUdp.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcWindowsServiceSystem.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsSystem.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsTimer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcWindowsTimer.h

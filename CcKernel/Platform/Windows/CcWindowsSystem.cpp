@@ -193,13 +193,11 @@ public:
   static FILE*              s_pConsoleFile;
   static CcThreadManager*   s_pThreadManager;
   static CcStatus           s_oCurrentExitCode;
-  static CcWindowsService*  s_pService;
 };
 
 FILE*             CcSystem::CPrivate::s_pConsoleFile;
 CcThreadManager*  CcSystem::CPrivate::s_pThreadManager;
 CcStatus          CcSystem::CPrivate::s_oCurrentExitCode;
-CcWindowsService* CcSystem::CPrivate::s_pService;
 
 
 CcSystem::CcSystem()
@@ -277,8 +275,6 @@ void CcSystem::init()
 
 void CcSystem::deinit()
 {
-  if (CPrivate::s_pService)
-    CCDELETE(CPrivate::s_pService);
   deinitCLI();
   m_pPrivate->deinitNetworkStack();
   m_pPrivate->deinitFilesystem();
@@ -348,24 +344,6 @@ bool CcSystem::deinitCLI()
   }
 #endif
   return bRet;
-}
-
-CcStatus CcSystem::serviceInit(CcService* pService)
-{
-  CPrivate::s_pService = new CcWindowsService(pService);
-  return CPrivate::s_pService->init();
-}
-
-CcStatus CcSystem::serviceCreate(CcService* pService)
-{
-  CcWindowsServiceControl oControl(pService->getName());
-  return oControl.create();
-}
-
-CcStatus CcSystem::serviceDelete(CcService* pService)
-{
-  CcWindowsServiceControl oControl(pService->getName());
-  return oControl.remove();
 }
 
 bool CcSystem::isAdmin()

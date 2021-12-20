@@ -42,5 +42,6 @@ namespace CcRemoteDeviceGlobals
   {
     extern const CcRemoteDeviceSHARED CcString ConfigName;
     extern const CcRemoteDeviceSHARED CcString ClientAppName;
+    extern const CcRemoteDeviceSHARED CcString ServiceName;
   }
 }

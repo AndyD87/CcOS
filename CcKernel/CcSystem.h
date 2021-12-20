@@ -92,16 +92,6 @@ public:
   bool deinitCLI();
 
   /**
-   * @brief Initialize current application as service and run in background.
-   *        A service supports notifications and signals from system.
-   * @return 0 if Service was initialized successfully
-   */
-  CcStatus  serviceInit(CcService* pService);
-
-  CcStatus  serviceCreate(CcService* pService);
-  CcStatus  serviceDelete(CcService* pService);
-
-  /**
    * @brief Check if calling application is runnig with elevated privilegues.
    * @return True with admin rights.
    */

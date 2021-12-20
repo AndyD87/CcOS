@@ -4,23 +4,23 @@
 #include <winsvc.h>
 
 /**
- * @brief Service start type as enumeration
- */
-enum class EWindowsServiceStartType : uint32
-{
-  BootStart   = SERVICE_BOOT_START,
-  SystemStart = SERVICE_SYSTEM_START,
-  AutoStart   = SERVICE_AUTO_START,
-  DemandStart = SERVICE_DEMAND_START,
-  Disabled    = SERVICE_DISABLED
-};
-
-/**
  * @brief Manage a windows service
  */
 class CcWindowsServiceControl
 {
 public:
+  /**
+   * @brief Service start type as enumeration
+   */
+  enum class EStartType : uint32
+  {
+    BootStart = SERVICE_BOOT_START,
+    SystemStart = SERVICE_SYSTEM_START,
+    AutoStart = SERVICE_AUTO_START,
+    DemandStart = SERVICE_DEMAND_START,
+    Disabled = SERVICE_DISABLED
+  };
+
   /**
    * @brief Create service control instance by service name
    * @param sName: Name of service
@@ -40,7 +40,7 @@ public:
    * @param eStartType: New start type of service as enum
    * @return True if succeeded
    */
-  bool setStartType(EWindowsServiceStartType eStartType);
+  bool setStartType(CcWindowsServiceControl::EStartType eStartType);
 
   /**
    * @brief Set username of service runtime, correct password of user is required.
@@ -77,6 +77,18 @@ public:
   bool remove();
 
   /**
+   * @brief Stop service instance
+   * @return True if removing succeeded
+   */
+  bool start();
+
+  /**
+   * @brief Stop service instance
+   * @return True if removing succeeded
+   */
+  bool stop();
+
+  /**
    * @brief Open service if already existing.
    * @return True if service was opened succeeded
    */
@@ -105,6 +117,6 @@ private: // Member
   CPrivate* m_pPrivate;
   CcWString m_sName;
   CcWString m_sDisplayName;
-  EWindowsServiceStartType m_eStartType = EWindowsServiceStartType::Disabled;
+  CcWindowsServiceControl::EStartType m_eStartType = CcWindowsServiceControl::EStartType::Disabled;
 };
 

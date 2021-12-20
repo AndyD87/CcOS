@@ -52,6 +52,7 @@
 #include "CcVersion.h"
 #include "IModuleBase.h"
 #include "CcDevice.h"
+#include "CcServiceSystem.h"
 #include "Devices/CcBoardSupport.h"
 
 #ifdef LINUX
@@ -83,6 +84,7 @@ public:
   {}
   CcVersion                     m_oKernelVersion;
   CcSystem*                     pSystem = nullptr;
+  CcServiceSystem*              pServiceSystem = nullptr;
   const CcDevice& (*addDevice)(const CcDevice& Device); //!< Pointer to CcKernel::addDevice
   bool (*removeDevice)(const CcDevice& Device);         //!< Pointer to CcKernel::removeDevice
   void*(*opNew)(size_t uiSize);                         //!< Pointer to new operator in Kernel space
@@ -225,7 +227,7 @@ bool CcKernel::deinitCLI()
 
 CcStatus CcKernel::initService(CcService* pService)
 {
-  return CcKernelPrivate::pPrivate->pSystem->serviceInit(pService);
+  return getServiceSystem().init(pService);
 }
 
 bool CcKernel::isAdmin()
@@ -251,6 +253,8 @@ void CcKernel::shutdown()
         CcKernelPrivate::oInstance.m_oExitFunctions.remove(0);
         fExitFunction();
       }
+
+      CCDELETE(CcKernelPrivate::pPrivate->pServiceSystem);
 
       CcKernelPrivate::oInstance.pSystem->deinit();
 
@@ -335,6 +339,15 @@ void CcKernel::emitInputEvent(CcInputEvent& InputEvent)
 CcSystem& CcKernel::getSystem()
 {
   return *CcKernelPrivate::pPrivate->pSystem;
+}
+
+CcServiceSystem& CcKernel::getServiceSystem()
+{
+  if (!CcKernelPrivate::pPrivate->pServiceSystem)
+  {
+    CCNEW(CcKernelPrivate::pPrivate->pServiceSystem, CcServiceSystem);
+  }
+  return *CcKernelPrivate::pPrivate->pServiceSystem;
 }
 
 CcDateTime CcKernel::getDateTime()

@@ -16,30 +16,39 @@
  **/
 /**
  * @file
+ *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief    Entry point for Application
- */
+ * @brief     Class CTestRemoteDeviceService
+ **/
+#pragma once
 
 #include "CcBase.h"
-#include "CcKernel.h"
-#include "CcConsole.h"
-#include "Types/CcArguments.h"
-#include "CcFile.h"
-#include "CcGlobalStrings.h"
-#include "CcRemoteDeviceServerService.h"
+#include "CcTest.h"
 
 /**
- * @brief Default application entry point
- * @param iArgc:  Argument count in ppArgv
- * @param ppArgv: Passed arguments from callup
- * @return Exitcode, default 0 if no error occured
+ * @brief Class implementation
  */
-int main(int iArgc, char** ppArgv)
+class CTestRemoteDeviceService : public CcTest<CTestRemoteDeviceService>
 {
-  CcArguments oArguments(iArgc, ppArgv);
-  CcRemoteDeviceServerService* pSerivce = new CcRemoteDeviceServerService(oArguments);
-  return pSerivce->exec().getErrorInt();
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CTestRemoteDeviceService();
+
+  /**
+   * @brief Destructor
+   */
+  virtual ~CTestRemoteDeviceService();
+
+private:
+  CcString m_sApplicationDir;
+  CcString m_sApplication; 
+
+  bool createService();
+  bool removeService();
+
+};

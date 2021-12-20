@@ -1,4 +1,5 @@
-set(CURRENT_PROJECT CcOSModuleLoader)
+set(CURRENT_PROJECT           CcOSModuleLoader)
+set(CURRENT_PROJECT_IDE_PATH  CcApps              )
 
 if(NOT DEFINED CCOS_CCAPPS_CCOSMODULELOADER_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
 elseif(CCOS_NO_APPS)
@@ -23,8 +24,8 @@ elseif(${CCOS_CCAPPS_CCOSMODULELOADER_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                 CcKernel )
-
-  set_target_properties(${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/CcApps")
+                                
+  set_target_properties(${CURRENT_PROJECT} PROPERTIES FOLDER      "CcOS/${CURRENT_PROJECT_IDE_PATH}")
 
   #################
   # Post configuration steps

@@ -39,12 +39,17 @@ public:
   /**
    * @brief Constructor
    */
-  CcRemoteDeviceServerApp(int iArgs, char** pArgv);
+  CcRemoteDeviceServerApp(const CcArguments& m_oArguments);
 
   /**
    * @brief Destructor
    */
   virtual ~CcRemoteDeviceServerApp();
+
+  /**
+   * @brief Main method
+   */
+  virtual void run() override;
 
 private:
   CcArguments           m_oArguments;

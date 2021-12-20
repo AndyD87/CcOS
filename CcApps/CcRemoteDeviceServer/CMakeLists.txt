@@ -1,4 +1,5 @@
-set(CURRENT_PROJECT CcRemoteDeviceServer)
+set(CURRENT_PROJECT           CcRemoteDeviceServer)
+set(CURRENT_PROJECT_IDE_PATH  CcApps              )
 
 if(NOT DEFINED CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
 elseif(CCOS_NO_APPS)
@@ -10,6 +11,8 @@ elseif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set( SOURCE_FILES
           ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceServerApp.cpp
           ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceServerApp.h
+          ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceServerService.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceServerService.h
           ${CMAKE_CURRENT_LIST_DIR}/main.cpp
   )
 
@@ -26,7 +29,9 @@ elseif(${CCOS_CCAPPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
                                 CcRemoteDevice 
   )
   
-  set_target_properties(${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/CcApps")
+  set_target_properties(${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+
+  CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)
 
   #################
   # Post configuration steps

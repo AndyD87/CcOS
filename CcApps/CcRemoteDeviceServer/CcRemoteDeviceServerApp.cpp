@@ -29,10 +29,14 @@
 #include "Devices/IGpioPort.h"
 #include "Devices/IGpioPin.h"
 #include "Devices/Simulations/CcGpioPortSimulation.h"
+#include "CcFile.h"
+#include "CcSystem.h"
+#include "CcServiceSystem.h"
+#include "CcService.h"
 
-CcRemoteDeviceServerApp::CcRemoteDeviceServerApp(int iArgs, char** pArgv) :
+CcRemoteDeviceServerApp::CcRemoteDeviceServerApp(const CcArguments& m_oArguments) :
   CcRemoteDeviceServer(),
-  m_oArguments(iArgs, pArgv)
+  m_oArguments(m_oArguments)
 {
 #if defined(LINUX) || defined(WINDOWS)
   CCNEW(pSimulation, CcGpioPortSimulation);
@@ -45,4 +49,114 @@ CcRemoteDeviceServerApp::~CcRemoteDeviceServerApp()
 #if defined(LINUX) || defined(WINDOWS)
   CCDELETE(pSimulation);
 #endif
+}
+
+void CcRemoteDeviceServerApp::run()
+{
+  CcStatus oStatus(true);
+  bool bRunService = false;
+  CCDEBUG("CcInstallServiceApp::run");
+  size_t i = 1;
+  if(m_oArguments.size() > i)
+  {
+    if (m_oArguments[i].compareInsensitve("Reboot"))
+    {
+      oStatus = CcKernel::getSystem().restart();
+    }
+    else if (m_oArguments[i].compareInsensitve("Stop"))
+    {
+      i++;
+      CcString sServiceName = CcRemoteDeviceGlobals::Names::ServiceName;
+      if (i < m_oArguments.size())
+      {
+        sServiceName = m_oArguments[i];
+      }
+      CcService oService(sServiceName, nullptr);
+      oStatus = CcKernel::getServiceSystem().stop(&oService);
+    }
+    else if (m_oArguments[i].compareInsensitve("Remove"))
+    {
+      i++;
+      CcString sServiceName = CcRemoteDeviceGlobals::Names::ServiceName;
+      if (i < m_oArguments.size())
+      {
+        sServiceName = m_oArguments[i];
+      }
+      CcService oService(sServiceName, nullptr);
+      oStatus = CcKernel::getServiceSystem().remove(&oService);
+    }
+    else if (m_oArguments[i].compareInsensitve("Start"))
+    {
+      i++;
+      CcString sServiceName = CcRemoteDeviceGlobals::Names::ServiceName;
+      if (i < m_oArguments.size())
+      {
+        sServiceName = m_oArguments[i];
+      }
+      CcService oService(sServiceName, nullptr);
+      oStatus = CcKernel::getServiceSystem().start(&oService);
+    }
+    else if (m_oArguments[i].compareInsensitve("Create"))
+    {
+      i++;
+      bool bAutostart = true;
+      CcString sServiceName = CcRemoteDeviceGlobals::Names::ServiceName;
+      for (;i < m_oArguments.size(); i++)
+      {
+        if (m_oArguments[i].compareInsensitve("-name"))
+        {
+          i++;
+          if (i < m_oArguments.size())
+          {
+            sServiceName = m_oArguments[i];
+          }
+          else
+          {
+            oStatus = EStatus::CommandRequiredParameter;
+            CCERROR("-name requires a valid service name");
+          }
+        }
+        else if (m_oArguments[i].compareInsensitve("-manual"))
+        {
+          bAutostart = false;
+        }
+        else if (m_oArguments.size() == i+1)
+        {
+          sServiceName = m_oArguments[i];
+        }
+        else
+        {
+          oStatus = EStatus::CommandUnknownParameter;
+          CCERROR("Unknown parameter for service create");
+        }
+      }
+
+      if (oStatus)
+      {
+        CcService oService(sServiceName, nullptr);
+        oStatus = CcKernel::getServiceSystem().create(&oService);
+        if (oStatus)
+          oStatus = CcKernel::getServiceSystem().setAutoStart(&oService, bAutostart);
+      }
+    }
+    else
+    {
+      oStatus = EStatus::CommandUnknownParameter;
+      CCERROR("Unknown parameter for service create");
+    }
+  }
+  else
+  {
+    bRunService = true;
+  }
+
+  if(bRunService)
+  {
+    CcRemoteDeviceServer::run();
+  }
+
+  if (getExitCode() && !oStatus)
+  {
+    setExitCode(oStatus);
+  }
 }

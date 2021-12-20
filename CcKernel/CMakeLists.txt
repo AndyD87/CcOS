@@ -43,6 +43,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcStdIn.h
     CcThreadManager.h
     CcStdOut.h
+    CcServiceSystem.h
     CcSystem.h
     CcThreadContext.h
     CcTimer.h

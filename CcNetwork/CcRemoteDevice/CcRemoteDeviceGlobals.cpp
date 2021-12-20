@@ -39,6 +39,7 @@ namespace CcRemoteDeviceGlobals
   namespace Names
   {
     const CcString ConfigName("Config.json");                   //!< Default config file name
-    const CcString ClientAppName("CcRemoteDeviceClient");       //!< Default application name for client
+    const CcString ClientAppName("CcRemoteDeviceClient");       //!< Default application name for clientv
+    const CcString ServiceName("CcRemoteDeviceService");       //!< Default application name for client
   }
 }

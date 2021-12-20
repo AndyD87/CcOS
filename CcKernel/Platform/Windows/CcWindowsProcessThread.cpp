@@ -76,7 +76,11 @@ void CcWindowsProcessThread::run()
     &m_pPrivate->pi)           // Pointer to PROCESS_INFORMATION structure
     )
   {
-    CCDEBUG("CreateProcess failed: " + CcString::fromNumber(GetLastError()));
+    CcStatus oStatus;
+    oStatus.setSystemError(GetLastError());
+    setExitCode(oStatus);
+    m_hProcess->setExitCode(oStatus);
+    CCDEBUG("CreateProcess failed: " + CcString::fromNumber(oStatus.getErrorUint()));
   }
   else
   {
@@ -102,7 +106,7 @@ void CcWindowsProcessThread::run()
       m_pPrivate->pi.hThread = INVALID_HANDLE_VALUE;
     }
 
-    this->setExitCode(uiExitCode);
+    setExitCode(uiExitCode);
     m_hProcess->setExitCode(uiExitCode);
 
     m_bProcessStarted = false;

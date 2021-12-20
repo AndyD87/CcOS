@@ -55,6 +55,11 @@ CcWindowsServiceControl::CcWindowsServiceControl(const CcWString& sName) :
   {
     wprintf(L"GetModuleFileName failed w/err 0x%08lx\n", GetLastError());
   }
+
+  if (sName.length())
+  {
+    open();
+  }
 }
 
 CcWindowsServiceControl::~CcWindowsServiceControl()
@@ -97,7 +102,7 @@ bool CcWindowsServiceControl::setDisplayName(const CcWString& sName)
   return bRet;
 }
 
-bool CcWindowsServiceControl::setStartType(EWindowsServiceStartType eStartType)
+bool CcWindowsServiceControl::setStartType(CcWindowsServiceControl::EStartType eStartType)
 {
   bool bRet = true;
   m_eStartType = eStartType;
@@ -245,6 +250,63 @@ bool CcWindowsServiceControl::remove()
   return bRet;
 }
 
+bool CcWindowsServiceControl::start()
+{
+  bool bRet = false;
+  if (serviceManagerAvailable())
+  {
+    if (this->open())
+    {
+      if (FALSE == StartServiceW(m_pPrivate->hService, 0, NULL))
+      {
+        uint32 uiError = GetLastError();
+        if (ERROR_SERVICE_MARKED_FOR_DELETE == uiError)
+        {
+          bRet = true;
+        }
+        else
+        {
+          CCDEBUG(CcString::fromNumber(uiError));
+        }
+      }
+      else
+      {
+        bRet = true;
+      }
+    }
+  }
+  return bRet;
+}
+
+bool CcWindowsServiceControl::stop()
+{
+  bool bRet = false;
+  if (serviceManagerAvailable())
+  {
+    if (this->open())
+    {
+      SERVICE_STATUS oCurrentState;
+      if (FALSE == ControlService(m_pPrivate->hService, SERVICE_CONTROL_STOP, &oCurrentState))
+      {
+        uint32 uiError = GetLastError();
+        if (ERROR_SERVICE_MARKED_FOR_DELETE == uiError)
+        {
+          bRet = true;
+        }
+        else
+        {
+          CCDEBUG(CcString::fromNumber(uiError));
+        }
+      }
+      else
+      {
+        bRet = true;
+      }
+    }
+  }
+  return bRet;
+}
+
 bool CcWindowsServiceControl::open()
 {
   bool bRet = false;
@@ -286,7 +348,7 @@ bool CcWindowsServiceControl::updateConfig()
         if (bSuccess)
         {
           m_sDisplayName.set(pServiceConfig->lpDisplayName);
-          m_eStartType = static_cast<EWindowsServiceStartType>(pServiceConfig->dwStartType);
+          m_eStartType = static_cast<CcWindowsServiceControl::EStartType>(pServiceConfig->dwStartType);
           m_pPrivate->sCurrentPath.set(pServiceConfig->lpBinaryPathName);
           m_pPrivate->sUsername.set(pServiceConfig->lpServiceStartName);
         }
