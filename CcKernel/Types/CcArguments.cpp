@@ -24,6 +24,7 @@
  */
 #include "CcArguments.h"
 #include "CcStringUtil.h"
+#include "CcGlobalStrings.h"
 
 CcArguments::CcArguments(int argc, char **argv)
 {
@@ -121,6 +122,26 @@ CcString CcArguments::getDirectory() const
     sPath = CcStringUtil::getDirectoryFromPath(sPath);
   }
   return sPath;
+}
+
+CcString CcArguments::getLine() const
+{
+  CcString sLine;
+  bool bFirst = true;
+  for (const CcString& sValue : *this)
+  {
+    if (!bFirst) sLine << CcGlobalStrings::Seperators::Space;
+    else         bFirst = false;
+    if (sValue.contains(' '))
+    {
+      sLine << CcGlobalStrings::Seperators::Quote << sValue << CcGlobalStrings::Seperators::Quote;
+    }
+    else
+    {
+      sLine << sValue;
+    }
+  }
+  return sLine;
 }
 
 void CcArguments::parseLine(const CcString& sLine)

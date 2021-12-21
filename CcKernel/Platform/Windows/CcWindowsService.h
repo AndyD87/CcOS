@@ -38,7 +38,7 @@ public:
    * @brief Create Service by name
    * @param sName: Target name of service to identify it in system
    */
-  CcWindowsService(CcService* pService);
+  CcWindowsService(CcService& pService);
   ~CcWindowsService();
 
   /**
@@ -46,6 +46,7 @@ public:
    * @return True if init succeeded
    */
   CcStatus init();
+  CcStatus deinit();
 
   /**
    * @brief Stop command received
@@ -91,6 +92,9 @@ public:
    */
   DWORD onCustomCommand(DWORD dwCtrl, DWORD dwEventType, PVOID pEventData);
 
+  bool operator==(const CcService& pService) const
+  { return &pService == &m_pService; }
+
 protected: // Methods
   /**
    * @brief System command receiving method. Informations are forwarded to onCommand or onCustomCommand.
@@ -130,7 +134,6 @@ protected: // Methods
   //! @return Get service handle
   SERVICE_STATUS_HANDLE getServiceHandle();
 
-
 private:
   void setStatusHandle(SERVICE_STATUS_HANDLE hStatus);
   void start();
@@ -143,8 +146,9 @@ private: // Types
   class CPrivate;
 private: // Member
   CPrivate*   m_pPrivate = nullptr;
-  CcService*  m_pService;
+  CcService&  m_pService;
   CcWString   m_sSerivceName;
+  bool        m_bIsRunning;
 
   static CcWindowsService* s_pService;
 };

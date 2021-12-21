@@ -110,6 +110,12 @@ public:
   void parseLine(const CcString& sLine);
 
   /**
+   * @brief Get Arguments in a line
+   * @return Collaps all arguments quoted in a line
+   */
+  CcString getLine() const;
+
+  /**
    * @brief Get Path to Binary if arguments came from a typical main
    * @return Path as String or empty String if not found
    */

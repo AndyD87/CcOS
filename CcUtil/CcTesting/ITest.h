@@ -56,4 +56,12 @@ public:
    * @return Name of test
    */
   virtual const CcString& getName() = 0;
+
+  /**
+   * @brief This method will be called to cleanup the test if it is required.
+   *        It has no impact to the tests.
+   */
+  virtual void cleanup()
+  {}
+
 };

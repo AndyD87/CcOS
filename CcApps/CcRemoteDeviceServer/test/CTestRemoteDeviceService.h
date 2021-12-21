@@ -44,11 +44,15 @@ public:
    */
   virtual ~CTestRemoteDeviceService();
 
+  virtual void cleanup();
+
 private:
   CcString m_sApplicationDir;
   CcString m_sApplication; 
 
   bool createService();
+  bool startService();
+  bool stopService();
   bool removeService();
 
 };

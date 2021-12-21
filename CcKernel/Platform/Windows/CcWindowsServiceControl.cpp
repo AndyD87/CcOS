@@ -26,6 +26,9 @@
 #include <stdio.h>
 #include "CcWindowsServiceControl.h"
 #include "CcVector.h"
+#include "CcArguments.h"
+#include "CcStringUtil.h"
+#include "CcGlobalStrings.h"
 
 class CcWindowsServiceControl::CPrivate
 {
@@ -35,11 +38,12 @@ public:
   CcVector<wchar_t> oDependencies;
   CcWString sUsername;
   CcWString sPassword;
-  CcWString sCurrentPath;
+  CcString sApplication;
+  CcArguments oArguments;
   DWORD uiAccessRights = SERVICE_ALL_ACCESS;
 };
 
-CcWindowsServiceControl::CcWindowsServiceControl(const CcWString& sName) :
+CcWindowsServiceControl::CcWindowsServiceControl(const CcWString& sName, bool bOpenReadOnly) :
   m_sName(sName)
 {
   CCNEW(m_pPrivate, CPrivate);
@@ -49,7 +53,7 @@ CcWindowsServiceControl::CcWindowsServiceControl(const CcWString& sName) :
   DWORD dwResult = GetModuleFileNameW(nullptr, szPath, sizeof(szPath));
   if (dwResult != 0)
   {
-    m_pPrivate->sCurrentPath.set(szPath, dwResult);
+    m_pPrivate->sApplication = CcWString(szPath, dwResult).getString();
   }
   else
   {
@@ -58,7 +62,7 @@ CcWindowsServiceControl::CcWindowsServiceControl(const CcWString& sName) :
 
   if (sName.length())
   {
-    open();
+    open(bOpenReadOnly);
   }
 }
 
@@ -93,6 +97,36 @@ bool CcWindowsServiceControl::setDisplayName(const CcWString& sName)
       nullptr, // lpServiceStartName
       nullptr, // lpPassword
       m_sDisplayName.getWcharString()  //lpDisplayName
+    );
+    if (!bSuccess)
+    {
+      bRet = false;
+    }
+  }
+  return bRet;
+}
+
+bool CcWindowsServiceControl::setArguments(const CcArguments& oArguments)
+{
+  bool bRet = true;
+  m_pPrivate->oArguments = oArguments;
+  if (serviceOpened())
+  {
+    CcString sBinaryPath = m_pPrivate->sApplication;
+    if (m_pPrivate->oArguments.size())
+      sBinaryPath << CcGlobalStrings::Seperators::Space << m_pPrivate->oArguments.getLine();
+    BOOL bSuccess = ChangeServiceConfigW(
+      m_pPrivate->hService,
+      SERVICE_WIN32_OWN_PROCESS,
+      SERVICE_NO_CHANGE,
+      SERVICE_ERROR_IGNORE,
+      sBinaryPath.getWString().getWcharString(), // lpBinaryPathName
+      nullptr, // lpLoadOrderGroup
+      nullptr, // lpdwTagId
+      nullptr, // lpDependencies
+      nullptr, // lpServiceStartName
+      nullptr, // lpPassword
+      nullptr  //lpDisplayName
     );
     if (!bSuccess)
     {
@@ -198,18 +232,21 @@ bool CcWindowsServiceControl::create()
   if (serviceManagerAvailable())
   {
     // Setup Username / Password if isset
+    CcString sBinaryPath = m_pPrivate->sApplication;
+    if (m_pPrivate->oArguments.size())
+      sBinaryPath << CcGlobalStrings::Seperators::Space << m_pPrivate->oArguments.getLine();
     const wchar_t* pUsername = (m_pPrivate->sUsername.length() > 0) ? m_pPrivate->sUsername.getWcharString() : nullptr;
     const wchar_t* pPassword = (m_pPrivate->sUsername.length() > 0) ? m_pPrivate->sPassword.getWcharString() : nullptr;
     m_pPrivate->hService = CreateServiceW(m_pPrivate->hManager,                   // SCManager database
-      m_sName.getWcharString(),                // Name of service
-      m_sDisplayName.getWcharString(),         // Name to display
-      SERVICE_QUERY_STATUS,           // Desired access
-      SERVICE_WIN32_OWN_PROCESS,      // Service type
-      static_cast<DWORD>(m_eStartType),                    // Service start type
-      SERVICE_ERROR_NORMAL,           // Error control type
-      m_pPrivate->sCurrentPath.getWcharString(),                         // Service's binary
-      nullptr,                           // No load ordering group
-      nullptr,                           // No tag identifier
+      m_sName.getWcharString(),                   // Name of service
+      m_sDisplayName.getWcharString(),            // Name to display
+      SERVICE_QUERY_STATUS,                       // Desired access
+      SERVICE_WIN32_OWN_PROCESS,                  // Service type
+      static_cast<DWORD>(m_eStartType),           // Service start type
+      SERVICE_ERROR_NORMAL,                       // Error control type
+      sBinaryPath.getWString().getWcharString(),  // Service's binary
+      nullptr,                                    // No load ordering group
+      nullptr,                                    // No tag identifier
       &m_pPrivate->oDependencies[0],                // Dependencies
       pUsername,                     // Service running account
       pPassword                      // Password of the account
@@ -227,7 +264,7 @@ bool CcWindowsServiceControl::remove()
   bool bRet = false;
   if (serviceManagerAvailable())
   {
-    if (this->open())
+    if (this->open(false))
     {
       if (FALSE == DeleteService(m_pPrivate->hService))
       {
@@ -255,7 +292,7 @@ bool CcWindowsServiceControl::start()
   bool bRet = false;
   if (serviceManagerAvailable())
   {
-    if (this->open())
+    if (this->open(false))
     {
       if (FALSE == StartServiceW(m_pPrivate->hService, 0, NULL))
       {
@@ -283,7 +320,7 @@ bool CcWindowsServiceControl::stop()
   bool bRet = false;
   if (serviceManagerAvailable())
   {
-    if (this->open())
+    if (open(false))
     {
       SERVICE_STATUS oCurrentState;
       if (FALSE == ControlService(m_pPrivate->hService, SERVICE_CONTROL_STOP, &oCurrentState))
@@ -307,11 +344,15 @@ bool CcWindowsServiceControl::stop()
   return bRet;
 }
 
-bool CcWindowsServiceControl::open()
+bool CcWindowsServiceControl::open(bool bOpenReadOnly)
 {
   bool bRet = false;
   if (serviceManagerAvailable())
   {
+    if (bOpenReadOnly)
+    {
+      //m_pPrivate->uiAccessRights = SERVICE_QUERY_STATUS || SERVICE_QUERY_CONFIG;
+    }
     m_pPrivate->hService = OpenServiceW(m_pPrivate->hManager, m_sName.getWcharString(), m_pPrivate->uiAccessRights);
     if (m_pPrivate->hService != nullptr)
     {
@@ -349,7 +390,18 @@ bool CcWindowsServiceControl::updateConfig()
         {
           m_sDisplayName.set(pServiceConfig->lpDisplayName);
           m_eStartType = static_cast<CcWindowsServiceControl::EStartType>(pServiceConfig->dwStartType);
-          m_pPrivate->sCurrentPath.set(pServiceConfig->lpBinaryPathName);
+          CcWString sCurrentPath(pServiceConfig->lpBinaryPathName);
+          CcString sEscaped = CcStringUtil::escapeString(sCurrentPath.getString());
+          m_pPrivate->oArguments.parseArguments(sEscaped);
+          if (m_pPrivate->oArguments.size() > 0)
+          {
+            m_pPrivate->sApplication = m_pPrivate->oArguments[0];
+            m_pPrivate->oArguments.remove(0);
+          }
+          else
+          {
+            m_pPrivate->sApplication = L"";
+          }
           m_pPrivate->sUsername.set(pServiceConfig->lpServiceStartName);
         }
         else
@@ -361,6 +413,20 @@ bool CcWindowsServiceControl::updateConfig()
     }
   }
   return bRet;
+}
+
+uint32 CcWindowsServiceControl::getStatus()
+{
+  uint32 uiStatus = UINT32_MAX;
+  if (serviceOpened())
+  {
+    SERVICE_STATUS oServiceStatus;
+    if (TRUE == QueryServiceStatus(m_pPrivate->hService, &oServiceStatus))
+    {
+      uiStatus = oServiceStatus.dwCurrentState;
+    }
+  }
+  return uiStatus;
 }
 
 bool CcWindowsServiceControl::serviceManagerAvailable()

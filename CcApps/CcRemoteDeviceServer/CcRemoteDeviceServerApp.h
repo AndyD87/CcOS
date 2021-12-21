@@ -51,6 +51,12 @@ public:
    */
   virtual void run() override;
 
+protected:
+  /**
+   * @brief Get argument by name and remove from list
+   */
+  CcString getArgument(const CcString& sName, const CcString& sDefault);
+
 private:
   CcArguments           m_oArguments;
 #if defined(LINUX) || defined(WINDOWS)

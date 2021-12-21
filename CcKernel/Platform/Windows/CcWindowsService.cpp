@@ -1,4 +1,5 @@
 #include "CcWindowsService.h"
+#include "CcWindowsServiceControl.h"
 #include "CcStatic.h"
 #include "CcService.h"
 
@@ -26,7 +27,7 @@ void CcWindowsService::serviceMain(DWORD dwArgc, LPWSTR* lpszArgv)
   }
 }
 
-CcWindowsService::CcWindowsService(CcService* pService) :
+CcWindowsService::CcWindowsService(CcService& pService) :
   m_pService(pService)
 {
   CCNEW(m_pPrivate, CPrivate);
@@ -55,7 +56,6 @@ CcWindowsService::CcWindowsService(CcService* pService) :
 
 CcWindowsService::~CcWindowsService()
 {
-  CCDELETE(m_pService);
   CCDELETE(m_pPrivate);
 }
 
@@ -64,7 +64,7 @@ CcStatus CcWindowsService::init()
   CcStatus bRet = false;
 
   s_pService = this;
-  m_sSerivceName.fromString(m_pService->getName());
+  m_sSerivceName.fromString(m_pService.getName());
 
   SERVICE_TABLE_ENTRYW serviceTable[] =
   {
@@ -78,29 +78,51 @@ CcStatus CcWindowsService::init()
     if (uError == ERROR_FAILED_SERVICE_CONTROLLER_CONNECT)
     {
       // We are running on console not as service
-      bRet = m_pService->run();
+      bRet = m_pService.run();
     }
   }
   else
   {
     bRet = true;
+    m_bIsRunning = true;
+  }
+  return bRet;
+}
+
+#include "CcFile.h"
+CcStatus CcWindowsService::deinit()
+{
+  CcStatus bRet = false;
+  if (m_bIsRunning)
+  {
+    m_bIsRunning = false;
+
+    CcKernel::delayS(3);
+
+    SERVICE_STATUS k_Status = { 0 };
+    k_Status.dwWin32ExitCode = m_pService.getExitCode().getErrorUint();
+    k_Status.dwServiceType = SERVICE_WIN32_OWN_PROCESS;
+    k_Status.dwControlsAccepted = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN;
+    k_Status.dwCurrentState = SERVICE_STOPPED;
+    SetServiceStatus(m_pPrivate->hStatus, &k_Status);
+
   }
   return bRet;
 }
 
 void CcWindowsService::onStop()
 {
-  m_pService->eventStop();
+  m_pService.eventStop();
 }
 
 void CcWindowsService::onStart()
 {
-  m_pService->eventStart();
+  m_pService.eventStart();
 }
 
 void CcWindowsService::onPause()
 {
-  m_pService->eventPause();
+  m_pService.eventPause();
 }
 
 void CcWindowsService::onContinue()

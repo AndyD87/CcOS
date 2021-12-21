@@ -120,7 +120,7 @@ public:
    * @brief Check if pointer is not nullptr
    * @return True if pionter is valid
    */
-  bool isValid()
+  bool isValid() const
   {
     return m_pPointer != nullptr;
   }

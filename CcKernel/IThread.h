@@ -31,6 +31,7 @@
 #include "CcMutex.h"
 #include "CcEventActionList.h"
 #include "CcReferenceCount.h"
+#include "CcEventHandler.h"
 
 class CcKernel;
 
@@ -183,6 +184,11 @@ public:
   virtual size_t getStackSize()
   { return 0; }
 
+  void registerOnStateChange(const CcEvent& eEventHandle)
+  { m_oStateHandler.append(eEventHandle); }
+  void deregisterOnStateChange(CcObject* pObject)
+  { m_oStateHandler.removeObject(pObject); }
+
 protected:
   /**
    * @brief Signal to Thread next State;
@@ -198,9 +204,19 @@ protected:
    */
   inline void setName(const CcString& oNewName)
   { m_sName = oNewName;}
+
 private:
-  CcString m_sName;             //!< Name of this thread
-  EThreadState m_State;         //!< Current thread state
-  CcMutex m_oStateLock;         //!< Keep state changes thread safe with this lock
-  CcStatus m_oExitCode = 0;     //!< Exit code wich will be returned if application ends
+  /**
+   * @brief Set state value and emit on change event
+   * @param State: State to set
+   */
+  void setState(EThreadState State)
+  { m_State = State; m_oStateHandler.call(this); }
+
+private:
+  CcString m_sName;               //!< Name of this thread
+  EThreadState m_State;           //!< Current thread state
+  CcMutex m_oStateLock;           //!< Keep state changes thread safe with this lock
+  CcStatus m_oExitCode = 0;       //!< Exit code wich will be returned if application ends
+  CcEventHandler m_oStateHandler; //!< State change notification hanlder
 };

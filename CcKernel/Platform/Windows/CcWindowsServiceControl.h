@@ -3,6 +3,8 @@
 #include "CcWString.h"
 #include <winsvc.h>
 
+class CcArguments;
+
 /**
  * @brief Manage a windows service
  */
@@ -25,7 +27,7 @@ public:
    * @brief Create service control instance by service name
    * @param sName: Name of service
    */
-  CcWindowsServiceControl(const CcWString& sName);
+  CcWindowsServiceControl(const CcWString& sName, bool bOpenReadOnly = false);
   ~CcWindowsServiceControl();
 
   /**
@@ -34,6 +36,13 @@ public:
    * @return True if succeeded
    */
   bool setDisplayName(const CcWString& sName);
+
+  /**
+   * @brief Change Arguments for service
+   * @param oArguments: New arguments for service
+   * @return True if succeeded
+   */
+  bool setArguments(const CcArguments& sName);
 
   /**
    * @brief Change start type of service
@@ -92,20 +101,22 @@ public:
    * @brief Open service if already existing.
    * @return True if service was opened succeeded
    */
-  bool open();
+  bool open(bool bOpenReadOnly);
 
   /**
    * @brief Create service or open it.
    * @return True if creation or open succeeded
    */
   bool openOrCreate()
-    { return open() || create();}
+  { return open(false) || create();}
 
   /**
    * @brief Update current config with system
    * @return True if successfully updated.
    */
   bool updateConfig();
+
+  uint32 getStatus();
 
 private:
   bool serviceManagerAvailable();

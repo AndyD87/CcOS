@@ -25,18 +25,26 @@
 #include "CcService.h"
 #include "CcKernel.h"
 #include "CcEventHandler.h"
+#include "CcServiceSystem.h"
 
 CcService::CcService(CcSharedPointer<CcApp> pApplication) :
   m_oApplication(pApplication)
 {
   if (m_oApplication.isValid())
+  {
     m_sServiceName = m_oApplication->getName();
+    m_oApplication->registerOnStateChange(NewCcEvent(this, CcService::onApplicationStop));
+  }
 }
 
 CcService::CcService(const CcString& sServiceName, CcSharedPointer<CcApp> pApplication) :
   m_oApplication(pApplication),
   m_sServiceName(sServiceName)
 {
+  if (m_oApplication.isValid())
+  {
+    m_oApplication->registerOnStateChange(NewCcEvent(this, CcService::onApplicationStop));
+  }
 }
 
 CcService::~CcService()
@@ -46,7 +54,9 @@ CcService::~CcService()
 void CcService::eventStart()
 {
   if (m_oApplication.isValid())
+  {
     m_oApplication->start();
+  }
 }
 
 void CcService::eventPause()
@@ -62,7 +72,16 @@ void CcService::eventStop()
 
 CcStatus CcService::exec()
 {
-  return CcStatus(CcKernel::initService(this));
+  return CcKernel::getServiceSystem().init(*this);
+}
+
+CcStatus CcService::getExitCode() const
+{
+  if (m_oApplication.isValid())
+  {
+    return m_oApplication->getExitCode();
+  }
+  return EStatus::NotFound;
 }
 
 void CcService::idle()
@@ -89,4 +108,13 @@ void CcService::onStop()
 {
   if(m_oApplication.isValid())
     m_oApplication->stop();
+}
+
+void CcService::onApplicationStop(IThread* pApplication)
+{
+  if (pApplication == m_oApplication.getPtr() &&
+      m_oApplication->getThreadState() == EThreadState::Stopped)
+  {
+    CcKernel::getServiceSystem().deinit(*this);
+  }
 }

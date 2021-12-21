@@ -29,9 +29,10 @@
 #include "CcConsole.h"
 #include "CcString.h"
 #include "CcRemoteDeviceServerApp.h"
+#include "CcRemoteDeviceGlobals.h"
 
 CcRemoteDeviceServerService::CcRemoteDeviceServerService(const CcArguments& oArguments) :
-  CcService("CcRemoteDeviceServerService", new CcRemoteDeviceServerApp(oArguments))
+  CcService(CcRemoteDeviceGlobals::Names::ServiceName, new CcRemoteDeviceServerApp(oArguments))
 {
 }
 

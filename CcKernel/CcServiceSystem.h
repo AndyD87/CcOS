@@ -27,6 +27,7 @@
 #include "CcBase.h"
 
 class CcService;
+class CcArguments;
 
 /**
  * @brief Main System class.
@@ -48,14 +49,16 @@ public:
    *        A service supports notifications and signals from system.
    * @return 0 if Service was initialized successfully
    */
-  CcStatus  init(CcService* pService);
+  CcStatus  init(CcService& pService);
 
-  CcStatus  create(CcService* pService);
-  CcStatus  remove(CcService* pService);
-  CcStatus  stop(CcService* pService);
-  CcStatus  start(CcService* pService);
+  CcStatus  deinit(CcService& pService);
 
-  CcStatus  setAutoStart(CcService* pService, bool bOnOff);
+  CcStatus  create(CcService& pService);
+  CcStatus  remove(CcService& pService);
+  CcStatus  stop(CcService& pService);
+  CcStatus  start(CcService& pService);
+  CcStatus  setArguments(CcService& pServiceconst, const CcArguments& oArugments);
+  CcStatus  setAutoStart(CcService& pService, bool bOnOff);
 
 public: // Types
   class CPrivate;

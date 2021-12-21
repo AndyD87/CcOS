@@ -59,70 +59,62 @@ void CcRemoteDeviceServerApp::run()
   size_t i = 1;
   if(m_oArguments.size() > i)
   {
+    CcString sServiceName = getArgument("-name", CcRemoteDeviceGlobals::Names::ServiceName);
     if (m_oArguments[i].compareInsensitve("Reboot"))
     {
       oStatus = CcKernel::getSystem().restart();
     }
     else if (m_oArguments[i].compareInsensitve("Stop"))
     {
-      i++;
-      CcString sServiceName = CcRemoteDeviceGlobals::Names::ServiceName;
-      if (i < m_oArguments.size())
-      {
-        sServiceName = m_oArguments[i];
-      }
       CcService oService(sServiceName, nullptr);
-      oStatus = CcKernel::getServiceSystem().stop(&oService);
+      oStatus = CcKernel::getServiceSystem().stop(oService);
     }
     else if (m_oArguments[i].compareInsensitve("Remove"))
     {
-      i++;
-      CcString sServiceName = CcRemoteDeviceGlobals::Names::ServiceName;
-      if (i < m_oArguments.size())
-      {
-        sServiceName = m_oArguments[i];
-      }
       CcService oService(sServiceName, nullptr);
-      oStatus = CcKernel::getServiceSystem().remove(&oService);
+      oStatus = CcKernel::getServiceSystem().remove(oService);
     }
     else if (m_oArguments[i].compareInsensitve("Start"))
     {
-      i++;
-      CcString sServiceName = CcRemoteDeviceGlobals::Names::ServiceName;
-      if (i < m_oArguments.size())
-      {
-        sServiceName = m_oArguments[i];
-      }
       CcService oService(sServiceName, nullptr);
-      oStatus = CcKernel::getServiceSystem().start(&oService);
+      oStatus = CcKernel::getServiceSystem().start(oService);
+    }
+    else if (m_oArguments[i].compareInsensitve("Test"))
+    {
+      oStatus = true;
+    }
+    else if (m_oArguments[i].compareInsensitve("Arguments"))
+    {
+      i++;
+      if (m_oArguments.size() >= i)
+      {
+        CcArguments oArgs(m_oArguments[i]);
+        CcService oService(sServiceName, nullptr);
+        oStatus = CcKernel::getServiceSystem().setArguments(oService, oArgs);
+      }
+      else
+      {
+        oStatus = EStatus::CommandRequiredParameter;
+        CCERROR("No arguments specified");
+      }
     }
     else if (m_oArguments[i].compareInsensitve("Create"))
     {
-      i++;
       bool bAutostart = true;
-      CcString sServiceName = CcRemoteDeviceGlobals::Names::ServiceName;
-      for (;i < m_oArguments.size(); i++)
+      CcArguments oServiceArguments;
+      for (i++; i < m_oArguments.size() && getExitCode(); i++)
       {
-        if (m_oArguments[i].compareInsensitve("-name"))
+        if (m_oArguments[i].compareInsensitve("-manual"))
+        {
+          bAutostart = false;
+        }
+        else if (m_oArguments[i].compareInsensitve("-arguments"))
         {
           i++;
           if (i < m_oArguments.size())
           {
-            sServiceName = m_oArguments[i];
+            oServiceArguments.parseLine(m_oArguments[i]);
           }
-          else
-          {
-            oStatus = EStatus::CommandRequiredParameter;
-            CCERROR("-name requires a valid service name");
-          }
-        }
-        else if (m_oArguments[i].compareInsensitve("-manual"))
-        {
-          bAutostart = false;
-        }
-        else if (m_oArguments.size() == i+1)
-        {
-          sServiceName = m_oArguments[i];
         }
         else
         {
@@ -134,9 +126,11 @@ void CcRemoteDeviceServerApp::run()
       if (oStatus)
       {
         CcService oService(sServiceName, nullptr);
-        oStatus = CcKernel::getServiceSystem().create(&oService);
+        oStatus = CcKernel::getServiceSystem().create(oService);
         if (oStatus)
-          oStatus = CcKernel::getServiceSystem().setAutoStart(&oService, bAutostart);
+          oStatus = CcKernel::getServiceSystem().setAutoStart(oService, bAutostart);
+        if (oStatus)
+          oStatus = CcKernel::getServiceSystem().setArguments(oService, oServiceArguments);
       }
     }
     else
@@ -154,9 +148,36 @@ void CcRemoteDeviceServerApp::run()
   {
     CcRemoteDeviceServer::run();
   }
+  else
+  {
+
+  }
 
   if (getExitCode() && !oStatus)
   {
     setExitCode(oStatus);
   }
+}
+
+CcString CcRemoteDeviceServerApp::getArgument(const CcString& sName, const CcString& sDefault)
+{
+  CcString sValue(sDefault);
+  for (size_t i=0; i < m_oArguments.size(); i++)
+  {
+    if (m_oArguments[i].compareInsensitve(sName))
+    {
+      m_oArguments.remove(i);
+      if (i < m_oArguments.size())
+      {
+        sValue = m_oArguments[i];
+        m_oArguments.remove(i);
+      }
+      else
+      {
+        setExitCode(EStatus::CommandRequiredParameter);
+        CCERROR("Argument \"" + sName +"\" requires an additional value");
+      }
+    }
+  }
+  return sValue;
 }

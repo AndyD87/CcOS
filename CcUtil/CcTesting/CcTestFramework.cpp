@@ -84,9 +84,12 @@ bool CcTestFramework::init(int iArgc, char** ppArgv)
 
 int CcTestFramework::deinit(bool bStopKernel)
 {
+  // Remove Test dir
   removeTemporaryDir();
+  // Cleanup private
   CCDELETE(s_pPrivate);
 
+  // Send stop kernel if test for shutdown is required.
   if(bStopKernel) CcKernel::shutdown();
 
   if (s_bSuccess)
@@ -232,6 +235,8 @@ bool CcTestFramework::runTest(FTestCreate fTestCreate)
     else
       CcTestFramework::writeInfo("Test failed");
   }
+  // Cleanup test
+  pTest->cleanup();
   fTestCreate(pTest);
   return s_bSuccess;
 }

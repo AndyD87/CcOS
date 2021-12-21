@@ -119,12 +119,6 @@ public: // Methods
   static bool deinitCLI();
 
   /**
-   * @brief Initialize Kernel to run as Service
-   * @return true if CLI is available and started
-   */
-  static CcStatus initService(CcService* pService);
-
-  /**
    * @brief Check if current privelegues are admin privilegues
    * @return true if running as admin
    */

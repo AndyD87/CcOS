@@ -225,11 +225,6 @@ bool CcKernel::deinitCLI()
   return CcKernelPrivate::pPrivate->pSystem->deinitCLI();
 }
 
-CcStatus CcKernel::initService(CcService* pService)
-{
-  return getServiceSystem().init(pService);
-}
-
 bool CcKernel::isAdmin()
 {
   return CcKernelPrivate::pPrivate->pSystem->isAdmin();

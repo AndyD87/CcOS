@@ -27,58 +27,83 @@
 #include "CcWindowsService.h"
 #include "CcWindowsServiceControl.h"
 #include "CcServiceSystem.h"
+#include "CcVector.h"
 
 class CcServiceSystem::CPrivate
 {
 public:
-  static CcWindowsService*  s_pService;
+  CcVector<CcWindowsService*> m_oServices;
 };
-
-CcWindowsService* CcServiceSystem::CPrivate::s_pService(nullptr);
 
 CcServiceSystem::CcServiceSystem()
 {
+  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcServiceSystem::~CcServiceSystem()
 {
-  if (CPrivate::s_pService)
-    CCDELETE(CPrivate::s_pService);
+  for (CcWindowsService* pService : m_pPrivate->m_oServices)
+  {
+    CCDELETE(pService);
+  }
+  CCDELETE(m_pPrivate);
 }
 
-CcStatus CcServiceSystem::init(CcService* pService)
+CcStatus CcServiceSystem::init(CcService& pService)
 {
-  CPrivate::s_pService = new CcWindowsService(pService);
-  return CPrivate::s_pService->init();
+  CCNEWTYPE(pWinService, CcWindowsService, pService);
+  m_pPrivate->m_oServices.append(pWinService);
+  return pWinService->init();
 }
 
-CcStatus CcServiceSystem::create(CcService* pService)
+CcStatus CcServiceSystem::deinit(CcService& pService)
 {
-  CcWindowsServiceControl oControl(pService->getName());
+  CcStatus oStatus(EStatus::NotFound);
+  for (CcWindowsService* pWinService : m_pPrivate->m_oServices)
+  {
+    if (*pWinService == pService)
+    {
+      m_pPrivate->m_oServices.removeItem(pWinService);
+      pWinService->deinit();
+      CCDELETE(pWinService);
+    }
+  }
+  return oStatus;
+}
+
+CcStatus CcServiceSystem::create(CcService& pService)
+{
+  CcWindowsServiceControl oControl(pService.getName());
   return oControl.create();
 }
 
-CcStatus CcServiceSystem::remove(CcService* pService)
+CcStatus CcServiceSystem::remove(CcService& pService)
 {
-  CcWindowsServiceControl oControl(pService->getName());
+  CcWindowsServiceControl oControl(pService.getName());
   return oControl.remove();
 }
 
-CcStatus CcServiceSystem::stop(CcService* pService)
+CcStatus CcServiceSystem::stop(CcService& pService)
 {
-  CcWindowsServiceControl oControl(pService->getName());
+  CcWindowsServiceControl oControl(pService.getName());
   return oControl.stop();
 }
 
-CcStatus CcServiceSystem::start(CcService* pService)
+CcStatus CcServiceSystem::start(CcService& pService)
 {
-  CcWindowsServiceControl oControl(pService->getName());
+  CcWindowsServiceControl oControl(pService.getName());
   return oControl.start();
 }
 
-CcStatus  CcServiceSystem::setAutoStart(CcService* pService, bool bOnOff)
+CcStatus CcServiceSystem::setArguments(CcService& pService, const CcArguments& oArugments)
 {
-  CcWindowsServiceControl oControl(pService->getName());
+  CcWindowsServiceControl oControl(pService.getName());
+  return oControl.setArguments(oArugments);
+}
+
+CcStatus CcServiceSystem::setAutoStart(CcService& pService, bool bOnOff)
+{
+  CcWindowsServiceControl oControl(pService.getName());
   if(bOnOff)
     return oControl.setStartType(CcWindowsServiceControl::EStartType::AutoStart);
   else

@@ -38,7 +38,7 @@ template class CcKernelSHARED CcSharedPointer<CcApp>;
 /**
  * @brief Service handler for Aplications
  */
-class CcKernelSHARED CcService : private CcEventActionLoop
+class CcKernelSHARED CcService : public CcObject, private CcEventActionLoop
 {
 public:
   /**
@@ -82,6 +82,8 @@ public:
   //! @return Get current name of Service
   const CcString& getName() { return m_sServiceName; }
 
+  CcStatus getExitCode() const;
+
 protected:
   /**
    * @brief Idle command executed on event loop
@@ -93,6 +95,8 @@ protected:
 private:
   bool onLoop();
   void onStop();
+
+  void onApplicationStop(IThread* pApplication);
 
 private:
   CcSharedPointer<CcApp>  m_oApplication;

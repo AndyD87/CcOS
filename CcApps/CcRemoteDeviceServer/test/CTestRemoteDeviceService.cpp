@@ -37,25 +37,65 @@ CTestRemoteDeviceService::CTestRemoteDeviceService() :
   m_sApplicationDir = CcKernel::getCurrentExecutablePath().appendPath("..").normalizePath();
   m_sApplication = m_sApplicationDir;
   m_sApplication.appendPath("CcRemoteDeviceServer");
-  appendTestMethod("Add service to system", &CTestRemoteDeviceService::createService);
-  appendTestMethod("Remove service from system", &CTestRemoteDeviceService::removeService);
+  if (CcKernel::isAdmin())
+  {
+    appendTestMethod("Add service to system", &CTestRemoteDeviceService::createService);
+    appendTestMethod("Start service", &CTestRemoteDeviceService::startService);
+    appendTestMethod("Stop service", &CTestRemoteDeviceService::stopService);
+    appendTestMethod("Remove service from system", &CTestRemoteDeviceService::removeService);
+  }
 }
 
 CTestRemoteDeviceService::~CTestRemoteDeviceService()
 {
 }
 
+void CTestRemoteDeviceService::cleanup()
+{
+  CcProcess oRemoteDeviceService(m_sApplication);
+  oRemoteDeviceService.addArgument("Remove");
+  oRemoteDeviceService.addArgument("-name");
+  oRemoteDeviceService.addArgument(SERVCE_APPLICATION_NAME);
+  oRemoteDeviceService.exec(CcDateTimeFromSeconds(1));
+}
+
 bool CTestRemoteDeviceService::createService()
 {
   bool bSuccess = false;
+  // Cleanup before
   CcProcess oRemoteDeviceService(m_sApplication);
   oRemoteDeviceService.addArgument("Remove");
+  oRemoteDeviceService.addArgument("-name");
   oRemoteDeviceService.addArgument(SERVCE_APPLICATION_NAME);
   bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(1));
 
+  oRemoteDeviceService.clearArguments();
   oRemoteDeviceService.addArgument("Create");
+  oRemoteDeviceService.addArgument("-name");
   oRemoteDeviceService.addArgument(SERVCE_APPLICATION_NAME);
   bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(1)); 
+  return bSuccess;
+}
+
+bool CTestRemoteDeviceService::startService()
+{
+  bool bSuccess = false;
+  CcProcess oRemoteDeviceService(m_sApplication);
+  oRemoteDeviceService.addArgument("Start");
+  oRemoteDeviceService.addArgument("-name");
+  oRemoteDeviceService.addArgument(SERVCE_APPLICATION_NAME);
+  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(1));
+  return bSuccess;
+}
+
+bool CTestRemoteDeviceService::stopService()
+{
+  bool bSuccess = false;
+  CcProcess oRemoteDeviceService(m_sApplication);
+  oRemoteDeviceService.addArgument("Stop");
+  oRemoteDeviceService.addArgument("-name");
+  oRemoteDeviceService.addArgument(SERVCE_APPLICATION_NAME);
+  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(1));
   return bSuccess;
 }
 

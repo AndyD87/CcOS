@@ -92,8 +92,6 @@ CcString CcStringList::parseArguments(const CcString& Line)
             break;
         }
       }
-      append(temp);
-      temp.clear();
     }
     else
     {
