@@ -25,8 +25,8 @@
 #pragma once
 
 #include "CcBase.h"
+#include "CcService.h"
 
-class CcService;
 class CcArguments;
 
 /**

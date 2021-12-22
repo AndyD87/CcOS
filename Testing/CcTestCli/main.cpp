@@ -74,9 +74,9 @@ int main(int iArgc, char** ppArgv)
           for(int iAlternate = 0; ;iAlternate++)
           {
             if(iAlternate & 1)
-              oPortexpander.setValue(0x5555);
+              oPortexpander.setValue(0x5555 << 1);
             else
-              oPortexpander.setValue(0x5555);
+              oPortexpander.setValue(0x5555 << 1);
             CcKernel::sleep(1000);
             CCDEBUG("Read register again");
             pInterface->readRegister8(0x00, pChar, 0x20);

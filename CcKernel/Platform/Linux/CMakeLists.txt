@@ -27,6 +27,7 @@ set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxPipe.h
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxProcessThread.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxProcessThread.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcLinuxServiceSystem.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxSharedMemory.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxSharedMemory.h
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxSocketTcp.cpp

@@ -65,6 +65,8 @@
 #include <cstdlib>
 #include <libgen.h>         // dirname
 #include <linux/limits.h>   // PATH_MAX
+#include <sys/reboot.h>
+#include <errno.h>
 
 class CcSystem::CPrivate
 {
@@ -205,55 +207,6 @@ bool CcSystem::initCLI()
 bool CcSystem::deinitCLI()
 {
   return false;
-}
-
-CcStatus CcSystem::serviceInit(CcService* pService)
-{
-  CcStatus oSuccess = EStatus::Error;
-  pid_t pid = fork();
-
-  if(pid < 0 )
-  {
-    CCDEBUG("Failed to fork process.");
-  }
-  else if(pid > 0)
-  {
-    // We are in parent
-    oSuccess = true;
-  }
-  else
-  {
-    // We are in child
-    m_pService = pService;
-    oSuccess   = m_pService->run();
-  }
-
-  return oSuccess;
-}
-
-CcStatus CcSystem::serviceCreate(CcService* pService)
-{
-  return false;
-}
-
-CcStatus CcSystem::serviceDelete(CcService* pService)
-{
-  if(pService)
-  {
-    if(m_pService == pService)
-    {
-      m_pService.clear();
-    }
-    else
-    {
-      CCDELETE(pService);
-    }
-    return true;
-  }
-  else
-  {
-    return false;
-  }
 }
 
 bool CcSystem::isAdmin()
@@ -685,4 +638,24 @@ void CcSystem::registerForIdle(IDevice* pDevice)
 bool CcSystem::deregisterForIdle(IDevice* pDevice)
 {
   return m_pPrivate->oIdleList.removeItem(pDevice);
+}
+
+CcStatus CcSystem::shutdown(const CcString& sMessage, bool bForce)
+{
+  CcStatus oOk(true);
+  CCUNUSED(sMessage);
+  CCUNUSED(bForce);
+  int iResult = reboot(RB_POWER_OFF);
+  if(iResult != 0) oOk.setSystemError(errno);
+  return oOk;
+}
+
+CcStatus CcSystem::restart(const CcString& sMessage, bool bForce)
+{
+  CcStatus oOk(true);
+  CCUNUSED(sMessage);
+  CCUNUSED(bForce);
+  int iResult = reboot(RB_AUTOBOOT);
+  if(iResult != 0) oOk.setSystemError(errno);
+  return oOk;
 }
