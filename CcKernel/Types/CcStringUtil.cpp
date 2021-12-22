@@ -132,9 +132,9 @@ size_t CcStringUtil::findLastChar(const char* pcString, size_t uiLength, char cT
   return uiPos;
 }
 
-size_t CcStringUtil::findNextWhiteSpace(const char* pcString, size_t uiLength)
+size_t CcStringUtil::findNextWhiteSpace(const char* pcString, size_t uiLength, size_t uiOffset)
 {
-  for (size_t i = 0; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength; i++)
   {
     switch (pcString[i])
     {
@@ -150,9 +150,9 @@ size_t CcStringUtil::findNextWhiteSpace(const char* pcString, size_t uiLength)
   return SIZE_MAX;
 }
 
-size_t CcStringUtil::findNextNotWhiteSpace(const char* pcString, size_t uiLength)
+size_t CcStringUtil::findNextNotWhiteSpace(const char* pcString, size_t uiLength, size_t uiOffset)
 {
-  for (size_t i = 0; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength; i++)
   {
     switch (pcString[i])
     {
@@ -269,7 +269,7 @@ size_t CcStringUtil::findCharOf(const wchar_t* pcString, size_t uiLength, const 
   return SIZE_MAX;
 }
 
-size_t CcStringUtil::findNextWhiteSpace(const wchar_t* pcString, size_t uiLength)
+size_t CcStringUtil::findNextWhiteSpace(const wchar_t* pcString, size_t uiLength, size_t uiOffset)
 {
   for (size_t i = 0; i < uiLength; i++)
   {
@@ -287,9 +287,9 @@ size_t CcStringUtil::findNextWhiteSpace(const wchar_t* pcString, size_t uiLength
   return SIZE_MAX;
 }
 
-size_t CcStringUtil::findNextNotWhiteSpace(const wchar_t* pcString, size_t uiLength)
+size_t CcStringUtil::findNextNotWhiteSpace(const wchar_t* pcString, size_t uiLength, size_t uiOffset)
 {
-  for (size_t i = 0; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength; i++)
   {
     switch (pcString[i])
     {

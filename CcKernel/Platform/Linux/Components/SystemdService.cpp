@@ -1,4 +1,6 @@
-/*
+/**
+ * @copyright  Andreas Dirmeier (C) 2015
+ *
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -20,81 +22,69 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     implementations for Class CcServiceSystem
- **/
+ * @brief     Implementation of Class SystemdService
+ */
+#include "SystemdService.h"
+#include "CcKernel.h"
+#include "CcByteArray.h"
+#include "CcFile.h"
 
-#include "CcServiceSystem.h"
-#include "CcVector.h"
+const char SYSTEMD_CONFIG_PATH[] = "/etc/systemd/system/";
 
-class CcServiceSystem::CPrivate
+SystemdService::SystemdService(CcService& oService) :
+  m_oService(oService)
 {
-public:
-};
-
-CcServiceSystem::CcServiceSystem()
-{
-  CCNEW(m_pPrivate, CPrivate);
 }
 
-CcServiceSystem::~CcServiceSystem()
+SystemdService::~SystemdService()
 {
-  CCDELETE(m_pPrivate);
+
 }
 
-CcStatus CcServiceSystem::init(CcService& pService)
+void SystemdService::readFile()
+{
+  CcFile oFile(SYSTEMD_CONFIG_PATH + m_oService.getName() + ".service");
+  if(oFile.open(EOpenFlags::Read))
+  {
+    CcString sFileContents = oFile.readAll();
+    m_oArguments.add(sFileContents.splitLines(true));
+  }
+}
+
+CcStatus SystemdService::create()
 {
   CcStatus oStatus(false);
-  CCUNUSED(pService);
   return oStatus;
 }
 
-CcStatus CcServiceSystem::deinit(CcService& pService)
+CcStatus SystemdService::remove()
 {
   CcStatus oStatus(false);
-  CCUNUSED(pService);
   return oStatus;
 }
 
-CcStatus CcServiceSystem::create(CcService& pService)
+CcStatus SystemdService::stop()
 {
   CcStatus oStatus(false);
-  CCUNUSED(pService);
   return oStatus;
 }
 
-CcStatus CcServiceSystem::remove(CcService& pService)
+CcStatus SystemdService::start()
 {
   CcStatus oStatus(false);
-  CCUNUSED(pService);
   return oStatus;
 }
 
-CcStatus CcServiceSystem::stop(CcService& pService)
+CcStatus SystemdService::setArguments(const CcArguments& oArguments)
 {
   CcStatus oStatus(false);
-  CCUNUSED(pService);
+  CCUNUSED(oArguments);
   return oStatus;
 }
 
-CcStatus CcServiceSystem::start(CcService& pService)
+CcStatus SystemdService::setAutoStart(bool bOnOff)
 {
   CcStatus oStatus(false);
-  CCUNUSED(pService);
-  return oStatus;
-}
-
-CcStatus CcServiceSystem::setArguments(CcService& pService, const CcArguments& oArugments)
-{
-  CcStatus oStatus(false);
-  CCUNUSED(pService);
-  CCUNUSED(oArugments);
-  return oStatus;
-}
-
-CcStatus CcServiceSystem::setAutoStart(CcService& pService, bool bOnOff)
-{
-  CcStatus oStatus(false);
-  CCUNUSED(pService);
   CCUNUSED(bOnOff);
   return oStatus;
 }

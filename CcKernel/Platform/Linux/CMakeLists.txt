@@ -43,6 +43,8 @@ set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/CcLinuxUser.h
         ${CMAKE_CURRENT_LIST_DIR}/ILinuxSocket.cpp
         ${CMAKE_CURRENT_LIST_DIR}/ILinuxSocket.h
+        ${CMAKE_CURRENT_LIST_DIR}/Components/SystemdService.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Components/SystemdService.h
 )
 
 add_to_kernel_sources    ( ${SOURCE_FILES} )

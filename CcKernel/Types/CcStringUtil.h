@@ -119,7 +119,10 @@ public:
    * @param uiLength: Maximum length of string
    * @return Position of next whitespace or uiLength if not found
    */
-  static size_t findNextWhiteSpace(const char* pcString, size_t uiLength);
+  static size_t findNextWhiteSpace(const char* pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
+  static size_t findNextWhiteSpace(const CcString& pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
+  { return findNextWhiteSpace(pcString.getCharString(), CCMIN(uiLength, pcString.length()), uiOffset); }
+
 
   /**
    * @brief Find next not whitespace in string
@@ -127,7 +130,10 @@ public:
    * @param uiLength: Maximum length of string
    * @return Position of next not whitespace or uiLength if not found
    */
-  static size_t findNextNotWhiteSpace(const char* pcString, size_t uiLength);
+  static size_t findNextNotWhiteSpace(const char* pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
+  static size_t findNextNotWhiteSpace(const CcString& pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
+  { return findNextWhiteSpace(pcString.getCharString(), CCMIN(uiLength, pcString.length()), uiOffset); }
+
 
   /**
    * @brief Check if character is a whitespace
@@ -196,7 +202,9 @@ public:
    * @param uiLength: Maximum length of string
    * @return Position of next whitespace or uiLength if not found
    */
-  static size_t findNextWhiteSpace(const wchar_t* pcString, size_t uiLength);
+  static size_t findNextWhiteSpace(const wchar_t* pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
+  static size_t findNextWhiteSpace(const CcWString& pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
+  { return findNextWhiteSpace(pcString.getWcharString(), CCMIN(pcString.length(), uiLength), uiOffset); }
 
   /**
    * @brief Find next not whitespace in string
@@ -204,7 +212,9 @@ public:
    * @param uiLength: Maximum length of string
    * @return Position of next not whitespace or uiLength if not found
    */
-  static size_t findNextNotWhiteSpace(const wchar_t* pcString, size_t uiLength);
+  static size_t findNextNotWhiteSpace(const wchar_t* pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
+  static size_t findNextNotWhiteSpace(const CcWString& pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
+  { return findNextNotWhiteSpace(pcString.getWcharString(), CCMIN(pcString.length(), uiLength), uiOffset); }
 
   /**
    * @brief Check if character is a whitespace

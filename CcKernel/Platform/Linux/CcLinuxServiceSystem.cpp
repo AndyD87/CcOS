@@ -25,6 +25,7 @@
 
 #include "CcServiceSystem.h"
 #include "CcVector.h"
+#include "Components/SystemdService.h"
 
 #include <unistd.h>
 
@@ -79,36 +80,36 @@ CcStatus CcServiceSystem::deinit(CcService& pService)
 
 CcStatus CcServiceSystem::create(CcService& pService)
 {
-  CcStatus oStatus(false);
-  return oStatus;
+  SystemdService oService(pService);
+  return oService.create();
 }
 
 CcStatus CcServiceSystem::remove(CcService& pService)
 {
-  CcStatus oStatus(false);
-  return oStatus;
+  SystemdService oService(pService);
+  return oService.remove();
 }
 
 CcStatus CcServiceSystem::stop(CcService& pService)
 {
-  CcStatus oStatus(false);
-  return oStatus;
+  SystemdService oService(pService);
+  return oService.stop();
 }
 
 CcStatus CcServiceSystem::start(CcService& pService)
 {
-  CcStatus oStatus(false);
-  return oStatus;
+  SystemdService oService(pService);
+  return oService.remove();
 }
 
-CcStatus CcServiceSystem::setArguments(CcService& pService, const CcArguments& oArugments)
+CcStatus CcServiceSystem::setArguments(CcService& pService, const CcArguments& oArguments)
 {
-  CcStatus oStatus(false);
-  return oStatus;
+  SystemdService oService(pService);
+  return oService.setArguments(oArguments);
 }
 
 CcStatus CcServiceSystem::setAutoStart(CcService& pService, bool bOnOff)
 {
-  CcStatus oStatus(false);
-  return oStatus;
+  SystemdService oService(pService);
+  return oService.setAutoStart(bOnOff);
 }

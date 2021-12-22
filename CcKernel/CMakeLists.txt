@@ -60,7 +60,8 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     IThread.h
     IWaitable.h
     IWorker.h
-    
+    Documents/CcIniFile.cpp
+    Documents/CcIniFile.h
   )
 
   ########

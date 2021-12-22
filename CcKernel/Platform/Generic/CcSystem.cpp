@@ -279,24 +279,6 @@ bool CcSystem::deinitCLI()
   return false;
 }
 
-CcStatus CcSystem::serviceInit(CcService* pService)
-{
-  // Single service, check later if we have to create a thread for a service.
-  pService->run();
-  return true;
-}
-
-CcStatus CcSystem::serviceCreate(CcService* pService)
-{
-  return false;
-}
-
-CcStatus CcSystem::serviceDelete(CcService* pService)
-{
-  CCDELETE(pService);
-  return true;
-}
-
 bool CcSystem::isAdmin()
 {
   return true;
@@ -508,3 +490,20 @@ bool CcSystem::deregisterForIdle(IDevice* pDevice)
 {
   return m_pPrivate->oIdleList.removeItem(pDevice);
 }
+
+CcStatus CcSystem::shutdown(const CcString& sMessage, bool bForce)
+{
+  CcStatus oOk(false);
+  CCUNUSED(sMessage);
+  CCUNUSED(bForce);
+  return oOk;
+}
+
+CcStatus CcSystem::restart(const CcString& sMessage, bool bForce)
+{
+  CcStatus oOk(false);
+  CCUNUSED(sMessage);
+  CCUNUSED(bForce);
+  return oOk;
+}
+

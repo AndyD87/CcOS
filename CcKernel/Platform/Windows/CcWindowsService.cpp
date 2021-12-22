@@ -99,12 +99,12 @@ CcStatus CcWindowsService::deinit()
 
     CcKernel::delayS(3);
 
-    SERVICE_STATUS k_Status = { 0 };
-    k_Status.dwWin32ExitCode = m_pService.getExitCode().getErrorUint();
-    k_Status.dwServiceType = SERVICE_WIN32_OWN_PROCESS;
-    k_Status.dwControlsAccepted = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN;
-    k_Status.dwCurrentState = SERVICE_STOPPED;
-    SetServiceStatus(m_pPrivate->hStatus, &k_Status);
+    SERVICE_STATUS oStatus = {};
+    oStatus.dwWin32ExitCode = m_pService.getExitCode().getErrorUint();
+    oStatus.dwServiceType = SERVICE_WIN32_OWN_PROCESS;
+    oStatus.dwControlsAccepted = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN;
+    oStatus.dwCurrentState = SERVICE_STOPPED;
+    SetServiceStatus(m_pPrivate->hStatus, &oStatus);
 
   }
   return bRet;

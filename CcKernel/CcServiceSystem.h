@@ -57,7 +57,7 @@ public:
   CcStatus  remove(CcService& pService);
   CcStatus  stop(CcService& pService);
   CcStatus  start(CcService& pService);
-  CcStatus  setArguments(CcService& pServiceconst, const CcArguments& oArugments);
+  CcStatus  setArguments(CcService& pService, const CcArguments& oArguments);
   CcStatus  setAutoStart(CcService& pService, bool bOnOff);
 
 public: // Types
