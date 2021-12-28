@@ -166,7 +166,7 @@ bool CcJsonDocument::parseMap(CcJsonNode& oMap, const char*& sDocument, size_t& 
         {
           uiLength--;
           sDocument++;
-          uiNextNotWS = CcStringUtil::findChar(sDocument, uiLength, CcGlobalStrings::Seperators::Quote[0]);
+          uiNextNotWS = CcStringUtil::findChar(sDocument, CcGlobalStrings::Seperators::Quote[0], uiLength);
           if (uiNextNotWS < uiLength)
           {
             oItem.name().set(sDocument, uiNextNotWS);
@@ -313,7 +313,7 @@ bool CcJsonDocument::parseValue(CcJsonNode& oItem, const char*& sDocument, size_
     uiLength--;
     sDocument++;
     size_t uiPosNextQuote = 0;
-    uiPosNextQuote = CcStringUtil::findChar(sDocument + uiPosNextQuote, uiLength, CcGlobalStrings::Seperators::Quote[0], CcGlobalStrings::Seperators::BackSlash[0]);
+    uiPosNextQuote = CcStringUtil::findCharEscaped(sDocument + uiPosNextQuote, CcGlobalStrings::Seperators::Quote[0], CcGlobalStrings::Seperators::BackSlash[0], uiLength);
     if (uiPosNextQuote < uiLength)
     {
       oItem.setValue(CcString(sDocument, uiPosNextQuote));

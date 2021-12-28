@@ -39,6 +39,7 @@ class CcKernelSHARED  CcIniFile
 public:
   class CcKernelSHARED CIniLine
   {
+  public:
     CcString sPreKey;
     CcString sKey;
     CcString sPostKey;

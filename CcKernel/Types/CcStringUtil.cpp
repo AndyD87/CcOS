@@ -83,21 +83,37 @@ char* CcStringUtil::strchr(char* pcString, char cToFind)
   return nullptr;
 }
 
-size_t CcStringUtil::findChar(const char* pcString, size_t uiLength, char cToFind)
+size_t CcStringUtil::findChar(const wchar_t* pcString, wchar_t cToFind, size_t uiLength, size_t uiOffset)
 {
-  for (size_t i = 0; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength; i++)
   {
+    if(pcString[i] == '\0')
+      return SIZE_MAX;
     if (pcString[i] == cToFind)
       return i;
   }
   return SIZE_MAX;
 }
 
-size_t CcStringUtil::findChar(const char* pcString, size_t uiLength, char cToFind, char cEscape)
+size_t CcStringUtil::findChar(const char* pcString, char cToFind, size_t uiLength, size_t uiOffset)
 {
-  for (size_t i = 0; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength; i++)
   {
-    if (pcString[i] == cEscape)
+    if(pcString[i] == '\0')
+      return SIZE_MAX;
+    if (pcString[i] == cToFind)
+      return i;
+  }
+  return SIZE_MAX;
+}
+
+size_t CcStringUtil::findCharEscaped(const char* pcString, char cToFind, char cEscape, size_t uiLength, size_t uiOffset)
+{
+  for (size_t i = uiOffset; i < uiLength; i++)
+  {
+    if(pcString[i] == '\0')
+      return SIZE_MAX;
+    else if (pcString[i] == cEscape)
       i++;
     else if (pcString[i] == cToFind)
       return i;
@@ -145,6 +161,8 @@ size_t CcStringUtil::findNextWhiteSpace(const char* pcString, size_t uiLength, s
       case '\f':
       case '\v':
         return i;
+      case '\0':
+        return SIZE_MAX;
     }
   }
   return SIZE_MAX;
@@ -163,6 +181,8 @@ size_t CcStringUtil::findNextNotWhiteSpace(const char* pcString, size_t uiLength
       case '\f':
       case '\v':
         continue;
+      case '\0':
+        return SIZE_MAX;
       default:
         return i;
     }
@@ -231,21 +251,13 @@ wchar_t* CcStringUtil::strchr(wchar_t* pcString, wchar_t cToFind)
   return nullptr;
 }
 
-size_t CcStringUtil::findChar(const wchar_t* pcString, size_t uiLength, wchar_t cToFind)
+size_t CcStringUtil::findCharEscaped(const wchar_t* pcString, wchar_t cToFind, wchar_t cEscape, size_t uiLength, size_t uiOffset)
 {
-  for (size_t i = 0; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength; i++)
   {
-    if (pcString[i] == cToFind)
-      return i;
-  }
-  return uiLength;
-}
-
-size_t CcStringUtil::findChar(const wchar_t* pcString, size_t uiLength, wchar_t cToFind, wchar_t cEscape)
-{
-  for (size_t i = 0; i < uiLength; i++)
-  {
-    if (pcString[i] == cEscape)
+    if(pcString[i] == '\0')
+      return SIZE_MAX;
+    else if (pcString[i] == cEscape)
       i++;
     else if (pcString[i] == cToFind)
       return i;
@@ -271,7 +283,7 @@ size_t CcStringUtil::findCharOf(const wchar_t* pcString, size_t uiLength, const 
 
 size_t CcStringUtil::findNextWhiteSpace(const wchar_t* pcString, size_t uiLength, size_t uiOffset)
 {
-  for (size_t i = 0; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength; i++)
   {
     switch (pcString[i])
     {
@@ -282,6 +294,8 @@ size_t CcStringUtil::findNextWhiteSpace(const wchar_t* pcString, size_t uiLength
       case '\f':
       case '\v':
         return i;
+      case '\0':
+        return SIZE_MAX;
     }
   }
   return SIZE_MAX;
@@ -301,6 +315,8 @@ size_t CcStringUtil::findNextNotWhiteSpace(const wchar_t* pcString, size_t uiLen
       case '\b':
       case '\v':
         continue;
+      case '\0':
+        return SIZE_MAX;
       default:
         return i;
     }
@@ -738,7 +754,7 @@ CcString CcStringUtil::getHumanReadableSize(uint64 uiSize, uint8 uiPrecision)
 CcStringPair CcStringUtil:: getKeyValue(const CcString& sLine, char cSeperator)
 {
   CcStringPair oPair;
-  size_t uiEqualSign = findChar(sLine.getCharString(), sLine.length(), cSeperator, 0);
+  size_t uiEqualSign = findChar(sLine.getCharString(), cSeperator, sLine.length(), 0);
   if (uiEqualSign > 0 &&
       uiEqualSign < sLine.length())
   {
@@ -1139,7 +1155,7 @@ CcString CcStringUtil::findArgument(const CcString& sString, size_t& uiPosition)
         uiMaxLength = sString.length() - uiPosition;
         while (bComplete == false)
         {
-          uiNext = findChar(sString.getCharString() + uiPosition, uiMaxLength, CcGlobalStrings::Seperators::Quote[0]);
+          uiNext = findChar(sString.getCharString() + uiPosition, CcGlobalStrings::Seperators::Quote[0], uiMaxLength);
           if (uiNext < uiMaxLength)
           {
             uiPosition += uiNext;
@@ -1175,7 +1191,7 @@ CcString CcStringUtil::findArgument(const CcString& sString, size_t& uiPosition)
         uiMaxLength = sString.length() - uiPosition;
         while (bComplete == false)
         {
-          uiNext = findChar(sString.getCharString() + uiPosition, uiMaxLength, CcGlobalStrings::Seperators::SingleQuote[0]);
+          uiNext = findChar(sString.getCharString() + uiPosition, CcGlobalStrings::Seperators::SingleQuote[0], uiMaxLength);
           if (uiNext < uiMaxLength)
           {
             uiPosition += uiNext;

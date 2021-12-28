@@ -72,7 +72,9 @@ public:
    * @param cToFind:  Target Character to find
    * @return Position of found character or uiLength if not found
    */
-  static size_t findChar(const char* pcString, size_t uiLength, char cToFind);
+  static size_t findChar(const char* pcString, char cToFind, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
+  static size_t findChar(const CcString& pcString, char cToFind, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
+  { return findChar(pcString.getCharString(), cToFind, CCMIN(pcString.length(), uiLength), uiOffset);}
 
   /**
    * @brief Find a character in character string, but escape found character if escaped paramter is set before.
@@ -82,7 +84,9 @@ public:
    * @param cEscape:  Character to ignore next character if it is cToFind
    * @return Position of found character or SIZE_MAX if not found
    */
-  static size_t findChar(const char* pcString, size_t uiLength, char cToFind, char cEscape);
+  static size_t findCharEscaped(const char* pcString, char cToFind, char cEscape, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
+  static size_t findCharEscaped(const CcString& pcString, char cToFind, char cEscape, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
+  { return findCharEscaped(pcString.getCharString(), cToFind, cEscape, CCMIN(uiLength, pcString.length()), uiOffset); }
 
   /**
    * @brief Find specific character from a list of character in string.
@@ -173,7 +177,9 @@ public:
    * @param cToFind:  Target Character to find
    * @return Position of found character or uiLength if not found
    */
-  static size_t findChar(const wchar_t* pcString, size_t uiLength, wchar_t cToFind);
+  static size_t findChar(const wchar_t* pcString, wchar_t cToFind, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
+  static size_t findChar(const CcWString& wsString, wchar_t cToFind, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
+  { return findChar(wsString.getWcharString(), cToFind, uiOffset, CCMIN(wsString.length(), uiLength));}
 
   /**
    * @brief Find a character in character string, but escape found character if escaped paramter is set before.
@@ -183,7 +189,9 @@ public:
    * @param cEscape:  Character to ignore next character if it is cToFind
    * @return Position of found character or uiLength if not found
    */
-  static size_t findChar(const wchar_t* pcString, size_t uiLength, wchar_t cToFind, wchar_t cEscape);
+  static size_t findCharEscaped(const wchar_t* pcString, wchar_t cToFind, wchar_t cEscape, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
+  static size_t findCharEscaped(const CcWString& wsString, wchar_t cToFind, wchar_t cEscape, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
+  { return findCharEscaped(wsString.getWcharString(), cToFind, cEscape, CCMIN(wsString.length(), uiLength), uiOffset);}
 
   /**
    * @brief Find specific character from a list of character in string.

@@ -69,12 +69,12 @@ CcStatus CcIniFile::addSection(const CcString& sLine)
   CcStatus oStatus(false);
   CIniLine oLine;
   size_t uiPos = 0;
-  size_t uiNext = CcStringUtil::findChar(sLine, CcGlobalStrings::Brackets::SquareLeft[0]);
+  size_t uiNext = CcStringUtil::findChar(sLine, CcGlobalStrings::Brackets::SquareLeft[0], sLine.length());
   oLine.sPreKey = sLine.substr(uiPos, uiNext - uiPos);
   if(uiNext < sLine.length())
   {
     uiPos = uiNext + 1;
-    uiNext = CcStringUtil::findChar(sLine, uiPos, CcGlobalStrings::Brackets::SquareRight[0]);
+    uiNext = CcStringUtil::findChar(sLine, CcGlobalStrings::Brackets::SquareRight[0], uiPos);
     if(uiNext < sLine.length())
     {
       oLine.sKey = sLine.substr(uiPos, uiNext - uiPos);
@@ -102,7 +102,7 @@ CcStatus CcIniFile::addLine(const CcString& sLine)
     {
       oLine.sKey = sLine.substr(uiPos, uiNext - uiPos);
       uiPos = uiNext;
-      uiNext = CcStringUtil::find(sLine, CcGlobalStrings::Seperators::Equal[0]);
+      uiNext = CcStringUtil::findChar(sLine, CcGlobalStrings::Seperators::Equal[0]);
       if(uiNext < sLine.length())
       {
         oLine.sPostKey = sLine.substr(uiPos, uiNext - uiPos);
