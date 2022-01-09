@@ -86,7 +86,7 @@ public:
    */
   static size_t findCharEscaped(const char* pcString, char cToFind, char cEscape, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
   static size_t findCharEscaped(const CcString& pcString, char cToFind, char cEscape, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
-  { return findCharEscaped(pcString.getCharString(), cToFind, cEscape, CCMIN(uiLength, pcString.length()), uiOffset); }
+  { return findCharEscaped(pcString.getCharString(), cToFind, cEscape, CCMIN(uiLength, pcString.length() - uiOffset), uiOffset); }
 
   /**
    * @brief Find specific character from a list of character in string.
@@ -125,7 +125,7 @@ public:
    */
   static size_t findNextWhiteSpace(const char* pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
   static size_t findNextWhiteSpace(const CcString& pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
-  { return findNextWhiteSpace(pcString.getCharString(), CCMIN(uiLength, pcString.length()), uiOffset); }
+  { return findNextWhiteSpace(pcString.getCharString(), CCMIN(uiLength, pcString.length() - uiOffset), uiOffset); }
 
 
   /**
@@ -136,7 +136,7 @@ public:
    */
   static size_t findNextNotWhiteSpace(const char* pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
   static size_t findNextNotWhiteSpace(const CcString& pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
-  { return findNextWhiteSpace(pcString.getCharString(), CCMIN(uiLength, pcString.length()), uiOffset); }
+  { return findNextNotWhiteSpace(pcString.getCharString(), CCMIN(uiLength, pcString.length() - uiOffset), uiOffset); }
 
 
   /**
@@ -179,7 +179,7 @@ public:
    */
   static size_t findChar(const wchar_t* pcString, wchar_t cToFind, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
   static size_t findChar(const CcWString& wsString, wchar_t cToFind, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
-  { return findChar(wsString.getWcharString(), cToFind, uiOffset, CCMIN(wsString.length(), uiLength));}
+  { return findChar(wsString.getWcharString(), cToFind, uiOffset, CCMIN(wsString.length() - uiOffset, uiLength));}
 
   /**
    * @brief Find a character in character string, but escape found character if escaped paramter is set before.
@@ -191,7 +191,7 @@ public:
    */
   static size_t findCharEscaped(const wchar_t* pcString, wchar_t cToFind, wchar_t cEscape, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
   static size_t findCharEscaped(const CcWString& wsString, wchar_t cToFind, wchar_t cEscape, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
-  { return findCharEscaped(wsString.getWcharString(), cToFind, cEscape, CCMIN(wsString.length(), uiLength), uiOffset);}
+  { return findCharEscaped(wsString.getWcharString(), cToFind, cEscape, CCMIN(wsString.length() - uiOffset, uiLength), uiOffset);}
 
   /**
    * @brief Find specific character from a list of character in string.
@@ -212,7 +212,7 @@ public:
    */
   static size_t findNextWhiteSpace(const wchar_t* pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
   static size_t findNextWhiteSpace(const CcWString& pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
-  { return findNextWhiteSpace(pcString.getWcharString(), CCMIN(pcString.length(), uiLength), uiOffset); }
+  { return findNextWhiteSpace(pcString.getWcharString(), CCMIN(pcString.length() - uiOffset, uiLength), uiOffset); }
 
   /**
    * @brief Find next not whitespace in string
@@ -222,7 +222,7 @@ public:
    */
   static size_t findNextNotWhiteSpace(const wchar_t* pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0);
   static size_t findNextNotWhiteSpace(const CcWString& pcString, size_t uiLength = SIZE_MAX, size_t uiOffset = 0)
-  { return findNextNotWhiteSpace(pcString.getWcharString(), CCMIN(pcString.length(), uiLength), uiOffset); }
+  { return findNextNotWhiteSpace(pcString.getWcharString(), CCMIN(pcString.length() - uiOffset, uiLength), uiOffset); }
 
   /**
    * @brief Check if character is a whitespace

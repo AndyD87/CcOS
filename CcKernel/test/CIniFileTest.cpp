@@ -30,12 +30,13 @@
 #include "Documents/CcIniFile.h"
 
 const char pExampleIni[] =
+    "#  Global Comment 0\r\n"
     " # Global Comment 1\r\n"
     " ; Global Comment 2\r\n"
     "[Unit]\r\n"
     "Description=TestService\r\n"
     "\r\n"
-    " # Comment 1\r\n"
+    "# Comment 1\r\n"
     "[Service]\r\n"
     "Type=simple\r\n"
     "ExecStart=/opt/bin/TestService\r\n"
@@ -51,7 +52,7 @@ const char pExampleIni[] =
 CIniFileTest::CIniFileTest() :
   CcTest("CIniFileTest")
 {
-  appendTestMethod("Test basic allocation tests", &CIniFileTest::testFileExample);
+  appendTestMethod("Test read test string", &CIniFileTest::testFileExample);
 }
 
 CIniFileTest::~CIniFileTest()
@@ -62,6 +63,8 @@ bool CIniFileTest::testFileExample()
 {
   bool bRet = false;
   CcIniFile oFile;
-
+  CcString oStrig(pExampleIni);
+  CcStringStream oSteam(oStrig);
+  bRet = oFile.readStream(oSteam);
   return bRet;
 }

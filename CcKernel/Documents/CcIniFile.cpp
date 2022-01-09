@@ -52,12 +52,12 @@ CcStatus CcIniFile::readStream(IIo& oStream)
   {
     size_t uiNext = 0;
     // Read Pre Key
-    uiNext = CcStringUtil::findNextNotWhiteSpace(sLine, 0);
+    uiNext = CcStringUtil::findNextNotWhiteSpace(sLine);
     if(uiNext < sLine.size())
     {
       if(sLine[uiNext] == CcGlobalStrings::Brackets::SquareLeft[0])
       {
-
+        addSection(sLine[uiNext]);
       }
     }
   }
