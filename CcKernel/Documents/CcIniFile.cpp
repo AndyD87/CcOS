@@ -59,6 +59,10 @@ CcStatus CcIniFile::readStream(IIo& oStream)
       {
         addSection(sLine[uiNext]);
       }
+      else
+      {
+        addLine(sLine[uiNext]);
+      }
     }
   }
   return oStatus;
@@ -69,7 +73,7 @@ CcStatus CcIniFile::addSection(const CcString& sLine)
   CcStatus oStatus(false);
   CIniLine oLine;
   size_t uiPos = 0;
-  size_t uiNext = CcStringUtil::findChar(sLine, CcGlobalStrings::Brackets::SquareLeft[0], sLine.length());
+  size_t uiNext = CcStringUtil::findChar(sLine, CcGlobalStrings::Brackets::SquareLeft[0]);
   oLine.sPreKey = sLine.substr(uiPos, uiNext - uiPos);
   if(uiNext < sLine.length())
   {

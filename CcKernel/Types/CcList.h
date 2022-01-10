@@ -223,7 +223,7 @@ public:
      * @param oToCompare: iterator to compare to
      * @return true if it is the same object
      */
-    inline bool operator==(const iterator& oToCompare) const
+    bool operator==(const iterator& oToCompare) const
     {
       return oToCompare.m_pItem == m_pItem;
     }
@@ -446,7 +446,7 @@ public:
    *        Very importand, because m_oBuffer is not allowed to copy.
    * @param oToCopy: List to copy from
    */
-  CcList(const CcList &oToCopy)
+  CcList(const CcList& oToCopy)
   {
     operator=(oToCopy);
   }
@@ -517,7 +517,7 @@ public:
    * @param oToAppend: Object to add
    * @return Reference to this List
    */
-  CcList<TYPE>& append(const CcList<TYPE> &oToAppend)
+  CcList<TYPE>& append(const CcList<TYPE>& oToAppend)
   {
     for(const TYPE& rItem : oToAppend)
     {
@@ -652,7 +652,7 @@ public:
    * @param oToAppend: Object to add
    * @return Reference to this List
    */
-  inline CcList<TYPE>& add(const CcList<TYPE> &oToAppend)
+  inline CcList<TYPE>& add(const CcList<TYPE>& oToAppend)
   { return append(oToAppend); }
 
   /**
@@ -1063,6 +1063,23 @@ public:
   }
 
   /**
+   * @brief Compare this list with another list
+   * @param oToCompare: List to compare
+   * @return true if they are the same, otherwise false
+   */
+  bool operator==(const CcList<TYPE>& oToCompare) const
+  {
+    if (oToCompare.size() != size())
+      return false;
+    CcList<TYPE>::const_iterator oList1 = begin();
+    CcList<TYPE>::const_iterator oList2 = oToCompare.begin();
+    while (oList1 != end() && oList2 != oToCompare.end())
+      if (oList1 != oList2) return false;
+    return true;
+  }
+
+
+  /**
    * @brief Return value at Position
    * @param uiPos: position to return
    * @return Item at postion
@@ -1144,7 +1161,7 @@ public:
    * @param oToSet: List to replace with current list
    * @return new List
    */
-  CcList<TYPE>& operator=(const CcList &oToSet)
+  CcList<TYPE>& operator=(const CcList<TYPE>& oToSet)
   {
     clear();
     return append(oToSet);

@@ -46,7 +46,7 @@ const char pExampleIni[] =
     "RestartSec=10\r\n"
     "KillMode=process\r\n"
     "\r\n"
-    "[Install]\r\n"
+    " [Install] \r\n"
     "WantedBy=multi-user.target\r\n";
 
 CIniFileTest::CIniFileTest() :

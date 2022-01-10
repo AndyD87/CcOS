@@ -40,6 +40,9 @@ public:
   class CcKernelSHARED CIniLine
   {
   public:
+    bool operator==(const CIniLine& oToCompare) const
+    { return oToCompare.sKey == sKey && oToCompare.sValue == oToCompare.sValue; }
+
     CcString sPreKey;
     CcString sKey;
     CcString sPostKey;

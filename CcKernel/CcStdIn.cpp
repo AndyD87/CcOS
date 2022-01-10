@@ -43,7 +43,7 @@ size_t CcStdIn::read(void* pBuffer, size_t uSize)
   wchar_t* pOutput;
   if ((pOutput = fgetws(pwcBuffer, (int)uSize, stdin)) != nullptr)
   {
-    size_t uiRead = CcStringUtil::findChar(pwcBuffer, uSize, '\0');
+    size_t uiRead = CcStringUtil::findChar(pwcBuffer, L'\0', uSize);
     m_sTemporaryBackup.appendWchar(pwcBuffer, uiRead);
     if (m_sTemporaryBackup.length() > uSize)
     {

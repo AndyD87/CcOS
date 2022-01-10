@@ -83,9 +83,9 @@ char* CcStringUtil::strchr(char* pcString, char cToFind)
   return nullptr;
 }
 
-size_t CcStringUtil::findChar(const wchar_t* pcString, wchar_t cToFind, size_t uiLength, size_t uiOffset)
+size_t CcStringUtil::findChar(const wchar_t* pcString, wchar_t cToFind, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
   {
     if(pcString[i] == '\0')
       return SIZE_MAX;
@@ -95,9 +95,9 @@ size_t CcStringUtil::findChar(const wchar_t* pcString, wchar_t cToFind, size_t u
   return SIZE_MAX;
 }
 
-size_t CcStringUtil::findChar(const char* pcString, char cToFind, size_t uiLength, size_t uiOffset)
+size_t CcStringUtil::findChar(const char* pcString, char cToFind, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
   {
     if(pcString[i] == '\0')
       return SIZE_MAX;
@@ -107,9 +107,9 @@ size_t CcStringUtil::findChar(const char* pcString, char cToFind, size_t uiLengt
   return SIZE_MAX;
 }
 
-size_t CcStringUtil::findCharEscaped(const char* pcString, char cToFind, char cEscape, size_t uiLength, size_t uiOffset)
+size_t CcStringUtil::findCharEscaped(const char* pcString, char cToFind, char cEscape, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
   {
     if(pcString[i] == '\0')
       return SIZE_MAX;
@@ -148,9 +148,9 @@ size_t CcStringUtil::findLastChar(const char* pcString, size_t uiLength, char cT
   return uiPos;
 }
 
-size_t CcStringUtil::findNextWhiteSpace(const char* pcString, size_t uiLength, size_t uiOffset)
+size_t CcStringUtil::findNextWhiteSpace(const char* pcString, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
   {
     switch (pcString[i])
     {
@@ -168,9 +168,9 @@ size_t CcStringUtil::findNextWhiteSpace(const char* pcString, size_t uiLength, s
   return SIZE_MAX;
 }
 
-size_t CcStringUtil::findNextNotWhiteSpace(const char* pcString, size_t uiLength, size_t uiOffset)
+size_t CcStringUtil::findNextNotWhiteSpace(const char* pcString, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
   {
     switch (pcString[i])
     {
@@ -251,9 +251,9 @@ wchar_t* CcStringUtil::strchr(wchar_t* pcString, wchar_t cToFind)
   return nullptr;
 }
 
-size_t CcStringUtil::findCharEscaped(const wchar_t* pcString, wchar_t cToFind, wchar_t cEscape, size_t uiLength, size_t uiOffset)
+size_t CcStringUtil::findCharEscaped(const wchar_t* pcString, wchar_t cToFind, wchar_t cEscape, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
   {
     if(pcString[i] == '\0')
       return SIZE_MAX;
@@ -281,9 +281,9 @@ size_t CcStringUtil::findCharOf(const wchar_t* pcString, size_t uiLength, const 
   return SIZE_MAX;
 }
 
-size_t CcStringUtil::findNextWhiteSpace(const wchar_t* pcString, size_t uiLength, size_t uiOffset)
+size_t CcStringUtil::findNextWhiteSpace(const wchar_t* pcString, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
   {
     switch (pcString[i])
     {
@@ -301,9 +301,9 @@ size_t CcStringUtil::findNextWhiteSpace(const wchar_t* pcString, size_t uiLength
   return SIZE_MAX;
 }
 
-size_t CcStringUtil::findNextNotWhiteSpace(const wchar_t* pcString, size_t uiLength, size_t uiOffset)
+size_t CcStringUtil::findNextNotWhiteSpace(const wchar_t* pcString, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength; i++)
+  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
   {
     switch (pcString[i])
     {
@@ -754,7 +754,7 @@ CcString CcStringUtil::getHumanReadableSize(uint64 uiSize, uint8 uiPrecision)
 CcStringPair CcStringUtil:: getKeyValue(const CcString& sLine, char cSeperator)
 {
   CcStringPair oPair;
-  size_t uiEqualSign = findChar(sLine.getCharString(), cSeperator, sLine.length(), 0);
+  size_t uiEqualSign = findChar(sLine.getCharString(), cSeperator);
   if (uiEqualSign > 0 &&
       uiEqualSign < sLine.length())
   {
@@ -1141,24 +1141,22 @@ CcString CcStringUtil::findArgument(const CcString& sString, size_t& uiPosition)
   CcString sReturn = "";
   if (sString.length() > uiPosition)
   {
-    size_t uiMaxLength = sString.length() - uiPosition;
-    size_t uiNext = CcStringUtil::findNextNotWhiteSpace(sString.getCharString() + uiPosition, uiMaxLength);
-    if (uiNext < uiMaxLength)
+    size_t uiNext = CcStringUtil::findNextNotWhiteSpace(sString, uiPosition);
+    if (uiNext < sString.length())
     {
-      uiPosition += uiNext;
+      uiPosition = uiNext;
       if (sString[uiPosition] == CcGlobalStrings::Seperators::Quote[0])
       {
         // Quoted String found
         uiPosition++;
         bool bComplete = false;
         size_t uiFirstPos = uiPosition;
-        uiMaxLength = sString.length() - uiPosition;
         while (bComplete == false)
         {
-          uiNext = findChar(sString.getCharString() + uiPosition, CcGlobalStrings::Seperators::Quote[0], uiMaxLength);
-          if (uiNext < uiMaxLength)
+          uiNext = findChar(sString, CcGlobalStrings::Seperators::Quote[0], uiPosition);
+          if (uiNext < sString.length())
           {
-            uiPosition += uiNext;
+            uiPosition = uiNext;
             // Check for escaped Quote
             if (uiNext > 0 && sString[uiPosition - 1] == CcGlobalStrings::Seperators::BackSlash[0])
             {
@@ -1188,13 +1186,12 @@ CcString CcStringUtil::findArgument(const CcString& sString, size_t& uiPosition)
         uiPosition++;
         bool bComplete = false;
         size_t uiFirstPos = uiPosition;
-        uiMaxLength = sString.length() - uiPosition;
         while (bComplete == false)
         {
-          uiNext = findChar(sString.getCharString() + uiPosition, CcGlobalStrings::Seperators::SingleQuote[0], uiMaxLength);
-          if (uiNext < uiMaxLength)
+          uiNext = findChar(sString, CcGlobalStrings::Seperators::SingleQuote[0], uiPosition);
+          if (uiNext < sString.length())
           {
-            uiPosition += uiNext;
+            uiPosition = uiNext;
             // Check for escaped SingleQuote
             if (uiNext > 0 && sString[uiPosition - 1] == CcGlobalStrings::Seperators::BackSlash[0])
             {
@@ -1220,12 +1217,11 @@ CcString CcStringUtil::findArgument(const CcString& sString, size_t& uiPosition)
       }
       else
       {
-        uiMaxLength = sString.length() - uiPosition;
-        uiNext = CcStringUtil::findNextWhiteSpace(sString.getCharString() + uiPosition, uiMaxLength);
-        if (uiNext < uiMaxLength)
+        uiNext = CcStringUtil::findNextWhiteSpace(sString, uiPosition);
+        if (uiNext < sString.length())
         {
-          sReturn = sString.substr(uiPosition, uiNext);
-          uiPosition += uiNext;
+          sReturn = sString.substr(uiPosition, uiNext - uiPosition);
+          uiPosition = uiNext;
         }
         else
         {

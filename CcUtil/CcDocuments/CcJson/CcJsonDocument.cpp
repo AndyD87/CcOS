@@ -157,7 +157,7 @@ bool CcJsonDocument::parseMap(CcJsonNode& oMap, const char*& sDocument, size_t& 
       iLoops++;
       uiLength--;
       sDocument++;
-      uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+      uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, 0, uiLength);
       if (uiNextNotWS < uiLength)
       {
         uiLength -= uiNextNotWS;
@@ -166,7 +166,7 @@ bool CcJsonDocument::parseMap(CcJsonNode& oMap, const char*& sDocument, size_t& 
         {
           uiLength--;
           sDocument++;
-          uiNextNotWS = CcStringUtil::findChar(sDocument, CcGlobalStrings::Seperators::Quote[0], uiLength);
+          uiNextNotWS = CcStringUtil::findChar(sDocument, CcGlobalStrings::Seperators::Quote[0], 0, uiLength);
           if (uiNextNotWS < uiLength)
           {
             oItem.name().set(sDocument, uiNextNotWS);
@@ -175,7 +175,7 @@ bool CcJsonDocument::parseMap(CcJsonNode& oMap, const char*& sDocument, size_t& 
           sDocument += uiNextNotWS + 1;
           if (uiLength)
           {
-            uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+            uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, 0, uiLength);
             if (uiNextNotWS < uiLength)
             {
               uiLength -= uiNextNotWS;
@@ -184,7 +184,7 @@ bool CcJsonDocument::parseMap(CcJsonNode& oMap, const char*& sDocument, size_t& 
               {
                 uiLength--;
                 sDocument++;
-                uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+                uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, 0, uiLength);
                 if (uiNextNotWS < uiLength)
                 {
                   uiLength -= uiNextNotWS;
@@ -217,12 +217,12 @@ bool CcJsonDocument::parseMap(CcJsonNode& oMap, const char*& sDocument, size_t& 
         bRet = false;
       }
     } while (uiLength && *sDocument == ',');
-    uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+    uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, 0, uiLength);
     if (uiNextNotWS < uiLength && sDocument[uiNextNotWS] == '}')
     {
       uiLength -= uiNextNotWS + 1;
       sDocument += uiNextNotWS + 1;
-      uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+      uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, 0, uiLength);
       if (uiNextNotWS < uiLength)
       {
         uiLength -= uiNextNotWS;
@@ -250,7 +250,7 @@ bool CcJsonDocument::parseArray(CcJsonNode& oArray, const char*& sDocument, size
       CcJsonNode oItem;
       sDocument++;
       uiLength--;
-      uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+      uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, 0, uiLength);
       if (uiNextNotWS < uiLength)
       {
         uiLength -= uiNextNotWS;
@@ -271,7 +271,7 @@ bool CcJsonDocument::parseArray(CcJsonNode& oArray, const char*& sDocument, size
       }
     } while (bRet && uiLength && *sDocument == ',');
 
-    uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+    uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, 0, uiLength);
     if (uiNextNotWS < uiLength)
     {
       uiLength -= uiNextNotWS;
@@ -280,7 +280,7 @@ bool CcJsonDocument::parseArray(CcJsonNode& oArray, const char*& sDocument, size
       {
         uiLength--;
         sDocument++;
-        uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, uiLength);
+        uiNextNotWS = CcStringUtil::findNextNotWhiteSpace(sDocument, 0, uiLength);
         if (uiNextNotWS < uiLength)
         {
           uiLength -= uiNextNotWS;
@@ -313,7 +313,7 @@ bool CcJsonDocument::parseValue(CcJsonNode& oItem, const char*& sDocument, size_
     uiLength--;
     sDocument++;
     size_t uiPosNextQuote = 0;
-    uiPosNextQuote = CcStringUtil::findCharEscaped(sDocument + uiPosNextQuote, CcGlobalStrings::Seperators::Quote[0], CcGlobalStrings::Seperators::BackSlash[0], uiLength);
+    uiPosNextQuote = CcStringUtil::findCharEscaped(sDocument, CcGlobalStrings::Seperators::Quote[0], CcGlobalStrings::Seperators::BackSlash[0], uiPosNextQuote, uiLength);
     if (uiPosNextQuote < uiLength)
     {
       oItem.setValue(CcString(sDocument, uiPosNextQuote));
