@@ -43,7 +43,7 @@ CcStatus CcIniFile::readFile(const CcString& sPath)
 
 CcStatus CcIniFile::readStream(IIo& oStream)
 {
-  CcStatus oStatus(true);
+  m_eError = true;
   m_oSections.clear();
   m_oSections.append(CIniLine(), CSection());
   CcString sData = oStream.readAll();
@@ -57,20 +57,19 @@ CcStatus CcIniFile::readStream(IIo& oStream)
     {
       if(sLine[uiNext] == CcGlobalStrings::Brackets::SquareLeft[0])
       {
-        addSection(sLine[uiNext]);
+        addSection(sLine);
       }
       else
       {
-        addLine(sLine[uiNext]);
+        addLine(sLine);
       }
     }
   }
-  return oStatus;
+  return m_eError;
 }
 
 CcStatus CcIniFile::addSection(const CcString& sLine)
 {
-  CcStatus oStatus(false);
   CIniLine oLine;
   size_t uiPos = 0;
   size_t uiNext = CcStringUtil::findChar(sLine, CcGlobalStrings::Brackets::SquareLeft[0]);
@@ -85,15 +84,23 @@ CcStatus CcIniFile::addSection(const CcString& sLine)
       uiPos = uiNext + 1;
       oLine.sPostKey = sLine.substr(uiPos);
       m_oSections.append(oLine, CSection());
-      oStatus = true;
+    }
+    else
+    {
+      // Else sign for section not found
+      m_eError = false;
     }
   }
-  return oStatus;
+  else
+  {
+    // Starting sign for section not found
+    m_eError = false;
+  }
+  return m_eError;
 }
 
 CcStatus CcIniFile::addLine(const CcString& sLine)
 {
-  CcStatus oStatus(false);
   CIniLine oLine;
   size_t uiPos = 0;
   size_t uiNext = CcStringUtil::findNextNotWhiteSpace(sLine);
@@ -101,26 +108,95 @@ CcStatus CcIniFile::addLine(const CcString& sLine)
   {
     oLine.sPreKey = sLine.substr(uiPos, uiNext - uiPos);
     uiPos = uiNext;
-    uiNext = CcStringUtil::findNextWhiteSpace(sLine);
-    if(uiNext < sLine.length())
+    // Check for comment
+    switch (sLine[uiPos])
     {
-      oLine.sKey = sLine.substr(uiPos, uiNext - uiPos);
-      uiPos = uiNext;
-      uiNext = CcStringUtil::findChar(sLine, CcGlobalStrings::Seperators::Equal[0]);
-      if(uiNext < sLine.length())
-      {
-        oLine.sPostKey = sLine.substr(uiPos, uiNext - uiPos);
-        uiPos = uiNext+1;
-        uiNext = CcStringUtil::findNextNotWhiteSpace(sLine);
-        if(uiNext < sLine.length())
+      case ';':
+        CCFALLTHROUGH;
+      case '#':
+        oLine.cCommentSign = sLine[uiPos];
+        oLine.sComment = sLine.substr(uiPos + 1);
+        uiPos = sLine.length();
+        break;
+      default:
+        // Find Key section
+        uiNext = CcStringUtil::findNextWhiteSpace(sLine, uiPos);
+        uiNext = CCMIN(uiNext, CcStringUtil::findChar(sLine, '=', uiPos));
+        if (uiNext < sLine.length())
         {
+          oLine.sKey = sLine.substr(uiPos, uiNext - uiPos);
           uiPos = uiNext;
-          oLine.sPreValue = sLine.substr(uiPos, uiNext - uiPos);
-        }
-      }
+          if (sLine[uiPos] != '=')
+          {
+            uiNext = CcStringUtil::findChar(sLine, '=', uiPos);
+            if (uiNext < sLine.length())
+            {
+              oLine.sPostKey = sLine.substr(uiPos, uiNext - uiPos);
+              uiPos = uiNext + 1;
+            }
+          }
+          else
+          {
+            uiPos++;
+          }
 
+          // Find Value section
+          uiNext = CcStringUtil::findNextNotWhiteSpace(sLine, uiPos);
+
+          if (uiNext < sLine.length())
+          {
+            oLine.sPreValue = sLine.substr(uiPos, uiNext - uiPos);
+            uiPos = uiNext;
+
+            CcString sValue;
+            // Read key value from current position until comment section or end of line is reached.
+            for (; uiPos < sLine.length(); uiPos++)
+            {
+              switch (sLine[uiPos])
+              {
+                case ';':
+                  CCFALLTHROUGH;
+                case '#':
+                  oLine.cCommentSign = sLine[uiPos];
+                  oLine.sComment = sLine.substr(uiPos + 1);
+                  uiPos = sLine.length();
+                  break;
+                case '"':
+                  uiNext = CcStringUtil::findCharEscaped(sLine, '"', '\\', uiPos);
+                  if (uiNext < sLine.length())
+                  {
+                    sValue += sLine.substr(uiPos, uiNext - uiPos);
+                    uiPos = uiNext + 1;
+                  }
+                  else
+                  {
+                    m_eError = false;
+                    uiPos = sLine.length();
+                    break;
+                  }
+                case '\'':
+                  uiNext = CcStringUtil::findCharEscaped(sLine, '\'', '\\', uiPos);
+                  if (uiNext < sLine.length())
+                  {
+                    sValue += sLine.substr(uiPos, uiNext - uiPos);
+                    uiPos = uiNext + 1;
+                  }
+                  else
+                  {
+                    m_eError = false;
+                    uiPos = sLine.length();
+                    break;
+                  }
+                default:
+                  sValue += sLine[uiPos];
+              }
+            }
+            oLine.sValue = sValue.trimR();
+            oLine.sPostValue = sValue.substr(oLine.sValue.length());
+          }
+        }
     }
   }
-  return oStatus;
+  return m_eError;
 }
 

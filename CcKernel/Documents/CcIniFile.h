@@ -81,5 +81,6 @@ private:
   CcStatus addLine(const CcString& sLine);
 
 private:
+  CcStatus    m_eError;
   CSectionMap m_oSections;
 };
