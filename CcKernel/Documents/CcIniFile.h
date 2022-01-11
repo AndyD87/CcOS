@@ -27,7 +27,8 @@
 
 #include "CcBase.h"
 #include "CcString.h"
-#include "CcMap.h"
+#include "CcList.h"
+#include "CcGlobalStrings.h"
 
 class IIo;
 
@@ -37,29 +38,50 @@ class IIo;
 class CcKernelSHARED  CcIniFile
 {
 public:
-  class CcKernelSHARED CIniLine
+  class CcKernelSHARED CLine
   {
   public:
-    bool operator==(const CIniLine& oToCompare) const
+    bool operator==(const CLine& oToCompare) const
     { return oToCompare.sKey == sKey && oToCompare.sValue == oToCompare.sValue; }
 
-    CcString sPreKey;
     CcString sKey;
+    CcString sValue;
+    CcString sPreKey;
     CcString sPostKey;
     CcString sPreValue;
-    CcString sValue;
     CcString sPostValue;
-    char     cCommentSign;
+    char     cValueSign = 0;
+    char     cCommentSign = 0;
     CcString sComment;
   };
 
-  typedef CcList<CIniLine> CSection;
+  class CcKernelSHARED CSection : public CcList<CLine>
+  {
+  public:
+    CSection() = default;
+    CSection(CLine oSectionData) : 
+      m_oSectionData(oSectionData)
+    {}
+
+    const CcString& getName() const
+    { return m_oSectionData.sKey; }
+    const CLine& getSectionLine() const
+    { return m_oSectionData; }
+    static CSection& getInvalidSection()
+    { return s_oInvalidSection; }
+
+    bool isValid()const
+    { return this != &s_oInvalidSection; }
+
+  private:
+    CLine m_oSectionData;
+    
+    static CSection s_oInvalidSection;
+  };
+
+  typedef CcList<CSection> CSectionList;
   #ifdef _MSC_VER
-    class CcKernelSHARED CSection;
-  #endif
-  typedef CcMap<CIniLine,CSection> CSectionMap;
-  #ifdef _MSC_VER
-    class CcKernelSHARED CSectionMap;
+    class CcKernelSHARED CSectionList;
   #endif
 
   /**
@@ -75,6 +97,15 @@ public:
   CcStatus readFile(const CcString& sPath);
 
   CcStatus readStream(IIo& oStream);
+  CcStatus writeStream(IIo& oStream, const CcString& sLineEnding = CcGlobalStrings::EolOs);
+
+  CSection& operator[](size_t uiPos)
+  { return m_oSections[uiPos]; }
+  const CSection& operator[](size_t uiPos) const
+  { return m_oSections[uiPos]; }
+
+  CSection& operator[](const CcString& sSectionName);
+  const CSection& operator[](const CcString& sSectionName) const;
 
 private:
   CcStatus addSection(const CcString& sLine);
@@ -82,5 +113,5 @@ private:
 
 private:
   CcStatus    m_eError;
-  CSectionMap m_oSections;
+  CSectionList m_oSections;
 };

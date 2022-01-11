@@ -30,6 +30,8 @@
 #include "CcGlobalStrings.h"
 #include "CcByteArray.h"
 
+CcIniFile::CSection CcIniFile::CSection::s_oInvalidSection;
+
 CcStatus CcIniFile::readFile(const CcString& sPath)
 {
   CcFile oFile(sPath);
@@ -45,7 +47,7 @@ CcStatus CcIniFile::readStream(IIo& oStream)
 {
   m_eError = true;
   m_oSections.clear();
-  m_oSections.append(CIniLine(), CSection());
+  m_oSections.append(CSection());
   CcString sData = oStream.readAll();
   CcStringList oLines = sData.splitLines(true);
   for(CcString& sLine : oLines)
@@ -64,13 +66,102 @@ CcStatus CcIniFile::readStream(IIo& oStream)
         addLine(sLine);
       }
     }
+    else
+    {
+      addLine(sLine);
+    }
   }
   return m_eError;
 }
 
+CcStatus CcIniFile::writeStream(IIo& oStream, const CcString& sLineEnding)
+{
+  for (CSection& oSection : m_oSections)
+  {
+    if (oSection.getSectionLine().sKey.length())
+    {
+      oStream.writeString(oSection.getSectionLine().sPreKey);
+      oStream.writeString(CcGlobalStrings::Brackets::SquareLeft);
+      oStream.writeString(oSection.getSectionLine().sKey);
+      oStream.writeString(CcGlobalStrings::Brackets::SquareRight);
+      oStream.writeString(oSection.getSectionLine().sPostKey);
+
+      if (oSection.getSectionLine().cCommentSign != 0)
+      {
+        oStream.writeString(oSection.getSectionLine().cCommentSign);
+        oStream.writeString(oSection.getSectionLine().sComment);
+      }
+      oStream.writeString(sLineEnding);
+    }
+    for (CLine& oLine : oSection)
+    {
+      oStream.writeString(oLine.sPreKey);
+      oStream.writeString(oLine.sKey);
+      oStream.writeString(oLine.sPostKey);
+      if (oLine.sValue.length())
+      {
+        oStream.writeString(CcGlobalStrings::Seperators::Equal);
+        oStream.writeString(oLine.sPreValue);
+        switch (oLine.cValueSign)
+        {
+          case '"':
+            oStream.writeString(CcGlobalStrings::Seperators::Quote);
+            oStream.writeString(oLine.sValue.getReplace("\"", "\\\""));
+            oStream.writeString(CcGlobalStrings::Seperators::Quote);
+            break;
+          case '\'':
+            oStream.writeString(CcGlobalStrings::Seperators::SingleQuote);
+            oStream.writeString(oLine.sValue.getReplace("'", "\\'"));
+            oStream.writeString(CcGlobalStrings::Seperators::SingleQuote);
+            break;
+          default:
+            oStream.writeString(oLine.sValue);
+
+        }
+        oStream.writeString(oLine.sPostValue);
+      }
+
+      if (oLine.cCommentSign != 0)
+      {
+        oStream.writeString(oLine.cCommentSign);
+        oStream.writeString(oLine.sComment);
+      }
+      if(&oLine != &oSection.last())
+        oStream.writeString(sLineEnding);
+    }
+    if (&oSection != &m_oSections.last())
+      oStream.writeString(sLineEnding);
+  }
+  return true;
+}
+
+CcIniFile::CSection& CcIniFile::operator[](const CcString& sSectionName)
+{
+  for (CSection& oSection : m_oSections)
+  {
+    if (oSection.getName() == sSectionName)
+    {
+      return oSection;
+    }
+  }
+  return CSection::getInvalidSection();
+}
+
+const CcIniFile::CSection& CcIniFile::operator[](const CcString& sSectionName) const
+{
+  for (CSection& oSection : m_oSections)
+  {
+    if (oSection.getName() == sSectionName)
+    {
+      return oSection;
+    }
+  }
+  return CSection::getInvalidSection();
+}
+
 CcStatus CcIniFile::addSection(const CcString& sLine)
 {
-  CIniLine oLine;
+  CLine oLine;
   size_t uiPos = 0;
   size_t uiNext = CcStringUtil::findChar(sLine, CcGlobalStrings::Brackets::SquareLeft[0]);
   oLine.sPreKey = sLine.substr(uiPos, uiNext - uiPos);
@@ -82,8 +173,39 @@ CcStatus CcIniFile::addSection(const CcString& sLine)
     {
       oLine.sKey = sLine.substr(uiPos, uiNext - uiPos);
       uiPos = uiNext + 1;
-      oLine.sPostKey = sLine.substr(uiPos);
-      m_oSections.append(oLine, CSection());
+
+      // Check for comment if not at the end
+      if (uiPos < sLine.length())
+      {
+        // Read until comment or end of string
+        uiNext = CcStringUtil::findChar(sLine, ';', uiPos);
+        uiNext = CCMIN(uiNext, CcStringUtil::findChar(sLine, '#', uiPos));
+        if (uiNext < sLine.length() && uiNext > uiPos)
+        {
+          oLine.sPostKey = sLine.substr(uiPos, uiNext - uiPos);
+          uiPos = uiNext;
+
+          // Read key value from current position until comment section or end of line is reached.
+          switch (sLine[uiPos])
+          {
+            case ';':
+              CCFALLTHROUGH;
+            case '#':
+              oLine.cCommentSign = sLine[uiPos];
+              oLine.sComment = sLine.substr(uiPos + 1);
+              uiPos = sLine.length();
+              break;
+          }
+        }
+        else
+        {
+          oLine.sPostKey = sLine.substr(uiPos);
+          uiPos = sLine.length();
+        }
+
+      }
+
+      m_oSections.append(oLine);
     }
     else
     {
@@ -101,7 +223,7 @@ CcStatus CcIniFile::addSection(const CcString& sLine)
 
 CcStatus CcIniFile::addLine(const CcString& sLine)
 {
-  CIniLine oLine;
+  CLine oLine;
   size_t uiPos = 0;
   size_t uiNext = CcStringUtil::findNextNotWhiteSpace(sLine);
   if(uiNext < sLine.length())
@@ -148,10 +270,85 @@ CcStatus CcIniFile::addLine(const CcString& sLine)
             oLine.sPreValue = sLine.substr(uiPos, uiNext - uiPos);
             uiPos = uiNext;
 
-            CcString sValue;
             // Read key value from current position until comment section or end of line is reached.
-            for (; uiPos < sLine.length(); uiPos++)
+            switch (sLine[uiPos])
             {
+              case ';':
+                CCFALLTHROUGH;
+              case '#':
+                oLine.cCommentSign = sLine[uiPos];
+                oLine.sComment = sLine.substr(uiPos + 1);
+                uiPos = sLine.length();
+                break;
+              case '"':
+                uiPos++;
+                oLine.cValueSign = '"';
+                uiNext = CcStringUtil::findCharEscaped(sLine, '"', '\\', uiPos);
+                if (uiNext < sLine.length())
+                {
+                  oLine.sValue += sLine.substr(uiPos, uiNext - uiPos);
+                  uiPos = uiNext + 1;
+                }
+                else
+                {
+                  m_eError = false;
+                  uiPos = sLine.length();
+                }
+                oLine.sValue.replace("\\\"", "\"");
+                break;
+              case '\'':
+                uiPos++;
+                oLine.cValueSign = '\'';
+                uiNext = CcStringUtil::findCharEscaped(sLine, '\'', '\\', uiPos);
+                if (uiNext < sLine.length())
+                {
+                  oLine.sValue += sLine.substr(uiPos, uiNext - uiPos);
+                  uiPos = uiNext + 1;
+                }
+                else
+                {
+                  m_eError = false;
+                  uiPos = sLine.length();
+                }
+                oLine.sValue.replace("\\'", "'");
+                break;
+              default:
+              {
+                CcString sValue;
+                // Read until comment or end of string
+                uiNext = CcStringUtil::findChar(sLine, ';', uiPos);
+                uiNext = CCMIN(uiNext, CcStringUtil::findChar(sLine, '#', uiPos));
+                if (uiNext < sLine.length())
+                {
+                  sValue += sLine.substr(uiPos, uiNext - uiPos);
+                  uiPos = uiNext;
+                }
+                else
+                {
+                  sValue += sLine.substr(uiPos);
+                  uiPos = sLine.length();
+                }
+
+                // Trim last spaces
+                oLine.sValue = sValue.getTrimR();
+                oLine.sPostValue = sValue.substr(oLine.sValue.length());
+                break;
+              }
+            }
+
+            // Check for comment if not at the end
+            if (uiPos < sLine.length())
+            {
+              // Read until comment or end of string
+              uiNext = CcStringUtil::findChar(sLine, ';', uiPos);
+              uiNext = CCMIN(uiNext, CcStringUtil::findChar(sLine, '#', uiPos));
+              if (uiNext < sLine.length() && uiNext > uiPos)
+              {
+                oLine.sPostValue = sLine.substr(uiPos, uiNext - uiPos);
+                uiPos = uiNext;
+              }
+
+              // Read key value from current position until comment section or end of line is reached.
               switch (sLine[uiPos])
               {
                 case ';':
@@ -161,41 +358,16 @@ CcStatus CcIniFile::addLine(const CcString& sLine)
                   oLine.sComment = sLine.substr(uiPos + 1);
                   uiPos = sLine.length();
                   break;
-                case '"':
-                  uiNext = CcStringUtil::findCharEscaped(sLine, '"', '\\', uiPos);
-                  if (uiNext < sLine.length())
-                  {
-                    sValue += sLine.substr(uiPos, uiNext - uiPos);
-                    uiPos = uiNext + 1;
-                  }
-                  else
-                  {
-                    m_eError = false;
-                    uiPos = sLine.length();
-                    break;
-                  }
-                case '\'':
-                  uiNext = CcStringUtil::findCharEscaped(sLine, '\'', '\\', uiPos);
-                  if (uiNext < sLine.length())
-                  {
-                    sValue += sLine.substr(uiPos, uiNext - uiPos);
-                    uiPos = uiNext + 1;
-                  }
-                  else
-                  {
-                    m_eError = false;
-                    uiPos = sLine.length();
-                    break;
-                  }
-                default:
-                  sValue += sLine[uiPos];
               }
             }
-            oLine.sValue = sValue.trimR();
-            oLine.sPostValue = sValue.substr(oLine.sValue.length());
           }
         }
     }
+  }
+
+  if (m_eError)
+  {
+    m_oSections.last().append(oLine);
   }
   return m_eError;
 }

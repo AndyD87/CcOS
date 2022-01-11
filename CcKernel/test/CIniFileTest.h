@@ -44,5 +44,7 @@ public:
    */
   virtual ~CIniFileTest();
 private:
-  bool testFileExample();
+  bool testFileExampleKeyValue();
+  bool testFileExampleComments();
+  bool testFileExampleRegenerate();
 };

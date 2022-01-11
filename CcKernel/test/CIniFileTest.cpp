@@ -46,25 +46,109 @@ const char pExampleIni[] =
     "RestartSec=10\r\n"
     "KillMode=process\r\n"
     "\r\n"
+    " [Test] # Section comment\r\n"
+    "Hallo1=\"'Test' \\\"Value\\\"\" # Comment behind\r\n"
+    "Hallo2='\\'Test\\' \"Value\"' ; Comment behind\r\n"
+    "Hallo3=Test \"Value\" # Comment behind\r\n"
+    "Hallo4= Test \"Value\"\r\n"
     " [Install] \r\n"
     "WantedBy=multi-user.target\r\n";
 
 CIniFileTest::CIniFileTest() :
   CcTest("CIniFileTest")
 {
-  appendTestMethod("Test read test string", &CIniFileTest::testFileExample);
+  appendTestMethod("Test example values and keys", &CIniFileTest::testFileExampleKeyValue);
+  appendTestMethod("Test example comments", &CIniFileTest::testFileExampleComments);
+  appendTestMethod("Test parse and rebuild example", &CIniFileTest::testFileExampleRegenerate);
 }
 
 CIniFileTest::~CIniFileTest()
 {
 }
 
-bool CIniFileTest::testFileExample()
+bool CIniFileTest::testFileExampleKeyValue()
 {
   bool bRet = false;
   CcIniFile oFile;
   CcString oStrig(pExampleIni);
   CcStringStream oSteam(oStrig);
-  bRet = oFile.readStream(oSteam);
+  if (oFile.readStream(oSteam))
+  {
+    CcIniFile::CSection& oSection = oFile["Test"];
+    if (oSection.isValid())
+    {
+      CcString sValue1 = oSection[0].sValue;
+      CcString sValue2 = oSection[1].sValue;
+      if (sValue1 == sValue2)
+      {
+        sValue1 = oSection[2].sValue;
+        sValue2 = oSection[3].sValue;
+        if (sValue1 == sValue2)
+        {
+          CcIniFile::CLine& oLine1 = oSection[2];
+          CcIniFile::CLine& oLine2 = oSection[3];
+          if (oLine1.sPostValue == oLine2.sPreValue &&
+              oLine2.sPostValue == oLine1.sPreValue &&
+              oLine2.sPostValue != oLine2.sPreValue &&
+              oLine1.sPostValue != oLine1.sPreValue)
+          {
+            bRet = true;
+          }
+        }
+      }
+    }
+  }
+  return bRet;
+}
+
+bool CIniFileTest::testFileExampleComments()
+{
+  bool bRet = false;
+  CcIniFile oFile;
+  CcString oStrig(pExampleIni);
+  CcStringStream oSteam(oStrig);
+  if (oFile.readStream(oSteam))
+  {
+    CcIniFile::CSection& oSection = oFile["Test"];
+    if (oSection.isValid() && oFile["TestFailed"].isValid() != true)
+    {
+      CcString sValue1 = oSection[0].sComment;
+      CcString sValue2 = oSection[1].sComment;
+      if (sValue1 == oSection[1].sComment &&
+          oSection[0].sComment == sValue2)
+      {
+        if (oSection[0].cCommentSign != oSection[1].cCommentSign &&
+            oSection[0].cCommentSign == oSection[2].cCommentSign)
+        {
+          if (oSection.getSectionLine().sComment == " Section comment" &&
+              oSection.getSectionLine().cCommentSign == '#')
+          {
+            bRet = true;
+          }
+        }
+      }
+    }
+  }
+  return bRet;
+}
+
+bool CIniFileTest::testFileExampleRegenerate()
+{
+  bool bRet = false;
+  CcIniFile oFile;
+  CcString oStrig(pExampleIni);
+  CcStringStream oSteam(oStrig);
+  if (oFile.readStream(oSteam))
+  {
+    CcString oStrigRegenerate;
+    CcStringStream oSteamRegenerate(oStrigRegenerate);
+    if (oFile.writeStream(oSteamRegenerate, "\r\n"))
+    {
+      if (oStrigRegenerate == pExampleIni)
+      {
+        bRet = true;
+      }
+    }
+  }
   return bRet;
 }
