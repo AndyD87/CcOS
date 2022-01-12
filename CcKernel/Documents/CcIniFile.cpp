@@ -30,7 +30,15 @@
 #include "CcGlobalStrings.h"
 #include "CcByteArray.h"
 
+// Disable known bug warning in VS 2015 for init static variables
+#if _MSC_VER == 1900
+  #pragma warning(push) 
+  #pragma warning(disable:4592)
+#endif
 CcIniFile::CSection CcIniFile::CSection::s_oInvalidSection;
+#if _MSC_VER == 1900
+  #pragma warning(pop) 
+#endif
 
 CcStatus CcIniFile::readFile(const CcString& sPath)
 {
