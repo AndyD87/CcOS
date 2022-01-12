@@ -73,6 +73,10 @@ public:
     bool isValid()const
     { return this != &s_oInvalidSection; }
 
+    bool keyExists(const CcString& sName) const;
+    const CcString& getValue(const CcString& sName) const;
+    void setValue(const CcString& sName, const CcString& sValue);
+
   private:
     CLine m_oSectionData;
     
@@ -95,6 +99,7 @@ public:
   ~CcIniFile() = default;
 
   CcStatus readFile(const CcString& sPath);
+  CcStatus writeFile(const CcString& sPath);
 
   CcStatus readStream(IIo& oStream);
   CcStatus writeStream(IIo& oStream, const CcString& sLineEnding = CcGlobalStrings::EolOs);
@@ -106,6 +111,8 @@ public:
 
   CSection& operator[](const CcString& sSectionName);
   const CSection& operator[](const CcString& sSectionName) const;
+
+  CSection& createSection(const CcString& sSectionName);
 
 private:
   CcStatus addSection(const CcString& sLine);

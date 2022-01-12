@@ -40,6 +40,53 @@ CcIniFile::CSection CcIniFile::CSection::s_oInvalidSection;
   #pragma warning(pop) 
 #endif
 
+
+bool CcIniFile::CSection::keyExists(const CcString& sName) const
+{
+  bool bExists = false;
+  for(const CLine& oLine : *this)
+  {
+    if(oLine.sKey == sName)
+    {
+      bExists = true;
+      break;
+    }
+  }
+  return bExists;
+}
+
+const CcString& CcIniFile::CSection::getValue(const CcString& sName) const
+{
+  for(const CLine& oLine : *this)
+  {
+    if(oLine.sKey == sName)
+    {
+      return oLine.sValue;
+    }
+  }
+  return CcGlobalStrings::Empty;
+}
+
+void CcIniFile::CSection::setValue(const CcString& sName, const CcString& sValue)
+{
+  bool bCreateValue = true;
+  for(CLine& oLine : *this)
+  {
+    if(oLine.sKey == sName)
+    {
+      oLine.sValue = sValue;
+      bCreateValue = false;
+    }
+  }
+  if(bCreateValue)
+  {
+    CLine oLine;
+    oLine.sKey = sName;
+    oLine.sValue = sValue;
+    append(oLine);
+  }
+}
+
 CcStatus CcIniFile::readFile(const CcString& sPath)
 {
   CcFile oFile(sPath);
@@ -47,6 +94,17 @@ CcStatus CcIniFile::readFile(const CcString& sPath)
   if(oStatus)
   {
     oStatus = readStream(oFile);
+  }
+  return oStatus;
+}
+
+CcStatus CcIniFile::writeFile(const CcString& sPath)
+{
+  CcFile oFile(sPath);
+  CcStatus oStatus = oFile.open(EOpenFlags::Write);
+  if(oStatus)
+  {
+    oStatus = writeStream(oFile);
   }
   return oStatus;
 }
@@ -380,3 +438,17 @@ CcStatus CcIniFile::addLine(const CcString& sLine)
   return m_eError;
 }
 
+CcIniFile::CSection& CcIniFile::createSection(const CcString& sSectionName)
+{
+  if(operator[](sSectionName).isValid())
+  {
+    return operator[](sSectionName);
+  }
+  else
+  {
+    CLine oSectionLine;
+    oSectionLine.sKey = sSectionName;
+    m_oSections.append(oSectionLine);
+    return m_oSections.last();
+  }
+}

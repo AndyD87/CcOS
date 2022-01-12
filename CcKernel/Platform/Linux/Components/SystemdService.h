@@ -27,6 +27,7 @@
 #include "CcBase.h"
 #include "CcService.h"
 #include "CcArguments.h"
+#include "Documents/CcIniFile.h"
 
 /**
  * @brief Device interface for linux pins in /sys/class/gpio/
@@ -52,6 +53,11 @@ public:
   CcStatus  setAutoStart(bool bOnOff);
 
 private:
+  void checkBasicData();
+
+private:
   CcService&    m_oService;
   CcArguments   m_oArguments;
+  CcString      m_sServiceFile;
+  CcIniFile     m_oServiceFile;
 };

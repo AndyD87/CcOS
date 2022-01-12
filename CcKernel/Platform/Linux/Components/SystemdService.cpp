@@ -32,7 +32,8 @@
 const char SYSTEMD_CONFIG_PATH[] = "/etc/systemd/system/";
 
 SystemdService::SystemdService(CcService& oService) :
-  m_oService(oService)
+  m_oService(oService),
+  m_sServiceFile(SYSTEMD_CONFIG_PATH + oService.getName() + ".service")
 {
 }
 
@@ -43,12 +44,12 @@ SystemdService::~SystemdService()
 
 void SystemdService::readFile()
 {
-  CcFile oFile(SYSTEMD_CONFIG_PATH + m_oService.getName() + ".service");
-  if(oFile.open(EOpenFlags::Read))
-  {
-    CcString sFileContents = oFile.readAll();
-    m_oArguments.add(sFileContents.splitLines(true));
-  }
+  m_oServiceFile.readFile(m_sServiceFile);
+}
+
+void SystemdService::writeFile()
+{
+  m_oServiceFile.writeFile(m_sServiceFile);
 }
 
 CcStatus SystemdService::create()
@@ -89,3 +90,27 @@ CcStatus SystemdService::setAutoStart(bool bOnOff)
   return oStatus;
 }
 
+void SystemdService::checkBasicData()
+{
+  CcIniFile::CSection& oUnitSection = m_oServiceFile.createSection("Unit");
+  if(oUnitSection.isValid())
+  {
+    if(!oUnitSection.keyExists("Description"))
+    {
+      oUnitSection.setValue("Description", m_oService.getName());
+    }
+  }
+  CcIniFile::CSection& oServiceSection = m_oServiceFile.createSection("Service");
+  if(oServiceSection.isValid())
+  {
+    if(!oServiceSection.keyExists("Type"))
+    {
+      oServiceSection.setValue("Type", "simple");
+    }
+    if(!oServiceSection.keyExists("ExecStart"))
+    {
+      CcString sCurrentExecutable = CcKernel::getCurrentExecutablePath();
+      oUnitSection.setValue("ExecStart", sCurrentExecutable);
+    }
+  }
+}
