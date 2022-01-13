@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CKernelTest
  **/
-#ifndef H_CKernelTest_H_
-#define H_CKernelTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -45,5 +44,3 @@ private:
   bool testThreadOnShutdown();
   bool testLoadModule();
 };
-
-#endif // H_CKernelTest_H_

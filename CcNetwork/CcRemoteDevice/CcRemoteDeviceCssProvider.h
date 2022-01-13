@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcRemoteDeviceCssProvider
  */
-#ifndef H_CcRemoteDeviceCssProvider_H_
-#define H_CcRemoteDeviceCssProvider_H_
+#pragma once
 
 #include "CcBase.h"
 #include "HttpProvider/IHttpPathContentProvider.h"
@@ -50,5 +49,3 @@ public:
 
   virtual const CcString& getMimeType() override;
 };
-
-#endif // H_CcRemoteDeviceCssProvider_H_

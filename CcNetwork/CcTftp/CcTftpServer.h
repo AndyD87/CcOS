@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcTftpServer
  */
-#ifndef H_CcTftpServer_H_
-#define H_CcTftpServer_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTftp.h"
@@ -71,6 +70,3 @@ private:
   CcTftpServerConfig m_oConfig;
   CcSocket   m_Socket; //!< Socket where Server is listen on
 };
-
-
-#endif // H_CcTftpServer_H_

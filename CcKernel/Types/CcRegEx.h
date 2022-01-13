@@ -25,10 +25,8 @@
  *
  * @todo std::regex support does not work on every platform, write an own
  */
-#ifndef H_CcRegEx_H_
-#define H_CcRegEx_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcString.h"
 
@@ -70,5 +68,3 @@ public:
 private:
   CcString m_RegEx; //!< Regular-Expresstion String to work with.
 };
-
-#endif // H_CcRegEx_H_

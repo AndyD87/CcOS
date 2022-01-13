@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CTestTestUtility
  **/
-#ifndef H_CTestTestUtility_H_
-#define H_CTestTestUtility_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -52,5 +51,3 @@ private:
   bool testExitCodeInstant();
   bool testExitCodeTimed();
 };
-
-#endif // H_CTestTestUtility_H_

@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CJsonTest
  **/
-#ifndef H_CJsonTest_H_
-#define H_CJsonTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -54,5 +53,3 @@ private:
   bool JsonContainsTest();
   bool JsonBugNr1();
 };
-
-#endif // H_CJsonTest_H_

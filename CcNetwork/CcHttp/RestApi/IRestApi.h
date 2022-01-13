@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class IRestApi
  */
-#ifndef H_IRestApi_H_
-#define H_IRestApi_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -201,5 +200,3 @@ private:
   CcString            m_sPath;
   CcVector<IRestApi*> m_oChilds;
 };
-
-#endif // _IRestApi_H_

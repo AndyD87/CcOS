@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CStringTest
  **/
-#ifndef H_CStringTest_H_
-#define H_CStringTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -64,5 +63,3 @@ private:
    */
   bool testCompareShort();
 };
-
-#endif // H_CStringTest_H_

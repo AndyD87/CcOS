@@ -23,9 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcGphoto
  */
-
-#ifndef H_CcGphoto_H_
-#define H_CcGphoto_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -45,5 +43,3 @@
 #else
 # define CcGphotoSHARED
 #endif
-
-#endif // H_CcGphoto_H_

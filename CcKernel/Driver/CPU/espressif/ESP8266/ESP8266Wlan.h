@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class ESP8266Wlan
  */
-#ifndef H_ESP8266Wlan_H_
-#define H_ESP8266Wlan_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IWlan.h"
@@ -75,5 +74,3 @@ private:
   ESP8266WlanClient* m_pClient = nullptr;
   CcMacAddress m_oMacAddress;
 };
-
-#endif // H_ESP8266Wlan_H_

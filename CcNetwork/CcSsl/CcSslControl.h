@@ -23,12 +23,10 @@
  * @par       Language: C++11
  * @brief     Class CcSslControl
  **/
-#ifndef H_CcSslControl_H_
-#define H_CcSslControl_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcSsl.h"
-
 
 // Forward declarations
 class CcString;
@@ -77,4 +75,3 @@ private:
 private:
   static bool s_bIsInitialized;  //!< avoid double initializing by setting this to true after first run.
 };
-#endif // H_CcSslControl_H_

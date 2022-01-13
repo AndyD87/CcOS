@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CHashTest
  **/
-#ifndef H_CHashTest_H_
-#define H_CHashTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -51,5 +50,3 @@ private:
   bool testSqlEnDecode();
   bool testIHash();
 };
-
-#endif // H_CHashTest_H_

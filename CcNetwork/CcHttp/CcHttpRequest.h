@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcHttpRequest
  */
-#ifndef H_CcHttpRequest_H_
-#define H_CcHttpRequest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -173,5 +172,3 @@ private:
   CcStringMap             m_oQuery;
   CcHttpCookies*          m_pCookies = nullptr;
 };
-
-#endif // H_CcHttpRequest_H_

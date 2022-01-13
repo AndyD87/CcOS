@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlInputHidden
  **/
-#ifndef H_CcHtmlInputHidden_H_
-#define H_CcHtmlInputHidden_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,5 +43,3 @@ public:
    */
   virtual ~CcHtmlInputHidden();
 };
-
-#endif // H_CcHtmlInputHidden_H_

@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlUtil
  **/
-#ifndef H_CcHtmlUtil_H_
-#define H_CcHtmlUtil_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHtml.h"
@@ -57,5 +56,3 @@ private:
    */
   ~CcHtmlUtil() = default;
 };
-
-#endif // H_CcHtmlUtil_H_

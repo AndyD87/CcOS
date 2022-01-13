@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcTftpServerWorker
  */
-#ifndef H_CcTftpServerWorker_H_
-#define H_CcTftpServerWorker_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTftp.h"
@@ -84,5 +83,3 @@ private: // Member
   CcByteArray  *m_InData = nullptr; //!< Temporary Input Buffer for operating..
   CcTftpServerConfigHandle m_hServerConfig; //!< Pointer to Server which was creating
 };
-
-#endif // H_CcTftpServerWorker_H_

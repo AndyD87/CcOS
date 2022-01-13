@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CRemoteDeviceServerTest
  **/
-#ifndef H_CRemoteDeviceServerTest_H_
-#define H_CRemoteDeviceServerTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -50,5 +49,3 @@ private:
   bool testDefaultConfig();
   bool testBinaryConfig();
 };
-
-#endif // H_CRemoteDeviceServerTest_H_

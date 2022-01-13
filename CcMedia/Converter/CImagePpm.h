@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CImagePpm
  */
-#ifndef H_CImagePpm_H_
-#define H_CImagePpm_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcMedia.h"
@@ -55,5 +54,3 @@ public:
 };
 
 } // namespace NImage
-
-#endif // H_CImagePpm_H_

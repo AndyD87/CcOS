@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcDisplayTarget
  */
-#ifndef H_CCDISPLAYTARGET_H_
-#define H_CCDISPLAYTARGET_H_
+#pragma once
 
 #include "CcBase.h"
 #include "STM32.h"
@@ -134,5 +133,3 @@ private: //member
   FSMC_NORSRAM_TimingTypeDef m_sramTimeStruct;
   SRAM_HandleTypeDef m_hSram;
 };
-
-#endif // H_CCDISPLAYTARGET_H_

@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsDesktopScreen
  */
-#ifndef H_CcWindowsDesktopScreen_H_
-#define H_CcWindowsDesktopScreen_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,5 +43,3 @@
 #else
 # define CcWindowsDesktopScreenSHARED
 #endif
-
-#endif // H_CcWindowsDesktopScreen_H_

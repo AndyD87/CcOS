@@ -23,9 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcShell
  */
-
-#ifndef H_CcShell_H_
-#define H_CcShell_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -103,5 +101,3 @@ private:
   IIo*     m_pOutput = nullptr; //!< Output stream to write output to.
   CcString m_sWorkingDirectory; //!< Curren working directory of shell.
 };
-
-#endif // H_CcShell_H_

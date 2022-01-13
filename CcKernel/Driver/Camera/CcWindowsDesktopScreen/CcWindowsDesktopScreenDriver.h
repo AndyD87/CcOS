@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsDesktopScreenDriver
  */
-#ifndef H_CcWindowsDesktopScreenDriver_H_
-#define H_CcWindowsDesktopScreenDriver_H_
+#pragma once
 
 #include "CcWindowsDesktopScreen.h"
 #include "IDriver.h"
@@ -57,5 +56,3 @@ public:
 private:
   ICamera* m_pDesktopScreen;
 };
-
-#endif // H_CcWindowsDesktopScreenDriver_H_

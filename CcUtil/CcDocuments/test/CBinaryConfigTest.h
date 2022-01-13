@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CBinaryConfigTest
  **/
-#ifndef H_CBinaryConfigTest_H_
-#define H_CBinaryConfigTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -48,5 +47,3 @@ public:
 private:
   bool testIdsAndPostions();
 };
-
-#endif // H_CBinaryConfigTest_H_

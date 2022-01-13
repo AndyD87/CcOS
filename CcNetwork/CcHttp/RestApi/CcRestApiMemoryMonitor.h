@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiMemoryMonitor
  */
-#ifndef H_CcRestApiMemoryMonitor_H_
-#define H_CcRestApiMemoryMonitor_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -51,5 +50,3 @@ private:
 private:
   CPrivate* m_pPrivate = nullptr;
 };
-
-#endif // H_CcRestApiMemoryMonitor_H_

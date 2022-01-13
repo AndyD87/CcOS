@@ -23,9 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcMtp
  */
-
-#ifndef H_CcMtp_H_
-#define H_CcMtp_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -45,5 +43,3 @@
 #else
 # define CcMtpSHARED
 #endif
-
-#endif // H_CcMtp_H_

@@ -23,11 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcBitmap
  */
-#ifndef H_CcBitmap_H_
-#define H_CcBitmap_H_
+#pragma once
 
-
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcColor.h"
 #include "CcStatic.h"
@@ -156,5 +153,3 @@ private:
   int64 pixCount;
   CBitmapARGB *bitmap = nullptr;
 };
-
-#endif // H_CcBitmap_H_

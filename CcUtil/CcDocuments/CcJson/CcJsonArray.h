@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcJsonArray
  **/
-#ifndef H_CcJsonArray_H_
-#define H_CcJsonArray_H_
+#pragma once
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -111,5 +110,3 @@ public:
   bool contains(const CcString& sName) const;
 
 };
-
-#endif // H_CcJsonArray_H_

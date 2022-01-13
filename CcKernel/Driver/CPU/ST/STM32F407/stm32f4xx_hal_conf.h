@@ -36,8 +36,7 @@
 #include <inttypes.h>
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef H_STM32F4xx_HAL_CONF_H
-#define H_STM32F4xx_HAL_CONF_H
+#pragma once
 
 //! Number of pins per port
 #define NUMBER_OF_PINS        32
@@ -433,8 +432,5 @@
 #ifdef __cplusplus
 }
 #endif
-
-#endif // H_STM32F4xx_HAL_CONF_H
-
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -23,10 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcIp
  */
-#ifndef H_CcIp_H_
-#define H_CcIp_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcTypes.h"
 #include "CcString.h"
@@ -243,5 +241,3 @@ private:
     uint32  m_pArrayV4Uint32;
   } Data;
 };
-
-#endif // H_CcIp_H_

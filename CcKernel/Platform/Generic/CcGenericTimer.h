@@ -21,8 +21,7 @@
  * @par       Language: C++11
  * @brief     Class CcGenericTimer
  */
-#ifndef H_CcGenericTimer_H_
-#define H_CcGenericTimer_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ITimer.h"
@@ -47,5 +46,3 @@ private: //methods
   class CPrivate;
   CPrivate* m_pPrivate = nullptr;
 };
-
-#endif // H_CcGenericTimer_H_

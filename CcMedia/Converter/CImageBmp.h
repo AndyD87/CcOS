@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CImageBmp
  */
-#ifndef H_CImageBmp_H_
-#define H_CImageBmp_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcMedia.h"
@@ -64,5 +63,3 @@ private:
 };
 
 } // namespace NImage
-
-#endif // H_CImageBmp_H_

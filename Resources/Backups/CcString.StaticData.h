@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief      Class CcString
  */
-#ifndef H_CcString_H_
-#define H_CcString_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTypes.h"
@@ -1016,5 +1015,3 @@ inline bool operator!=(const char* pcL, const CcString& sR)
 {
   return !sR.compare(pcL);
 }
-
-#endif // H_CcString_H_

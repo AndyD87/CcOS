@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcGenericFile
  */
-#ifndef H_CcGenericFile_H_
-#define H_CcGenericFile_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -92,5 +91,3 @@ private:
   EOpenFlags m_eOpenFlags;
   uint64     m_uiOffset;
 };
-
-#endif // H_CcGenericFile_H_

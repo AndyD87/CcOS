@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CUuidTest
  **/
-#ifndef H_CUuidTest_H_
-#define H_CUuidTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -45,5 +44,3 @@ private:
   bool testKnown();
   bool testCopy();
 };
-
-#endif // H_CUuidTest_H_

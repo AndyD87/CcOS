@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CImageBmpTest
  **/
-#ifndef H_CImageBmpTest_H_
-#define H_CImageBmpTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -51,5 +50,3 @@ private:
   bool testConvertFrom16Bit();
   bool testConvertFrom24Bit();
 };
-
-#endif // H_CImageBmpTest_H_

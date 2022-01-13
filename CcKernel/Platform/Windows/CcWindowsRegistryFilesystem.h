@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsRegistryFilesystem
  */
-#ifndef H_CcWindowsRegistryFilesystem_H_
-#define H_CcWindowsRegistryFilesystem_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IFileSystem.h"
@@ -50,5 +49,3 @@ public:
   CcStatus mkdir(const CcString& Path) const override;
   CcStatus remove(const CcString& Path) const override;
 };
-
-#endif // H_CcWindowsRegistryFilesystem_H_

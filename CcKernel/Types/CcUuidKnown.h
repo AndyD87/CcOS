@@ -23,10 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcUuidKnown
  **/
-#ifndef H_CcUuidKnown_H_
-#define H_CcUuidKnown_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcUuid.h"
 
@@ -40,5 +38,3 @@ namespace CcUuidKnown
     extern const CcKernelSHARED CcUuid CcRemoteDevice;
   }
 }
-
-#endif // H_CcUuidKnown_H_

@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CSharedMemoryTest
  **/
-#ifndef H_CSharedMemoryTest_H_
-#define H_CSharedMemoryTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcSharedMemory.h"
@@ -54,5 +53,3 @@ private:
 private: //Members
   CcSharedMemory m_oSharedMemory;
 };
-
-#endif // H_CSharedMemoryTest_H_

@@ -23,10 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcPassword
  **/
-#ifndef H_CcPassword_H_
-#define H_CcPassword_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcString.h"
 #include "Hash/CcHash.h"
@@ -187,5 +185,3 @@ private:
   EHashType m_eType   = EHashType::Unknown; //!< Type of stored password.
   CcString m_sPassword;                     //!< Current stored password.
 };
-
-#endif // H_CcPassword_H_

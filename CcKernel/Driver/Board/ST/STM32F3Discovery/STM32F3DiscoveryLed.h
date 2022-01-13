@@ -20,9 +20,7 @@
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */
-
-#ifndef H_STM32F4DiscoveryLed_H_
-#define H_STM32F4DiscoveryLed_H_
+#pragma once
 
 #include "STM32F4Discovery.h"
 #include "Devices/ILed.h"
@@ -59,5 +57,3 @@ public:
 private:
   STM32F4DiscoveryLedPrivate* m_pPrivate;
 };
-
-#endif // H_STM32F4DiscoveryLed_H_

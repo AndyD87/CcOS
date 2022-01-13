@@ -24,8 +24,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Global version file for CcOS Famework
  */
-#ifndef H_CCOSVERSION_H_
-#define H_CCOSVERSION_H_
+#pragma once
 
 //! Major Version for CcOS
 #define CCOS_VERSION_MAJOR  1
@@ -38,5 +37,3 @@
 
 //! Version-String of CcOS
 #define CCOS_VERSION_STRING "1.4.0.0"
-
-#endif // H_CCOSVERSION_H_

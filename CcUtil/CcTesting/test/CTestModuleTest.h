@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CTestModuleTest
  **/
-#ifndef H_CTestModuleTest_H_
-#define H_CTestModuleTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -49,5 +48,3 @@ private:
   bool faileTest();
   bool successTest();
 };
-
-#endif // H_CTestModuleTest_H_

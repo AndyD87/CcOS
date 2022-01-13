@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CReferenceCountTest will test CcReferenceCount and CcCoReferenceCount
  **/
-#ifndef H_CReferenceCountTest_H_
-#define H_CReferenceCountTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -49,5 +48,3 @@ private:
   bool testConstructor();
   bool testCopyConstructor();
 };
-
-#endif // H_CReferenceCountTest_H_

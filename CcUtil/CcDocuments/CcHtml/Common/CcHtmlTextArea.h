@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlTextArea
  **/
-#ifndef H_CcHtmlTextArea_H_
-#define H_CcHtmlTextArea_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,5 +43,3 @@ public:
    */
   virtual ~CcHtmlTextArea();
 };
-
-#endif // H_CcHtmlTextArea_H_

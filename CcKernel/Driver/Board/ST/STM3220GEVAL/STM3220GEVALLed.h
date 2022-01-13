@@ -20,9 +20,7 @@
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */
-
-#ifndef H_STM3220GEVALLed_H_
-#define H_STM3220GEVALLed_H_
+#pragma once
 
 #include <Driver/Board/ST/STM3220GEVAL/STM3220GEVAL.h>
 #include "Devices/ILed.h"
@@ -61,5 +59,3 @@ private:
 private:
   STM3220GEVALLedPrivate* m_pPrivate;
 };
-
-#endif // H_STM3220GEVALLed_H_

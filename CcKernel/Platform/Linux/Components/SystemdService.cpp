@@ -28,12 +28,14 @@
 #include "CcKernel.h"
 #include "CcByteArray.h"
 #include "CcFile.h"
+#include "CcDirectory.h"
 
-const char SYSTEMD_CONFIG_PATH[] = "/etc/systemd/system/";
+const char SYSTEMD_CONFIG_PATH[]       = "/etc/systemd/system/";
+const char SYSTEMD_SERVICE_EXTENSION[] = ".service";
 
 SystemdService::SystemdService(CcService& oService) :
   m_oService(oService),
-  m_sServiceFile(SYSTEMD_CONFIG_PATH + oService.getName() + ".service")
+  m_sServiceFile(SYSTEMD_CONFIG_PATH + oService.getName() + SYSTEMD_SERVICE_EXTENSION)
 {
 }
 
@@ -90,6 +92,30 @@ CcStatus SystemdService::setAutoStart(bool bOnOff)
   return oStatus;
 }
 
+CcStatus SystemdService::setExectuable(const CcString& sExePath)
+{
+  CcStatus oStatus(false);
+  CcIniFile::CSection& oServiceSection = m_oServiceFile.createSection("Service");
+  if(oServiceSection.isValid())
+  {
+    oServiceSection.setValue("ExecStart", sExePath);
+    oStatus = true;
+  }
+  return oStatus;
+}
+
+CcStatus SystemdService::setWorkingDir(const CcString& sWorkingDir)
+{
+  CcStatus oStatus(false);
+  CcIniFile::CSection& oServiceSection = m_oServiceFile.createSection("Service");
+  if(oServiceSection.isValid())
+  {
+    oServiceSection.setValue("WorkingDirectory", sWorkingDir);
+    oStatus = true;
+  }
+  return oStatus;
+}
+
 void SystemdService::checkBasicData()
 {
   CcIniFile::CSection& oUnitSection = m_oServiceFile.createSection("Unit");
@@ -110,7 +136,21 @@ void SystemdService::checkBasicData()
     if(!oServiceSection.keyExists("ExecStart"))
     {
       CcString sCurrentExecutable = CcKernel::getCurrentExecutablePath();
-      oUnitSection.setValue("ExecStart", sCurrentExecutable);
+      oServiceSection.setValue("ExecStart", sCurrentExecutable);
     }
   }
+}
+
+CcStringList SystemdService::getAllServices()
+{
+  CcStringList oList;
+  CcFileInfoList oFileList = CcDirectory::getFileList(SYSTEMD_CONFIG_PATH);
+  for(CcFileInfo& oInfo : oFileList)
+  {
+    if(oInfo.isFile() && oInfo.getName().endsWith(SYSTEMD_SERVICE_EXTENSION))
+    {
+      oList.append(oInfo.getName().substr(0, oInfo.getName().length() - (sizeof(SYSTEMD_SERVICE_EXTENSION) - 1)));
+    }
+  }
+  return oList;
 }

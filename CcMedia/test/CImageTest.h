@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CImageTest
  **/
-#ifndef H_CImageTest_H_
-#define H_CImageTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -47,5 +46,3 @@ public:
 private:
   bool testBasic();
 };
-
-#endif // H_CImageTest_H_

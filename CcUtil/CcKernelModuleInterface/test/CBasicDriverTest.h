@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CBasicDriverTest
  **/
-#ifndef H_CBasicDriverTest_H_
-#define H_CBasicDriverTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -47,5 +46,3 @@ public:
 private:
   bool testBasic();
 };
-
-#endif // H_CBasicDriverTest_H_

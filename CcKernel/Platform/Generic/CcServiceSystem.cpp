@@ -99,3 +99,24 @@ CcStatus CcServiceSystem::setAutoStart(CcService& pService, bool bOnOff)
   return oStatus;
 }
 
+CcStatus CcServiceSystem::setExectuable(CcService& pService, const CcString& sExePath)
+{
+  CcStatus oStatus(false);
+  CCUNUSED(pService);
+  CCUNUSED(sExePath);
+  return oStatus;
+}
+
+CcStatus CcServiceSystem::setWorkingDir(CcService& pService, const CcString& sWorkingDir)
+{
+  CcStatus oStatus(false);
+  CCUNUSED(pService);
+  CCUNUSED(sWorkingDir);
+  return oStatus;
+}
+
+CcStringList CcServiceSystem::getAllServices()
+{
+  return CcStringList();
+}
+

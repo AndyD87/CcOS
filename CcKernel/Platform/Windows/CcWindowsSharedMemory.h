@@ -24,8 +24,7 @@
  * @brief     Class CcWindowsSharedMemory
  *            Abstract Class to define an interface to System own Shared Memory
  */
-#ifndef H_CcWindowsSharedMemory_H_
-#define H_CcWindowsSharedMemory_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -115,5 +114,3 @@ private: // Member
   size_t        m_uiSize = 0; //<! Maximum exchange size for Shared Memory default is c_uiDefaultMaxValue
   void*         m_pBuffer = nullptr;
 };
-
-#endif // H_CcWindowsSharedMemory_H_

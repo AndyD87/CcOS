@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcFtpServer
  */
-#ifndef H_CcFtpServer_H_
-#define H_CcFtpServer_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcFtp.h"
@@ -97,5 +96,3 @@ private:
   CcUserList m_UserList; //!< List with registered User for login.
   CcUser*   m_pAnonymousUser = nullptr;
 };
-
-#endif // H_CcFtpServer_H_

@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiApplicationStatus
  */
-#ifndef H_CcRestApiApplicationStatus_H_
-#define H_CcRestApiApplicationStatus_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -72,5 +71,3 @@ public:
 private:
   CcVoidList m_oPublishers;
 };
-
-#endif // H_CcRestApiApplicationStatus_H_

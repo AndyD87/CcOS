@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiSystem
  */
-#ifndef H_CcRestApiSystem_H_
-#define H_CcRestApiSystem_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -56,5 +55,3 @@ private:
   CcRestApiMemory m_oMemory;
   CcRestApiDevices m_oDevices;
 };
-
-#endif // H_CcRestApiSystem_H_

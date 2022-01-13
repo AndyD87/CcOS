@@ -23,10 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcUrl
  */
-#ifndef H_CcUrl_H_
-#define H_CcUrl_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcTypes.h"
 #include "CcString.h"
@@ -217,5 +215,3 @@ private:
   CcString m_Path;     //!< Path part in URL
   bool m_IsUrl = false;//!< true if URL is valid
 };
-
-#endif // H_CcUrl_H_

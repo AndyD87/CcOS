@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CVersionTest
  **/
-#ifndef H_CVersionTest_H_
-#define H_CVersionTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -50,5 +49,3 @@ private:
   bool testVersionComparingGreater();
   bool testVersionComparingLower();
 };
-
-#endif // H_CVersionTest_H_

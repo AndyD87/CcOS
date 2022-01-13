@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CXmlTest
  **/
-#ifndef H_CXmlTest_H_
-#define H_CXmlTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -52,5 +51,3 @@ private:
   bool testOuter();
   bool testDocOuter();
 };
-
-#endif // H_CXmlTest_H_

@@ -23,12 +23,10 @@
  * @par       Language: C++11
  * @brief     Class CcSslCertificate
  **/
-#ifndef H_CcSslCertificate_H_
-#define H_CcSslCertificate_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcSsl.h"
-
 
 // Forward declarations
 class CcString;
@@ -90,4 +88,3 @@ private: // Types
 private: // Member
   CPrivate* m_pPrivate = nullptr; //!< Private data
 };
-#endif // H_CcSslCertificate_H_

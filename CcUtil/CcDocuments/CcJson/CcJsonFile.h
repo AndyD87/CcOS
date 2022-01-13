@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcJsonFile
  **/
-#ifndef H_CcJsonFile_H_
-#define H_CcJsonFile_H_
+#pragma once
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -90,5 +89,3 @@ private:
   CcJsonDocument m_oDocument;
   CcString m_sFilePath;
 };
-
-#endif // H_CcJsonFile_H_

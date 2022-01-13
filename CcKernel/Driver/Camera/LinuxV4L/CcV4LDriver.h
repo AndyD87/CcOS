@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcV4LDriver
  */
-#ifndef H_CcV4LDriver_H_
-#define H_CcV4LDriver_H_
+#pragma once
 
 #include "IDriver.h"
 #include "Devices/ICamera.h"
@@ -54,5 +53,3 @@ public:
 private:
   CcVector<ICamera*> m_pCameras;
 };
-
-#endif // _CcV4LDriver_H_

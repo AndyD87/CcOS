@@ -36,8 +36,7 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef H__stm32f2xx_HAL_CONF_H
-#define H__stm32f2xx_HAL_CONF_H
+#pragma once
 
 //! Number of pins per port on STM32F2xx devices
 #define NUMBER_OF_PINS        32
@@ -397,8 +396,5 @@
 #ifdef __cplusplus
 }
 #endif
-
-#endif // H__stm32f2xx_HAL_CONF_H
-
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

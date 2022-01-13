@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiDeviceGpioPin
  */
-#ifndef H_CcRestApiDeviceGpioPin_H_
-#define H_CcRestApiDeviceGpioPin_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -76,5 +75,3 @@ private:
 private:
   CcDeviceGpioPin m_oDevice;
 };
-
-#endif // H_CcRestApiDeviceGpioPin_H_

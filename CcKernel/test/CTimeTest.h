@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CTimeTest
  **/
-#ifndef H_CTimeTest_H_
-#define H_CTimeTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -48,5 +47,3 @@ public:
 private:
   bool testTimestamps();
 };
-
-#endif // H_CTimeTest_H_

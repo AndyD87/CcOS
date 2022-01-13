@@ -22,9 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcLinuxLed
  */
-
-#ifndef H_CcLinuxLed_H_
-#define H_CcLinuxLed_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -60,5 +58,3 @@ private:
   CcString m_Path;
   uint16 m_MaxBrightness;
 };
-
-#endif // H_CcLinuxLed_H_

@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiApplicationFooter
  */
-#ifndef H_CcRestApiApplicationFooter_H_
-#define H_CcRestApiApplicationFooter_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -49,5 +48,3 @@ public:
 
   virtual bool get(CcHttpWorkData& oData) override;
 };
-
-#endif // H_CcRestApiApplicationFooter_H_

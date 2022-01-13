@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlInputText
  **/
-#ifndef H_CcHtmlInputText_H_
-#define H_CcHtmlInputText_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,5 +43,3 @@ public:
    */
   virtual ~CcHtmlInputText();
 };
-
-#endif // H_CcHtmlInputText_H_

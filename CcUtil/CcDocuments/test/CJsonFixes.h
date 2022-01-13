@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CJsonFixes
  **/
-#ifndef H_CJsonFixes_H_
-#define H_CJsonFixes_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -53,5 +52,3 @@ private:
    */
   bool doubleEntries();
 };
-
-#endif // H_CJsonFixes_H_

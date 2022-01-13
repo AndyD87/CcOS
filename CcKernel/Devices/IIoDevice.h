@@ -23,9 +23,7 @@
  * @par       Language: C++11
  * @brief     Class IIoDevice
  */
-
-#ifndef H_IIoDevice_H_
-#define H_IIoDevice_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IIo.h"
@@ -40,5 +38,3 @@ public:
   IIoDevice() = default;
   virtual ~IIoDevice() = default;
 };
-
-#endif // _IIoDevice_H_

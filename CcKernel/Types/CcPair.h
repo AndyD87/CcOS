@@ -23,10 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcPair
  **/
-#ifndef H_CcPair_H_
-#define H_CcPair_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcList.h"
 
@@ -123,5 +121,3 @@ private:
   KEY m_oKey;
   VALUE m_oValue;
 };
-
-#endif // H_CcPair_H_

@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlInputButton
  **/
-#ifndef H_CcHtmlInputButton_H_
-#define H_CcHtmlInputButton_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,5 +43,3 @@ public:
    */
   virtual ~CcHtmlInputButton();
 };
-
-#endif // H_CcHtmlInputButton_H_

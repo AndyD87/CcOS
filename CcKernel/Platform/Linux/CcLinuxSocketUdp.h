@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcLinuxSocketUdp
  */
-#ifndef H_CcLinuxSocketUdp_H_
-#define H_CcLinuxSocketUdp_H_
+#pragma once
 
 #include "CcBase.h"
 #include "ILinuxSocket.h"
@@ -104,5 +103,3 @@ public:
   virtual size_t read(void *buf, size_t bufSize) override;
 
 };
-
-#endif // H_CcLinuxSocketUdp_H_

@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcFtpServerWorker
  */
-#ifndef H_CcFtpServerWorker_H_
-#define H_CcFtpServerWorker_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcFtp.h"
@@ -112,5 +111,3 @@ private:
   bool          m_TransferType; //!< Check wich transfertype is Ascii-Type or Binary-Type
   bool          m_Active;       //!< Indication if data-connection has to be active or passiv
 };
-
-#endif // H_CcFtpServerWorker_H_

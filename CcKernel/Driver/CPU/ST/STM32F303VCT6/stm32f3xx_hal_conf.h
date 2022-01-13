@@ -36,8 +36,7 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef H__stm32f3xx_hal_CONF_H
-#define H__stm32f3xx_hal_CONF_H
+#pragma once
 
 // CcOS definitions
 #define NUMBER_OF_PINS        32 //!< Number of pins per port
@@ -386,8 +385,5 @@
 #ifdef __cplusplus
 }
 #endif
-
-#endif // H__stm32f3xx_hal_CONF_H */
-
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiApplication
  */
-#ifndef H_CcRestApiApplication_H_
-#define H_CcRestApiApplication_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -65,5 +64,3 @@ private:
   CcRestApiApplicationFooter m_oFooter;
   CcRestApiApplicationStatus m_oStatus;
 };
-
-#endif // H_CcRestApiApplication_H_

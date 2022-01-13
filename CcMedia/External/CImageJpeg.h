@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CImageJpeg
  */
-#ifndef H_CImageJpeg_H_
-#define H_CImageJpeg_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcString.h"
@@ -56,5 +55,3 @@ private:
 };
 
 } // namespace NImage
-
-#endif // H_CImageJpeg_H_

@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcXmlDocument
  */
-#ifndef H_CcXmlDocument_H_
-#define H_CcXmlDocument_H_
+#pragma once
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -126,5 +125,3 @@ private:
   bool      m_bIntend        = false;   //!< Write Xml in an Human readable format
   uint16    m_uiIntendLevel  = 0;       //!< Representing the current level of subnodes for output content
 };
-
-#endif // H_CcXmlDocument_H_

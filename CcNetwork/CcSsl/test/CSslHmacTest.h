@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CSslHmacTest
  **/
-#ifndef H_CSslHmacTest_H_
-#define H_CSslHmacTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -50,5 +49,3 @@ public:
 
 private:
 };
-
-#endif // H_CSslHmacTest_H_

@@ -51,6 +51,7 @@
 #include "CMutexTest.h"
 #include "CStringListTest.h"
 #include "CSystemTest.h"
+#include "CSystemServiceTest.h"
 #include "CGenericMallocTest.h"
 #include "CWorkerTest.h"
 #include "CBoardSupportTest.h"
@@ -79,6 +80,7 @@ int main(int iArgc, char** ppArgv)
   CcTestFramework_addTest(CBaseTest);
   CcTestFramework_addTest(CKernelTest);
   CcTestFramework_addTest(CSystemTest);
+  CcTestFramework_addTest(CSystemServiceTest);
   CcTestFramework_addTest(CVectorTest);
   CcTestFramework_addTest(CListTest);
   CcTestFramework_addTest(CIniFileTest);

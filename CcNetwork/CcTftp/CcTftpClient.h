@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcTftpClient
  */
-#ifndef H_CcTftpClient_H_
-#define H_CcTftpClient_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTftp.h"
@@ -50,5 +49,3 @@ public:
    */
   virtual ~CcTftpClient();
 };
-
-#endif // H_CcTftpClient_H_

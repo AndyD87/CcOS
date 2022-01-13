@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcLinuxProcessThread
  **/
-#ifndef H_CcLinuxProcessThread_H_
-#define H_CcLinuxProcessThread_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcProcess.h"
@@ -56,5 +55,3 @@ private:
   CcHandle<CcProcess> m_hProcess;
   int                 m_iChildId = -1;
 };
-
-#endif // H_CcLinuxProcessThread_H_

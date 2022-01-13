@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsDesktopScreenDevice
  */
-#ifndef H_CcWindowsDesktopScreenDevice_H_
-#define H_CcWindowsDesktopScreenDevice_H_
+#pragma once
 
 #include "CcWindowsDesktopScreen.h"
 #include "Devices/ICamera.h"
@@ -66,5 +65,3 @@ private:
   PBITMAPINFO CreateBitmapInfoStruct(HBITMAP hBmp);
 
 };
-
-#endif // H_CcWindowsDesktopScreenDevice_H_

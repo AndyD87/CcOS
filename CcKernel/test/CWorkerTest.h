@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CWorkerTest
  **/
-#ifndef H_CWorkerTest_H_
-#define H_CWorkerTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -48,5 +47,3 @@ public:
 private:
   bool testMultipleWorkers();
 };
-
-#endif // H_CWorkerTest_H_

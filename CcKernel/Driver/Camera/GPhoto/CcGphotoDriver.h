@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcGphotoDriver
  */
-#ifndef H_CcGphotoDriver_H_
-#define H_CcGphotoDriver_H_
+#pragma once
 
 #include "IDriver.h"
 #include "Devices/ICamera.h"
@@ -52,5 +51,3 @@ public:
 private:
   CcVector<ICamera*> m_pCameras;
 };
-
-#endif // _CcGphotoDriver_H_

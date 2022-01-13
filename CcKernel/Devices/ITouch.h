@@ -23,9 +23,7 @@
  * @par       Language: C++11
  * @brief     Class ITouch
  */
-
-#ifndef H_ITouch_H_
-#define H_ITouch_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IDevice.h"
@@ -120,5 +118,3 @@ private:
   uint16 m_Y;
   CcDateTime m_NextPoll;
 };
-
-#endif // H_CcBUTTON_H_

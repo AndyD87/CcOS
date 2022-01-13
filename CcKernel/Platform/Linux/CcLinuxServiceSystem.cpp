@@ -102,6 +102,18 @@ CcStatus CcServiceSystem::start(CcService& pService)
   return oService.remove();
 }
 
+CcStatus CcServiceSystem::setExectuable(CcService& pService, const CcString& sExePath)
+{
+  SystemdService oService(pService);
+  return oService.setExectuable(sExePath);
+}
+
+CcStatus CcServiceSystem::setWorkingDir(CcService& pService, const CcString& sWorkingDir)
+{
+  SystemdService oService(pService);
+  return oService.setWorkingDir(sWorkingDir);
+}
+
 CcStatus CcServiceSystem::setArguments(CcService& pService, const CcArguments& oArguments)
 {
   SystemdService oService(pService);
@@ -112,4 +124,9 @@ CcStatus CcServiceSystem::setAutoStart(CcService& pService, bool bOnOff)
 {
   SystemdService oService(pService);
   return oService.setAutoStart(bOnOff);
+}
+
+CcStringList CcServiceSystem::getAllServices()
+{
+  return SystemdService::getAllServices();
 }

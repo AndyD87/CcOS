@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiDevices
  */
-#ifndef H_CcRestApiDevices_H_
-#define H_CcRestApiDevices_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -60,5 +59,3 @@ private:
     { }
   bool getDeviceList(CcHttpWorkData& oData, EDeviceType eType);
 };
-
-#endif // H_CcRestApiDevices_H_

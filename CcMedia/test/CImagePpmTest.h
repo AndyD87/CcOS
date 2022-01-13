@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CImagePpmTest
  **/
-#ifndef H_CImagePpmTest_H_
-#define H_CImagePpmTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -53,5 +52,3 @@ private:
   bool testConvertP6();
   bool testConvertP6GrayFail();
 };
-
-#endif // H_CImagePpmTest_H_

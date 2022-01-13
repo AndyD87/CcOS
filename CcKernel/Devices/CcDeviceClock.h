@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcDeviceClock
  */
-#ifndef H_CcDeviceClock_H_
-#define H_CcDeviceClock_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/IClock.h"
@@ -57,5 +56,3 @@ public:
   virtual CcStatus setFrequency(uint64 uiHz)
   { if(isValid()) return getDevice()->setFrequency(uiHz); return EStatus::DeviceError; }
 };
-
-#endif // H_CcDeviceClock_H_

@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcXmlNodeList
  */
-#ifndef H_CcXmlNodeList_H_
-#define H_CcXmlNodeList_H_
+#pragma once
 
 #include "CcDocument.h"
 #include "CcBase.h"
@@ -44,5 +43,3 @@ class CcDocumentsSHARED CcXmlNodeList : public CcList<CcXmlNode>
 };
 
 CcNewClassInheritance(CcXmlNodeListIterator, CcXmlNodeList::iterator);
-
-#endif // H_CcXmlNodeList_H_

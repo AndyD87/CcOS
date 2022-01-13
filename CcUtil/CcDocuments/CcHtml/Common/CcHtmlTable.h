@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlTable
  **/
-#ifndef H_CcHtmlTable_H_
-#define H_CcHtmlTable_H_
+#pragma once
 
 #include "CcHtml/CcHtml.h"
 #include "CcHtml/CcHtmlNode.h"
@@ -109,5 +108,3 @@ private:
   size_t m_uiColumns = 0;
   CcList<CcHtmlTableRow> m_oRows;
 };
-
-#endif // H_CcHtmlTable_H_

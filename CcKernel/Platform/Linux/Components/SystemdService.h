@@ -51,6 +51,10 @@ public:
   CcStatus  start();
   CcStatus  setArguments(const CcArguments& oArguments);
   CcStatus  setAutoStart(bool bOnOff);
+  CcStatus  setExectuable(const CcString& sExePath);
+  CcStatus  setWorkingDir(const CcString& sWorkingDir);
+
+  static CcStringList getAllServices();
 
 private:
   void checkBasicData();

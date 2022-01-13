@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcGenericFilesystem
  */
-#ifndef H_CcLinuxFileSYSTEM_H_
-#define H_CcLinuxFileSYSTEM_H_
+#pragma once
 
 #include "CcBase.h"
 #include "IFileSystem.h"
@@ -48,5 +47,3 @@ public:
   CcStatus mkdir(const CcString& Path) const override;
   CcStatus remove(const CcString& Path) const override;
 };
-
-#endif // H_CcLinuxFileSYSTEM_H_

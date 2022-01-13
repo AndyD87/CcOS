@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlSelect
  **/
-#ifndef H_CcHtmlSelect_H_
-#define H_CcHtmlSelect_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,5 +43,3 @@ public:
    */
   virtual ~CcHtmlSelect();
 };
-
-#endif // H_CcHtmlSelect_H_

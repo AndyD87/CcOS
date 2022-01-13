@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class ESP8266Spi
  */
-#ifndef H_ESP8266Spi_H_
-#define H_ESP8266Spi_H_
+#pragma once
 
 #include "CcBase.h"
 #include "Devices/ISpi.h"
@@ -75,5 +74,3 @@ private:
   size_t          m_uiCurrentTransferSize = 0;
   static ESP8266Spi* s_pSpi;
 };
-
-#endif // H_ESP8266Spi_H_

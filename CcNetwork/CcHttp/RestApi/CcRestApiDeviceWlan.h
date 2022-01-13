@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiDeviceWlan
  */
-#ifndef H_CcRestApiDeviceWlan_H_
-#define H_CcRestApiDeviceWlan_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -59,5 +58,3 @@ private:
 private:
   CcDeviceWlan m_oDevice;
 };
-
-#endif // H_CcRestApiDeviceWlan_H_

@@ -20,9 +20,7 @@
  * @author    Andreas Dirmeier
  * @par       Language: C++11
  */
-
-#ifndef H_CcRawSocketDriver_H_
-#define H_CcRawSocketDriver_H_
+#pragma once
 
 #include "IDriver.h"
 
@@ -49,5 +47,3 @@ private: // Types
 private:
   CPrivate* m_pPrivate;
 };
-
-#endif // H_CcRawSocketDriver_H_

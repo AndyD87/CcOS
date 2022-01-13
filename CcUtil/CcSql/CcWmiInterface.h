@@ -25,9 +25,6 @@
  */
 #pragma once
 
-#ifndef H_CcWmiInterface_H_
-#define H_CcWmiInterface_H_
-
 #include <wbemidl.h>
 #include "CcBase.h"
 #include "CcSql.h"
@@ -72,5 +69,3 @@ private:
   IWbemLocator  *m_pLoc;    ///< Handle to Interface-Location in System
   IWbemServices *m_pSvc;    ///< Handle to Interface-Service for requests
 };
-
-#endif // H_CcWmiInterface_H_

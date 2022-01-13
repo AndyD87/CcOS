@@ -23,10 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcConfig
  **/
-#ifndef H_CcConfig_H_
-#define H_CcConfig_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 
 /**
@@ -45,5 +43,3 @@ public:
    */
   ~CcConfig() = default;
 };
-
-#endif // H_CcConfig_H_

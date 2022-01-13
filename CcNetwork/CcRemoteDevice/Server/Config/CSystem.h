@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CSystem
  **/
-#ifndef H_CSystem_H_
-#define H_CSystem_H_
+#pragma once
 
 #include "CcRemoteDevice.h"
 #include "CcRemoteDeviceGlobals.h"
@@ -120,4 +119,3 @@ public:
 }
 }
 }
-#endif // H_CSystem_H_

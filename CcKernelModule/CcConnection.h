@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcConnection
  **/
-#ifndef H_CcConnection_H_
-#define H_CcConnection_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -60,5 +59,3 @@ private:
 };
 
 }
-
-#endif // H_CcConnection_H_

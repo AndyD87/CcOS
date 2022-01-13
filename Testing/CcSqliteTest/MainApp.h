@@ -25,8 +25,7 @@
  *
  *  Example GUI-Application with Menue Structure and Application Loader
  */
-#ifndef H_MAINAPP_H_
-#define H_MAINAPP_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -41,5 +40,3 @@ public:
 
 private:
 };
-
-#endif // H_MAINAPP_H_

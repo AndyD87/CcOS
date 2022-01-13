@@ -22,8 +22,7 @@
  * @par       Language: C++11
  * @brief     Class CcRestApiUser
  */
-#ifndef H_CcRestApiUser_H_
-#define H_CcRestApiUser_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcHttp.h"
@@ -52,5 +51,3 @@ public:
 
 private:
 };
-
-#endif // H_CcRestApiUser_H_

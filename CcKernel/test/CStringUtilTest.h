@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CStringUtilTest
  **/
-#ifndef H_CStringUtilTest_H_
-#define H_CStringUtilTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -49,5 +48,3 @@ private:
   bool testFindArgument();
   bool testGetArgument();
 };
-
-#endif // H_CStringUtilTest_H_

@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcHtmlLabel
  **/
-#ifndef H_CcHtmlLabel_H_
-#define H_CcHtmlLabel_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,5 +43,3 @@ public:
    */
   virtual ~CcHtmlLabel();
 };
-
-#endif // H_CcHtmlLabel_H_

@@ -23,10 +23,8 @@
  * @par       Language: C++11
  * @brief     Class CcVersion
  */
-#ifndef H_CcVersion_H_
-#define H_CcVersion_H_
+#pragma once
 
-#include "CcBase.h"
 #include "CcBase.h"
 #include "CcString.h"
 #include "CcGlobalStrings.h"
@@ -183,5 +181,3 @@ private:
   uint16 m_uiBuild = 0;
   uint16 m_uiRevision = 0;
 };
-
-#endif // H_CcVersion_H_

@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcHttpWebframeworkJsProvider
  */
-#ifndef H_CcHttpWebframeworkJsProvider_H_
-#define H_CcHttpWebframeworkJsProvider_H_
+#pragma once
 
 #include "CcBase.h"
 #include "HttpProvider/IHttpPathContentProvider.h"
@@ -60,4 +59,3 @@ public:
 }
 }
 }
-#endif // H_CcHttpWebframeworkJsProvider_H_

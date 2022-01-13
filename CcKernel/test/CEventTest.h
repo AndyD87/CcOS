@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CEventTest
  **/
-#ifndef H_CEventTest_H_
-#define H_CEventTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -51,5 +50,3 @@ private:
   bool testThreadSaveEvent();
   bool testShortEvent();
 };
-
-#endif // H_CEventTest_H_

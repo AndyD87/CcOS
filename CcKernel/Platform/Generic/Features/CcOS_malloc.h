@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Declarations for malloc and new
  */
-#ifndef H_CCOS_CCKERNEL_PLATFORM_GENERIC_MALLOC_H_
-#define H_CCOS_CCKERNEL_PLATFORM_GENERIC_MALLOC_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -37,5 +36,3 @@ CCEXTERNC void __malloc_unlock( struct _reent *_r );
 
 
 #endif // CCOS_CCKERNEL_GENERIC_MEMORY_MANAGMENT_MALLOC_ONLY
-
-#endif // H_CCOS_CCKERNEL_PLATFORM_GENERIC_MALLOC_H_

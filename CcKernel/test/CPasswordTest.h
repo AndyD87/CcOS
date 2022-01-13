@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CPasswordTest
  **/
-#ifndef H_CPasswordTest_H_
-#define H_CPasswordTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -49,5 +48,3 @@ private:
   bool testConstructor();
   bool testGenHash();
 };
-
-#endif // H_CPasswordTest_H_

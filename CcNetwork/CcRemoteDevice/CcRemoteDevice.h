@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcRemoteDevice
  */
-#ifndef H_CcRemoteDevice_H_
-#define H_CcRemoteDevice_H_
+#pragma once
 
 #include "CcBase.h"
 
@@ -44,5 +43,3 @@
 #else
 # define CcRemoteDeviceSHARED
 #endif
-
-#endif // H_CcRemoteDevice_H_

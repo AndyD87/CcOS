@@ -24,8 +24,7 @@
  * @brief     Class CcLinuxSharedMemory
  *            Abstract Class to define an interface to System own Shared Memory
  */
-#ifndef H_CcLinuxSharedMemory_H_
-#define H_CcLinuxSharedMemory_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcBase.h"
@@ -124,5 +123,3 @@ private:
   int        m_iId = -1;
   EOpenType  m_eOpenType = EOpenType::Closed;
 };
-
-#endif // H_CcLinuxSharedMemory_H_

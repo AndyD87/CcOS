@@ -51,6 +51,8 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
           ${CMAKE_CURRENT_LIST_DIR}/CStringTest.h
           ${CMAKE_CURRENT_LIST_DIR}/CStringUtilTest.cpp
           ${CMAKE_CURRENT_LIST_DIR}/CStringUtilTest.h
+          ${CMAKE_CURRENT_LIST_DIR}/CSystemServiceTest.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/CSystemServiceTest.h
           ${CMAKE_CURRENT_LIST_DIR}/CSystemTest.cpp
           ${CMAKE_CURRENT_LIST_DIR}/CSystemTest.h
           ${CMAKE_CURRENT_LIST_DIR}/CThreadTest.cpp

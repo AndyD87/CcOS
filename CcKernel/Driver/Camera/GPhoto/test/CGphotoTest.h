@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CGphotoTest
  **/
-#ifndef H_CGphotoTest_H_
-#define H_CGphotoTest_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcTest.h"
@@ -48,5 +47,3 @@ public:
 private:
   bool testStartServer();
 };
-
-#endif // H_CGphotoTest_H_

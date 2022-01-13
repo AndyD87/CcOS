@@ -23,8 +23,7 @@
  * @par       Language: C++11
  * @brief     Class CcWindowsFile
  */
-#ifndef H_CcWindowsFile_H_
-#define H_CcWindowsFile_H_
+#pragma once
 
 #include "CcBase.h"
 #include "CcWindowsGlobals.h"
@@ -93,5 +92,3 @@ private:
   HANDLE m_hFile = INVALID_HANDLE_VALUE;
   CcWString m_sPath;
 };
-
-#endif // H_CcWindowsFile_H_

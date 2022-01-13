@@ -22,8 +22,7 @@
  * @par       Language   C++ ANSI V3
  * @brief     Class CResponseDiscover
  **/
-#ifndef H_CResponseDiscover_H_
-#define H_CResponseDiscover_H_
+#pragma once
 
 #include "CPaket.h"
 
@@ -78,5 +77,3 @@ public:
 }
 
 #pragma pack(pop)
-
-#endif // H_CResponseDiscover_H_

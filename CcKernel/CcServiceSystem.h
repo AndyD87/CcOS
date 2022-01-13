@@ -27,6 +27,7 @@
 #include "CcBase.h"
 #include "CcService.h"
 
+class CcStringList;
 class CcArguments;
 
 /**
@@ -57,8 +58,11 @@ public:
   CcStatus  remove(CcService& pService);
   CcStatus  stop(CcService& pService);
   CcStatus  start(CcService& pService);
+  CcStatus  setExectuable(CcService& pService, const CcString& sExePath);
+  CcStatus  setWorkingDir(CcService& pService, const CcString& sWorkingDir);
   CcStatus  setArguments(CcService& pService, const CcArguments& oArguments);
   CcStatus  setAutoStart(CcService& pService, bool bOnOff);
+  CcStringList getAllServices();
 
 public: // Types
   class CPrivate;
