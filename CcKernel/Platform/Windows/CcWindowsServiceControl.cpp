@@ -229,7 +229,7 @@ bool CcWindowsServiceControl::addDependency(const CcWString& sName)
 CcStringList CcWindowsServiceControl::getAllServices()
 {
   CcStringList oServices;
-  SC_HANDLE hHandle = OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
+  SC_HANDLE hHandle = OpenSCManager(NULL, NULL, SC_MANAGER_ENUMERATE_SERVICE);
   if (hHandle)
   {
     ENUM_SERVICE_STATUS service;
