@@ -43,6 +43,13 @@ public:
    * @brief Destructor
    */
   virtual ~CSystemServiceTest();
+
+  virtual void cleanup();
+
 private:
   bool testServiceListing();
+
+  bool testServiceCreate();
+  bool testServiceSetExecutable();
+  bool testServiceRemove();
 };

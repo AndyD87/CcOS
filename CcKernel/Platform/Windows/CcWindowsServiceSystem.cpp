@@ -109,3 +109,23 @@ CcStatus CcServiceSystem::setAutoStart(CcService& pService, bool bOnOff)
   else
     return oControl.setStartType(CcWindowsServiceControl::EStartType::DemandStart);
 }
+
+CcStatus CcServiceSystem::setExectuable(CcService& pService, const CcString& sExePath)
+{
+  CcWindowsServiceControl oControl(pService.getName());
+  return oControl.setExectuable(sExePath);
+}
+
+CcStatus CcServiceSystem::setWorkingDir(CcService& pService, const CcString& sWorkingDir)
+{
+  CcStatus oStatus(EStatus::NotSupported);
+  CCUNUSED(pService);
+  CCUNUSED(sWorkingDir);
+  return oStatus;
+}
+
+CcStringList CcServiceSystem::getAllServices()
+{
+  return CcWindowsServiceControl::getAllServices();
+}
+

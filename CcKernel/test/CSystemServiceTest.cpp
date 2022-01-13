@@ -25,15 +25,29 @@
 #include "CSystemServiceTest.h"
 #include "CcServiceSystem.h"
 #include "CcKernel.h"
+#include "CcService.h"
+#include "CcFile.h"
 
 CSystemServiceTest::CSystemServiceTest() :
   CcTest("CSystemServiceTest")
 {
   appendTestMethod("Test list services", &CSystemServiceTest::testServiceListing);
+  if (CcKernel::isAdmin())
+  {
+    appendTestMethod("Test list services", &CSystemServiceTest::testServiceCreate);
+    appendTestMethod("Test list services", &CSystemServiceTest::testServiceSetExecutable);
+    appendTestMethod("Test list services", &CSystemServiceTest::testServiceRemove);
+  }
 }
 
 CSystemServiceTest::~CSystemServiceTest()
 {
+}
+
+void CSystemServiceTest::cleanup()
+{
+  // Remove testservice
+  testServiceRemove();
 }
 
 bool CSystemServiceTest::testServiceListing()
@@ -41,6 +55,52 @@ bool CSystemServiceTest::testServiceListing()
   bool bRet = false;
   CcStringList oServices = CcKernel::getServiceSystem().getAllServices();
   if(oServices.size() > 0)
+  {
+    bRet = true;
+  }
+  return bRet;
+}
+
+bool CSystemServiceTest::testServiceCreate()
+{
+  bool bRet = false;
+  CcService oService("CcOSTestService", nullptr);
+  if (CcKernel::getServiceSystem().create(oService))
+  {
+    bRet = true;
+  }
+  return bRet;
+}
+
+bool CSystemServiceTest::testServiceSetExecutable()
+{
+  bool bRet = false;
+  CcService oService("CcOSTestService", nullptr);
+
+  // Create temporary executable by copy this application.
+  CcString sCurrentBinPath = CcKernel::getCurrentExecutablePath();
+  CcString sTempDir = CcTestFramework::getTemporaryDir();
+  sTempDir.appendPath("CcOSTestService.exe");
+  if (CcFile::copy(sCurrentBinPath, sTempDir))
+  {
+    if (CcKernel::getServiceSystem().setExectuable(oService, sTempDir))
+    {
+      if (CcKernel::getServiceSystem().setExectuable(oService, sTempDir))
+      {
+        bRet = true;
+      }
+    }
+    // Remove temporary executable
+    CcFile::remove(sTempDir);
+  }
+  return bRet;
+}
+
+bool CSystemServiceTest::testServiceRemove()
+{
+  bool bRet = false;
+  CcService oService("CcOSTestService", nullptr);
+  if (CcKernel::getServiceSystem().remove(oService))
   {
     bRet = true;
   }

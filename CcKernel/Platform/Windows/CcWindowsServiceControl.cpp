@@ -226,6 +226,79 @@ bool CcWindowsServiceControl::addDependency(const CcWString& sName)
   return bRet;
 }
 
+CcStringList CcWindowsServiceControl::getAllServices()
+{
+  CcStringList oServices;
+  SC_HANDLE hHandle = OpenSCManager(NULL, NULL, SC_MANAGER_ALL_ACCESS);
+  if (hHandle)
+  {
+    ENUM_SERVICE_STATUS service;
+    DWORD dwBytesNeeded = 0;
+    DWORD dwServicesReturned = 0;
+    DWORD dwResumedHandle = 0;
+    DWORD dwServiceType = SERVICE_WIN32 | SERVICE_DRIVER;
+    // Query services
+    BOOL retVal = EnumServicesStatusW(hHandle, 
+                                     dwServiceType, 
+                                     SERVICE_STATE_ALL,
+                                     &service, 
+                                     sizeof(ENUM_SERVICE_STATUS), 
+                                     &dwBytesNeeded, 
+                                     &dwServicesReturned,
+                                     &dwResumedHandle);
+    if (!retVal) 
+    {
+      // Need big buffer
+      if (ERROR_MORE_DATA == GetLastError()) 
+      {
+        // Set the buffer
+        DWORD dwBytes = sizeof(ENUM_SERVICE_STATUS) + dwBytesNeeded;
+        ENUM_SERVICE_STATUS* pServices = NULL;
+        pServices = new ENUM_SERVICE_STATUS[dwBytes];
+        // Now query again for services
+        EnumServicesStatus(hHandle, SERVICE_WIN32 | SERVICE_DRIVER, SERVICE_STATE_ALL,
+                           pServices, dwBytes, &dwBytesNeeded, &dwServicesReturned, &dwResumedHandle);
+        // now traverse each service to get information
+        for (unsigned iIndex = 0; iIndex < dwServicesReturned; iIndex++) 
+        {
+          CcWString sName((pServices + iIndex)->lpServiceName);
+          oServices.append(sName.getString());
+        }
+        delete[] pServices;
+        pServices = NULL;
+      }
+    }
+    CloseServiceHandle(hHandle);
+  }
+  return oServices;
+}
+
+CcStatus CcWindowsServiceControl::setExectuable(const CcString& sExePath)
+{
+  CcStatus bRet = false;
+  if (serviceManagerAvailable())
+  {
+    // Setup Username / Password if isset
+    CcString sBinaryPath = sExePath;
+    if (m_pPrivate->oArguments.size())
+      sBinaryPath << CcGlobalStrings::Seperators::Space << m_pPrivate->oArguments.getLine();
+    bRet = FALSE != ChangeServiceConfigW(
+      m_pPrivate->hService,
+      SERVICE_NO_CHANGE,
+      SERVICE_NO_CHANGE,
+      SERVICE_NO_CHANGE,
+      sBinaryPath.getWString().getWcharString(),  // Service's binary
+      nullptr, // lpLoadOrderGroup
+      nullptr, // lpdwTagId
+      nullptr, // lpDependencies
+      nullptr, // lpServiceStartName
+      nullptr, // lpPassword
+      nullptr  //lpDisplayName
+    );
+  }
+  return bRet;
+}
+
 bool CcWindowsServiceControl::create()
 {
   bool bRet = false;

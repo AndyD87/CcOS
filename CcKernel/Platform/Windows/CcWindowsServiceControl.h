@@ -72,7 +72,11 @@ public:
    * @return True if dependency added
    */
   bool addDependency(const CcWString& sName);
-  
+
+  static CcStringList getAllServices();
+
+  CcStatus  setExectuable(const CcString& sExePath);
+
   /**
    * @brief Create service if not already existing.
    * @return True if creation succeeded
