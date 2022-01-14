@@ -39,7 +39,6 @@
  */
 int main(int iArgc, char** ppArgv)
 {
-  CcArguments oArguments(iArgc, ppArgv);
-  CcRemoteDeviceServerService* pSerivce = new CcRemoteDeviceServerService(oArguments);
-  return pSerivce->exec().getErrorInt();
+  CcRemoteDeviceServerService oSerivce(CcArguments(iArgc, ppArgv));
+  return oSerivce.exec().getErrorInt();
 }

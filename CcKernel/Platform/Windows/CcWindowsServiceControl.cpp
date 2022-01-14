@@ -253,8 +253,8 @@ CcStringList CcWindowsServiceControl::getAllServices()
       {
         // Set the buffer
         DWORD dwBytes = sizeof(ENUM_SERVICE_STATUS) + dwBytesNeeded;
-        ENUM_SERVICE_STATUS* pServices = NULL;
-        pServices = new ENUM_SERVICE_STATUS[dwBytes];
+        CCNEWARRAYTYPE(pServicesBytes, char, dwBytes);
+        ENUM_SERVICE_STATUS* pServices = reinterpret_cast<ENUM_SERVICE_STATUS*>(pServicesBytes);
         // Now query again for services
         EnumServicesStatus(hHandle, SERVICE_WIN32 | SERVICE_DRIVER, SERVICE_STATE_ALL,
                            pServices, dwBytes, &dwBytesNeeded, &dwServicesReturned, &dwResumedHandle);
@@ -264,7 +264,7 @@ CcStringList CcWindowsServiceControl::getAllServices()
           CcWString sName((pServices + iIndex)->lpServiceName);
           oServices.append(sName.getString());
         }
-        delete[] pServices;
+        CCDELETEARR(pServices);
         pServices = NULL;
       }
     }

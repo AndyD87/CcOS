@@ -67,13 +67,13 @@ bool CTestRemoteDeviceService::createService()
   oRemoteDeviceService.addArgument("Remove");
   oRemoteDeviceService.addArgument("-name");
   oRemoteDeviceService.addArgument(SERVCE_APPLICATION_NAME);
-  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(1));
+  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(5));
 
   oRemoteDeviceService.clearArguments();
   oRemoteDeviceService.addArgument("Create");
   oRemoteDeviceService.addArgument("-name");
   oRemoteDeviceService.addArgument(SERVCE_APPLICATION_NAME);
-  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(1)); 
+  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(5)); 
   return bSuccess;
 }
 
@@ -84,7 +84,7 @@ bool CTestRemoteDeviceService::startService()
   oRemoteDeviceService.addArgument("Start");
   oRemoteDeviceService.addArgument("-name");
   oRemoteDeviceService.addArgument(SERVCE_APPLICATION_NAME);
-  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(1));
+  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(5));
   return bSuccess;
 }
 
@@ -95,7 +95,7 @@ bool CTestRemoteDeviceService::stopService()
   oRemoteDeviceService.addArgument("Stop");
   oRemoteDeviceService.addArgument("-name");
   oRemoteDeviceService.addArgument(SERVCE_APPLICATION_NAME);
-  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(1));
+  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(5));
   return bSuccess;
 }
 
@@ -105,6 +105,6 @@ bool CTestRemoteDeviceService::removeService()
   CcProcess oRemoteDeviceService(m_sApplication);
   oRemoteDeviceService.addArgument("Remove");
   oRemoteDeviceService.addArgument(SERVCE_APPLICATION_NAME);
-  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(1));
+  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(5));
   return bSuccess;
 }

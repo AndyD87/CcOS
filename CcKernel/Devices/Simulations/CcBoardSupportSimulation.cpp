@@ -91,7 +91,7 @@ CcDevice CcBoardSupportSimulation::createDevice(EDeviceType eDeviceType, size_t 
       {
         if(rDevice.pDevice == nullptr)
         {
-          CcSpiSimulation* pSpi = new CcSpiSimulation();
+          CCNEWTYPE(pSpi, CcSpiSimulation);
           rDevice.pDevice = pSpi;
           oDevice = pSpi;
           setHwDeviceUsage(rDevice, uiId);
@@ -106,7 +106,7 @@ CcDevice CcBoardSupportSimulation::createDevice(EDeviceType eDeviceType, size_t 
       {
         if(rDevice.pDevice == nullptr)
         {
-          CcI2CSimulation* pSpi = new CcI2CSimulation();
+          CCNEWTYPE(pSpi, CcI2CSimulation);
           rDevice.pDevice = pSpi;
           oDevice = pSpi;
           setHwDeviceUsage(rDevice, uiId);

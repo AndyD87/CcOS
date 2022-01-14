@@ -49,6 +49,7 @@ CcService::CcService(const CcString& sServiceName, CcSharedPointer<CcApp> pAppli
 
 CcService::~CcService()
 {
+  CcKernel::sleep(1);
 }
 
 void CcService::eventStart()
