@@ -183,6 +183,12 @@ void CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine)
   CcMemoryMonitor::insert(pBuffer, pFile, static_cast<size_t>(iLine));
 }
 
+void* CcMemoryMonitor__insert_inline(void* pBuffer, const char* pFile, int iLine)
+{
+  CcMemoryMonitor::insert(pBuffer, pFile, static_cast<size_t>(iLine));
+  return pBuffer;
+}
+
 void CcMemoryMonitor::insert(const void* pBuffer, const char* pFile, size_t iLine)
 {
   if (g_pMemoryInterface)

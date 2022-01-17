@@ -32,7 +32,7 @@
 #include "CcRemoteDeviceGlobals.h"
 
 CcRemoteDeviceServerService::CcRemoteDeviceServerService(const CcArguments& oArguments) :
-  CcService(CcRemoteDeviceGlobals::Names::ServiceName, new CcRemoteDeviceServerApp(oArguments))
+  CcService(CcRemoteDeviceGlobals::Names::ServiceName, CCNEW_INLINE(CcRemoteDeviceServerApp,oArguments))
 {
 }
 

@@ -232,7 +232,7 @@ CcStringList CcWindowsServiceControl::getAllServices()
   SC_HANDLE hHandle = OpenSCManager(NULL, NULL, SC_MANAGER_ENUMERATE_SERVICE);
   if (hHandle)
   {
-    ENUM_SERVICE_STATUS service;
+    ENUM_SERVICE_STATUSW service;
     DWORD dwBytesNeeded = 0;
     DWORD dwServicesReturned = 0;
     DWORD dwResumedHandle = 0;

@@ -30,7 +30,7 @@
 #include "CcDhcpGlobals.h"
 
 CcDhcpServerApp::CcDhcpServerApp(int argc, char** argv) :
-  CcService(CcDhcpGlobals::Strings::ServerName, new CcDhcpServer()),
+  CcService(CcDhcpGlobals::Strings::ServerName, CCNEW_INLINE(CcDhcpServer)),
   m_oArguments(argc, argv)
 {
   parseArgs();

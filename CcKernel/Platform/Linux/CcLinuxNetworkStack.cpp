@@ -50,7 +50,7 @@ bool CcLinuxNetworkStack::init()
         struct sockaddr_ll* pMac = (struct sockaddr_ll*) pAdapter->ifa_addr;
         // loop addressses of adapter
         CcString sName(pAdapter->ifa_name);
-        m_oDeviceList.append(new CcLinuxNetworkDevice(sName, pMac->sll_addr));
+        m_oDeviceList.append(CCNEW_INLINE(CcLinuxNetworkDevice,sName, pMac->sll_addr));
       }
     }
     freeifaddrs(pAdapters);
@@ -62,7 +62,7 @@ void CcLinuxNetworkStack::deinit()
 {
   while(m_oDeviceList.size() > 0)
   {
-    delete m_oDeviceList.at(0);
+    CCDELETE(m_oDeviceList.at(0));
     m_oDeviceList.remove(0);
   }
 }

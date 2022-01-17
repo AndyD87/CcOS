@@ -472,11 +472,21 @@
 #if defined(MEMORYMONITOR_ENABLED) && !defined(NO_CCOS) && !defined(CCMONITOR_IGNORE) && defined(FULL_OS_AVAILABLE)
   extern void CcKernelSHARED CcMemoryMonitor__remove(const void* pBuffer);
   extern void CcKernelSHARED CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
+  #ifdef __cplusplus
+    template<typename T>
+    inline T* CcMemoryMonitor___insert_inline(T* pNewObject, const char* pFile, int iLine)
+    { CcMemoryMonitor__insert(pNewObject, pFile, iLine); return pNewObject; }
+    #define CCMONITORNEW_INLINE(VAR,...) CcMemoryMonitor___insert_inline(new VAR(__VA_ARGS__), __FILE__, __LINE__)
+  #else
+    extern void* CcKernelSHARED CcMemoryMonitor__insert_inline(void* pBuffer, const char* pFile, int iLine);
+    #define CCMONITORNEW_INLINE(VAR,...) (VAR*)CcMemoryMonitor__insert_inline(new VAR(__VA_ARGS__), __FILE__, __LINE__)
+  #endif
   #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(static_cast<void*>(VAR), __FILE__, __LINE__)
   #define CCMONITORDELETE(VAR) CcMemoryMonitor__remove(static_cast<void*>(VAR))
 #else
   #define CCMONITORNEW(VAR)    CCUNUSED(VAR)
   #define CCMONITORDELETE(VAR) CCUNUSED(VAR)
+  #define CCMONITORNEW_INLINE(VAR,...) new VAR(__VA_ARGS__)
 #endif
 //! @}
 
@@ -487,6 +497,13 @@
 #define CCNEW(VAR,TYPE,...)   \
   VAR = new TYPE(__VA_ARGS__);\
   CCMONITORNEW(VAR)
+
+//! @brief Create new class and return
+//! @param TYPE:  Classname to create
+//! @param ...:   Arguments for constructor
+#define CCNEW_INLINE(TYPE,...)   \
+  CCMONITORNEW_INLINE(TYPE,__VA_ARGS__)
+
 //! @brief Create new class and create a variable
 //! @param VAR:   Variable to create and store new memory
 //! @param TYPE:  Classname to create

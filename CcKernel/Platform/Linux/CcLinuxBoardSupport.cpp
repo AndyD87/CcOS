@@ -65,7 +65,7 @@ CcDevice CcLinuxBoardSupport::createDevice(EDeviceType eDeviceType, size_t uiDev
       }
       case EDeviceType::I2C:
       {
-        CcLinuxI2C* pI2C = new CcLinuxI2C(uiDeviceNumber);
+        CCNEWTYPE(pI2C, CcLinuxI2C, uiDeviceNumber);
         if(pI2C)
         {
           m_oHwDevices.append(CHwDevice(eDeviceType, uiDeviceNumber, {}, {}, pI2C));

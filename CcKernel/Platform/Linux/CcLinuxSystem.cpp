@@ -74,7 +74,9 @@ public:
   void initSystem();
   void initTimer();
   void initDisplay();
-  void initNetworkStack();
+
+  CcLinuxNetworkStack* getNetworkStack();
+  void deinitNetworkStack();
 
   static void *ThreadFunction(void *Param)
   {
@@ -86,8 +88,8 @@ public:
     return pReturn;
   }
 
+  CcMutex                   oDataLock;
   CcLinuxBoardSupport       oBoardSupport;
-  CcLinuxNetworkStack*      pNetworkStack;
   IFileSystem*              pFilesystem;
   CcDeviceList              oDeviceList;
   utsname                   oSysInfo;
@@ -97,6 +99,9 @@ public:
   CcThreadManager           oThreadManager;
   static CcThreadManager*   s_pThreadManager;
   static CcStringMap        m_oEnvValues;
+
+private:
+  CcLinuxNetworkStack*      pNetworkStack;
 };
 
 CcThreadManager*  CcSystem::CPrivate::s_pThreadManager(nullptr);
@@ -179,12 +184,8 @@ void CcSystem::deinit()
   CcFileSystem::removeMountPoint("/");
   
   CCDELETE(m_pPrivate->pFilesystem);
-  if(m_pPrivate->pNetworkStack)
-  {
-    m_pPrivate->pNetworkStack->deinit();
-    CCDELETE(m_pPrivate->pNetworkStack);
-  }
-  
+  m_pPrivate->deinitNetworkStack();
+
   for (IDevice* pDevice : m_pPrivate->oDeviceList)
     CCDELETE( pDevice);
   m_pPrivate->oDeviceList.clear();
@@ -226,10 +227,27 @@ void CcSystem::CPrivate::initSystem()
   }
 }
 
-void CcSystem::CPrivate::initNetworkStack()
+CcLinuxNetworkStack *CcSystem::CPrivate::getNetworkStack()
 {
-  CCNEW(pNetworkStack, CcLinuxNetworkStack);
-  pNetworkStack->init();
+  oDataLock.lock();
+  if(!pNetworkStack)
+  {
+    CCNEW(pNetworkStack, CcLinuxNetworkStack);
+    pNetworkStack->init();
+  }
+  oDataLock.unlock();
+  return pNetworkStack;
+}
+
+void CcSystem::CPrivate::deinitNetworkStack()
+{
+  oDataLock.lock();
+  if(pNetworkStack)
+  {
+    pNetworkStack->deinit();
+    CCDELETE(pNetworkStack);
+  }
+  oDataLock.unlock();
 }
 
 void CcSystem::CPrivate::initDisplay()
@@ -287,9 +305,7 @@ ISocket* CcSystem::getSocket(ESocketType eType)
 
 INetworkStack* CcSystem::getNetworkStack()
 {
-  if(!m_pPrivate->pNetworkStack)
-    m_pPrivate->initNetworkStack();
-  return m_pPrivate->pNetworkStack;
+  return m_pPrivate->getNetworkStack();
 }
 
 CcString CcSystem::getName()
