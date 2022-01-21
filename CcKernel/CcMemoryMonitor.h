@@ -180,22 +180,22 @@ private:
  * @brief Remove buffer from tracking list
  * @param pBuffer: Target buffer to remove from tracking list
  */
-extern void CcKernelSHARED CcMemoryMonitor__remove(const void* pBuffer);
+extern CcKernelSHARED void CcMemoryMonitor__remove(const void* pBuffer);
 
 /**
  * @brief Append buffer to tracking list with additional compile informations
- * @param pBuffer:  Target buffer to remove from tracking list
+ * @param pBuffer:  Target buffer to append to tracking list
  * @param pFile:    File where this method will be executed
  * @param iLine:    Line of file where this method will be executed
  */
-extern void CcKernelSHARED CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
+extern CcKernelSHARED void CcMemoryMonitor__insert(const void* pBuffer, const char* pFile, int iLine);
 
 /**
  * @brief Append buffer to tracking list with additional compile informations
- * @param pBuffer:  Target buffer to remove from tracking list
+ * @param pBuffer:  Target buffer to append to tracking list
  * @param pFile:    File where this method will be executed
  * @param iLine:    Line of file where this method will be executed
  * @return pointer to inserted buffer
  */
-extern void* CcKernelSHARED CcMemoryMonitor__insert_inline(void* pBuffer, const char* pFile, int iLine);
+extern CcKernelSHARED void* CcMemoryMonitor__insert_inline(void* pBuffer, const char* pFile, int iLine);
 

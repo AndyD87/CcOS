@@ -45,7 +45,7 @@ bool CcWindowsNetworkStack::init()
       uint32 uiId = oRow["DeviceID"].getUint32();
       if (uiId)
       {
-        m_oDevices.append(new CcWindowsNetworkDevice(this, uiId));
+        m_oDevices.append(CCNEW_INLINE(CcWindowsNetworkDevice, this, uiId));
       }
     }
   }
@@ -57,7 +57,7 @@ void CcWindowsNetworkStack::deinit()
 {
   while (m_oDevices.size() > 0)
   {
-    delete m_oDevices[0];
+    CCDELETE(m_oDevices[0]);
     m_oDevices.remove(0);
   }
   // Force close to avoid using members at the end of live.

@@ -477,12 +477,14 @@
     inline T* CcMemoryMonitor___insert_inline(T* pNewObject, const char* pFile, int iLine)
     { CcMemoryMonitor__insert(pNewObject, pFile, iLine); return pNewObject; }
     #define CCMONITORNEW_INLINE(VAR,...) CcMemoryMonitor___insert_inline(new VAR(__VA_ARGS__), __FILE__, __LINE__)
+    #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(static_cast<void*>(VAR), __FILE__, __LINE__)
+    #define CCMONITORDELETE(VAR) CcMemoryMonitor__remove(static_cast<void*>(VAR))
   #else
-    extern void* CcKernelSHARED CcMemoryMonitor__insert_inline(void* pBuffer, const char* pFile, int iLine);
+    extern CcKernelSHARED void* CcMemoryMonitor__insert_inline(void* pBuffer, const char* pFile, int iLine);
     #define CCMONITORNEW_INLINE(VAR,...) (VAR*)CcMemoryMonitor__insert_inline(new VAR(__VA_ARGS__), __FILE__, __LINE__)
+    #define CCMONITORNEW(VAR) CcMemoryMonitor__insert((void*)(VAR), __FILE__, __LINE__)
+    #define CCMONITORDELETE(VAR) CcMemoryMonitor__remove((void*)(VAR))
   #endif
-  #define CCMONITORNEW(VAR) CcMemoryMonitor__insert(static_cast<void*>(VAR), __FILE__, __LINE__)
-  #define CCMONITORDELETE(VAR) CcMemoryMonitor__remove(static_cast<void*>(VAR))
 #else
   #define CCMONITORNEW(VAR)    CCUNUSED(VAR)
   #define CCMONITORDELETE(VAR) CCUNUSED(VAR)
