@@ -47,25 +47,27 @@ CcServiceSystem::~CcServiceSystem()
 
 CcStatus CcServiceSystem::init(CcService& pService)
 {
-  CcStatus oSuccess = EStatus::Error;
-  pid_t pid = fork();
-
-  if(pid < 0 )
-  {
-    CCDEBUG("Failed to fork process.");
-  }
-  else if(pid > 0)
-  {
-    // We are in parent
-    oSuccess = true;
-  }
-  else
-  {
-    // We are in child
-    m_pPrivate->pService = &pService;
-    oSuccess   = m_pPrivate->pService->run();
-  }
-  return oSuccess;
+  // Daemonizing:
+  //CcStatus oSuccess = EStatus::Error;
+  //pid_t pid = fork();
+  //
+  //if(pid < 0 )
+  //{
+  //  CCDEBUG("Failed to fork process.");
+  //}
+  //else if(pid > 0)
+  //{
+  //  // We are in parent
+  //  oSuccess = true;
+  //}
+  //else
+  //{
+  //  // We are in child
+  //  m_pPrivate->pService = &pService;
+  //  oSuccess   = m_pPrivate->pService->run();
+  //}
+  //return oSuccess;
+  return pService.run();
 }
 
 CcStatus CcServiceSystem::deinit(CcService& pService)
@@ -74,6 +76,7 @@ CcStatus CcServiceSystem::deinit(CcService& pService)
   if(m_pPrivate->pService == &pService)
   {
     oStatus = true;
+    m_pPrivate->pService->stop();
   }
   return oStatus;
 }

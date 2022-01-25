@@ -75,6 +75,12 @@ CcStatus CcService::exec()
   return CcKernel::getServiceSystem().init(*this);
 }
 
+void CcService::stop()
+{
+  if(m_oApplication.isValid())
+    m_oApplication->stop();
+}
+
 CcStatus CcService::getExitCode() const
 {
   if (m_oApplication.isValid())
@@ -102,12 +108,6 @@ bool CcService::onLoop()
 {
   idle();
   return m_oApplication->getThreadState() != EThreadState::Stopped;
-}
-
-void CcService::onStop()
-{
-  if(m_oApplication.isValid())
-    m_oApplication->stop();
 }
 
 void CcService::onApplicationStop(IThread* pApplication)

@@ -79,6 +79,8 @@ public:
 
   CcStatus exec();
 
+  void stop();
+
   //! @return Get current name of Service
   const CcString& getName() { return m_sServiceName; }
 
@@ -94,7 +96,7 @@ protected:
 
 private:
   bool onLoop();
-  void onStop();
+  //void onStop();
 
   void onApplicationStop(IThread* pApplication);
 
