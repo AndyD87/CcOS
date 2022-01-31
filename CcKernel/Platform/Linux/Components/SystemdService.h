@@ -42,8 +42,8 @@ public:
   SystemdService(CcService& oService);
   ~SystemdService();
 
-  void readFile();
-  void writeFile();
+  CcStatus readFile();
+  CcStatus writeFile();
 
   CcStatus  create();
   CcStatus  remove();
@@ -58,10 +58,13 @@ public:
 
 private:
   void checkBasicData();
+  void setupExecPath();
 
 private:
   CcService&    m_oService;
-  CcArguments   m_oArguments;
   CcString      m_sServiceFile;
   CcIniFile     m_oServiceFile;
+
+  CcString      m_sExecutable;
+  CcArguments   m_oArguments;
 };

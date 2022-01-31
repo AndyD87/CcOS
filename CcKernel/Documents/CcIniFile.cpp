@@ -105,6 +105,7 @@ CcStatus CcIniFile::writeFile(const CcString& sPath)
   if(oStatus)
   {
     oStatus = writeStream(oFile);
+    oFile.close();
   }
   return oStatus;
 }

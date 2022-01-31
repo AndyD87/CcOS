@@ -47,7 +47,13 @@ CSystemServiceTest::~CSystemServiceTest()
 void CSystemServiceTest::cleanup()
 {
   // Remove testservice
-  testServiceRemove();
+  CcService oService("CcOSTestService", nullptr);
+  CcKernel::getServiceSystem().remove(oService);
+  if(m_sTempDir.size() > 0)
+  {
+    // Remove temporary executable
+    CcFile::remove(m_sTempDir);
+  }
 }
 
 bool CSystemServiceTest::testServiceListing()
@@ -65,9 +71,14 @@ bool CSystemServiceTest::testServiceCreate()
 {
   bool bRet = false;
   CcService oService("CcOSTestService", nullptr);
-  if (CcKernel::getServiceSystem().create(oService))
+  m_sCurrentBinPath = CcKernel::getCurrentExecutablePath();
+  m_sTempDir        = CcTestFramework::getTemporaryDir();
+  if (CcFile::copy(m_sCurrentBinPath, m_sTempDir))
   {
-    bRet = true;
+    if (CcKernel::getServiceSystem().create(oService))
+    {
+      bRet = true;
+    }
   }
   return bRet;
 }
@@ -76,22 +87,9 @@ bool CSystemServiceTest::testServiceSetExecutable()
 {
   bool bRet = false;
   CcService oService("CcOSTestService", nullptr);
-
-  // Create temporary executable by copy this application.
-  CcString sCurrentBinPath = CcKernel::getCurrentExecutablePath();
-  CcString sTempDir = CcTestFramework::getTemporaryDir();
-  sTempDir.appendPath("CcOSTestService.exe");
-  if (CcFile::copy(sCurrentBinPath, sTempDir))
+  if (CcKernel::getServiceSystem().setExectuable(oService, m_sTempDir))
   {
-    if (CcKernel::getServiceSystem().setExectuable(oService, sTempDir))
-    {
-      if (CcKernel::getServiceSystem().setExectuable(oService, sTempDir))
-      {
-        bRet = true;
-      }
-    }
-    // Remove temporary executable
-    CcFile::remove(sTempDir);
+    bRet = true;
   }
   return bRet;
 }
@@ -102,7 +100,7 @@ bool CSystemServiceTest::testServiceRemove()
   CcService oService("CcOSTestService", nullptr);
   if (CcKernel::getServiceSystem().remove(oService))
   {
-    bRet = true;
+    bRet = CcFile::remove(m_sTempDir);
   }
   return bRet;
 }

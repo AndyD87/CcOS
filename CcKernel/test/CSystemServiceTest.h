@@ -51,5 +51,9 @@ private:
 
   bool testServiceCreate();
   bool testServiceSetExecutable();
+  bool testServiceSetArguments();
   bool testServiceRemove();
+
+  CcString m_sCurrentBinPath;
+  CcString m_sTempDir;
 };

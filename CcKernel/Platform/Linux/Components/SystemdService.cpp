@@ -29,6 +29,8 @@
 #include "CcByteArray.h"
 #include "CcFile.h"
 #include "CcDirectory.h"
+#include "CcProcess.h"
+#include "CcStringUtil.h"
 
 const char SYSTEMD_CONFIG_PATH[]       = "/etc/systemd/system/";
 const char SYSTEMD_SERVICE_EXTENSION[] = ".service";
@@ -37,6 +39,8 @@ SystemdService::SystemdService(CcService& oService) :
   m_oService(oService),
   m_sServiceFile(SYSTEMD_CONFIG_PATH + oService.getName() + SYSTEMD_SERVICE_EXTENSION)
 {
+  readFile();
+  checkBasicData();
 }
 
 SystemdService::~SystemdService()
@@ -44,26 +48,25 @@ SystemdService::~SystemdService()
 
 }
 
-void SystemdService::readFile()
+CcStatus SystemdService::readFile()
 {
-  m_oServiceFile.readFile(m_sServiceFile);
+  CcStatus oStatus = m_oServiceFile.readFile(m_sServiceFile);
+  return oStatus;
 }
 
-void SystemdService::writeFile()
+CcStatus SystemdService::writeFile()
 {
-  m_oServiceFile.writeFile(m_sServiceFile);
+  return m_oServiceFile.writeFile(m_sServiceFile);
 }
 
 CcStatus SystemdService::create()
 {
-  CcStatus oStatus(false);
-  return oStatus;
+  return writeFile();
 }
 
 CcStatus SystemdService::remove()
 {
-  CcStatus oStatus(false);
-  return oStatus;
+  return CcFile::remove(m_sServiceFile);
 }
 
 CcStatus SystemdService::stop()
@@ -74,15 +77,14 @@ CcStatus SystemdService::stop()
 
 CcStatus SystemdService::start()
 {
-  CcStatus oStatus(false);
-  return oStatus;
+  return CcProcess::exec("systemctl", {"start", m_oService.getName()+SYSTEMD_SERVICE_EXTENSION},true);
 }
 
 CcStatus SystemdService::setArguments(const CcArguments& oArguments)
 {
-  CcStatus oStatus(false);
-  CCUNUSED(oArguments);
-  return oStatus;
+  m_oArguments = oArguments;
+  setupExecPath();
+  return writeFile();
 }
 
 CcStatus SystemdService::setAutoStart(bool bOnOff)
@@ -94,14 +96,9 @@ CcStatus SystemdService::setAutoStart(bool bOnOff)
 
 CcStatus SystemdService::setExectuable(const CcString& sExePath)
 {
-  CcStatus oStatus(false);
-  CcIniFile::CSection& oServiceSection = m_oServiceFile.createSection("Service");
-  if(oServiceSection.isValid())
-  {
-    oServiceSection.setValue("ExecStart", sExePath);
-    oStatus = true;
-  }
-  return oStatus;
+  m_sExecutable = sExePath;
+  setupExecPath();
+  return writeFile();
 }
 
 CcStatus SystemdService::setWorkingDir(const CcString& sWorkingDir)
@@ -135,9 +132,36 @@ void SystemdService::checkBasicData()
     }
     if(!oServiceSection.keyExists("ExecStart"))
     {
-      CcString sCurrentExecutable = CcKernel::getCurrentExecutablePath();
-      oServiceSection.setValue("ExecStart", sCurrentExecutable);
+      m_sExecutable = CcKernel::getCurrentExecutablePath();
+      oServiceSection.setValue("ExecStart", m_sExecutable);
     }
+    else
+    {
+      CcString sCurrentPath = oServiceSection.getValue("ExecStart");
+      CcString sEscaped = CcStringUtil::escapeString(sCurrentPath);
+      m_oArguments.parseArguments(sEscaped);
+      if (m_oArguments.size() > 0)
+      {
+        m_sExecutable = m_oArguments[0];
+        m_oArguments.remove(0);
+      }
+      else
+      {
+        m_sExecutable = "";
+      }
+    }
+  }
+}
+
+void SystemdService::setupExecPath()
+{
+  CcIniFile::CSection& oServiceSection = m_oServiceFile.createSection("Service");
+  if(oServiceSection.isValid())
+  {
+    CcString sExeArgPath = m_sExecutable;
+    if (m_oArguments.size())
+      sExeArgPath << CcGlobalStrings::Seperators::Space << m_oArguments.getLine();
+    oServiceSection.setValue("ExecStart", sExeArgPath);
   }
 }
 

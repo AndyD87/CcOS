@@ -549,8 +549,8 @@ CcString CcSystem::getCurrentExecutablePath() const
   CcString sRet;
   char result[PATH_MAX];
   ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
-  if (count != -1) {
-      sRet = result;
+  if (count >= 0 && count < PATH_MAX) {
+      sRet.set(result, count);
   }
   return sRet;
 }

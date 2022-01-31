@@ -118,7 +118,7 @@ CcString CcStringList::collapse(const CcString& seperator) const
   return sRet;
 }
 
-CcString CcStringList::collapse(const CcString& sPrepend, const CcString& sAppend) const
+CcString CcStringList::collapse(const CcString& seperator, const CcString& sPrepend, const CcString& sAppend) const
 {
   CcString sRet;
   for (size_t i = 0; i < size(); i++)
@@ -126,6 +126,8 @@ CcString CcStringList::collapse(const CcString& sPrepend, const CcString& sAppen
     sRet.append(sPrepend);
     sRet.append(at(i));
     sRet.append(sAppend);
+    if(i+1 < size())
+      sRet.append(seperator);
   }
   return sRet;
 }

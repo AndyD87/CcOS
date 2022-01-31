@@ -57,6 +57,14 @@ public:
   CcStringList(const CcStringList& toAssign);
 
   /**
+   * @brief Create a list from an braces initalized list like CcList o = {TYPE, TYPE};
+   * @param oList: Initialized list to import
+   */
+  CcStringList(std::initializer_list<CcString> oList) :
+    CcStringList_BaseType<CcString>(oList)
+  {}
+
+  /**
    * @brief Destructor
    */
   ~CcStringList() = default;
@@ -77,12 +85,13 @@ public:
   CcString collapse(const CcString& seperator) const;
 
   /**
-   * @brief Create a string by concatenate each item with [sPrepend][Item][sAppend]
+   * @brief Create a string by concatenate each item with [sPrepend][Item][sAppend](seperator)...
+   * @param seperator: Seperator between the items
    * @param sPrepend: String to prepend on each item
    * @param sAppend: String to append on each item
    * @return
    */
-  CcString collapse(const CcString& sPrepend, const CcString& sAppend) const;
+  CcString collapse(const CcString &seperator, const CcString& sPrepend, const CcString& sAppend) const;
 
   /**
    * @brief Find Position of String in List
