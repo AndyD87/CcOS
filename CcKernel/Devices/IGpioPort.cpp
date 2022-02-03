@@ -59,6 +59,14 @@ const size_t IGpioPort::Pin29 = 0x20000000;
 const size_t IGpioPort::Pin30 = 0x40000000;
 const size_t IGpioPort::Pin31 = 0x80000000;
 
+IGpioPort::~IGpioPort()
+{
+  while(m_oPins.size())
+  {
+    CCDELETE(m_oPins.at(0));
+    m_oPins.remove(0);
+  }
+}
 
 bool IGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue)
 {
@@ -68,6 +76,7 @@ bool IGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size
 IGpioPin* IGpioPort::getPin(uint8 uiNr)
 {
   CCNEWTYPE(pPin, CcGpioPortPin, this, uiNr);
+  m_oPins.append(pPin);
   return pPin;
 }
 

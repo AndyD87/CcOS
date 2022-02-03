@@ -76,7 +76,7 @@ CcDevice CcLinuxBoardSupport::createDevice(EDeviceType eDeviceType, size_t uiDev
       }
       default:
       {
-        CCDEBUG("Requested device not found");
+        CCDEBUG("Requested device " + CcDevice::getTypeString(eDeviceType) + " nr " + CcString::fromNumber(uiDeviceNumber) + " not found");
       }
     }
   }

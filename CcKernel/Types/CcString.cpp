@@ -194,11 +194,11 @@ CcString& CcString::replace(const CcString& oNeedle, const CcString& oReplace)
 CcString CcString::getStringBetween(const CcString& sPreStr, const CcString& sPosStr, size_t uiOffset, size_t *puiPos) const
 {
   CcString sRet;
-  size_t posFirst = find(sPreStr.m_pBuffer, sPreStr.m_uiLength, uiOffset) ;
+  size_t posFirst = find(sPreStr, uiOffset) ;
   if (posFirst != SIZE_MAX)
   {
     posFirst += sPreStr.length();
-    size_t posSecond = find(sPosStr.m_pBuffer, sPosStr.m_uiLength, posFirst);
+    size_t posSecond = find(sPosStr, posFirst);
     if (posSecond != SIZE_MAX)
     {
       size_t len = posSecond - posFirst;
@@ -287,27 +287,21 @@ size_t CcString::findLast(const CcString& sToFind) const
   return iRet;
 }
 
-size_t CcString::find(const CcString& sToFind, size_t offset) const
-{
-  return find(sToFind.m_pBuffer, sToFind.m_uiLength, offset);
-}
-
-size_t CcString::find(const char* pcString, size_t uiLength, size_t uiOffset) const
+size_t CcString::find(const char* pcString, size_t uiOffset, size_t uiLength) const
 {
   size_t uiRet = SIZE_MAX;
-  if (uiOffset < m_uiLength)
+  size_t uiLastLength = CCMIN(m_uiLength, uiLength + uiOffset);
+  for (; uiOffset < uiLastLength &&
+         uiRet == SIZE_MAX; uiOffset++)
   {
-    for (; uiOffset + uiLength <= m_uiLength && uiRet == SIZE_MAX; uiOffset++)
+    size_t uiCntInput = 0;
+    for (; uiCntInput < uiLength && pcString[uiCntInput] != '\0'; uiCntInput++)
     {
-      size_t uiCntInput = 0;
-      for (uiCntInput = 0; uiCntInput < uiLength; uiCntInput++)
-      {
-        if (m_pBuffer[uiOffset + uiCntInput] != pcString[uiCntInput])
-          break;
-      }
-      if (uiCntInput == uiLength)
-        uiRet = uiOffset;
+      if (m_pBuffer[uiOffset + uiCntInput] != pcString[uiCntInput])
+        break;
     }
+    if (pcString[uiCntInput] == '\0')
+      uiRet = uiOffset;
   }
   return uiRet;
 }
@@ -955,7 +949,13 @@ CcStringList CcString::splitLines(bool bKeepEmptyLines) const
   do
   {
     offsetN = find(CcGlobalStrings::EolShort, save);
-    offsetR = find(CcGlobalStrings::EolCr, save);
+
+    // Check for \r too
+    if(offsetN < length())
+      offsetR = find(CcGlobalStrings::EolCr, save, offsetN - save);
+    else
+      offsetR = find(CcGlobalStrings::EolCr, save);
+
     if (offsetR < offsetN)
     {
       size_t uiLength = offsetR - save;
@@ -963,8 +963,7 @@ CcStringList CcString::splitLines(bool bKeepEmptyLines) const
       {
         slRet.append(substr(save, uiLength));
       }
-      if (offsetR < length()-1 && 
-          at(offsetR + 1) )
+      if (offsetR < length()-1 &&  at(offsetR + 1) == CcGlobalStrings::EolShort[0])
       {
         save = offsetR + 2;
       }
@@ -975,7 +974,7 @@ CcStringList CcString::splitLines(bool bKeepEmptyLines) const
     }
     else if (offsetN < offsetR)
     {
-      size_t uiLength = offsetN - save - 1;
+      size_t uiLength = offsetN - save;
       if (bKeepEmptyLines || uiLength > 0)
       {
         slRet.append(substr(save, uiLength));

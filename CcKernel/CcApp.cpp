@@ -53,9 +53,9 @@ CcApp::CcApp(const CcString& sAppName, const CcUuid& oUuid) :
   initApp();
 }
 
-CcApp::~CcApp() 
+CcApp::~CcApp()
 {
-  CcKernel::getShutdownHandler().removeObject(this);
+  CcKernel::removeShutdownHandler(this);
 }
 
 CcStatus CcApp::exec()

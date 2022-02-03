@@ -32,7 +32,7 @@ CSystemServiceTest::CSystemServiceTest() :
   CcTest("CSystemServiceTest")
 {
   appendTestMethod("Test list services", &CSystemServiceTest::testServiceListing);
-  if (CcKernel::isAdmin())
+  if (!CcKernel::isAdmin())
   {
     appendTestMethod("Test list services", &CSystemServiceTest::testServiceCreate);
     appendTestMethod("Test list services", &CSystemServiceTest::testServiceSetExecutable);
@@ -72,7 +72,7 @@ bool CSystemServiceTest::testServiceCreate()
   bool bRet = false;
   CcService oService("CcOSTestService", nullptr);
   m_sCurrentBinPath = CcKernel::getCurrentExecutablePath();
-  m_sTempDir        = CcTestFramework::getTemporaryDir();
+  m_sTempDir        = CcString(CcTestFramework::getTemporaryDir()).appendPath("CcOSTestService");
   if (CcFile::copy(m_sCurrentBinPath, m_sTempDir))
   {
     if (CcKernel::getServiceSystem().create(oService))

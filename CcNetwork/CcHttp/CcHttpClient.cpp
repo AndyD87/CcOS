@@ -222,12 +222,12 @@ bool CcHttpClient::execHead()
       {
         m_Socket.write(httpRequest.getCharString(), httpRequest.length());
         size_t rec;
-        char receive[1024];
-        rec = m_Socket.read(receive, 1024);
+        char receive[MAX_TRANSER_BUFFER];
+        rec = m_Socket.read(receive, sizeof(receive));
         while (rec && rec != SIZE_MAX)
         {
           m_oBuffer.append(receive, rec);
-          rec = m_Socket.read(receive, 1024);
+          rec = m_Socket.read(receive, sizeof(receive));
         }
         rec = m_oBuffer.find(CcHttpGlobalStrings::EOLSeperator);
         if (rec != SIZE_MAX)
@@ -384,10 +384,10 @@ bool CcHttpClient::execPostMultipart()
         if (file.isFile() && file.open(EOpenFlags::Read))
         {
           size_t read, readLeft;
-          char buf[1024];
+          char buf[MAX_TRANSER_BUFFER];
           while (!bRet)
           {
-            read = file.read(buf, 1024);
+            read = file.read(buf, sizeof(buf));
             if (read != SIZE_MAX && read != 0)
             {
               readLeft = m_Socket.write(buf, read);
@@ -417,10 +417,10 @@ bool CcHttpClient::execPostMultipart()
         m_Socket.write(CcHttpGlobalStrings::EOL.getCharString(), CcHttpGlobalStrings::EOL.length());
       }
       bool bDone = false;
-      char buf[1024];
+      char buf[MAX_TRANSER_BUFFER];
       while (!bDone)
       {
-        read = m_Socket.read(buf, 1024);
+        read = m_Socket.read(buf, sizeof(buf));
         if (m_Output != 0)
         {
           m_Output->write(buf, read);

@@ -23,6 +23,7 @@
  * @brief     Implementation of Class CcFile
  */
 #include "CcFile.h"
+#include "CcBaseSettings.h"
 #include "CcKernel.h"
 #include "string.h"
 #include "Hash/CcCrc32.h"
@@ -146,8 +147,8 @@ bool CcFile::compare(const CcString& sFile1, const CcString& sFile2, bool bDoCrc
   }
   else
   {
-    CcByteArray oArrayF1(1024);
-    CcByteArray oArrayF2(1024);
+    CcByteArray oArrayF1(CCOS_DEFAULT_FILE_RW_BUFFER_SIZE);
+    CcByteArray oArrayF2(CCOS_DEFAULT_FILE_RW_BUFFER_SIZE);
     CcFile oFile1(sFile1);
     CcFile oFile2(sFile2);
     if (oFile1.open(EOpenFlags::Read) &&
@@ -158,8 +159,8 @@ bool CcFile::compare(const CcString& sFile1, const CcString& sFile2, bool bDoCrc
       size_t uiReadFile2;
       do
       {
-        uiReadFile1 = oFile1.read(oArrayF1.getArray(), 1024);
-        uiReadFile2 = oFile2.read(oArrayF2.getArray(), 1024);
+        uiReadFile1 = oFile1.read(oArrayF1.getArray(), CCOS_DEFAULT_FILE_RW_BUFFER_SIZE);
+        uiReadFile2 = oFile2.read(oArrayF2.getArray(), CCOS_DEFAULT_FILE_RW_BUFFER_SIZE);
         if (uiReadFile1 != uiReadFile2)
         {
           bRet = false;
@@ -308,7 +309,7 @@ CcCrc32 CcFile::getCrc32()
 {
   setFilePointer(0);
   CcCrc32 oCrc;
-  CcByteArray oArray(10240); // @todo: Magic number
+  CcByteArray oArray(CCOS_DEFAULT_FILE_RW_BUFFER_SIZE);
   size_t readSize;
   do
   {
@@ -317,7 +318,7 @@ CcCrc32 CcFile::getCrc32()
     {
       oCrc.append(oArray.getArray(), readSize);
     }
-  } while (readSize == 10240); // @todo: Magic number
+  } while (readSize == CCOS_DEFAULT_FILE_RW_BUFFER_SIZE);
   return oCrc;
 }
 

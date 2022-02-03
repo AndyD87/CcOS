@@ -230,6 +230,15 @@ bool CcKernel::isAdmin()
   return CcKernelPrivate::pPrivate->pSystem->isAdmin();
 }
 
+void CcKernel::stop()
+{
+  CcKernelPrivate::oInstance.m_oShutdownHandler.call(nullptr);
+  if (CcKernelPrivate::pPrivate->pServiceSystem)
+  {
+    CcKernelPrivate::pPrivate->pServiceSystem->stop();
+  }
+}
+
 void CcKernel::shutdown()
 {
   if (s_bShutdownInProgress == false)
@@ -238,10 +247,14 @@ void CcKernel::shutdown()
     if (CcKernelPrivate::oInstance.m_bInitialized)
     {
       CcKernelPrivate::oInstance.m_bInitialized = false;
-      CcKernelPrivate::oInstance.m_oShutdownHandler.call(nullptr);
+
+      // Stop all applications
+      stop();
+
       CcKernelPrivate::oInstance.m_oDriverList.deinit();
       CcKernelPrivate::oInstance.m_oDeviceEventHandler.clear();
       CcKernelPrivate::oInstance.m_DeviceList.clear();
+
       while (CcKernelPrivate::oInstance.m_oExitFunctions.size() > 0)
       {
         void(*fExitFunction)(void) = CcKernelPrivate::oInstance.m_oExitFunctions[0];
@@ -250,18 +263,11 @@ void CcKernel::shutdown()
       }
 
       CCDELETE(CcKernelPrivate::pPrivate->pServiceSystem);
-
       CcKernelPrivate::oInstance.pSystem->deinit();
-
-      if (CcKernelPrivate::oInstance.pSystem)
-      {
-        CCDELETE(CcKernelPrivate::oInstance.pSystem);
-      }
-      else
-      {
-        CCDEBUG("Error");
-      }
+      CCDELETE(CcKernelPrivate::oInstance.pSystem);
       CcFileSystem::deinit();
+
+      CCDEBUG("Kernel shutdown complete\r\n");
       CcConsole::deinit();
     }
     CcKernelPrivate::pPrivate = nullptr;
@@ -274,6 +280,7 @@ void CcKernel::shutdown()
 
 void CcKernel::terminate()
 {
+  CCDEBUG("Kernel terminate");
   exit(-1);
 }
 
@@ -543,9 +550,16 @@ EPlatform CcKernel::getPlatform()
 #endif
 }
 
-CcEventHandler& CcKernel::getShutdownHandler()
+void CcKernel::addShutdownHandler(const CcEvent& oEvent)
 {
-  return CcKernelPrivate::pPrivate->m_oShutdownHandler;
+  if(CcKernelPrivate::pPrivate)
+    CcKernelPrivate::pPrivate->m_oShutdownHandler.append(oEvent);
+}
+
+void CcKernel::removeShutdownHandler(CcObject* pObject)
+{
+  if(CcKernelPrivate::pPrivate)
+    CcKernelPrivate::pPrivate->m_oShutdownHandler.removeObject(pObject);
 }
 
 const CcVersion& CcKernel::getVersion()

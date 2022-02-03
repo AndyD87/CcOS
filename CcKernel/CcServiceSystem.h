@@ -46,6 +46,11 @@ public:
   ~CcServiceSystem();
 
   /**
+   * @brief Stop all running services
+   */
+  void stop();
+
+  /**
    * @brief Initialize current application as service and run in background.
    *        A service supports notifications and signals from system.
    * @return 0 if Service was initialized successfully

@@ -114,7 +114,7 @@ CcStatus CcIniFile::readStream(IIo& oStream)
 {
   m_eError = true;
   m_oSections.clear();
-  m_oSections.append(CSection());
+  appendSection(CSection());
   CcString sData = oStream.readAll();
   CcStringList oLines = sData.splitLines(true);
   for(CcString& sLine : oLines)
@@ -272,7 +272,7 @@ CcStatus CcIniFile::addSection(const CcString& sLine)
 
       }
 
-      m_oSections.append(oLine);
+      appendSection(oLine);
     }
     else
     {
@@ -449,7 +449,31 @@ CcIniFile::CSection& CcIniFile::createSection(const CcString& sSectionName)
   {
     CLine oSectionLine;
     oSectionLine.sKey = sSectionName;
-    m_oSections.append(oSectionLine);
+    appendSection(oSectionLine);
     return m_oSections.last();
+  }
+}
+
+CcIniFile::CSection& CcIniFile::getSection(const CcString& sSectionName)
+{
+  for (CSection& oSection : m_oSections)
+  {
+    if (oSection.getName() == sSectionName)
+    {
+      return oSection;
+    }
+  }
+  return CSection::getInvalidSection();
+}
+
+void CcIniFile::appendSection(CSection&& oSection)
+{
+  if(getSection(oSection.getName()).isValid())
+  {
+    m_eError = EStatus::AlreadyExisting;
+  }
+  else
+  {
+    m_oSections.append(oSection);
   }
 }

@@ -72,15 +72,16 @@ void CcProcess::stop()
 CcStatus CcProcess::exec(const CcDateTime& oTimeout)
 {
   CcStatus oStatus = start();
-  if(oStatus)
+  if(waitForStarted(oTimeout))
   {
-    if(oTimeout != 0)
+    oStatus = waitForExit(oTimeout);
+    if(oStatus == EStatus::TimeoutReached)
     {
-      oStatus = waitForExit(oTimeout);
-      if(oStatus == EStatus::TimeoutReached)
-      {
-        stop();
-      }
+      stop();
+    }
+    else
+    {
+      oStatus = getExitCode();
     }
   }
   return oStatus;

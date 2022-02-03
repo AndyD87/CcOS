@@ -23,6 +23,7 @@
  * @brief     Implemtation of class CcEventActionLoop
  */
 #include "CcEventActionLoop.h"
+#include "CcKernel.h"
 
 void CcEventActionLoop::loop()
 {
@@ -37,6 +38,7 @@ void CcEventActionLoop::loop()
       m_oEvents.remove(0);
       unlock();
     }
+    CcKernel::sleep(1);
   }
 }
 

@@ -55,7 +55,6 @@ void CcRemoteDeviceServerApp::run()
 {
   CcStatus oStatus(true);
   bool bRunService = false;
-  CCDEBUG("CcInstallServiceApp::run");
   size_t i = 1;
   if(m_oArguments.size() > i)
   {
@@ -157,6 +156,7 @@ void CcRemoteDeviceServerApp::run()
   {
     setExitCode(oStatus);
   }
+  CCDEBUG("CcRemoteDeviceServerApp stopped, code " + CcString::fromNumber(getExitCode().getErrorUint()));
 }
 
 CcString CcRemoteDeviceServerApp::getArgument(const CcString& sName, const CcString& sDefault)

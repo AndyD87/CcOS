@@ -66,13 +66,14 @@ CcStatus SystemdService::create()
 
 CcStatus SystemdService::remove()
 {
-  return CcFile::remove(m_sServiceFile);
+  CcProcess::exec("systemctl", {"disable", m_oService.getName()+SYSTEMD_SERVICE_EXTENSION},true);
+  CcStatus oStatus = CcFile::remove(m_sServiceFile);
+  return oStatus;
 }
 
 CcStatus SystemdService::stop()
 {
-  CcStatus oStatus(false);
-  return oStatus;
+  return CcProcess::exec("systemctl", {"stop", m_oService.getName()+SYSTEMD_SERVICE_EXTENSION},true);
 }
 
 CcStatus SystemdService::start()
@@ -89,9 +90,10 @@ CcStatus SystemdService::setArguments(const CcArguments& oArguments)
 
 CcStatus SystemdService::setAutoStart(bool bOnOff)
 {
-  CcStatus oStatus(false);
-  CCUNUSED(bOnOff);
-  return oStatus;
+  if(bOnOff)
+    return CcProcess::exec("systemctl", {"enable", m_oService.getName()+SYSTEMD_SERVICE_EXTENSION},true);
+  else
+    return CcProcess::exec("systemctl", {"disable", m_oService.getName()+SYSTEMD_SERVICE_EXTENSION},true);
 }
 
 CcStatus SystemdService::setExectuable(const CcString& sExePath)
@@ -150,6 +152,11 @@ void SystemdService::checkBasicData()
         m_sExecutable = "";
       }
     }
+  }
+  CcIniFile::CSection& oInstallSection = m_oServiceFile.createSection("Install");
+  if(oInstallSection.isValid())
+  {
+    oInstallSection.setValue("WantedBy", "multi-user.target");
   }
 }
 

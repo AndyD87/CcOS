@@ -25,6 +25,7 @@
  * @brief     Implementation of Class CcSystem
  */
 #include "CcSystem.h"
+#include "CcBaseSettings.h"
 #include "CcVersion.h"
 #include "CcStringList.h"
 #include "CcGroupList.h"
@@ -109,12 +110,24 @@ CcStringMap       CcSystem::CPrivate::m_oEnvValues;
 
 CcSharedPointer<CcService>  m_pService;
 
+static void *FailbackExit(void *Param)
+{
+  CcKernel::stop();
+  usleep(1000);
+  CcKernel::shutdown();
+  // 1 second for application to finish main, otherwise kill
+  sleep(1);
+  exit(1);
+  return Param;
+}
+
 /**
  * @brief Signal handler for os transmitted signals
  * @param s: signal to handle
  */
-[[noreturn]] void CcSystemSignalHandler(int s)
+void CcSystemSignalHandler(int s)
 {
+  CCDEBUG("Signal received: " + CcString::fromInt(s));
   switch(s)
   {
     case SIGINT:
@@ -122,10 +135,12 @@ CcSharedPointer<CcService>  m_pService;
     case SIGABRT:
       CCFALLTHROUGH;
     case SIGTERM:
-      CcKernel::shutdown();
+      pthread_t threadId;
+      pthread_create(&threadId, nullptr, FailbackExit, nullptr);
       break;
+    default:
+      exit(1);
   }
-  exit(1);
 }
 
 CcSystem::CcSystem()
@@ -142,30 +157,25 @@ CcSystem::~CcSystem()
 
 void CcSystem::init()
 {
-  struct sigaction sigIntHandler;
-  sigIntHandler.sa_handler = CcSystemSignalHandler;
-  sigemptyset(&sigIntHandler.sa_mask);
-  sigIntHandler.sa_flags = 0;
-
   signal (SIGINT, CcSystemSignalHandler);
-  if( 0 == sigaction(SIGINT, &sigIntHandler, nullptr))
+  if( SIG_ERR != signal(SIGINT, CcSystemSignalHandler))
   {
     CCVERBOSE("SIGINT handler successfully set");
-    if( 0 == sigaction(SIGABRT, &sigIntHandler, nullptr))
+    if( SIG_ERR != signal(SIGTERM, CcSystemSignalHandler))
     {
-      CCVERBOSE("SIGABRT handler successfully set");
-      if( 0 == sigaction(SIGTERM, &sigIntHandler, nullptr))
+      CCVERBOSE("SIGTERM handler successfully set");
+      if( SIG_ERR != signal(SIGABRT, CcSystemSignalHandler))
       {
-        CCVERBOSE("SIGTERM handler successfully set");
+        CCVERBOSE("SIGABRT handler successfully set");
       }
       else
       {
-        CCERROR("Faild to set SIGTERM handler");
+        CCERROR("Faild to set SIGABRT handler");
       }
     }
     else
     {
-      CCERROR("Faild to set SIGABRT handler");
+      CCERROR("Faild to set SIGTERM handler");
     }
   }
   else
@@ -488,7 +498,7 @@ CcString CcSystem::getBinaryDir() const
 CcString CcSystem::getWorkingDir() const
 {
   CcString sRet;
-  char cwd[1024];
+  char cwd[CCOS_DEFAULT_MAX_PATH];
   if (getcwd(cwd, sizeof(cwd)) != nullptr)
   {
     sRet = cwd;

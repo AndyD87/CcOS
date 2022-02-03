@@ -25,6 +25,7 @@
 #pragma once
 
 #include "CcBase.h"
+#include "CcBaseSettings.h"
 
 // forward declarations
 class CcByteArray;
@@ -196,7 +197,7 @@ public:
    * @param uiBufSize: Maximum buffer size to read at once.
    * @return Buffer read from stream
    */
-  CcByteArray readAll(size_t uiBufSize = 1024);
+  CcByteArray readAll(size_t uiBufSize = 10240);
 
   /**
    * @brief Write a byte array to stream

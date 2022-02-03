@@ -125,6 +125,12 @@ public: // Methods
   static bool isAdmin();
 
   /**
+   * @brief Stop kernel.
+   *        It will stop all all threads wich are currently running.
+   */
+  static void stop();
+
+  /**
    * @brief Shutdown kernel and system.
    *        It will stop all all threads wich are currently running.
    */
@@ -390,11 +396,8 @@ public: // Methods
    */
   static EPlatform getPlatform();
 
-  /**
-   * @brief Get shutdown handler to register on shutdown events
-   * @return Reference to handler
-   */
-  static CcEventHandler& getShutdownHandler();
+  static void addShutdownHandler(const CcEvent& oEvent);
+  static void removeShutdownHandler(CcObject* pObject);
 
   /**
    * Get CcOS Kernel Version
@@ -421,6 +424,10 @@ public: // Methods
 
   //! @param sPath: New path to set set Working dir. It can be relative or absolute
   static CcStatus setWorkingDir(const CcString& sPath);
+
+  //! @param oStatus: Set exit code on shutdown
+  //!                 This may be required for program interruptions.
+  static void setExitCode(CcStatus oStatus);
 
   /**
    * @brief Load module by path

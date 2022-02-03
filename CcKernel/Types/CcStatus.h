@@ -52,6 +52,7 @@ enum class EStatus : uint32
   NotStarted              = 0x0000000d, //!< Device or thread is not started but is tried to be used.
   NotPermitted            = 0x0000000e, //!< Current operation is not permitted
   AccessDenied            = 0x0000000f, //!< Access denied
+  AlreadyExisting         = 0x00000010, //!< Object already existing
 
   IoDeviceError   = 0x00020000, //!< Unspecified IO Device error occured
 

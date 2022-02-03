@@ -113,12 +113,15 @@ public:
   const CSection& operator[](const CcString& sSectionName) const;
 
   CSection& createSection(const CcString& sSectionName);
+  CSection& getSection(const CcString& sSectionName);
 
 private:
   CcStatus addSection(const CcString& sLine);
   CcStatus addLine(const CcString& sLine);
 
+  void appendSection(CSection&& oSection);
+
 private:
-  CcStatus    m_eError;
+  CcStatus     m_eError;
   CSectionList m_oSections;
 };

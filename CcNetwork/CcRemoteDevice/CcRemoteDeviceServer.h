@@ -95,6 +95,7 @@ public:
 
 private:
   NRemoteDevice::Server::CConfig* m_pConfig       = nullptr;
+  bool                            m_bRunActive    = false;
   bool                            m_bConfigOwner  = false;
   bool                            m_bUi           = true;
   CcAppDirectories                m_oDirectories;

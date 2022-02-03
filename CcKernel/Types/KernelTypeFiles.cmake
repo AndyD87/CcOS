@@ -3,6 +3,7 @@ set(KERNEL_TYPE_HEADER
     Types/CcArguments.h
     Types/CcArray.h
     Types/CcBase.h
+    Types/CcBaseSettings.h
     Types/CcBinaryStream.h
     Types/CcBitmap.h
     Types/CcBufferList.h

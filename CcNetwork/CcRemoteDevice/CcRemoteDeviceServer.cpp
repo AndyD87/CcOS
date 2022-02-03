@@ -141,6 +141,7 @@ CcRemoteDeviceServer::~CcRemoteDeviceServer()
 
 void CcRemoteDeviceServer::run()
 {
+  m_bRunActive = true;
   setupWlan();
   setupWebserver();
   m_pHttpServer->start();
@@ -190,6 +191,8 @@ void CcRemoteDeviceServer::run()
       }
     }
   } while (isRunning() && CcKernel::sleep(1000));
+  CCDEBUG("CcRemoteDeviceServer stopped, code " + CcString::fromNumber(getExitCode().getErrorUint()));
+  m_bRunActive = false;
 }
 
 void CcRemoteDeviceServer::onStop()
@@ -201,6 +204,12 @@ void CcRemoteDeviceServer::onStop()
     m_pHttpServer->stop();
     m_pHttpServer->waitForExit();
   }
+  int32 uiCountDown = 100;
+  while (m_bRunActive && uiCountDown-- > 0)
+  {
+    CcKernel::delayMs(1000);
+  }
+  CCDEBUG("CcRemoteDeviceServer stop signal received");
 }
 
 size_t CcRemoteDeviceServer::getStackSize()

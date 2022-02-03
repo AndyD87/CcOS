@@ -33,6 +33,8 @@
 #include "CcFileSystem.h"
 #include "CcGlobalStrings.h"
 
+#define CCFTP_RECEIVE_BUFFER_SIZE 1024
+
 CcFtpServerWorker::CcFtpServerWorker(CcSocket socket, CcFtpServer *incomeServer) :
   IWorker("CcFtpServerWorker"),
   m_Socket(socket),
@@ -47,8 +49,9 @@ CcFtpServerWorker::~CcFtpServerWorker()
 {
 }
 
-void CcFtpServerWorker::run(){
-  char recBuf[1024];
+void CcFtpServerWorker::run()
+{
+  char recBuf[CCFTP_RECEIVE_BUFFER_SIZE];
   size_t recSize = 0;
   CcString recStr;
   if (m_Socket != 0)
@@ -56,13 +59,13 @@ void CcFtpServerWorker::run(){
     recSize = m_Socket.writeLine("220 FTP-Server ready\r");
     if (recSize != 0 && recSize != SIZE_MAX)
     {
-      recSize = m_Socket.read(recBuf, 1024);
+      recSize = m_Socket.read(recBuf, sizeof(recBuf));
       while (recSize != SIZE_MAX && recSize != 0)
       {
         recStr.clear();
         recStr.append(recBuf, recSize);
         parseCommand(recStr.trim());
-        recSize = m_Socket.read(recBuf, 1024);
+        recSize = m_Socket.read(recBuf, sizeof(recBuf));
       }
     }
   }
@@ -275,10 +278,10 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
         if(acceptDataConnection())
         {
           size_t read, readLeft;
-          char buf[1024];
+          char buf[CCFTP_RECEIVE_BUFFER_SIZE];
           while (!bDone)
           {
-            read = file.read(buf, 1024);
+            read = file.read(buf, CCFTP_RECEIVE_BUFFER_SIZE);
             if (read != SIZE_MAX && read != 0)
             {
               readLeft = m_DataSocket.write(buf, read);
@@ -360,10 +363,10 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
         if(acceptDataConnection())
         {
           size_t read, readLeft;
-          char buf[1024];
+          char buf[CCFTP_RECEIVE_BUFFER_SIZE];
           while (!bDone)
           {
-            read = m_DataSocket.read(buf, 1024);
+            read = m_DataSocket.read(buf, CCFTP_RECEIVE_BUFFER_SIZE);
             if (read != SIZE_MAX && read != 0)
             {
               readLeft = file.write(buf, read);

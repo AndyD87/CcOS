@@ -27,6 +27,9 @@
 #include "CcBase.h"
 #include "IDevice.h"
 #include "IGpioPin.h"
+#include "CcVector.h"
+
+class IGpioPin;
 
 /**
  * @brief Control the Input and Outputports on device
@@ -37,7 +40,7 @@ public:
   /**
    * @brief Destructor
    */
-  virtual ~IGpioPort() = default;
+  virtual ~IGpioPort();
 
   /**
    * @brief Number of pins available on this port.
@@ -135,4 +138,7 @@ public:
   static const size_t Pin29; //!< Intger value for pin 29
   static const size_t Pin30; //!< Intger value for pin 30
   static const size_t Pin31; //!< Intger value for pin 31
+
+private:
+  CcVector<IGpioPin*> m_oPins;
 };

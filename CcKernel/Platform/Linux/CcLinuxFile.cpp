@@ -27,6 +27,7 @@
 
 //! set define to default use 64bit operations in Linux
 #define _FILE_OFFSET_BITS 64
+#include "CcBaseSettings.h"
 #include "CcGlobalStrings.h"
 #include "CcLinuxFile.h"
 #include <unistd.h>
@@ -324,7 +325,7 @@ CcStatus CcLinuxFile::copy(const CcString& sPath)
     }
     if(bSuccess)
     {
-      CcByteArray oBuffer(1024);
+      CcByteArray oBuffer(CCOS_DEFAULT_FILE_RW_BUFFER_SIZE);
       size_t uiLastRead;
       do
       {

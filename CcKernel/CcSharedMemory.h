@@ -25,6 +25,7 @@
 #pragma once
 
 #include "CcBase.h"
+#include "CcBaseSettings.h"
 #include "ISharedMemory.h"
 
 /**
@@ -76,5 +77,5 @@ private:
   CcSharedMemory& operator=(const CcSharedMemory& oToCopy) = delete;
 
   ISharedMemory* m_pSystem = nullptr;
-  static const size_t c_uiSize = 1024; //<! Default size is set to 1024byte
+  static const size_t c_uiSize = CCOS_DEFAULT_SHARED_BUFFER_SIZE; //<! Default size is set to @ref CCOS_DEFAULT_SHARED_BUFFER_SIZE
 };

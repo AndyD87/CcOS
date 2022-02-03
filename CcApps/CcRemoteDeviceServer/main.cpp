@@ -30,6 +30,7 @@
 #include "CcFile.h"
 #include "CcGlobalStrings.h"
 #include "CcRemoteDeviceServerService.h"
+#include "stdio.h"
 
 /**
  * @brief Default application entry point
@@ -40,5 +41,6 @@
 int main(int iArgc, char** ppArgv)
 {
   CcRemoteDeviceServerService oSerivce(CcArguments(iArgc, ppArgv));
-  return oSerivce.exec().getErrorInt();
+  int iExitCode = oSerivce.exec().getErrorInt();
+  return iExitCode;
 }

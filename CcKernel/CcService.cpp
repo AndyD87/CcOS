@@ -53,32 +53,29 @@ CcService::~CcService()
 
 void CcService::eventStart()
 {
-  if (m_oApplication.isValid())
-  {
-    m_oApplication->start();
-  }
 }
 
 void CcService::eventPause()
 {
-
 }
 
 void CcService::eventStop()
 {
-  if (m_oApplication.isValid())
-    m_oApplication->stop();
 }
 
 CcStatus CcService::exec()
 {
-  return CcKernel::getServiceSystem().init(*this);
+  CcStatus oRunStatus = CcKernel::getServiceSystem().init(*this);
+  return oRunStatus;
 }
 
 void CcService::stop()
 {
   if(m_oApplication.isValid())
+  {
     m_oApplication->stop();
+    m_oApplication->waitForExit();
+  }
 }
 
 CcStatus CcService::getExitCode() const
@@ -98,8 +95,15 @@ void CcService::idle()
 
 CcStatus CcService::run()
 {
+  if (m_oApplication.isValid())
+  {
+    m_oApplication->start();
+    m_oApplication->waitForRunning();
+  }
   eventStart();
+  CCDEBUG("Service started");
   loop();
+  CCDEBUG("Service stopped");
   eventStop();
   return m_oApplication->getExitCode();
 }
@@ -107,7 +111,8 @@ CcStatus CcService::run()
 bool CcService::onLoop()
 {
   idle();
-  return m_oApplication->getThreadState() != EThreadState::Stopped;
+  bool bKeepLooping = m_oApplication->isRunning();
+  return bKeepLooping;
 }
 
 void CcService::onApplicationStop(IThread* pApplication)
@@ -115,6 +120,6 @@ void CcService::onApplicationStop(IThread* pApplication)
   if (pApplication == m_oApplication.getPtr() &&
       m_oApplication->getThreadState() == EThreadState::Stopped)
   {
-    CcKernel::getServiceSystem().deinit(*this);
+    //stop();
   }
 }

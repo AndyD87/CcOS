@@ -42,7 +42,17 @@ CcServiceSystem::CcServiceSystem()
 
 CcServiceSystem::~CcServiceSystem()
 {
+  stop();
   CCDELETE(m_pPrivate);
+}
+
+void CcServiceSystem::stop()
+{
+  if(m_pPrivate &&
+     m_pPrivate->pService)
+  {
+    CcKernel::getServiceSystem().deinit(*m_pPrivate->pService);
+  }
 }
 
 CcStatus CcServiceSystem::init(CcService& pService)
@@ -67,16 +77,28 @@ CcStatus CcServiceSystem::init(CcService& pService)
   //  oSuccess   = m_pPrivate->pService->run();
   //}
   //return oSuccess;
-  return pService.run();
+  if(m_pPrivate)
+  {
+    m_pPrivate->pService = &pService;
+  }
+  CcStatus oRunStatus = pService.run();
+  if(m_pPrivate &&
+     m_pPrivate->pService == &pService)
+  {
+    m_pPrivate->pService = nullptr;
+  }
+  return oRunStatus;
 }
 
 CcStatus CcServiceSystem::deinit(CcService& pService)
 {
   CcStatus oStatus(false);
+  CCDEBUG("Deinit Service: " + pService.getName());
+  pService.stop();
   if(m_pPrivate->pService == &pService)
   {
     oStatus = true;
-    m_pPrivate->pService->stop();
+    m_pPrivate->pService = nullptr;
   }
   return oStatus;
 }
@@ -102,7 +124,7 @@ CcStatus CcServiceSystem::stop(CcService& pService)
 CcStatus CcServiceSystem::start(CcService& pService)
 {
   SystemdService oService(pService);
-  return oService.remove();
+  return oService.start();
 }
 
 CcStatus CcServiceSystem::setExectuable(CcService& pService, const CcString& sExePath)

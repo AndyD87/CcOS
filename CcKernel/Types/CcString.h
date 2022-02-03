@@ -239,20 +239,14 @@ public:
 
   /**
    * @brief Find the position of a occurrencing String
-   * @param sToFind: String to search for
-   * @param offset: Position where search has to be started at.
-   * @return position of First occurrence or SIZE_MAX if not found
-   */
-  size_t find(const CcString& sToFind, size_t offset=0) const;
-
-  /**
-   * @brief Find the position of a occurrencing String
-   * @param pcString: String to search for
+   * @param pcString: 0 terminated string to search for
    * @param uiLength: Size of pcString
    * @param uiOffset: Position where search has to be started at.
    * @return position of First occurrence or SIZE_MAX if not found
    */
-  size_t find(const char* pcString, size_t uiLength, size_t uiOffset) const;
+  size_t find(const char* pcString, size_t uiOffset = 0, size_t uiLength = SIZE_MAX) const;
+  size_t find(const CcString& sToFind, size_t uiOffset = 0, size_t uiLength = SIZE_MAX) const
+  { return find(sToFind.getCharString(), uiOffset, CCMIN(uiLength, length() - uiOffset)); }
 
   /**
    * @brief Find the position of a occurrencing String
@@ -261,7 +255,7 @@ public:
    * @return position of First occurrence or SIZE_MAX if not found
    */
   bool contains(const CcString& sToFind, size_t offset=0) const
-    { return (find(sToFind, offset) != SIZE_MAX); }
+  { return (find(sToFind, offset) < length()); }
 
   /**
    * @brief Check if String starts with a specific value.
