@@ -104,6 +104,7 @@ bool CTestRemoteDeviceService::removeService()
   bool bSuccess = false;
   CcProcess oRemoteDeviceService(m_sApplication);
   oRemoteDeviceService.addArgument("Remove");
+  oRemoteDeviceService.addArgument("-name");
   oRemoteDeviceService.addArgument(SERVCE_APPLICATION_NAME);
   bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(5));
   return bSuccess;
