@@ -37,7 +37,7 @@ CTestRemoteDeviceService::CTestRemoteDeviceService() :
   m_sApplicationDir = CcKernel::getCurrentExecutablePath().appendPath("..").normalizePath();
   m_sApplication = m_sApplicationDir;
   m_sApplication.appendPath("CcRemoteDeviceServer");
-  if (!CcKernel::isAdmin())
+  if (CcKernel::isAdmin())
   {
     appendTestMethod("Add service to system", &CTestRemoteDeviceService::createService);
     appendTestMethod("Start service", &CTestRemoteDeviceService::startService);

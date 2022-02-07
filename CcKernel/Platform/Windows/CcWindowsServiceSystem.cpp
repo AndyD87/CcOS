@@ -42,10 +42,7 @@ CcServiceSystem::CcServiceSystem()
 
 CcServiceSystem::~CcServiceSystem()
 {
-  for (CcWindowsService* pService : m_pPrivate->m_oServices)
-  {
-    CCDELETE(pService);
-  }
+  stop();
   CCDELETE(m_pPrivate);
 }
 
@@ -69,6 +66,14 @@ CcStatus CcServiceSystem::deinit(CcService& pService)
     }
   }
   return oStatus;
+}
+
+void CcServiceSystem::stop()
+{
+  for (CcWindowsService* pService : m_pPrivate->m_oServices)
+  {
+    CCDELETE(pService);
+  }
 }
 
 CcStatus CcServiceSystem::create(CcService& pService)

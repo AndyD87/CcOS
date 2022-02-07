@@ -41,6 +41,10 @@ CcServiceSystem::~CcServiceSystem()
   CCDELETE(m_pPrivate);
 }
 
+void CcServiceSystem::stop()
+{
+}
+
 CcStatus CcServiceSystem::init(CcService& pService)
 {
   CcStatus oStatus(false);

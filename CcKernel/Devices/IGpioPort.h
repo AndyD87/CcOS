@@ -31,6 +31,10 @@
 
 class IGpioPin;
 
+#ifdef _MSC_VER
+  template class CcKernelSHARED CcVector<IGpioPin*>;
+#endif
+
 /**
  * @brief Control the Input and Outputports on device
  */

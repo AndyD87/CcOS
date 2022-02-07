@@ -32,7 +32,7 @@ CSystemServiceTest::CSystemServiceTest() :
   CcTest("CSystemServiceTest")
 {
   appendTestMethod("Test list services", &CSystemServiceTest::testServiceListing);
-  if (!CcKernel::isAdmin())
+  if (CcKernel::isAdmin())
   {
     appendTestMethod("Test list services", &CSystemServiceTest::testServiceCreate);
     appendTestMethod("Test list services", &CSystemServiceTest::testServiceSetExecutable);
