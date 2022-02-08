@@ -1,18 +1,18 @@
 /*
- * This file is part of CcRemoteDeviceDiscovery.
+ * This file is part of CcOS.
  *
- * CcRemoteDeviceDiscovery is free software: you can redistribute it and/or modify
+ * CcOS is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CcRemoteDeviceDiscovery is distributed in the hope that it will be useful,
+ * CcOS is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CcRemoteDeviceDiscovery.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
  * @file
@@ -24,9 +24,12 @@
  * @par       Language   C++ ANSI V3
  * @brief     Implemtation of class CcRemoteDeviceDiscovery
  */
-#include "Server/CWorker.h"
+#include "Server/CInterfaceServer.h"
+#include "Server/CInterfaceServerThread.h"
+#include "Server/CConfig.h"
 #include "Network/CcSocket.h"
 #include "CcKernel.h"
+#include "CcRemoteDeviceServer.h"
 #include "CcString.h"
 #include "Network/CcCommonPorts.h"
 #include "Packets/CRequestDiscover.h"
@@ -36,26 +39,34 @@ namespace NRemoteDevice
 namespace Server
 {
 
-void CWorker::run()
+CInterfaceServer::~CInterfaceServer()
 {
-  CRequestDiscover* pPacket = m_oData.cast<CRequestDiscover>();
+  m_oSocket.close();
+}
 
-  if (pPacket && pPacket->getCommand() == ECommand::Discover)
+void CInterfaceServer::run()
+{
+  do
   {
-    CcSocket oSocket(ESocketType::UDP);
-    oSocket.setPeerInfo(m_oPeerInfo);
-    if (oSocket.open())
+    if (isRunning() &&
+        m_oServer.getConfig().bDetectable)
     {
-      if (oSocket.writeArray(m_oData))
+      m_oSocket = CcSocket(ESocketType::TCP);
+      if (!m_oSocket.open())
       {
-        CCDEBUG("Query received");
+        CCDEBUG("CInterfaceServer::run open failed");
       }
       else
       {
-        CCERROR("Query response failed");
+        m_oSocket.close();
       }
     }
-  }
+  } while (isRunning() && CcKernel::sleep(1000));
+}
+
+void CInterfaceServer::onStop()
+{
+  m_oSocket.close();
 }
 
 }

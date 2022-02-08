@@ -44,7 +44,6 @@
 #include "Devices/IWlanClient.h"
 #include "CcConsole.h"
 #include "NDocumentsGlobals.h"
-#include "Server/CWorker.h"
 
 using namespace NHttp::Application::RestApiWebframework;
 using namespace NRemoteDevice::Server;
@@ -121,7 +120,6 @@ void CcRemoteDeviceServer::init()
 CcRemoteDeviceServer::~CcRemoteDeviceServer()
 {
   stop();
-  m_oSocket.close();
   for (CcRestApiDevice* pRestApiDevice : m_oAllocatedRestApiDevices)
   {
     CCDELETE(pRestApiDevice);
@@ -144,65 +142,54 @@ void CcRemoteDeviceServer::run()
   m_bRunActive = true;
   setupWlan();
   setupWebserver();
-  m_pHttpServer->start();
-  do
-  {
-    if( isRunning() &&
-        m_pConfig->bDetectable)
-    {
-      m_oSocket = CcSocket(ESocketType::UDP);
-      if (!m_oSocket.open())
-      {
-        CCDEBUG("CcRemoteDeviceServer::run open failed");
-      }
-      else
-      {
-        if( !m_oSocket.setOption(ESocketOption::Reuse))
-        {
-          CCDEBUG("CcRemoteDeviceServer::run reuse failed");
-        }
-        else if( !m_oSocket.setOption(ESocketOption::Broadcast))
-        {
-          CCDEBUG("CcRemoteDeviceServer::run broadcast failed");
-        }
-        else if (m_oSocket.bind(m_pConfig->oAddressInfo))
-        {
-          while (isRunning())
-          {
-            CCNEWTYPE(pWorker, CWorker, this);
-            size_t uiReadSize = m_oSocket.readArray(pWorker->getData());
-            if (uiReadSize != SIZE_MAX &&
-              uiReadSize > 0)
-            {
-              pWorker->getPeerInfo() = m_oSocket.getPeerInfo();
-              pWorker->start();
-            }
-            else
-            {
-              CCDELETE(pWorker);
-            }
-          }
-        }
-        else
-        {
-          CCDEBUG("CcRemoteDeviceServer::run Bind failed");
-        }
-        m_oSocket.close();
-      }
-    }
-  } while (isRunning() && CcKernel::sleep(1000));
+  CCNEW(m_pDiscoveryServer, CDiscoveryServer, *this);
+  CCNEW(m_pInterfaceServer, CInterfaceServer, *this);
   CCDEBUG("CcRemoteDeviceServer stopped, code " + CcString::fromNumber(getExitCode().getErrorUint()));
+  
+  // Keep watching services
+  while (isRunning())
+  {
+    // Check if webserver is still running
+    if (!m_pHttpServer->isRunning())
+    { 
+      m_pHttpServer->start(); 
+    }
+    // Check if discovery is enabled and still running
+    if (getConfig().bDetectable &&
+        !m_pDiscoveryServer->isRunning())
+    {
+      m_pDiscoveryServer->start();
+    }
+    // Check if interface is still running
+    if (!m_pInterfaceServer->isRunning())
+    {
+      m_pInterfaceServer->start();
+    }
+    CcKernel::sleep(100);
+  }
+
   m_bRunActive = false;
 }
 
 void CcRemoteDeviceServer::onStop()
 {
-  m_oSocket.close();
   if(m_pHttpServer &&
      m_pHttpServer->isInProgress())
   {
     m_pHttpServer->stop();
     m_pHttpServer->waitForExit();
+  }
+  if (m_pDiscoveryServer &&
+      m_pDiscoveryServer->isInProgress())
+  {
+    m_pDiscoveryServer->stop();
+    m_pDiscoveryServer->waitForExit();
+  }
+  if (m_pInterfaceServer &&
+      m_pInterfaceServer->isInProgress())
+  {
+    m_pInterfaceServer->stop();
+    m_pInterfaceServer->waitForExit();
   }
   int32 uiCountDown = 100;
   while (m_bRunActive && uiCountDown-- > 0)

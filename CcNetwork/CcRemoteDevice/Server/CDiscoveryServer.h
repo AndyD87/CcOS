@@ -1,18 +1,18 @@
 /*
- * This file is part of CWorker.
+ * This file is part of CDiscoveryServer.
  *
- * CWorker is free software: you can redistribute it and/or modify
+ * CDiscoveryServer is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CWorker is distributed in the hope that it will be useful,
+ * CDiscoveryServer is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CWorker.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CDiscoveryServer.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
  * @file
@@ -20,14 +20,15 @@
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @par       Language   C++ ANSI V3
- * @brief     Class CWorker
+ * @brief     Class CDiscoveryServer
  **/
 #pragma once
 
 #include "CcRemoteDevice.h"
 #include "CcByteArray.h"
-#include "IWorker.h"
+#include "IThread.h"
 #include "Network/CcSocketAddressInfo.h"
+#include "Network/CcSocket.h"
 
 class CcRemoteDeviceServer;
 
@@ -39,35 +40,27 @@ namespace Server
 /**
  * @brief Worker implementation for broad cast messages
  */
-class CcRemoteDeviceSHARED CWorker : public IWorker
+class CcRemoteDeviceSHARED CDiscoveryServer : public IThread
 {
 public:
   /**
    * @brief Constructor
    */
-  CWorker(CcRemoteDeviceServer* pServer):
-    m_pServer(pServer),
-    m_oData(1024)
-  { CCUNUSED(m_pServer); }
+  CDiscoveryServer(CcRemoteDeviceServer& pServer):
+    m_oServer(pServer)
+  {}
 
   /**
    * @brief Destructor
    */
-  virtual ~CWorker() = default;
+  virtual ~CDiscoveryServer();
 
   virtual void run() override;
-
-  //! @return Get received date from socket
-  CcByteArray& getData()
-  { return m_oData; }
-  //! @return Get info from remote port
-  CcSocketAddressInfo& getPeerInfo()
-  { return m_oPeerInfo; }
+  virtual void onStop() override;
 
 private:
-  CcRemoteDeviceServer* m_pServer;
-  CcByteArray           m_oData;
-  CcSocketAddressInfo   m_oPeerInfo;
+  CcRemoteDeviceServer& m_oServer;
+  CcSocket              m_oSocket;
 };
 
 }

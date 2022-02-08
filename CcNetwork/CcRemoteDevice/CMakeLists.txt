@@ -11,6 +11,8 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDevice.h
         ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceBoardSupport.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceBoardSupport.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceConnector.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceConnector.h
         ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceCssProvider.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceCssProvider.h
         ${CMAKE_CURRENT_LIST_DIR}/CcRemoteDeviceDiscovery.cpp
@@ -28,8 +30,14 @@ elseif(${CCOS_CCNETWORK_CCREMOTEDEVICE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         ${CMAKE_CURRENT_LIST_DIR}/Packets/CResponseInfo.h
         ${CMAKE_CURRENT_LIST_DIR}/Server/CConfig.cpp
         ${CMAKE_CURRENT_LIST_DIR}/Server/CConfig.h
-        ${CMAKE_CURRENT_LIST_DIR}/Server/CWorker.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/Server/CWorker.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/CDiscoveryServer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/CDiscoveryServer.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/CDiscoveryServerWorker.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/CDiscoveryServerWorker.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/CInterfaceServer.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/CInterfaceServer.h
+        ${CMAKE_CURRENT_LIST_DIR}/Server/CInterfaceServerThread.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/Server/CInterfaceServerThread.h
         ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CEvents.cpp
         ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CEvents.h
         ${CMAKE_CURRENT_LIST_DIR}/Server/Config/CInterfaces.cpp

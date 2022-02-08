@@ -26,6 +26,8 @@
 
 #include "CcRemoteDevice.h"
 #include "Server/CConfig.h"
+#include "Server/CDiscoveryServer.h"
+#include "Server/CInterfaceServer.h"
 #include "CcAppDirectories.h"
 #include "CcRemoteDeviceBoardSupport.h"
 #include "CcApp.h"
@@ -100,7 +102,6 @@ private:
   bool                            m_bUi           = true;
   CcAppDirectories                m_oDirectories;
   CcRemoteDeviceBoardSupport      m_oBoardSupport;
-  CcSocket                        m_oSocket;
 
   // Devices
   CcHandle<IWlan>                 m_pWlanDevice = nullptr;
@@ -111,4 +112,6 @@ private:
   CcVector<CcRestApiDevice*>      m_oAllocatedRestApiDevices;
   CcVector<CcRestApiApplicationStatus::IPublisher*> m_oStatusPublisher;
   NHttp::Application::RestApiWebframework::CcHttpWebframework* m_pHttpServer = nullptr;
+  NRemoteDevice::Server::CDiscoveryServer*  m_pDiscoveryServer = nullptr;
+  NRemoteDevice::Server::CInterfaceServer*  m_pInterfaceServer = nullptr;
 };
