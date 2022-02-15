@@ -2,6 +2,7 @@ PARAM(
     [bool]$StopOnError = $true,
     [bool]$DoVisualStudio = $true,
     [bool]$DoMinGw = $true,
+    [bool]$DoStm = $true,
     [bool]$KeepOutput = $false
 )
 
@@ -247,6 +248,58 @@ Function Test-MinGW()
     RemoveDirs
 }
 
+Function Test-Stm()
+{
+    $oProcInfos = Get-WmiObject -class Win32_processor
+    $iCores = 1
+    foreach($oProcInfo in $oProcInfos)
+    {
+        $iCores = $oProcInfo.NumberOfCores
+    }
+
+    $CurrentDir  = (Get-Item .\).FullName
+    $TestLog     = $CurrentDir+"\Test.log"
+    $CcOSRootDir = $PSScriptRoot+"\.."
+    $SolutionDir = $PSScriptRoot+"\Solution"
+    $OutputDir   = $PSScriptRoot+"\Output"
+
+    ResetDirs
+    cd $SolutionDir
+
+    $oBoards = @("STM32F4Discovery", "stm32f3discovery")
+
+    foreach($sBoard in $oBoards)
+    {
+        cmake -G "Eclipse CDT4 - Unix Makefiles" "$CcOSRootDir" "-DCMAKE_ECLIPSE_VERSION=4.9" "-DCCOS_BOARD=$sBoard" "-DCMAKE_BUILD_TYPE=Debug" "-DCC_OUTPUT_DIR=`"$OutputDir`""
+        if($LASTEXITCODE -ne 0)
+        {
+            cd $CurrentDir
+            $Msg = "Failed: cmake generation of $sBoard failed"
+            Add-Content $TestLog $Msg
+            throw $Msg
+        }
+        cmake.exe --build . --config Release -- "-j$iCores"
+        if($LASTEXITCODE -ne 0)
+        {
+            cd $CurrentDir
+            $Msg = "Failed: cmake build wit $sBoard failed"
+            Add-Content $TestLog $Msg
+            throw $Msg
+        }
+        cmake.exe --build . --config Debug -- "-j$iCores"
+        if($LASTEXITCODE -ne 0)
+        {
+            cd $CurrentDir
+            $Msg = "Failed: cmake build wit $sBoard failed"
+            Add-Content $TestLog $Msg
+            throw $Msg
+        }
+        Add-Content $TestLog "Success: $sBoard"
+    }
+
+    RemoveDirs
+}
+
 $ENV:TEST_CCOS="TRUE"
 
 if($DoVisualStudio)
@@ -257,4 +310,9 @@ if($DoVisualStudio)
 if($DoMinGw)
 {
     Test-MinGW
+}
+
+if($DoStm)
+{
+    Test-Stm
 }

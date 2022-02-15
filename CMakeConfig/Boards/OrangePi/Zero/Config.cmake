@@ -24,7 +24,7 @@ else()
     CcDownloadAndExtract( "ArmbianSysroot"
                           "${SYSROOT_DIR}"
                           "https://coolcow.de/projects/ThirdParty/Armbian/binaries/0.0.0.1/focal-minimal-armhf.7efc0a5812b095319a8270f8c5f2bdd7.tar.lz4"
-                          "f5c5236cdc3ada323b8db1f7ca02e7b62a6d56c6"
+                          SHA1 "f5c5236cdc3ada323b8db1f7ca02e7b62a6d56c6"
     )
 
     # Prepare Sysroot

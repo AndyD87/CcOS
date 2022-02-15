@@ -13,8 +13,8 @@ else()
   CcDownloadAndExtract( "linaro-gcc-arm-none-eabi"
                         "${LINARO_GCC_DIR}"
                         "https://releases.linaro.org/archive/15.06/components/toolchain/binaries/4.8/arm-linux-gnueabihf/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabihf.tar.xz"
-                        "9e4495bfe35a88d8fc8f3ed7427fb25c5a23fd9c"
                         "https://coolcow.de/projects/ThirdParty/gcc-linaro-arm-linux-gnueabihf/binaries/${LINARO_GCC_VERSION}/gcc-linaro-4.8-2015.06-x86_64_arm-linux-gnueabihf.tar.xz"
+                        SHA1 "9e4495bfe35a88d8fc8f3ed7427fb25c5a23fd9c"
   )
   CcLoadMakeProgram()
 
