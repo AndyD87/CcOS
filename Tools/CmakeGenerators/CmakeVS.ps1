@@ -1,6 +1,6 @@
 PARAM(
     [String]
-    [ValidateSet("2015", "2017", "2019")]
+    [ValidateSet("2015", "2017", "2019", "2022")]
     $Version = $null,
     [String]
     [ValidateSet("x64", "x86")]
@@ -38,6 +38,16 @@ if($TestEnv)
 # Search for available versions
 ##
 $VisualStudios = @()
+if((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") -and
+    (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2022"))
+{
+    $VisualStudio        = @{}
+    $VisualStudio.Year   = "2022"
+    $VisualStudio.Full   = "Visual Studio 17 2022"
+    $VisualStudio.CmakeX86  = @("-G", "`"Visual Studio 17 2022`"")
+    $VisualStudio.CmakeX64  = @("-G", "`"Visual Studio 17 2022`"", "-A", "x64")
+    $VisualStudios      += $VisualStudio
+}
 if((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") -and
     (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2019"))
 {

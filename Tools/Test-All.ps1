@@ -45,7 +45,8 @@ function StartBuildProcess
         $VisualStudio,
         $Architecture,
         $Configuration,
-        $Static
+        $Static,
+        $ExtendedArchtecture
     )
 
     # Enable parallel build
@@ -65,7 +66,7 @@ function StartBuildProcess
     $AppendVS19_2 = ""
     if($Architecture -eq "x64")
     {
-        if($VisualStudioString -eq "Visual Studio 16 2019")
+        if($ExtendedArchtecture)
         {
             $AppendVS19 = "-A"
             $AppendVS19_2 = "x64"
@@ -77,7 +78,7 @@ function StartBuildProcess
     }
     else
     {
-        if($VisualStudioString -eq "Visual Studio 16 2019")
+        if($ExtendedArchtecture)
         {
             $AppendVS19 = "-A"
             $AppendVS19_2 = $Architecture
@@ -145,17 +146,30 @@ Function Test-VisualStudio()
         (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe") -and # IDE
         (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\cl.exe"))              # Compiler
     {
-        $VisualStudios += "Visual Studio 14 2015";
+        $VisualStudio14 += @{ Name     = "Visual Studio 14 2015"};
+        $VisualStudio14 += @{ Extended = $false};
+        $VisualStudios += $VisualStudio14
     }
     if((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") -and
        (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2017"))
     {
-        $VisualStudios += "Visual Studio 15 2017";
+        $VisualStudio15 += @{ Name     = "Visual Studio 15 2017"};
+        $VisualStudio15 += @{ Extended = $false};
+        $VisualStudios += $VisualStudio15
     }
     if((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") -and
        (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2019"))
     {
-        $VisualStudios += "Visual Studio 16 2019";
+        $VisualStudio16 += @{ Name     = "Visual Studio 16 2019"};
+        $VisualStudio16 += @{ Extended = $true};
+        $VisualStudios += $VisualStudio16
+    }
+    if((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") -and
+       (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2022"))
+    {
+        $VisualStudio17 += @{ Name     = "Visual Studio 17 2022"};
+        $VisualStudio17 += @{ Extended = $true};
+        $VisualStudios += $VisualStudio17
     }
 
     $Architectures  = @("win32", "x64")
@@ -179,7 +193,7 @@ Function Test-VisualStudio()
                 {
                     # ExampleCall StartBuildProcess "Visual Studio 12" "win32" "Release" "Shared"
                     # ExampleCall StartBuildProcess "Visual Studio 12" "x64" "Debug" "Static"
-                    StartBuildProcess $VisualStudio $Architecture $Configuration $Static
+                    StartBuildProcess $VisualStudio.Name $Architecture $Configuration $Static $VisualStudio.Extended
                 }
             }
         }
