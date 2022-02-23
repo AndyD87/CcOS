@@ -52,6 +52,7 @@ void CInterfaceServer::run()
         m_oServer.getConfig().bDetectable)
     {
       m_oSocket = CcSocket(ESocketType::TCP);
+      m_oSocket.setAddressInfo(CcSocketAddressInfo(ESocketType::TCP, { 0,0,0,0 }, CcCommonPorts::CcRemoteDeviceIfc));
       if (!m_oSocket.open())
       {
         CCDEBUG("CInterfaceServer::run open failed");

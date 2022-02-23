@@ -533,12 +533,13 @@ if(NOT CC_MACRO_LOADED)
               INACTIVITY_TIMEOUT 5     # Maximum 5 Seconds inactivity
               TIMEOUT            1800  # 30 Minute for download
               STATUS DOWNLOAD_STATUS
+              LOG    DOWNLOAD_LOG
         )
         list(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)
         if(NOT ${NUMERIC_STATUS} EQUAL 0)
           CcRemoveFile(${TargetZipFile})
           CcRemoveFile(${TargetProgress})
-          message(FATAL_ERROR "- Download result: ${DOWNLOAD_STATUS}")
+          message(FATAL_ERROR "- Download result: ${DOWNLOAD_STATUS} for ${SourceUrl} to ${TargetZipFile}\r\n${DOWNLOAD_LOG}")
         else()
           message("- Download succeeded")
           if(DOWNLOAD_SHA1)

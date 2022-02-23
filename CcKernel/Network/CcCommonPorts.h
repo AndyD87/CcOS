@@ -44,6 +44,7 @@ namespace CcCommonPorts
   static const uint16 CcOSOffset      = 27500;  //!< This offset for all CcOS default used ports
   static const uint16 CcSync          = 27500;  //!< First used port of CcOS is for CcSync
   static const uint16 CcRemoteDevice  = 27510;  //!< Default port for CcRemoteDevice requests
+  static const uint16 CcRemoteDeviceIfc  = 27511;  //!< Default port for CcRemoteDevice interface at ip 0.0.0.0
   static const uint16 YobitTrader     = 27520;  //!< Yobit trader application interface
 
   static const uint16 CcTestBase      = 10000;  //!< Test port base offset

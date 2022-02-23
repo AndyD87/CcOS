@@ -13,6 +13,9 @@ PARAM(
     $DoBuild = $false,
     [bool]
     [ValidateSet($true, $false)]
+    $TestEnv = $false,
+    [bool]
+    [ValidateSet($true, $false)]
     $DoTest = $false,
     [bool]
     [ValidateSet($true, $false)]
@@ -25,6 +28,11 @@ if($PSScriptRoot)
 }
 
 Import-Module ..\..\ThirdParty\Powershell-Common\VisualStudio.ps1
+
+if($TestEnv)
+{
+    $ENV:TEST_CCOS="TRUE"
+}
 
 ##
 # Search for available versions
