@@ -297,6 +297,8 @@ Function Test-Stm()
         Add-Content $TestLog "Success: $sBoard"
     }
 
+    cd $CurrentDir
+
     RemoveDirs
 }
 
