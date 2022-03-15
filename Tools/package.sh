@@ -29,7 +29,7 @@ run()
   cd ..
   mkdir Solution.$COMPILER.$BUILD_TYPE
   cd Solution.$COMPILER.$BUILD_TYPE
-  cmake ../ -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_INSTALL_PREFIX=/usr
+  cpack
   if [ $? -ne 0 ]
   then
       exit -1

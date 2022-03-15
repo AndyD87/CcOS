@@ -15,18 +15,24 @@ macro( CcOSGetKnownBoard BoardName TargetDir )
     set(${TargetDir} "")
   endif()
 endmacro()
-  
+
 ################################################################################
 # Setup default installation targets for a project
 ################################################################################
 macro(CcOSSetInstall ProjectName )
   install( TARGETS                    ${ProjectName}
-           COMPONENT                  Development
-           EXPORT                     "${ProjectName}Config"
-           RUNTIME DESTINATION        bin
-           LIBRARY DESTINATION        lib
-           ARCHIVE DESTINATION        lib/static
-           PUBLIC_HEADER DESTINATION  include/${ProjectName}
+            PUBLIC_HEADER
+              COMPONENT           dev
+              DESTINATION         include/${ProjectName}
+            ARCHIVE
+              COMPONENT           dev
+              DESTINATION        lib/static
+            LIBRARY
+              COMPONENT           bin
+              DESTINATION         lib
+            RUNTIME
+              COMPONENT           bin
+              DESTINATION         bin
   )
 endmacro()
 
@@ -37,7 +43,7 @@ macro (CcOSSetInstallConfig ProjectName )
   install( DIRECTORY    ${CMAKE_CURRENT_SOURCE_DIR}/config/
            COMPONENT    Application
            DESTINATION  config/${ProjectName}
-           PATTERN      "*.xml" 
+           PATTERN      "*.xml"
   )
 endmacro()
 
@@ -94,10 +100,10 @@ endmacro()
 # If Linux, set SOVERSION too.
 ################################################################################
 macro( CcOSLibVersion ProjectName )
-  set_target_properties(${ProjectName} PROPERTIES 
+  set_target_properties(${ProjectName} PROPERTIES
                                         VERSION ${CCOS_VERSION_CMAKE})
   if(LINUX)
-    set_target_properties(${ProjectName} PROPERTIES 
+    set_target_properties(${ProjectName} PROPERTIES
                                           SOVERSION ${CCOS_VERSION_CMAKE} )
   endif(LINUX)
 endmacro()
@@ -112,18 +118,17 @@ macro( CcOSLibSettings ProjectName )
       CcOSSetInstall(${ProjectName})
     endif(${ARGV1} STREQUAL "TRUE")
   endif(${ARGC} GREATER 1)
-  
+
   if(${ARGC} GREATER 2)
     if(${ARGV2} STREQUAL "TRUE")
       CcOSLibVersion(${ProjectName})
     endif(${ARGV2} STREQUAL "TRUE")
   endif(${ARGC} GREATER 2)
-  
+
   if(${ARGC} GREATER 3)
     set(FILES ${ARGN})
-    list(REMOVE_AT FILES 0)
-    list(REMOVE_AT FILES 0)
-    list(REMOVE_AT FILES 0)
+    list(REMOVE_AT FILES 0) # .
+    list(REMOVE_AT FILES 0) # ..
     CcSetFiltersByFolders(${FILES})
   endif(${ARGC} GREATER 3)
 endmacro()

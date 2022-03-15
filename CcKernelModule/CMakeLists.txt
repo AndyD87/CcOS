@@ -10,16 +10,22 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   #########
   file (GLOB KERNEL_SOURCE_FILES
         "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/*.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/*.h"
         "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/Hash/*.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/Hash/*.h"
         "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Network/CcCommonIps.cpp"
   )
 
+  file (GLOB KERNEL_HEADER_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/*.h"
+        "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types/Hash/*.h"
+  )
+
   file (GLOB SOURCE_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/CcKernelModule.cpp"
+  )
+
+  file (GLOB HEADER_FILES
         "${CMAKE_CURRENT_LIST_DIR}/CcMalloc.h"
         "${CMAKE_CURRENT_LIST_DIR}/CcKernelModule.h"
-        "${CMAKE_CURRENT_LIST_DIR}/CcKernelModule.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/CcConnection.h"
         "${CMAKE_CURRENT_LIST_DIR}/CcRequest.h"
         "${CMAKE_CURRENT_LIST_DIR}/IDriver.h"
@@ -91,7 +97,9 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
 
   CcAddDriverLibrary( ${CURRENT_PROJECT} ${KERNEL_SOURCE_FILES} ${SOURCE_FILES})
 
-  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+  set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS")
+  set_target_properties( ${CURRENT_PROJECT} PROPERTIES PUBLIC_HEADER "${KERNEL_HEADER_FILES};${HEADER_FILES}")
+
   set_target_properties(${CURRENT_PROJECT} PROPERTIES LINKER_LANGUAGE CXX)
   target_compile_definitions(${CURRENT_PROJECT} PUBLIC ${KERNEL_MODULE_DEFINITIONS})
 

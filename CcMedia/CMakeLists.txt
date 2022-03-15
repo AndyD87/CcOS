@@ -5,11 +5,24 @@ elseif(${CCOS_CCMEDIA_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.cpp"
-        "*.h"
-        "Converter/*.cpp"
-        "Converter/*.h"
+  set (HEADER_FILES
+        CcImage.h
+        CcImageRaw.h
+        CcMedia.h
+        CcVideo.h
+        Converter/CImageBmp.h
+        Converter/CImagePpm.h
+        Converter/IImageConverter.h
+  )
+
+  set (SOURCE_FILES
+        ${HEADER_FILES}
+        CcImage.cpp
+        CcImageRaw.cpp
+        CcVideo.cpp
+        Converter/CImageBmp.cpp
+        Converter/CImagePpm.cpp
+        Converter/IImageConverter.cpp
   )
 
   set( LIBRARIES
@@ -30,7 +43,8 @@ elseif(${CCOS_CCMEDIA_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   CcAddLibrary(${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES} )
 
-  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS")
+  set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS")
+  set_target_properties( ${CURRENT_PROJECT} PROPERTIES PUBLIC_HEADER "${HEADER_FILES}")
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC ${LIBRARIES} )
 

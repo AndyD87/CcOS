@@ -60,15 +60,102 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     IThread.h
     IWaitable.h
     IWorker.h
-    Documents/CcIniFile.cpp
+
+    Devices/CcBoardSupport.h
+    Devices/CcDeviceCamera.h
+    Devices/CcDeviceClock.h
+    Devices/CcDeviceCpu.h
+    Devices/CcDeviceDisplay.h
+    Devices/CcDeviceEeprom.h
+    Devices/CcDeviceGpioPin.h
+    Devices/CcDeviceGpioPort.h
+    Devices/CcDeviceGrayscaleMap.h
+    Devices/CcDeviceHdd.h
+    Devices/CcDeviceI2C.h
+    Devices/CcDeviceIoDevice.h
+    Devices/CcDeviceLed.h
+    Devices/CcDeviceNetwork.h
+    Devices/CcDevicePixMap.h
+    Devices/CcDeviceSdCard.h
+    Devices/CcDeviceSpi.h
+    Devices/CcDeviceTimer.h
+    Devices/CcDeviceTouch.h
+    Devices/CcDeviceUart.h
+    Devices/CcDeviceUsb.h
+    Devices/CcDeviceUsbHid.h
+    Devices/CcDeviceWlan.h
+    Devices/CcDeviceWlanAccessPoint.h
+    Devices/CcDeviceWlanClient.h
+    Devices/CcGpioPortPin.h
+    Devices/Devices.h
+    Devices/IBoardSupport.h
+    Devices/ICamera.h
+    Devices/IClock.h
+    Devices/ICpu.h
+    Devices/IDisplay.h
+    Devices/IEeprom.h
+    Devices/IGpioPin.h
+    Devices/IHdd.h
+    Devices/IGrayscaleMap.h
+    Devices/II2C.h
+    Devices/IIoDevice.h
+    Devices/IGpioPort.h
+    Devices/ILed.h
+    Devices/INetwork.h
+    Devices/IPixMap.h
+    Devices/ISdCard.h
+    Devices/ITimer.h
+    Devices/ITouch.h
+    Devices/IUart.h
+    Devices/IUsb.h
+    Devices/IUsbHid.h
+    Devices/IWlan.h
+    Devices/IWlanAccessPoint.h
+    Devices/IWlanClient.h
+    Devices/Simulations/CcBoardSupportSimulation.h
+    Devices/Simulations/CcClockSimulation.h
+    Devices/Simulations/CcEepromSimulation.h
+    Devices/Simulations/CcGpioPortSimulation.h
+    Devices/Simulations/CcI2CSimulation.h
+    Devices/Simulations/CcSpiSimulation.h
+
+    Network/CcCommonIps.h
+    Network/CcCommonPorts.h
+    Network/CcIpInterface.h
+    Network/CcIpInterfaceList.h
+    Network/CcMacAddress.h
+    Network/CcSocket.h
+    Network/CcSocketAddressInfo.h
+    Network/INetworkStack.h
+    Network/ISocket.h
+    Network/NCommonTypes.h
+    Network/Protocols/Dhcp/CcDhcpClient.h
+    Network/Protocols/Dhcp/CcDhcpPacket.h
+    Network/Server/CcTcpEchoServer.h
+    Network/Server/CcUdpEchoServer.h
+    Network/Stack/CcArpProtocol.h
+    Network/Stack/CcIcmpProtocol.h
+    Network/Stack/CcIpProtocol.h
+    Network/Stack/CcNetworkPacket.h
+    Network/Stack/CcNetworkSocketTcp.h
+    Network/Stack/CcNetworkSocketUdp.h
+    Network/Stack/CcNetworkStack.h
+    Network/Stack/CcPtpProtocol.h
+    Network/Stack/CcTcpProtocol.h
+    Network/Stack/CcUdpProtocol.h
+    Network/Stack/INetworkProtocol.h
+    Network/Stack/INetworkSocket.h
+
     Documents/CcIniFile.h
+
+    Events/CcKeyboardEventHandler.h
+    Events/CcMouseEventHandler.h
   )
 
   ########
   # Add Source Files
   ########
   set (KERNEL_SOURCE_FILES
-    ${PUBLIC_HEADER}
     CcApp.cpp
     CcAppDirectories.cpp
     CcAppKnownList.cpp
@@ -111,6 +198,71 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     IThread.cpp
     IWaitable.cpp
     IWorker.cpp
+
+    Devices/Simulations/CcBoardSupportSimulation.cpp
+    Devices/Simulations/CcClockSimulation.cpp
+    Devices/Simulations/CcEepromSimulation.cpp
+    Devices/Simulations/CcGpioPortSimulation.cpp
+    Devices/Simulations/CcI2CSimulation.cpp
+    Devices/Simulations/CcSpiSimulation.cpp
+    Devices/CcDeviceEeprom.cpp
+    Devices/CcDriverObjects.cpp
+    Devices/CcGpioPortPin.cpp
+    Devices/IBoardSupport.cpp
+    Devices/ICamera.cpp
+    Devices/IClock.cpp
+    Devices/ICpu.cpp
+    Devices/IDisplay.cpp
+    Devices/IEeprom.cpp
+    Devices/IGpioPin.cpp
+    Devices/IGpioPort.cpp
+    Devices/IGrayscaleMap.cpp
+    Devices/IHdd.cpp
+    Devices/II2C.cpp
+    Devices/IIoDevice.cpp
+    Devices/ILed.cpp
+    Devices/ISdCard.cpp
+    Devices/ISpi.cpp
+    Devices/ISpi.h
+    Devices/ITimer.cpp
+    Devices/ITouch.cpp
+    Devices/IUsb.cpp
+    Devices/IUsbHid.cpp
+    Devices/IWlan.cpp
+    Devices/IUsb.cpp
+    Devices/IUsbHid.cpp
+    Devices/IWlan.cpp
+
+    Documents/CcIniFile.cpp
+
+    Events/CcKeyboardEventHandler.cpp
+    Events/CcMouseEventHandler.cpp
+
+    Network/CcCommonIps.cpp
+    Network/CcIpInterface.cpp
+    Network/CcIpInterfaceList.cpp
+    Network/CcMacAddress.cpp
+    Network/CcSocket.cpp
+    Network/CcSocketAddressInfo.cpp
+    Network/INetworkStack.cpp
+    Network/Protocols/Dhcp/CcDhcpClient.cpp
+    Network/Protocols/Dhcp/CcDhcpPacket.cpp
+    Network/Protocols/Dhcp/CcDhcpPacketData.cpp
+    Network/Protocols/Dhcp/CcDhcpPacketData.h
+    Network/Server/CcTcpEchoServer.cpp
+    Network/Server/CcUdpEchoServer.cpp
+    Network/Stack/CcArpProtocol.cpp
+    Network/Stack/CcIcmpProtocol.cpp
+    Network/Stack/CcIpProtocol.cpp
+    Network/Stack/CcNetworkPacket.cpp
+    Network/Stack/CcNetworkSocketTcp.cpp
+    Network/Stack/CcNetworkSocketUdp.cpp
+    Network/Stack/CcNetworkStack.cpp
+    Network/Stack/CcPtpProtocol.cpp
+    Network/Stack/CcTcpProtocol.cpp
+    Network/Stack/CcUdpProtocol.cpp
+    Network/Stack/INetworkProtocol.cpp
+    Network/Stack/INetworkSocket.cpp
 )
 
   set ( CURRENT_PROJECT CcKernel)
@@ -120,11 +272,11 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set ( KERNEL_DEPENDENCIES )
   set ( KERNEL_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/Types )
   set ( KERNEL_SCRIPTS )
-  
+
   if(TOOLCHAIN_KERNEL_FILES)
     CcListAppendOnce(KERNEL_SOURCE_FILES ${TOOLCHAIN_KERNEL_FILES})
   endif()
-  
+
   ################################################################################
   # Enable Memory Monitor in kernel if required
   ################################################################################
@@ -174,8 +326,16 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       set (KERNEL_SCRIPTS ${KERNEL_SCRIPTS} PARENT_SCOPE)
   endmacro()
 
+  macro (add_to_kernel_headers)
+      foreach (_src ${ARGN})
+          CcListAppendOnce(KERNEL_HEADERS "${_src}")
+      endforeach()
+      set (KERNEL_HEADERS ${KERNEL_HEADERS} PARENT_SCOPE)
+  endmacro()
+
   macro (push_up_kernel_vars)
     add_to_kernel_sources     ( ${KERNEL_SOURCES} )
+    add_to_kernel_headers     ( ${KERNEL_HEADERS} )
     add_to_kernel_definitions ( ${KERNEL_DEFINITIONS} )
     add_to_kernel_includes    ( ${KERNEL_INCLUDES} )
     add_to_kernel_libraries   ( ${KERNEL_LIBRARIES} )
@@ -187,11 +347,8 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Subdirecotry Files
   ########
   add_subdirectory(Driver/)
-  add_subdirectory(Network/)
-  add_subdirectory(Devices/)
   add_subdirectory(Platform/)
-  add_subdirectory(Events/)
-  
+
   include(Types/KernelTypeFiles.cmake)
 
   ########
@@ -206,7 +363,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   if(WINDOWS)
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} KERNEL_SOURCE_FILES)
   endif()
-  
+
   CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${KERNEL_SOURCE_FILES} ${KERNEL_HEADER_FILES} ${KERNEL_TYPE_FILES} )
 
   if(${KERNEL_DEPENDENCIES})
@@ -214,19 +371,10 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   endif()
 
   set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS")
-  set_target_properties( ${CURRENT_PROJECT} PROPERTIES PUBLIC_HEADER "${KERNEL_HEADER_FILES}")
-  
-  install( FILES ${KERNEL_TYPE_HEADER}
-           DESTINATION  include/${CURRENT_PROJECT}/Types
-           COMPONENT    Development
-  )
-  
-  install( FILES ${KERNEL_TYPE_HASH_HEADER}
-           DESTINATION  include/${CURRENT_PROJECT}/Types/Hash
-           COMPONENT    Development
-  )
+  set_target_properties( ${CURRENT_PROJECT} PROPERTIES PUBLIC_HEADER "${KERNEL_HEADER_FILES};${KERNEL_TYPE_HEADER};${KERNEL_TYPE_HASH_HEADER}")
 
   target_link_libraries ( ${CURRENT_PROJECT} ${KERNEL_LIBRARIES} )
+  target_include_directories(${CURRENT_PROJECT} PUBLIC Types)
 
   foreach(scriptfile ${KERNEL_SCRIPTS})
     if(NOT ${scriptfile} STREQUAL "")

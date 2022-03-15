@@ -50,13 +50,13 @@ endif()
 ################################################################################
 if(NOT CC_NO_PROJECT)
   if(${CMAKE_VERSION} VERSION_GREATER_EQUAL 3.12)
-    set(PAGE_SUPPORT_NAME  HOMEPAGE_URL) 
+    set(PAGE_SUPPORT_NAME  HOMEPAGE_URL)
     set(PAGE_SUPPORT_VALUE ${CCOS_URL})
   else()
     set(PAGE_SUPPORT_NAME  )
     set(PAGE_SUPPORT_VALUE )
   endif()
-  project(${CMAKE_PROJECT_NAME} 
+  project(${CMAKE_PROJECT_NAME}
           VERSION       ${CCOS_VERSION_CMAKE} # Value is defined in VERSION.cmake
           LANGUAGES     ${CCOS_LANGUAGES}     # Value is defined in VERSION.cmake
           DESCRIPTION   ${CCOS_DESCRIPTION}   # Value is defined in VERSION.cmake
@@ -95,7 +95,6 @@ endif()
 ################################################################################
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Documents/Doxygen)
 
-
 set(CPACK_PACKAGE_DESCRIPTION         ${CMAKE_PROJECT})
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "This Installation includes all required files to link against CcOS")
 set(CPACK_PACKAGE_VENDOR              "Andreas Dirmeier")
@@ -104,14 +103,14 @@ set(CPACK_PACKAGE_VERSION             ${PROJECT_VERSION})
 set(CPACK_PACKAGE_INSTALL_DIRECTORY   ${CMAKE_INSTALL_PREFIX})
 set(CPACK_RESOURCE_FILE_LICENSE       ${CMAKE_CURRENT_SOURCE_DIR}/Documents/COPYING.LESSER.rtf)
 set(CPACK_ARCHIVE_COMPONENT_INSTALL   "ON")
-set(CPACK_COMPONENTS_GROUPING         ONE_PER_GROUP)
 
 if(LINUX)
-  set(CPACK_GENERATOR "DEB")
+  set(CPACK_GENERATOR "DEB;ZIP")
   set(CPACK_DEBIAN_PACKAGE_MAINTAINER ${CPACK_PACKAGE_VENDOR})
+  set(CPACK_DEB_COMPONENT_INSTALL  "ON")
 
   include(CPack)
 elseif(WINDOWS)
-  set(CPACK_GENERATOR "ZIP")
+  set(CPACK_GENERATOR                   "ZIP")
   include(CPack)
 endif()
