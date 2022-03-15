@@ -30,7 +30,7 @@
 #include "CcString.h"
 #include "Network/CcCommonPorts.h"
 #include "Packets/CRequestDiscover.h"
-#include "CDiscoveryServer.h"
+#include "CcRemoteDeviceServer.h"
 
 namespace NRemoteDevice
 {
