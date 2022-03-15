@@ -30,6 +30,7 @@
 #include "CcString.h"
 #include "Network/CcCommonPorts.h"
 #include "Packets/CRequestDiscover.h"
+#include "CDiscoveryServer.h"
 
 namespace NRemoteDevice
 {
@@ -46,14 +47,18 @@ void CDiscoveryServerWorker::run()
     oSocket.setPeerInfo(m_oPeerInfo);
     if (oSocket.open())
     {
-      if (oSocket.writeArray(m_oData))
+      if(m_oServer.getConfig().bDetectable)
       {
-        CCDEBUG("Query received");
+        if (oSocket.writeArray(m_oData))
+        {
+          CCDEBUG("Query received");
+        }
+        else
+        {
+          CCERROR("Query response failed");
+        }
       }
-      else
-      {
-        CCERROR("Query response failed");
-      }
+      oSocket.close();
     }
   }
 }
