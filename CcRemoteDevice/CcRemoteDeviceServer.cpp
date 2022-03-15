@@ -131,6 +131,8 @@ CcRemoteDeviceServer::~CcRemoteDeviceServer()
   CCDELETE(m_pHttpServer);
   CCDELETE(m_pJsProvider);
   CCDELETE(m_pCssProvider);
+  CCDELETE(m_pDiscoveryServer);
+  CCDELETE(m_pInterfaceServer);
   if(m_bConfigOwner)
   {
     CCDELETE(m_pConfig);
