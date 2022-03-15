@@ -226,6 +226,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Devices/ISpi.h
     Devices/ITimer.cpp
     Devices/ITouch.cpp
+    Devices/IUart.cpp
     Devices/IUsb.cpp
     Devices/IUsbHid.cpp
     Devices/IWlan.cpp
