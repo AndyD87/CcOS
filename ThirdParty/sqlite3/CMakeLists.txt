@@ -1,15 +1,16 @@
 if(NOT DEFINED CCOS_THIRDPARTY_SQLITE3_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
 elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
-  set(CURRENT_PROJECT sqlite3)
+  set(CURRENT_PROJECT CcThirdPartySqlite3)
 
   find_package ( SQLite3 QUIET )
 
   if(SQLite3_FOUND)
     message(FATAL_ERROR "- SQLite3 found")
-    add_library(_sqlite3 INTERFACE)
-    target_include_directories(_sqlite3 INTERFACE ${SQLite3_INCLUDE_DIR})
-    target_link_libraries     (_sqlite3 INTERFACE ${SQLite3_LIBRARIES})
-    add_library(CcOS::ThirParty::sqlite3 ALIAS _sqlite3)
+    add_library(${CURRENT_PROJECT} INTERFACE)
+    target_include_directories(${CURRENT_PROJECT} INTERFACE ${SQLite3_INCLUDE_DIR})
+    target_link_libraries     (${CURRENT_PROJECT} INTERFACE ${SQLite3_LIBRARIES})
+    add_library(CcOS::ThirParty::sqlite3 ALIAS sqlit)
+    CcTargetInstall(${CURRENT_PROJECT})
   else()
     if( DEFINED GCC )
       # avoid fall through warning for GCC
@@ -63,13 +64,12 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     #################
     # Post configuration steps
     #################
-    CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+    CcTargetIncludes( ${CURRENT_PROJECT} )
     CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE)
 
     #################
     # Data for CcSql
     #################
-    add_library(_sqlite3 INTERFACE)
     add_library(CcOS::ThirParty::sqlite3 ALIAS ${CURRENT_PROJECT})
   endif()
 endif()

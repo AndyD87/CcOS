@@ -4,11 +4,28 @@ elseif(${CCOS_CCOSBUILDCONFIG_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set ( CURRENT_PROJECT_IDE_PATH   )
 
   ########
+  # Add Header Files
+  ########
+  set( HEADER_FILES
+        CcOSBuildConfigBase.h
+        CcOSBuildConfigCmake.h
+        CcOSBuildConfigDirectory.h
+        CcOSBuildConfigGlobals.h
+        CcOSBuildConfig.h
+        CcOSBuildConfigPlatform.h
+        CcOSBuildConfigProject.h
+  )
+
+  ########
   # Add Source Files
   ########
-  file ( GLOB SOURCE_FILES
-        "*.cpp"
-        "*.h")
+  set( SOURCE_FILES
+        CcOSBuildConfigCmake.cpp
+        CcOSBuildConfig.cpp
+        CcOSBuildConfigDirectory.cpp
+        CcOSBuildConfigGlobals.cpp
+        CcOSBuildConfigProject.cpp
+  )
 
   set( LIBRARIES
         CcKernel
@@ -30,6 +47,6 @@ elseif(${CCOS_CCOSBUILDCONFIG_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+  CcTargetIncludes( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 endif()

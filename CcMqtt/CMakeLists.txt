@@ -5,13 +5,23 @@ elseif(${CCOS_CCMQTT_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set ( CURRENT_PROJECT_IDE_PATH   )
 
   ########
+  # Add Header Files
+  ########
+  set( HEADER_FILES
+        CcMqttClientConfig.h
+        CcMqttClient.h
+        CcMqttGlobals.h
+        CcMqtt.h
+  )
+
+  ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.c"
-        "*.cpp"
-        "config/*.xml"
-        "*.h"
+  set( SOURCE_FILES
+        ${HEADER_FILES}
+        CcMqttClientConfig.cpp
+        CcMqttClient.cpp
+        CcMqttGlobals.cpp
   )
 
   set(CcMqtt_LIBRARIES CcKernel)
@@ -31,7 +41,8 @@ elseif(${CCOS_CCMQTT_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   add_definitions(${CcMqtt_DEFINITIONS})
   CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES})
 
-  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+  set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+  CcTargetHeaders( ${CURRENT_PROJECT} "${HEADER_FILES}")
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                 ${CcMqtt_LIBRARIES} )
@@ -39,7 +50,7 @@ elseif(${CCOS_CCMQTT_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+  CcTargetIncludes( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 
   ########

@@ -926,4 +926,101 @@ if(NOT CC_MACRO_LOADED)
       set(${OUTPUT} FALSE)
     endif()
   endmacro()
+
+
+  ################################################################################
+  # Setup Include Directorys for importing CcOS
+  ################################################################################
+  macro( CcTargetIncludes ProjectName )
+    foreach(DIR ${ARGN})
+      list(APPEND DIRS ${DIR} )
+      target_include_directories( ${ProjectName} PUBLIC
+                                    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${DIR}>
+                                    $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/${DIR}> )
+    endforeach()
+    target_include_directories( ${ProjectName} PUBLIC
+                                  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+                                  $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/${ProjectName}> )
+  endmacro()
+
+
+  ################################################################################
+  # Setup Include Directorys for importing CcOS
+  ################################################################################
+  macro( CcTargetHeaders ProjectName )
+    foreach(HEADERS ${ARGN})
+      foreach(HEADER ${HEADERS})
+        get_filename_component(HEADER_DIR ${HEADER} DIRECTORY)
+        install(FILES ${HEADER}
+                COMPONENT dev
+                DESTINATION include/${ProjectName}/${HEADER_DIR})
+      endforeach()
+    endforeach()
+  endmacro()
+
+  ################################################################################
+  # Setup Include Directorys for importing CcOS
+  ################################################################################
+  macro( CcTargetFiles ProjectName )
+    foreach(CMACROS ${ARGN})
+      foreach(CMACRO ${CMACROS})
+        get_filename_component(CMACRONAME ${CMACRO} NAME)
+        install(FILES ${CMACRO}
+                COMPONENT dev
+                DESTINATION cmake/${ProjectName})
+      endforeach()
+    endforeach()
+  endmacro()
+
+  ################################################################################
+  # Setup Include Directorys for importing CcOS
+  ################################################################################
+  macro( CcExportFiles )
+    foreach(CMACROS ${ARGN})
+      foreach(CMACRO ${CMACROS})
+        get_filename_component(CMACRONAME ${CMACRO} NAME)
+        install(FILES ${CMACRO}
+                COMPONENT dev
+                DESTINATION cmake)
+      endforeach()
+    endforeach()
+  endmacro()
+
+  ################################################################################
+  # Setup default export targets for a project
+  ################################################################################
+  macro(CcTargetExport ProjectName )
+    # generate and install export file
+    install(EXPORT        Find${ProjectName}
+            #FILE          ${ProjectName}.cmake
+            NAMESPACE     ${CMAKE_PROJECT_NAME}::
+            COMPONENT     dev
+            DESTINATION   cmake
+    )
+  endmacro()
+
+  ################################################################################
+  # Setup default installation targets for a project
+  ################################################################################
+  macro(CcTargetInstall ProjectName )
+    install( TARGETS                    ${ProjectName}
+             EXPORT Find${ProjectName}
+             LIBRARY
+               COMPONENT           bin
+               DESTINATION         lib
+             RUNTIME
+               COMPONENT           bin
+               DESTINATION         bin
+             PUBLIC_HEADER
+               COMPONENT           dev
+               DESTINATION         include/${ProjectName}
+             ARCHIVE
+               COMPONENT           dev
+               DESTINATION         lib/static
+    )
+
+    # generate and install export file
+    CcTargetExport(${ProjectName})
+  endmacro()
+
 endif(NOT CC_MACRO_LOADED)

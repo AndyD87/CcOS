@@ -28,7 +28,6 @@
 #include "CcBase.h"
 #include "CcGui.h"
 #include "CcWidget.h"
-#include "CcFont.h"
 #include "CcString.h"
 #include "CcGuiGlobals.h"
 

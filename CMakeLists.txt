@@ -95,6 +95,12 @@ endif()
 ################################################################################
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Documents/Doxygen)
 
+add_custom_target(${CMAKE_PROJECT_NAME})
+
+# generate and install export file
+CcTargetFiles(${CMAKE_PROJECT_NAME} CMakeConfig/CcMacros.cmake)
+CcExportFiles(CMakeConfig/FindCcOS.cmake)
+
 set(CPACK_PACKAGE_DESCRIPTION         ${CMAKE_PROJECT})
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "This Installation includes all required files to link against CcOS")
 set(CPACK_PACKAGE_VENDOR              "Andreas Dirmeier")
@@ -105,12 +111,19 @@ set(CPACK_RESOURCE_FILE_LICENSE       ${CMAKE_CURRENT_SOURCE_DIR}/Documents/COPY
 set(CPACK_ARCHIVE_COMPONENT_INSTALL   "ON")
 
 if(LINUX)
-  set(CPACK_GENERATOR "DEB;ZIP")
-  set(CPACK_DEBIAN_PACKAGE_MAINTAINER ${CPACK_PACKAGE_VENDOR})
-  set(CPACK_DEB_COMPONENT_INSTALL  "ON")
+  set(CPACK_GENERATOR                   "DEB;ZIP")
+  set(CPACK_DEBIAN_PACKAGE_MAINTAINER   ${CPACK_PACKAGE_VENDOR})
+  set(CPACK_DEB_COMPONENT_INSTALL       "ON")
+  string(TOLOWER ${CC_BUILD_ARCH}       CC_BUILD_ARCH_LOWER)
+  string(TOLOWER ${CC_LINK_TYPE}        CC_LINK_TYPE_LOWER)
+  string(TOLOWER ${CMAKE_BUILD_TYPE}    CMAKE_BUILD_TYPE_LOWER)
+  set(CPACK_SYSTEM_NAME                 "${CMAKE_SYSTEM_NAME}-${CC_COMPILER}-${CC_BUILD_ARCH_LOWER}-${CC_LINK_TYPE_LOWER}-${CMAKE_BUILD_TYPE_LOWER}")
 
   include(CPack)
 elseif(WINDOWS)
+  CcVisualStudioPostFix(VS_POSTFIX ${CMAKE_BUILD_TYPE} ${CC_LINK_TYPE} ${CC_LINK_TYPE})
+  set(CPACK_SYSTEM_NAME                 ${VS_POSTFIX})
   set(CPACK_GENERATOR                   "ZIP")
+
   include(CPack)
 endif()

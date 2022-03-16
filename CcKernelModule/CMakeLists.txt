@@ -91,22 +91,23 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   include_directories( ${CCKERNEL_TYPES_DIR}                  )
   include_directories( ${CCKERNEL_MODULE_INCLUDE_DIRS}        )
 
-  include_directories(
-    "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types"
-  )
-
   CcAddDriverLibrary( ${CURRENT_PROJECT} ${KERNEL_SOURCE_FILES} ${SOURCE_FILES})
 
   set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS")
-  set_target_properties( ${CURRENT_PROJECT} PROPERTIES PUBLIC_HEADER "${KERNEL_HEADER_FILES};${HEADER_FILES}")
+  CcTargetHeaders( ${CURRENT_PROJECT} "${KERNEL_HEADER_FILES};${HEADER_FILES}")
 
   set_target_properties(${CURRENT_PROJECT} PROPERTIES LINKER_LANGUAGE CXX)
   target_compile_definitions(${CURRENT_PROJECT} PUBLIC ${KERNEL_MODULE_DEFINITIONS})
 
+  target_include_directories( ${CURRENT_PROJECT} PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types>
+    $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/${CURRENT_PROJECT}/Types>
+  )
+
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} "${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types" )
+  CcTargetIncludes( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${KERNEL_SOURCE_FILES} ${HEADER_FILES})
   CcSetFiltersByFolders(${SOURCE_FILES} ${KERNEL_SOURCE_FILES})
 endif()

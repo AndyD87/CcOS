@@ -5,19 +5,28 @@ elseif(${CCOS_CCSQL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set ( CURRENT_PROJECT_IDE_PATH   )
 
   ########
+  # Add Header Files
+  ########
+  set( HEADER_FILES
+        CcSql.h
+        ISqlDatabase.h
+        CcSqlResult.h
+        CcSqlDatabase.h
+  )
+
+  ########
   # Add Source Files
   ########
-  set ( SOURCE_FILES
-        "ISqlDatabase.cpp"
-        "CcSqlResult.cpp"
-        "CcSqlDatabase.cpp"
-        "CcSql.h"
-        "ISqlDatabase.h"
-        "CcSqlResult.h"
-        "CcSqlDatabase.h")
+  set( SOURCE_FILES
+        ${HEADER_FILES}
+        ISqlDatabase.cpp
+        CcSqlResult.cpp
+        CcSqlDatabase.cpp
+  )
 
   set( LIBRARIES
-        CcKernel )
+        CcKernel
+  )
 
   set( DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR} )
 
@@ -42,13 +51,14 @@ elseif(${CCOS_CCSQL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES} )
 
-  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+  set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+  CcTargetHeaders( ${CURRENT_PROJECT} "${HEADER_FILES}")
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC ${LIBRARIES} )
 
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+  CcTargetIncludes( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 endif()

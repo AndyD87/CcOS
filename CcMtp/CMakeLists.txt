@@ -6,13 +6,19 @@ elseif(${CCOS_CCMTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   if(MTP_FOUND)
     ########
+    # Add Header Files
+    ########
+    set( HEADER_FILES
+          CcMtpDevice.h
+          CcMtp.h
+    )
+
+    ########
     # Add Source Files
     ########
-    file (GLOB SOURCE_FILES
-          "*.c"
-          "*.cpp"
-          "config/*.xml"
-          "*.h"
+    set( SOURCE_FILES
+          ${HEADER_FILES}
+          CcMtpDevice.cpp
     )
 
     add_definitions(${MTP_DEFINITIONS})
@@ -25,7 +31,8 @@ elseif(${CCOS_CCMTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
     CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES} )
 
-    set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+    set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+    CcTargetHeaders( ${CURRENT_PROJECT} "${HEADER_FILES}")
 
     target_link_libraries ( ${CURRENT_PROJECT} PUBLIC
                                   CcKernel
@@ -35,7 +42,7 @@ elseif(${CCOS_CCMTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     #################
     # Post configuration steps
     #################
-    CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${MTP_INCLUDE_DIR})
+    CcTargetIncludes( ${CURRENT_PROJECT} ${MTP_INCLUDE_DIR})
     CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
   endif()
 endif()

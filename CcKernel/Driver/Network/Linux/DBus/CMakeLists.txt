@@ -54,7 +54,7 @@ if(DBus_FOUND)
     target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                     CcModule ${DBus_LIBRARIES})
 
-    CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${DBus_INCLUDE_DIRS} )
+    CcTargetIncludes( ${CURRENT_PROJECT} ${DBus_INCLUDE_DIRS} )
     CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 
     CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)

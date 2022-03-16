@@ -6,71 +6,72 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   set( GUI_SOURCE_FILES
-              ${CMAKE_CURRENT_LIST_DIR}/CcCross.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/CcGuiApplication.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/CcGuiGlobals.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/CcMenu.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/CcMenuItem.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/CcMenuReverse.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/CcPainter.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/CcTaskbar.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/CcTaskbarItem.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcCalibrationButton.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcCloseButton.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcCrossButton.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcMaximizeButton.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcMinimizeButton.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyle.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleButton.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleText.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleWidget.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleWindow.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTableWidget.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTableWidgetCell.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTableWidgetRow.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTitlebar.cpp
-              ${CMAKE_CURRENT_LIST_DIR}/Widgets/Private/CcTableWidgetColumnData.cpp
+         CcCross.cpp
+         CcGuiApplication.cpp
+         CcGuiGlobals.cpp
+         CcMenu.cpp
+         CcMenuItem.cpp
+         CcMenuReverse.cpp
+         CcPainter.cpp
+         CcTaskbar.cpp
+         CcTaskbarItem.cpp
+         Buttons/CcCalibrationButton.cpp
+         Buttons/CcCloseButton.cpp
+         Buttons/CcCrossButton.cpp
+         Buttons/CcMaximizeButton.cpp
+         Buttons/CcMinimizeButton.cpp
+         Style/CcStyle.cpp
+         Style/CcStyleButton.cpp
+         Style/CcStyleText.cpp
+         Style/CcStyleWidget.cpp
+         Style/CcStyleWindow.cpp
+         Widgets/CcTableWidget.cpp
+         Widgets/CcTableWidgetCell.cpp
+         Widgets/CcTableWidgetRow.cpp
+         Widgets/CcTitlebar.cpp
+         Widgets/Private/CcTableWidgetColumnData.cpp
   )
 
   ########
   # Add Header Files
   ########
   set( GUI_HEADER_FILES
-              ${CMAKE_CURRENT_LIST_DIR}/CcButton.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcCross.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcCrossButton.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcGui.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcGuiApplication.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcGuiGlobals.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcGuiSubsystem.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcMenu.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcMenuItem.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcMenuReverse.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcPainter.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcTaskbar.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcTaskbarItem.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcText.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcWidget.h
-              ${CMAKE_CURRENT_LIST_DIR}/CcWindow.h
+         CcButton.h
+         CcCross.h
+         CcCrossButton.h
+         CcFont.h
+         CcGui.h
+         CcGuiApplication.h
+         CcGuiGlobals.h
+         CcGuiSubsystem.h
+         CcMenu.h
+         CcMenuItem.h
+         CcMenuReverse.h
+         CcPainter.h
+         CcTaskbar.h
+         CcTaskbarItem.h
+         CcText.h
+         CcWidget.h
+         CcWindow.h
 
-              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcButtons.h
-              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcCalibrationButton.h
-              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcCloseButton.h
-              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcMaximizeButton.h
-              ${CMAKE_CURRENT_LIST_DIR}/Buttons/CcMinimizeButton.h
+         Buttons/CcButtons.h
+         Buttons/CcCalibrationButton.h
+         Buttons/CcCloseButton.h
+         Buttons/CcMaximizeButton.h
+         Buttons/CcMinimizeButton.h
 
-              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyle.h
-              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleButton.h
-              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleText.h
-              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleWidget.h
-              ${CMAKE_CURRENT_LIST_DIR}/Style/CcStyleWindow.h
+         Style/CcStyle.h
+         Style/CcStyleButton.h
+         Style/CcStyleText.h
+         Style/CcStyleWidget.h
+         Style/CcStyleWindow.h
 
-              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTableWidget.h
-              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTableWidgetCell.h
-              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTableWidgetRow.h
-              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcTitlebar.h
-              ${CMAKE_CURRENT_LIST_DIR}/Widgets/CcWidgets.h
-              ${CMAKE_CURRENT_LIST_DIR}/Widgets/Private/CcTableWidgetColumnData.h
+         Widgets/CcTableWidget.h
+         Widgets/CcTableWidgetCell.h
+         Widgets/CcTableWidgetRow.h
+         Widgets/CcTitlebar.h
+         Widgets/CcWidgets.h
+         Widgets/Private/CcTableWidgetColumnData.h
   )
 
   set (GUI_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR})
@@ -123,7 +124,7 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   CcAddLibrary(${CURRENT_PROJECT} ${CC_LINK_TYPE}  ${GUI_SOURCE_FILES} ${GUI_HEADER_FILES} )
 
   set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS")
-  set_target_properties( ${CURRENT_PROJECT} PROPERTIES PUBLIC_HEADER "${GUI_HEADER_FILES}")
+  CcTargetHeaders( ${CURRENT_PROJECT} "${GUI_HEADER_FILES}")
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                 CcKernel ${GUI_LIBRARIES}
@@ -176,7 +177,7 @@ elseif(${CCOS_CCGUI_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${GUI_INCLUDES})
+  CcTargetIncludes( ${CURRENT_PROJECT} ${GUI_INCLUDES})
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE  ${GUI_SOURCE_FILES} ${GUI_HEADER_FILES})
 
   ########

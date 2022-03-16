@@ -22,6 +22,6 @@ elseif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
       endif()
     endif()
 
-    CcOSSetInstall(${CURRENT_PROJECT})
+    CcTargetInstall(${CURRENT_PROJECT})
   endif()
 endif()

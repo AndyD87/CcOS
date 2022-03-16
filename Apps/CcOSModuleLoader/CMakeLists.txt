@@ -30,7 +30,7 @@ elseif(${CCOS_APPS_CCOSMODULELOADER_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSSetInstall(${CURRENT_PROJECT})
+  CcTargetInstall(${CURRENT_PROJECT})
   CcOSExeSettings(${CURRENT_PROJECT})
   CcSetFiltersByFolders(${SOURCE_FILES})
 endif()

@@ -29,7 +29,7 @@ elseif(${CCOS_THIRDPARTY_JPEG_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+  CcTargetIncludes( ${CURRENT_PROJECT} )
   # do nothing, do not install static lib!
   CcOSLibSettings(${CURRENT_PROJECT} FALSE FALSE)
 endif()

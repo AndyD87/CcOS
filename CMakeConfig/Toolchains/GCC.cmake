@@ -34,6 +34,14 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif(NOT CMAKE_BUILD_TYPE)
 
+execute_process(  COMMAND ${CMAKE_C_COMPILER} -dumpversion
+                  OUTPUT_VARIABLE GCC_VERSION
+)
+string(STRIP ${GCC_VERSION} GCC_VERSION)
+set(CC_COMPILER         "gcc")
+set(CC_COMPILER_VERSION "gcc${GCC_VERSION}")
+message("- Compiler: ${CC_COMPILER}")
+
 ################################################################################
 # Enable all Warnings
 ################################################################################
@@ -83,7 +91,7 @@ if(ARCH_X64)
 elseif(ARCH_X86)
   set(CC_BUILD_ARCH x86)
 elseif(ARCH_ARM)
-  set(CC_BUILD_ARCH arm)
+  set(CC_BUILD_ARCH arm32)
 else()
   if(DEFINED CMAKE_EXTRA_GENERATOR_CXX_SYSTEM_DEFINED_MACROS)
     string(REGEX MATCH "__i386__" TESTVAR ${CMAKE_EXTRA_GENERATOR_CXX_SYSTEM_DEFINED_MACROS})
@@ -127,7 +135,7 @@ if(${CC_BUILD_ARCH} STREQUAL x64)
   add_definitions(-DCC_BUILD_ARCH=${CC_BUILD_ARCH_X64})
 elseif(${CC_BUILD_ARCH} STREQUAL x86)
   add_definitions(-DCC_BUILD_ARCH=${CC_BUILD_ARCH_X86})
-elseif(${CC_BUILD_ARCH} STREQUAL arm)
+elseif(${CC_BUILD_ARCH} STREQUAL arm32)
   add_definitions(-DCC_BUILD_ARCH=${CC_BUILD_ARCH_ARM})
 elseif(${CC_BUILD_ARCH} STREQUAL arm64)
   add_definitions(-DCC_BUILD_ARCH=${CC_BUILD_ARCH_ARM64})

@@ -34,7 +34,7 @@ elseif(${CCOS_APPS_CCREMOTEDEVICECLIENT_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSSetInstall(${CURRENT_PROJECT})
+  CcTargetInstall(${CURRENT_PROJECT})
   CcOSExeSettings(${CURRENT_PROJECT})
 
 endif()

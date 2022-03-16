@@ -4,14 +4,29 @@ elseif(${CCOS_CCSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set ( CURRENT_PROJECT_IDE_PATH   )
 
   ########
+  # Add Header Files
+  ########
+  set( HEADER_FILES
+        CcSslCertificate.h
+        CcSslControl.h
+        CcSsl.h
+        CcSslSocket.h
+        Hash/CcSslHmac.h
+        Hash/ESslHashAlgorithm.h
+  )
+
+  ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.cpp"
-        "Hash/*.cpp"
-        "config/*.xml"
-        "*.h"
-        "Hash/*.h")
+  set( SOURCE_FILES
+        ${HEADER_FILES}
+        CcSslCertificate.cpp
+        CcSslControl.cpp
+        CcSslSocket.cpp
+        Hash/CcSslHmac.cpp
+        config/default.xml
+        config/openssl.conf
+  )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
@@ -21,8 +36,10 @@ elseif(${CCOS_CCSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES})
 
-  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+  set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+  CcTargetHeaders( ${CURRENT_PROJECT} "${HEADER_FILES}")
 
+  find_package(OpenSSL)
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                   CcKernel
                                   CcOS::ThirParty::ssl )
@@ -30,7 +47,7 @@ elseif(${CCOS_CCSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+  CcTargetIncludes( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 
   ########

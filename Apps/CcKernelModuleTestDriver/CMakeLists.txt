@@ -33,7 +33,7 @@ elseif(${CCOS_APPS_CCKERNELMODULETESTDRIVER_ACTIVE} GREATER ${CCOS_BUILDLEVEL} A
   #################
   # Post configuration steps
   #################
-  CcOSSetInstall(${CURRENT_PROJECT})
+  CcTargetInstall(${CURRENT_PROJECT})
   CcOSExeSettings(${CURRENT_PROJECT})
   CcSetFiltersByFolders(${SOURCE_FILES})
 

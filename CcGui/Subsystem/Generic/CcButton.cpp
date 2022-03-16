@@ -27,6 +27,7 @@
 #include "CcWindow.h"
 #include "CcPainter.h"
 #include "CcText.h"
+#include "CcFont.h"
 
 class CcButton::CPrivate
 {

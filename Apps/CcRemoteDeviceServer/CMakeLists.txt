@@ -36,7 +36,7 @@ elseif(${CCOS_APPS_CCREMOTEDEVICESERVER_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSSetInstall(${CURRENT_PROJECT})
+  CcTargetInstall(${CURRENT_PROJECT})
   CcOSExeSettings(${CURRENT_PROJECT})
   CcSetFiltersByFolders(${SOURCE_FILES})
 

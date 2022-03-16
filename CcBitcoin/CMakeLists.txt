@@ -6,16 +6,23 @@ elseif(${CCOS_CCBITCOIN_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
 
   ########
+  # Add Header Files
+  ########
+  set( HEADER_FILES
+        CcBitcoin.h
+        CcBitcoinAddress.h
+        CcBitcoinBlockTemplate.h
+        CcBitcoinClient.h
+  )
+
+  ########
   # Add Source Files
   ########
-  set(SOURCE_FILES
-      CcBitcoin.h
-      CcBitcoinAddress.cpp
-      CcBitcoinAddress.h
-      CcBitcoinBlockTemplate.cpp
-      CcBitcoinBlockTemplate.h
-      CcBitcoinClient.cpp
-      CcBitcoinClient.h
+  set( SOURCE_FILES
+        ${HEADER_FILES}
+        CcBitcoinAddress.cpp
+        CcBitcoinBlockTemplate.cpp
+        CcBitcoinClient.cpp
   )
 
   set( LIBRARIES
@@ -32,14 +39,15 @@ elseif(${CCOS_CCBITCOIN_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES} )
 
-  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+  set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+  CcTargetHeaders( ${CURRENT_PROJECT} "${HEADER_FILES}")
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC ${LIBRARIES} )
 
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+  CcTargetIncludes( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 
   ########

@@ -41,7 +41,7 @@ if(V4L_FOUND)
     target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                     CcModule ${V4L_LIBRARY})
 
-    CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+    CcTargetIncludes( ${CURRENT_PROJECT} )
     CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 
     CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)

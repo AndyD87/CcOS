@@ -151,7 +151,7 @@ elseif(${CCOS_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   endif()
 
   set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
-  set_target_properties( ${CURRENT_PROJECT} PROPERTIES PUBLIC_HEADER "${HEADER_FILES}")
+  CcTargetHeaders( ${CURRENT_PROJECT} "${HEADER_FILES}")
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC ${LIBRARIES} )
 
@@ -159,7 +159,7 @@ elseif(${CCOS_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+  CcTargetIncludes( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
   CcSetFiltersByFolders(${SOURCE_FILES})
 

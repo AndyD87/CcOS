@@ -27,7 +27,7 @@ elseif(${CCOS_APPS_IHash_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSSetInstall( ${CURRENT_PROJECT} )
+  CcTargetInstall( ${CURRENT_PROJECT} )
   CcSetFiltersByFolders(${SOURCE_FILES})
 
 endif()

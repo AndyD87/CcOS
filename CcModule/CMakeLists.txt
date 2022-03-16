@@ -8,16 +8,16 @@ elseif(${CCOS_CCMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Header Files
   ########
   set( HEADER_FILES
-        "CcModule.h"
-        "IModule.h"
+        CcModule.h
+        IModule.h
   )
 
   ########
   # Add Source Files
   ########
   set( SOURCE_FILES
-        "IModule.cpp"
-        "${HEADER_FILES}"
+        ${HEADER_FILES}
+        IModule.cpp
   )
 
   set(CcModule_LIBRARIES CcKernel)
@@ -33,7 +33,7 @@ elseif(${CCOS_CCMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   CcAddLibrary( ${CURRENT_PROJECT} STATIC ${SOURCE_FILES})
 
   set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
-  set_target_properties( ${CURRENT_PROJECT} PROPERTIES PUBLIC_HEADER "${HEADER_FILES}")
+  CcTargetHeaders( ${CURRENT_PROJECT} "${HEADER_FILES}")
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                 ${CcModule_LIBRARIES} )
@@ -41,7 +41,7 @@ elseif(${CCOS_CCMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+  CcTargetIncludes( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
 
   ########

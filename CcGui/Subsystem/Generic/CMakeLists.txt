@@ -4,7 +4,6 @@
 set( SOURCE_FILES    
       ${CMAKE_CURRENT_LIST_DIR}/CcButton.cpp
       ${CMAKE_CURRENT_LIST_DIR}/CcFont.cpp
-      ${CMAKE_CURRENT_LIST_DIR}/CcFont.h
       ${CMAKE_CURRENT_LIST_DIR}/CcGenericSubSystem.cpp
       ${CMAKE_CURRENT_LIST_DIR}/CcText.cpp
       ${CMAKE_CURRENT_LIST_DIR}/CcWidget.cpp

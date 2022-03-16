@@ -25,6 +25,7 @@
 
 #include "CcText.h"
 #include "CcWindow.h"
+#include "CcFont.h"
 
 class CcText::CPrivate
 {

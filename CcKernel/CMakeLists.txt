@@ -271,7 +271,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set ( KERNEL_LIBRARIES )
   set ( KERNEL_DEFINITIONS -DCcKernel_Build)
   set ( KERNEL_DEPENDENCIES )
-  set ( KERNEL_INCLUDES ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/Types )
+  set ( KERNEL_INCLUDES Types )
   set ( KERNEL_SCRIPTS )
 
   if(TOOLCHAIN_KERNEL_FILES)
@@ -359,8 +359,6 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   add_definitions( ${KERNEL_DEFINITIONS} )
 
-  include_directories( ${KERNEL_INCLUDES} )
-
   if(WINDOWS)
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} KERNEL_SOURCE_FILES)
   endif()
@@ -372,10 +370,9 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   endif()
 
   set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS")
-  set_target_properties( ${CURRENT_PROJECT} PROPERTIES PUBLIC_HEADER "${KERNEL_HEADER_FILES};${KERNEL_TYPE_HEADER};${KERNEL_TYPE_HASH_HEADER}")
+  CcTargetHeaders( ${CURRENT_PROJECT} "${KERNEL_HEADER_FILES};${KERNEL_TYPE_HEADER};${KERNEL_TYPE_HASH_HEADER}")
 
   target_link_libraries ( ${CURRENT_PROJECT} ${KERNEL_LIBRARIES} )
-  target_include_directories(${CURRENT_PROJECT} PUBLIC Types)
 
   foreach(scriptfile ${KERNEL_SCRIPTS})
     if(NOT ${scriptfile} STREQUAL "")
@@ -386,7 +383,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} ${KERNEL_INCLUDES})
+  CcTargetIncludes( ${CURRENT_PROJECT} ${KERNEL_INCLUDES})
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${KERNEL_SOURCE_FILES} ${KERNEL_HEADER_FILES}  ${KERNEL_TYPE_FILES})
 
   ########

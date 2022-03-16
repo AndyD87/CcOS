@@ -7,27 +7,28 @@ elseif( ${CCOS_CCKERNELMODULEINTERFACE_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   #########
   ## Add Source Files
   #########
-  file (GLOB SOURCE_FILES
-        "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
-  )
-  file (GLOB HEADER_FILES
-        "${CMAKE_CURRENT_LIST_DIR}/*.h"
+  set ( HEADER_FILES
+        CcKernelModuleInterface.h
   )
 
+  set ( SOURCE_FILES
+        CcKernelModuleInterface.cpp
+  )
   set( LIBRARIES
         CcKernel
   )
 
   CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES} ${HEADER_FILES})
-  
-  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+
+  set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+  CcTargetHeaders( ${CURRENT_PROJECT} "${HEADER_FILES}")
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC ${LIBRARIES} )
 
   #################
   # Post configuration steps
   #################
-  CcOSTargetIncludeDirs( ${CURRENT_PROJECT} )
+  CcTargetIncludes( ${CURRENT_PROJECT} )
   CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${HEADER_FILES})
 
   ########

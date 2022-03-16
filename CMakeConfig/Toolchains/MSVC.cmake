@@ -23,6 +23,20 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
 endif()
 
+if(MSVC_VERSION)
+  set( CC_COMPILER "msvc")
+  # limit higher versions to highest known today
+  if(${MSVC_VERSION} GREATER 1919)
+    set( CC_COMPILER_VERSION "msvc1920")
+  elseif(${MSVC_VERSION} GREATER 1910)
+    set( CC_COMPILER_VERSION "msvc1910")
+  else()
+    set( CC_COMPILER_VERSION "msvc${MSVC_VERSION}")
+  endif()
+else(GCC)
+  message(FATAL_ERROR "No MSVC Version found")
+endif()
+
 ################################################################################
 # Set common compiler settings: 
 #  - default WarningLevel 4
