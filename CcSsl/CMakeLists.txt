@@ -39,7 +39,6 @@ elseif(${CCOS_CCSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
   CcTargetHeaders( ${CURRENT_PROJECT} "${HEADER_FILES}")
 
-  find_package(OpenSSL)
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                   CcKernel
                                   CcOS::ThirParty::ssl )
