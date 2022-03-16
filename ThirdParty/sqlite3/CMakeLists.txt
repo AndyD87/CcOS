@@ -51,9 +51,11 @@ elseif(${CCOS_THIRDPARTY_SQLITE3_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
     CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES} )
 
-    set_target_properties(  ${ProjectName} PROPERTIES
+    set_target_properties(  ${CURRENT_PROJECT} PROPERTIES
                             VERSION SQLite3_VERSION_CMAKE
-                            SOVERSION SQLite3_VERSION_CMAKE)
+                            SOVERSION SQLite3_VERSION_CMAKE
+                            OUTPUT_NAME sqlite3
+    )
 
     set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/ThirdParty")
 
