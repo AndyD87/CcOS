@@ -21,7 +21,7 @@ endif()
 
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
-endif()
+endif(NOT CMAKE_BUILD_TYPE)
 
 if(MSVC_VERSION)
   set( CC_COMPILER "msvc")
@@ -164,15 +164,6 @@ else()
   endif()
 endif()
 
-if(NOT CC_OUTPUT_RELEASE)
-  CcVisualStudioPostFix(CC_OUTPUT_RELEASE "RELEASE" "${CC_LINK_TYPE}" "${CC_LINK_TYPE_RUNTIME}")
-  set(CC_OUTPUT_RELEASE "${CC_OUTPUT_RELEASE}/")
-endif(NOT CC_OUTPUT_RELEASE)
-
-if(NOT CC_OUTPUT_DEBUG)
-  set(CC_OUTPUT_DEBUG "${CC_OUTPUT_DEBUG}/")
-endif(NOT CC_OUTPUT_DEBUG)
-
 ################################################################################
 # Change output targets for Windows
 ################################################################################
@@ -182,20 +173,24 @@ if(NOT CC_OUTPUT_PREFIX)
   
   # Set runtime output dir to root/output if no other location was defined
   if(NOT CMAKE_RUNTIME_OUTPUT_DIRECTORY)
-    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/default/bin")
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/bin")
   endif()
   
   # Set library output dir to root/output if no other location was defined
   if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
-    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/$default/lib")
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/lib")
   endif()
   
   # Set archive output dir to root/output if no other location was defined
   if(NOT CMAKE_ARCHIVE_OUTPUT_DIRECTORY)
-    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/default/lib/static")
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CC_OUTPUT_DIR}/${CC_OUTPUT_PREFIX}/lib/static")
   else()
     message(${CMAKE_ARCHIVE_OUTPUT_DIRECTORY})
   endif()
+  
+  message("- Default Rintime Output: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+  message("- Default Library Output: ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+  message("- Default Archive Output: ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}")
   
   foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
     string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )

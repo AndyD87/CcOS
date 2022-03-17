@@ -221,7 +221,7 @@ $BuildTypes = @("Debug","Release")
 
 foreach($BuildType in $BuildTypes)
 {
-    $SolutionDir = "..\..\Solution." + $VisualStudio.Year + ".$Architecture.$StaticString.$BuildType"
+    $SolutionDir = "..\..\Solution." + $VisualStudio.Year + ".$Architecture.$StaticString"
 
     if((Test-Path $SolutionDir) -ne $true)
     {
@@ -235,11 +235,11 @@ foreach($BuildType in $BuildTypes)
     {
         "x64"
         {
-            $Paramters = $VisualStudio.CmakeX64
+            $Paramters += $VisualStudio.CmakeX64
         }
         "x86"
         {
-            $Paramters = $VisualStudio.CmakeX86
+            $Paramters += $VisualStudio.CmakeX86
         }
     }
 
@@ -291,7 +291,7 @@ foreach($BuildType in $BuildTypes)
 
     if($DoPackage)
     {
-        $BuildParam = @("./")
+        $BuildParam = @("./", "-C", $BuildType)
         RunCommand cpack $BuildParam
     }
 

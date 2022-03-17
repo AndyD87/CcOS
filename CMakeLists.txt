@@ -56,6 +56,9 @@ if(NOT CC_NO_PROJECT)
     set(PAGE_SUPPORT_NAME  )
     set(PAGE_SUPPORT_VALUE )
   endif()
+  if(NOT CMAKE_INSTALL_CONFIG_NAME)
+    set(CMAKE_INSTALL_CONFIG_NAME ${CMAKE_BUILD_TYPE})
+  endif()
   project(${CMAKE_PROJECT_NAME}
           VERSION       ${CCOS_VERSION_CMAKE} # Value is defined in VERSION.cmake
           LANGUAGES     ${CCOS_LANGUAGES}     # Value is defined in VERSION.cmake
