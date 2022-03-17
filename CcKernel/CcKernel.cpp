@@ -72,14 +72,9 @@ public:
     opNew(malloc),
     opDel(free),
     oMemoryInterface({
-    #ifdef MEMORYMONITOR_ENABLED
       CcMemoryMonitor::remove,
       CcMemoryMonitor::insert
-    #else
-      nullptr,
-      nullptr
-    #endif
-      }),
+    }),
     m_oInterfaceModule(this)
   {}
   CcVersion                     m_oKernelVersion;
@@ -134,11 +129,9 @@ CcKernel::CcKernel()
     atexit(CcKernel::shutdown);
   #endif
   CcKernelPrivate::pPrivate = &CcKernelPrivate::oInstance;
-  #ifdef MEMORYMONITOR_ENABLED
-    CcMemoryMonitor::init();
-    #ifdef MEMORYMONITOR_CHECK_KERNEL
-      CcMemoryMonitor::enable();
-    #endif
+  CcMemoryMonitor::init();
+  #ifdef MEMORYMONITOR_CHECK_KERNEL
+    CcMemoryMonitor::enable();
   #endif
 
   CcConsole::init();
@@ -165,7 +158,6 @@ CcKernel::~CcKernel()
     // Just on generic we have to call it here.
     shutdown();
 
-    #ifdef MEMORYMONITOR_ENABLED
     #ifdef MEMORYMONITOR_CHECK_KERNEL
       // Wait for workers to be ended
     #ifdef WINDOWS
@@ -187,8 +179,7 @@ CcKernel::~CcKernel()
     #endif
       CcMemoryMonitor::disable();
     #endif
-      CcMemoryMonitor::deinit();
-    #endif
+    CcMemoryMonitor::deinit();
   }
 }
 
@@ -438,9 +429,8 @@ void CcKernel::setInterface(IKernel* pInterface)
   {
     CcKernelPrivate::pPrivate = &CcKernelPrivate::oInstance;
   }
-  #ifdef MEMORYMONITOR_ENABLED
-    CcMemoryMonitor::setInterface(&CcKernelPrivate::pPrivate->oMemoryInterface);
-  #endif
+
+  CcMemoryMonitor::setInterface(&CcKernelPrivate::pPrivate->oMemoryInterface);
 }
 
 const CcDevice& CcKernel::addDevice(const CcDevice& Device)

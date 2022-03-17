@@ -19,7 +19,10 @@ PARAM(
     $DoTest = $false,
     [bool]
     [ValidateSet($true, $false)]
-    $RunTests = $false
+    $DoPackage = $false,
+    [bool]
+    [ValidateSet($true, $false)]
+    $Run = $false
 )
 
 if($PSScriptRoot)
@@ -84,22 +87,27 @@ if($VisualStudios.Count -eq 0)
 {
     throw "No Visual Studio found"
 }
-elseif($RunTests -eq $true)
+elseif($Run -eq $true)
 {
     # Do not forward to recursive call
-    $RunTests = $false;
+    $Run = $false;
+    #if test or package is aktive, build is required.
+    if($DoTest -or $DoPackage)
+    {
+        $DoBuild = $true;
+    }
     try
     {
         foreach($VS in $VisualStudios)
         {
             cd $PSScriptRoot
-            .\CmakeVS.ps1 -Version $VS.Year -Architecture x64 -Static $True  -DoBuild $True -DoTest $True -RunTests $False
+            .\CmakeVS.ps1 -Version $VS.Year -Architecture x64 -Static $True  -DoBuild $DoBuild -DoTest $DoTest -DoPackage $DoPackage -Run $False
             cd $PSScriptRoot
-            .\CmakeVS.ps1 -Version $VS.Year -Architecture x64 -Static $False -DoBuild $True -DoTest $True -RunTests $False
+            .\CmakeVS.ps1 -Version $VS.Year -Architecture x64 -Static $False -DoBuild $DoBuild -DoTest $DoTest -DoPackage $DoPackage -Run $False
             cd $PSScriptRoot
-            .\CmakeVS.ps1 -Version $VS.Year -Architecture x86 -Static $True  -DoBuild $True -DoTest $True -RunTests $False
+            .\CmakeVS.ps1 -Version $VS.Year -Architecture x86 -Static $True  -DoBuild $DoBuild -DoTest $DoTest -DoPackage $DoPackage -Run $False
             cd $PSScriptRoot
-            .\CmakeVS.ps1 -Version $VS.Year -Architecture x86 -Static $False -DoBuild $True -DoTest $True -RunTests $False
+            .\CmakeVS.ps1 -Version $VS.Year -Architecture x86 -Static $False -DoBuild $DoBuild -DoTest $DoTest -DoPackage $DoPackage -Run $False
         }
         exit 0
     }
@@ -209,78 +217,83 @@ else
     $StaticString = "Shared"
 }
 
-$SolutionDir = "..\..\Solution." + $VisualStudio.Year + ".$Architecture.$StaticString"
+$BuildTypes = @("Debug","Release")
 
-if((Test-Path $SolutionDir) -ne $true)
+foreach($BuildType in $BuildTypes)
 {
-    New-Item -ItemType Directory $SolutionDir
-}
+    $SolutionDir = "..\..\Solution." + $VisualStudio.Year + ".$Architecture.$StaticString.$BuildType"
 
-cd $SolutionDir
-
-$Paramters = @()
-switch($Architecture)
-{
-    "x64"
+    if((Test-Path $SolutionDir) -ne $true)
     {
-        $Paramters = $VisualStudio.CmakeX64
+        New-Item -ItemType Directory $SolutionDir
     }
-    "x86"
+
+    cd $SolutionDir
+
+    $Paramters = @()
+    switch($Architecture)
     {
-        $Paramters = $VisualStudio.CmakeX86
+        "x64"
+        {
+            $Paramters = $VisualStudio.CmakeX64
+        }
+        "x86"
+        {
+            $Paramters = $VisualStudio.CmakeX86
+        }
     }
-}
 
-$Paramters += "../"
+    $Paramters += "../"
 
-if($Static)
-{
-    $Paramters += "-DCC_LINK_TYPE=STATIC"
-}
+    if($Static)
+    {
+        $Paramters += "-DCC_LINK_TYPE=STATIC"
+    }
 
-Function RunCommand
-{
-    PARAM( $Exe, $Arguments)
+    Function RunCommand
+    {
+        PARAM( $Exe, $Arguments)
     
-    $Params =  $Arguments -join " "
-    $Params = "$Exe " + $Params
+        $Params =  $Arguments -join " "
+        $Params = "$Exe " + $Params
 
-    Write-Host "********************************************************************************"
-    Write-Host "* Next execution:"
-    Write-Host "*     $Params"
-    Write-Host "********************************************************************************"
-    Invoke-Expression $Params
+        Write-Host "********************************************************************************"
+        Write-Host "* Next execution:"
+        Write-Host "*     $Params"
+        Write-Host "********************************************************************************"
+        Invoke-Expression $Params
 
-    if( $LASTEXITCODE -ne 0 )
-    {
-        throw "$Exe failed"
+        if( $LASTEXITCODE -ne 0 )
+        {
+            throw "$Exe failed"
+        }
+
     }
 
+    RunCommand cmake $Paramters
+
+    if($LASTEXITCODE -ne 0)
+    {
+        throw "CMake failed"
+    }
+
+    if($DoBuild)
+    {
+        $BuildParam = @("--build", "./", "--config", $BuildType)
+        RunCommand cmake $BuildParam
+    }
+
+    if($DoTest)
+    {
+        $BuildParam = @("./", "-C", $BuildType)
+        RunCommand ctest $BuildParam
+    }
+
+    if($DoPackage)
+    {
+        $BuildParam = @("./")
+        RunCommand cpack $BuildParam
+    }
+
+    cd $PSScriptRoot
 }
-
-RunCommand cmake $Paramters
-
-if($LASTEXITCODE -ne 0)
-{
-    throw "CMake failed"
-}
-
-if($DoBuild)
-{
-    $BuildParam = @("--build", "./", "--config", "Debug")
-    RunCommand cmake $BuildParam
-
-    $BuildParam = @("--build", "./", "--config", "Release")
-    RunCommand cmake $BuildParam
-}
-
-if($DoTest)
-{
-    $BuildParam = @("./", "-C", "Debug")
-    RunCommand ctest $BuildParam
-    
-    $BuildParam = @("./", "-C", "Release")
-    RunCommand ctest $BuildParam
-}
-
-cd $PSScriptRoot

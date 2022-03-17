@@ -37,15 +37,11 @@ class CcRestApiMemory::CPrivate
 {
 public:
   CPrivate(IRestApi* pParent) 
-#ifdef MEMORYMONITOR_ENABLED
     : oRestApiMemoryMonitor(pParent)
-#endif
   {
     CCUNUSED(pParent);
   }
-#ifdef MEMORYMONITOR_ENABLED
   CcRestApiMemoryMonitor          oRestApiMemoryMonitor;
-#endif
 };
 
 CcRestApiMemory::CcRestApiMemory(IRestApi *pParent) :
@@ -67,11 +63,7 @@ bool CcRestApiMemory::get(CcHttpWorkData& oData)
   CcJsonDocument oDoc;
   CcJsonArray& rRootNode = oDoc.getJsonData().setJsonArray();
 
-#ifdef MEMORYMONITOR_ENABLED
   rRootNode.append(CcJsonNode("BufferCount: ", CcString::fromSize(CcMemoryMonitor::getAllocationCount())));
-#else
-  rRootNode.append(CcJsonNode("BufferCount: ", CcString::fromSize(0)));
-#endif
 
   oData.write(oDoc.getDocument());
   return bSuccess;

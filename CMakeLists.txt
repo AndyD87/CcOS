@@ -16,10 +16,10 @@ if($ENV{TEST_CCOS})
   set(MEMORYMONITOR_ENABLED      TRUE)
   set(MEMORYMONITOR_CHECK_KERNEL TRUE)
 else()
-  # Enable to check memory usage and leakings
-  set(MEMORYMONITOR_ENABLED      TRUE)
-  set(MEMORYMONITOR_CHECK_KERNEL TRUE)
-  add_definitions(-DTESTING_REDUCE_STRESS)
+  # Uncomment to check memory usage and leakings
+  #set(MEMORYMONITOR_ENABLED      TRUE)
+  #set(MEMORYMONITOR_CHECK_KERNEL TRUE)
+  #add_definitions(-DTESTING_REDUCE_STRESS)
 endif()
 
 # Set Debug build if not BUILD_TYPE selected
@@ -102,11 +102,12 @@ CcTargetFiles(${CMAKE_PROJECT_NAME} CMakeConfig/CcMacros.cmake)
 CcExportFiles(CMakeConfig/FindCcOS.cmake)
 
 set(CPACK_PACKAGE_DESCRIPTION         ${CMAKE_PROJECT})
-set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "This Installation includes all required files to link against CcOS")
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "CcOS Framework")
 set(CPACK_PACKAGE_VENDOR              "Andreas Dirmeier")
 set(CPACK_PACKAGE_CONTACT             "coolcow_ccos@yahoo.com")
 set(CPACK_PACKAGE_VERSION             ${PROJECT_VERSION})
 set(CPACK_PACKAGE_INSTALL_DIRECTORY   ${CMAKE_INSTALL_PREFIX})
+set(CPACK_PACKAGE_DIRECTORY           ${CMAKE_CURRENT_SOURCE_DIR}/Packs)
 set(CPACK_RESOURCE_FILE_LICENSE       ${CMAKE_CURRENT_SOURCE_DIR}/Documents/COPYING.LESSER.rtf)
 set(CPACK_ARCHIVE_COMPONENT_INSTALL   "ON")
 
