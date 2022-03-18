@@ -285,13 +285,13 @@ foreach($BuildType in $BuildTypes)
 
     if($DoTest)
     {
-        $BuildParam = @("./", "-C", $BuildType)
+        $BuildParam = @("./", "-C", $BuildType, "--output-on-failure")
         RunCommand ctest $BuildParam
     }
 
     if($DoPackage)
     {
-        $BuildParam = @("./", "-C", $BuildType)
+        $BuildParam = @("-C", $BuildType)
         RunCommand cpack $BuildParam
     }
 

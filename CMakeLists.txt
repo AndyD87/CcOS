@@ -125,7 +125,7 @@ if(LINUX)
 
   include(CPack)
 elseif(WINDOWS)
-  CcVisualStudioPostFix(VS_POSTFIX ${CMAKE_BUILD_TYPE} ${CC_LINK_TYPE} ${CC_LINK_TYPE})
+  CcVisualStudioPostFix(VS_POSTFIX "$\\\{CPACK_BUILD_CONFIG\\\}" ${CC_LINK_TYPE} ${CC_LINK_TYPE})
   set(CPACK_SYSTEM_NAME                 ${VS_POSTFIX})
   set(CPACK_GENERATOR                   "ZIP")
 
