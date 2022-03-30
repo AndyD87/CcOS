@@ -47,7 +47,6 @@ elseif(${CCOS_APPS_CCFS_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   #################
   # Post configuration steps
   #################
-  CcOSSetInstall(${CURRENT_PROJECT})
   CcOSExeSettings(${CURRENT_PROJECT})
   CcSetFiltersByFolders(${SOURCE_FILES})
 
