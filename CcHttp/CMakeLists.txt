@@ -1,7 +1,7 @@
 if(NOT DEFINED CCOS_CCHTTP_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
 elseif(${CCOS_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set ( CURRENT_PROJECT           "CcHttp" )
-  set ( CURRENT_PROJECT_IDE_PATH  "CcNetwork" )
+  set ( CURRENT_PROJECT_IDE_PATH  ""       )
 
   ########
   # Add Header Files

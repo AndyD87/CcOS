@@ -99,8 +99,6 @@ bool CcPassword::setType(EHashType eType)
       bRet = true;
       m_eType = eType;
       break;
-    default:
-      CCDEBUG("Unknown Password type");
   }
   return bRet;
 }
@@ -143,8 +141,6 @@ CcString CcPassword::getTypeAsString(EHashType eType)
     case EHashType::Sha256:
       sRet = CcGlobalStrings::Types::Hash::Sha256;
       break;
-    default:
-      sRet = "ClearText";
   }
   return sRet;
 }

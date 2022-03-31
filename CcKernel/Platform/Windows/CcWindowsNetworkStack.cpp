@@ -89,6 +89,7 @@ ISocket* CcWindowsNetworkStack::getSocket(ESocketType eType)
     case ESocketType::UDP:
       CCNEW(pSocket, CcWindowsSocketUdp);
       break;
+    case ESocketType::Unknown:
     default:
       // Do nothing
       break;

@@ -94,9 +94,8 @@ public:
       {
         case QEvent::Type::Resize:
           this->setSize(ToCcSize(size()));
+          bHandled = true;
           break;
-        default:
-          bHandled = false;
       }
 
       if (!bHandled)
@@ -166,8 +165,6 @@ public:
         break;
       case QEvent::MouseButtonPress:
         bSuccess = false;
-        break;
-      default:
         break;
     }
     bSuccess = QMainWindow::event(event);
@@ -259,26 +256,29 @@ bool CcWindow::setPixelArea(const CcRectangle& oRectangle)
 
 void CcWindow::setWindowState(EWindowState eState)
 {
-  bool bSuccess = true;
+  bool bSuccess = false;
   switch(eState)
   {
     case EWindowState::Maximimized:
+      bSuccess = true;
       m_pPrivate->setWindowState(Qt::WindowState::WindowMaximized);
       break;
     case EWindowState::Minimized:
+      bSuccess = true;
       m_pPrivate->setWindowState(Qt::WindowState::WindowMinimized);
       break;
     case EWindowState::Normal:
+      bSuccess = true;
       m_pPrivate->setWindowState(Qt::WindowState::WindowNoState);
       break;
     case EWindowState::FullScreen:
+      bSuccess = true;
       m_pPrivate->setWindowState(Qt::WindowState::WindowFullScreen);
       break;
     case EWindowState::Close:
+      bSuccess = true;
       m_pPrivate->close();
       break;
-    default:
-      bSuccess = false;
   }
   if(bSuccess)
     m_pPrivate->eState = eState;
@@ -410,8 +410,6 @@ void CcWindow::eventControl(EEventType* eCommand)
     case EEventType::WindowTray:
       setWindowState(EWindowState::Tray);
       break;
-    default:
-      break;
   }
 }
 
@@ -425,7 +423,6 @@ void CcWindow::eventInput(CcInputEvent* pInputEvent)
       break;
     }
     case EEventType::KeyEvent:
-    default:
       break;
   }
 }

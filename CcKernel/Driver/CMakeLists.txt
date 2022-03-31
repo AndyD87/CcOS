@@ -208,8 +208,6 @@ file(APPEND ${CcDriverLoad_TEMP} "  {\n")
     endforeach()
     file(APPEND ${CcDriverLoad_TEMP} "    break;\n")
   endforeach()
-  file(APPEND ${CcDriverLoad_TEMP} "    case EDeviceType::All:\n")
-  file(APPEND ${CcDriverLoad_TEMP} "    default: break;\n")
 file(APPEND ${CcDriverLoad_TEMP} "  }\n")
 file(APPEND ${CcDriverLoad_TEMP} "}\n")
 

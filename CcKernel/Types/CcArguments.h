@@ -26,6 +26,7 @@
 
 #include "CcBase.h"
 #include "CcBase.h"
+#include "CcList.h"
 #include "CcStringList.h"
 #include "CcMapCommon.h"
 
@@ -35,6 +36,24 @@
 class CcKernelSHARED CcArguments : public CcStringList
 {
 public:
+  class CcKernelSHARED CVariableDefinition
+  {
+  public:
+    CVariableDefinition(const CcString& sName, CcVariant::EType eType, const CcString& sDefault = "", const CcString& sDescription = "") :
+      sName(sName),
+      eType(eType),
+      sDefault(sDefault),
+      sDescription(sDescription)
+    {}
+    CcString          sName;
+    CcVariant::EType  eType;
+    CcString          sDefault;
+    CcString          sDescription;
+  };
+
+  typedef CcList<CVariableDefinition> CVariableDefinitionList;
+  class CcKernelSHARED CVariableDefinitionList;
+
   CcArguments() = default;
   ~CcArguments() = default;
 
@@ -101,13 +120,13 @@ public:
    * @param argc: Number of Arguments stored in argv
    * @param argv: Arguments in a array of char strings.
    */
-  void init(int argc, char **argv);
+  bool init(int argc, char **argv);
 
   /**
    * @brief Parse a line with arguments
    * @param sLine: Line to parse
    */
-  void parseLine(const CcString& sLine);
+  bool parseLine(const CcString& sLine);
 
   /**
    * @brief Get Arguments in a line
@@ -141,13 +160,30 @@ public:
   bool contains(const CcString& sKey);
 
   /**
+   * @brief Get all variables the parser is using.
+   * @return Paires of values and variables as Map
+   */
+  const CVariableDefinitionList& getVariablesList() const
+  { return m_oVariables; }
+
+  //! @param oVariables: List of varibles the parser should look for.
+  void setVariablesList(const CVariableDefinitionList& oVariables)
+  { m_oVariables = oVariables; }
+
+  /**
    * @brief Get all variables and their values wich was parsed
    * @return Paires of values and variables as Map
    */
-  const CcStringMap& getVarList() const
-    { return m_oVariables; }
+  const CcVariantMap& getSetVariables() const
+  { return m_oVariablesParsed; }
 
 private:
-  CcStringMap  m_oVariables;
-  CcString     m_sOperators;
+  //! @return Get Type of variable if found, otherwise CcVariant::EType::NoType.
+  CcVariant::EType getType(const CcString& sName);
+  bool parse();
+
+private:
+  CVariableDefinitionList   m_oVariables;
+  CcVariantMap              m_oVariablesParsed;
+  CcStringList              m_oUnparsed;
 };

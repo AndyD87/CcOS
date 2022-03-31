@@ -82,9 +82,8 @@ const CcString& CcStatus::getString() const
       return CcGlobalStrings::Error::NotPermitted;
     case EStatus::AccessDenied:
       return CcGlobalStrings::Error::AccessDenied;
-    default:
-      return CcGlobalStrings::Error::UndefinedError;
   }
+  return CcGlobalStrings::Error::UndefinedError;
 }
 
 //! @param uiError: Set system error and add system error flags

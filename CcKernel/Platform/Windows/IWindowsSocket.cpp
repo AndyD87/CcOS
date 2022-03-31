@@ -27,6 +27,7 @@
 #include <fcntl.h>
 #include "CcKernel.h"
 #include "CcDateTime.h"
+#include <mstcpip.h>
 
 //Statics
 bool IWindowsSocket::g_sWsaStarted = false;
@@ -103,6 +104,8 @@ CcStatus IWindowsSocket::setOption(ESocketOption eOption, void* pData, size_t ui
       oStatus = setOptionRaw(SOL_SOCKET, SO_DONTROUTE, &iEnable, sizeof(iEnable));
       break;
     }
+    case ESocketOption::ReusePort:
+    case ESocketOption::ReuseAddress:
     case ESocketOption::Reuse:
     {
       INT32 iEnable = 1;
@@ -111,6 +114,18 @@ CcStatus IWindowsSocket::setOption(ESocketOption eOption, void* pData, size_t ui
         iEnable = *static_cast<INT32*>(pData);
       }
       oStatus = setOptionRaw(SOL_SOCKET, SO_REUSEADDR, &iEnable, sizeof(iEnable));
+      break;
+    }
+    case ESocketOption::BindToDevice:
+    {
+      if (pData != nullptr)
+      {
+        //! @todo get index of interface by name
+        //CcString* sDevice = static_cast<CcString*>(pData);
+        //INT32 iEnable = 1;
+        oStatus = false;
+        //oStatus = setOptionRaw(SOL_SOCKET, SIO_INDEX_BIND, &iEnable, sizeof(iEnable));
+      }
       break;
     }
     default:

@@ -48,9 +48,6 @@ const CcConfigBinary::CItem* CWlanCredentials::parseBinary(const CcConfigBinary:
       case CcConfigBinary::EType::Password:
         oPassword = pItem->getString();
         break;
-      default:
-        CCERROR("Wrong config item");
-        break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);
@@ -166,8 +163,6 @@ const CcConfigBinary::CItem* CWlanClient::parseBinary(const CcConfigBinary::CIte
         oKnownAccessPoints.append(oCredential);
         break;
       }
-      default:
-        break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);

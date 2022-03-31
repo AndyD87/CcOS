@@ -102,7 +102,6 @@ bool CcMouseEventHandler::call(CcObject* pTarget, CcMouseEvent *pParam)
     case EEventType::MouseMiddleDown:
     case EEventType::MouseRightDown:
     case EEventType::MouseMiddleUp:
-    default:
       break;
   }
   return bSuccess;

@@ -47,7 +47,7 @@ class IIo;
  *        It is able to get value converted to correct type.
  *        Complex datatypes are represented as pointer.
  */
-class CcKernelSHARED  CcVariant
+class CcKernelSHARED CcVariant
 {
 public:
   //! @brief Supported types for CcVarian
@@ -55,6 +55,7 @@ public:
   {
     NoType,
     Bool,
+    Switch, // Switch will be handled like bool
     Int8,
     Uint8,
     Int16,

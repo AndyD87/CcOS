@@ -54,7 +54,6 @@ CcArguments& CcArguments::operator=(CcArguments&& oToMove)
   {
     CcStringList::operator=(CCMOVE(oToMove));
     m_oVariables = CCMOVE(oToMove.m_oVariables);
-    m_sOperators = CCMOVE(oToMove.m_sOperators);
   }
   return *this;
 }
@@ -63,7 +62,6 @@ CcArguments& CcArguments::operator=(const CcArguments& oToCopy)
 {
   CcStringList::operator=(oToCopy);
   m_oVariables = oToCopy.m_oVariables;
-  m_sOperators = oToCopy.m_sOperators;
   return *this;
 }
 
@@ -84,12 +82,13 @@ const CcString& CcArguments::operator[](size_t uiIndex) const
   return at(uiIndex);
 }
 
-void CcArguments::init(int argc, char **argv)
+bool CcArguments::init(int argc, char **argv)
 {
   for (int i = 0; i < argc; i++)
   {
     append(argv[i]);
   }
+  return parse();
 }
 
 CcString CcArguments::getPath() const
@@ -144,7 +143,7 @@ CcString CcArguments::getLine() const
   return sLine;
 }
 
-void CcArguments::parseLine(const CcString& sLine)
+bool CcArguments::parseLine(const CcString& sLine)
 {
   const uint8 _STATE_NO_STATE = 0;
   const uint8 _STATE_IN_QUOTE = 1;
@@ -206,6 +205,7 @@ void CcArguments::parseLine(const CcString& sLine)
   {
     append(sCurrentArgument);
   }
+  return parse();
 }
 
 bool CcArguments::contains(const CcString& sKey)
@@ -218,4 +218,53 @@ bool CcArguments::contains(const CcString& sKey)
     }
   }
   return false;
+}
+
+CcVariant::EType CcArguments::getType(const CcString& sName)
+{
+  CcVariant::EType eType = CcVariant::EType::NoType;
+  for (CVariableDefinition& oDef : m_oVariables)
+  {
+    if (sName == oDef.sName)
+    {
+      eType = oDef.eType;
+      break;
+    }
+  }
+  return eType;
+}
+
+bool CcArguments::parse()
+{
+  bool bSuccess = true;
+  for (size_t uiPos = 0; bSuccess && uiPos < size(); uiPos++)
+  {
+    CcString sLowerValue(at(uiPos).toLower());
+    CcVariant::EType eType = getType(sLowerValue);
+    if (eType != CcVariant::EType::NoType &&
+        uiPos+1 < size())
+    {
+      uiPos++;
+      CcVariant oValue(at(uiPos));
+      bSuccess &= oValue.convert(eType);
+      if (m_oVariablesParsed.containsKey(sLowerValue))
+      {
+        m_oVariablesParsed[sLowerValue] = oValue;
+      }
+      else
+      {
+        m_oVariablesParsed.append(sLowerValue, oValue);
+      }
+    }
+    else if (eType == CcVariant::EType::NoType)
+    {
+      m_oUnparsed.append(at(uiPos));
+    }
+    else
+    {
+      // Missing value, we are at the end
+      bSuccess = false;
+    }
+  }
+  return bSuccess;
 }

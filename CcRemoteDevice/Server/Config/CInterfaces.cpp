@@ -94,9 +94,6 @@ const CcConfigBinary::CItem* CInterfaces::parseBinary(const CcConfigBinary::CIte
       case CcConfigBinary::EType::HttpServer:
         pItem = oHttpServer.parseBinary(pItem, uiMaxSize);
         break;
-      default:
-        CCERROR("Wrong config item");
-        break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);

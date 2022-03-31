@@ -103,9 +103,6 @@ const CcConfigBinary::CItem* CWlanAccessPoint::parseBinary(const CcConfigBinary:
       case CcConfigBinary::EType::DhcpEnable:
         bDhcp = pItem->getBool();
         break;
-      default:
-        CCERROR("Wrong config item");
-        break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);

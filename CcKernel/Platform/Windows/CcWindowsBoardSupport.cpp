@@ -76,10 +76,6 @@ CcDevice CcWindowsBoardSupport::createDevice(EDeviceType eDeviceType, size_t uiD
         }
         break;
       }
-      default:
-      {
-        CCDEBUG("Requested device not found");
-      }
     }
   }
   else

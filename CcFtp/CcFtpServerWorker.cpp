@@ -484,6 +484,45 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       m_Socket.writeString(sTemp);
       break;
     }
+    case EFtpCommands::FTP_ABOR:
+    case EFtpCommands::FTP_ACCT:
+    case EFtpCommands::FTP_ADAT:
+    case EFtpCommands::FTP_ALLO:
+    case EFtpCommands::FTP_APPE:
+    case EFtpCommands::FTP_CCC:
+    case EFtpCommands::FTP_CONF:
+    case EFtpCommands::FTP_ENC:
+    case EFtpCommands::FTP_EPRT:
+    case EFtpCommands::FTP_EPSV:
+    case EFtpCommands::FTP_HELP:
+    case EFtpCommands::FTP_LANG:
+    case EFtpCommands::FTP_LPRT:
+    case EFtpCommands::FTP_LPSV:
+    case EFtpCommands::FTP_MIC:
+    case EFtpCommands::FTP_MLSD:
+    case EFtpCommands::FTP_MLST:
+    case EFtpCommands::FTP_MODE:
+    case EFtpCommands::FTP_NOOP:
+    case EFtpCommands::FTP_PBSZ:
+    case EFtpCommands::FTP_PROT:
+    case EFtpCommands::FTP_QUIT:
+    case EFtpCommands::FTP_REIN:
+    case EFtpCommands::FTP_REST:
+    case EFtpCommands::FTP_SITE:
+    case EFtpCommands::FTP_SMNT:
+    case EFtpCommands::FTP_STAT:
+    case EFtpCommands::FTP_STOU:
+    case EFtpCommands::FTP_STRU:
+    case EFtpCommands::FTP_XCUP:
+    case EFtpCommands::FTP_XMKD:
+    case EFtpCommands::FTP_XPWD:
+    case EFtpCommands::FTP_XRCP:
+    case EFtpCommands::FTP_XRMD:
+    case EFtpCommands::FTP_XRSQ:
+    case EFtpCommands::FTP_XSEM:
+    case EFtpCommands::FTP_XSEN:
+      CCERROR("Unsuported Command: " + Command);
+      break;
     default:
       CCERROR("Unexpected Message: " + Command);
       break;

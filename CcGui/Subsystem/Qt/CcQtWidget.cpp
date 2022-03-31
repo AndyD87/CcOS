@@ -251,8 +251,6 @@ void CcWidget::event(CcInputEvent* pEventData)
           ToQWidget(m_pPrivate->pSubsystem)->show();
           break;
         }
-        default:
-          break;
       }
     }
   }
@@ -311,8 +309,6 @@ void CcWidget::event(CcInputEvent* pEventData)
           }
           break;
         }
-        default:
-          break;
       }
     }
   }

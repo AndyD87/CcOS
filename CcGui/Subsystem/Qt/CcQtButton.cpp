@@ -82,9 +82,8 @@ public:
       {
         case QEvent::Type::Resize:
           pButton->setSize(ToCcSize(size()));
+          bHandled = true;
           break;
-        default:
-          bHandled = false;
       }
 
       if (!bHandled)
@@ -197,20 +196,23 @@ const CcStyleButton& CcButton::getStyle() const
 
 void CcButton::onEvent(CcInputEvent* pEventData)
 {
+  bool bHandled = false;
   switch (pEventData->getType())
   {
     case EEventType::StyleBackgroundColor:
     {
+      bHandled = true;
       break;
     }
     case EEventType::StyleForegroundColor:
     {
+      bHandled = true;
       break;
     }
-    default:
-      CcWidget::onEvent(pEventData);
-      break;
   }
+  // Forward to default handler
+  if(!bHandled)
+    CcWidget::onEvent(pEventData);
 }
 
 void CcButton::onMouseEvent(CcMouseEvent* pEventData)
@@ -228,8 +230,6 @@ void CcButton::onMouseEvent(CcMouseEvent* pEventData)
       break;
     case EEventType::MouseLeftDoubleClick:
       onMouseHover(pEventData);
-      break;
-    default:
       break;
   }
 }

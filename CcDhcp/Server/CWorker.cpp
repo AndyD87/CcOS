@@ -70,9 +70,6 @@ void CWorker::run()
     case EDhcpPacketType::Request:
       processIpV4Discover(true);
       break;
-    default:
-      CCDEBUG("No valid packet type, Do nothing!");
-      break;
   }
 }
 
@@ -170,8 +167,6 @@ void CWorker::processIpV4Discover(bool bIsRequest)
         iArchitecture |= (static_cast<int>(oPacket.options[uiOptionPosIn + 3])     ) & 0xff;
         break;
       }
-      default:
-        break;
     }
   } while (eOption != EDhcpOption::End && uiOptionPosIn != SIZE_MAX);
   if (iArchitecture >= 0)
@@ -241,9 +236,6 @@ void CWorker::setupRequestOption(size_t uiPos)
         {
           m_pPrivate->oPacketSend.addOptionIp(EDhcpOption::Subnet, m_oServer.getConfig().getDns1());
         }
-        break;
-      default:
-        CCVERBOSE("Unknown DHCP Option requested" + CcString::);
         break;
     }
   }

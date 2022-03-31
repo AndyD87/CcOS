@@ -100,27 +100,7 @@ public:
 
   /**
    * @brief Change current state of device, to start, stop or pause them for example;
-   *    Example Implementations in driver
-   *    @code{.cpp}
-   *      virtual CcStatus setState(EState eState);
-   *      CcStatus Class::setState(EState eState)
-   *      {
-   *        CcStatus oStatus = false;
-   *        switch(eState)
-   *        {
-   *          case EState::Start:
-   *            oStatus = true;
-   *            break;
-   *          case EState::Pause:
-   *            oStatus = true;
-   *            break;
-   *          case EState::Stop:
-   *            oStatus = true;
-   *            break;
-   *        }
-   *        return oStatus;
-   *      }
-   *    @endcode
+   *        If current device state is not matching, onState will be called until State is reached.
    * @param eState: New state as enum to set
    * @return Status value for reporting success or known error.
    */

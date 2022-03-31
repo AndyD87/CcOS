@@ -324,6 +324,7 @@ ISocket* CcNetworkStack::getSocket(ESocketType eType)
     case ESocketType::TCP:
       CCNEW(pSocket, CcNetworkSocketTcp, this);
       break;
+    case ESocketType::Unknown:
     default:
       pSocket = nullptr;
   }

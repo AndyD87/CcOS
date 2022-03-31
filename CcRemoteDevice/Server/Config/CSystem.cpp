@@ -93,9 +93,6 @@ const CcConfigBinary::CItem* CSystem::parseBinary(const CcConfigBinary::CItem* p
       case CcConfigBinary::EType::WlanClient:
         pItem = oWlanClient.parseBinary(pItem, uiMaxSize);
         break;
-      default:
-        CCERROR("Wrong config item");
-        break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);

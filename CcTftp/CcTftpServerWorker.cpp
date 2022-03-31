@@ -110,6 +110,7 @@ void CcTftpServerWorker::run()
       case ETftpServerCommands::OACK:
         CCDEBUG("TftpServer Option acknowledged");
         // fall through
+      case ETftpServerCommands::Unkown:
       default:
         CCERROR("Wrong TFTP-Command received");
         sendError(ETftpServerErrors::IllegalOperation);
@@ -355,6 +356,10 @@ void CcTftpServerWorker::sendError(ETftpServerErrors eErrorCode)
       oSendData.append(CcTftpGlobals::ErrorMsgs::Termination.getCharString(), CcTftpGlobals::ErrorMsgs::Termination.length());
       oSendData.append('\0');
       break;
+    case ETftpServerErrors::NoError:
+      // Send Nothing
+      break;
+    case ETftpServerErrors::Unknown:
     default: // ETftpServerErrors::Termination and rest.
       CCERROR("TftpServer: Unknown");
       oSendData.append('\0');

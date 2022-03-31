@@ -39,6 +39,11 @@
 #endif
 //! @}
 
+// Compiler specific settings
+#ifdef _MSC_VER
+  #pragma warning(default : 4061) // Enable unhandled enum warning
+#endif
+
 #if defined(_MSC_VER) || (defined(__INTEL_COMPILER) && defined(_WIN32))
   #if defined(_M_X64)
     #define CCOS_X64 //!< Current build is for a 64 bit Environment

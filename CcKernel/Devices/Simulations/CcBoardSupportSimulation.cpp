@@ -117,10 +117,6 @@ CcDevice CcBoardSupportSimulation::createDevice(EDeviceType eDeviceType, size_t 
         }
         break;
       }
-      default:
-      {
-        CCDEBUG("Requested devie not found");
-      }
     }
   }
   return oDevice;

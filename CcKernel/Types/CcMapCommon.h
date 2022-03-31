@@ -29,6 +29,7 @@
 #include "CcPair.h"
 #include "CcMap.h"
 #include "CcString.h"
+#include "CcVariant.h"
 
 class CcString;
 
@@ -39,6 +40,8 @@ class CcString;
 #ifdef _MSC_VER
 template class CcKernelSHARED CcPair<CcString, CcString>;
 template class CcKernelSHARED CcMap<CcString, CcString>;
+template class CcKernelSHARED CcPair<CcString, CcVariant>;
+template class CcKernelSHARED CcMap<CcString, CcVariant>;
 #endif
 
 //! Pair of strings for defininga String Key and Valy as typically used
@@ -47,6 +50,12 @@ typedef class CcPair<CcString, CcString> CcStringPair;
 //! List of Pair of strings for defining String indexed String Value list
 //! as typically used to store a list of environment variables
 typedef class CcMap<CcString, CcString> CcStringMap;
+//! Pair of strings for defininga String Key and Valy as typically used
+//! on Environment Variables
+typedef class CcPair<CcString, CcVariant> CcStringVariantPair;
+//! List of Pair of strings for defining String indexed String Value list
+//! as typically used to store a list of environment variables
+typedef class CcMap<CcString, CcVariant> CcVariantMap;
 /**
  * @}
  */

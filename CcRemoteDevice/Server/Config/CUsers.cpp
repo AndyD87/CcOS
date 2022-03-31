@@ -107,16 +107,10 @@ const CcConfigBinary::CItem* CUsers::parseBinary(const CcConfigBinary::CItem* pI
           switch (pItem->getType())
           {
             case CcConfigBinary::EType::Name:
-            {
               sUser = pItem->getString();
               break;
-            }
             case CcConfigBinary::EType::Password:
-            {
               sPassword = pItem->getString();
-              break;
-            }
-            default:
               break;
           }
           if (bAllOk)
@@ -128,9 +122,6 @@ const CcConfigBinary::CItem* CUsers::parseBinary(const CcConfigBinary::CItem* pI
         }
         break;
       }
-      default:
-        CCERROR("Wrong config item");
-        break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);

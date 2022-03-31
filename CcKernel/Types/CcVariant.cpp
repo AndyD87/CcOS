@@ -191,6 +191,10 @@ void CcVariant::clear()
 {
   switch (m_eType) 
   {
+    default:
+      // Force compiler warning here for unhandled types
+      m_Data.Pointer = nullptr;
+      break;
     case CcVariant::EType::ByteArray:
       CCDELETE(m_Data.ByteArray);
       break;
@@ -219,6 +223,8 @@ void CcVariant::clear()
       CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       CCFALLTHROUGH;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Int8:
       CCFALLTHROUGH;
     case CcVariant::EType::Uint8:
@@ -243,8 +249,6 @@ void CcVariant::clear()
       CCFALLTHROUGH;
     case CcVariant::EType::Pointer:
       break;
-    default:
-      break;
   };
   m_Data.ui64Data = 0;
   m_eType = CcVariant::EType::NoType;
@@ -256,6 +260,11 @@ bool CcVariant::getBool(bool *bOk) const
   bool bSuccess = false;
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       bRet = m_Data.bData;
       bSuccess = true;
@@ -316,7 +325,16 @@ bool CcVariant::getBool(bool *bOk) const
         bRet = true;
       break;
     case CcVariant::EType::Pointer:
-    default:
+      if (m_Data.Pointer)
+        bRet = true;
+      break;
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
+    case CcVariant::EType::ByteArray:
+      bRet = false;
       break;
   }
   if(bOk != nullptr)
@@ -330,6 +348,11 @@ int8 CcVariant::getInt8(bool *bOk) const
   bool bSuccess = false;
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       iRet = static_cast<int8>(m_Data.bData);
       break;
@@ -376,7 +399,13 @@ int8 CcVariant::getInt8(bool *bOk) const
       iRet = static_cast<int8>(m_Data.DateTime->getTimestampUs());
       break;
     case CcVariant::EType::ByteArray:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Pointer:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
+      bSuccess = false;
       break;
   }
   if(bOk != nullptr)
@@ -391,6 +420,11 @@ uint8 CcVariant::getUint8(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       uiRet = static_cast<uint8>(m_Data.bData);
       break;
@@ -439,8 +473,12 @@ uint8 CcVariant::getUint8(bool *bOk) const
       break;
     case CcVariant::EType::Pointer:
     case CcVariant::EType::ByteArray:
-    default:
-      break;
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
+      bSuccess = false;
   }
   if(bOk != nullptr)
     *bOk = bSuccess;
@@ -454,6 +492,11 @@ int16 CcVariant::getInt16(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       iRet = static_cast<int16>(m_Data.bData);
       break;
@@ -504,7 +547,12 @@ int16 CcVariant::getInt16(bool *bOk) const
       break;
     case CcVariant::EType::Pointer:
     case CcVariant::EType::ByteArray:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
+      bSuccess = false;
       break;
   }
   if(bOk != nullptr)
@@ -519,6 +567,11 @@ uint16 CcVariant::getUint16(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       uiRet = static_cast<uint16>(m_Data.bData);
       break;
@@ -567,7 +620,12 @@ uint16 CcVariant::getUint16(bool *bOk) const
       break;
     case CcVariant::EType::Pointer:
     case CcVariant::EType::ByteArray:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
+      bSuccess = false;
       break;
   }
   if(bOk != nullptr)
@@ -582,6 +640,11 @@ int32 CcVariant::getInt32(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       iRet = static_cast<int32>(m_Data.bData);
       break;
@@ -630,7 +693,11 @@ int32 CcVariant::getInt32(bool *bOk) const
       break;
     case CcVariant::EType::Pointer:
     case CcVariant::EType::ByteArray:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
       bSuccess = false;
       break;
   }
@@ -646,6 +713,11 @@ uint32 CcVariant::getUint32(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       uiRet = static_cast<uint32>(m_Data.bData);
       break;
@@ -694,7 +766,12 @@ uint32 CcVariant::getUint32(bool *bOk) const
       break;
     case CcVariant::EType::Pointer:
     case CcVariant::EType::ByteArray:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
+      bSuccess = false;
       break;
   }
   if(bOk != nullptr)
@@ -709,6 +786,11 @@ int64 CcVariant::getInt64(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       iRet = static_cast<int64>(m_Data.bData);
       break;
@@ -757,7 +839,12 @@ int64 CcVariant::getInt64(bool *bOk) const
       break;
     case CcVariant::EType::Pointer:
     case CcVariant::EType::ByteArray:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
+      bSuccess = false;
       break;
   }
   if(bOk != nullptr)
@@ -772,6 +859,11 @@ uint64 CcVariant::getUint64(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       uiRet = static_cast<uint64>(m_Data.bData);
       break;
@@ -822,7 +914,12 @@ uint64 CcVariant::getUint64(bool *bOk) const
       break;
     case CcVariant::EType::Pointer:
     case CcVariant::EType::ByteArray:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
+      bSuccess = false;
       break;
   }
   if(bOk != nullptr)
@@ -837,6 +934,11 @@ int CcVariant::getInt(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       iRet = static_cast<int>(m_Data.bData);
       break;
@@ -886,7 +988,12 @@ int CcVariant::getInt(bool *bOk) const
       break;
     case CcVariant::EType::Pointer:
     case CcVariant::EType::ByteArray:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
+      bSuccess = false;
       break;
   }
   if(bOk != nullptr)
@@ -901,6 +1008,11 @@ uint CcVariant::getUint(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       uiRet = static_cast<uint>(m_Data.bData);
       break;
@@ -950,7 +1062,12 @@ uint CcVariant::getUint(bool *bOk) const
       break;
     case CcVariant::EType::Pointer:
     case CcVariant::EType::ByteArray:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
+      bSuccess = false;
       break;
   }
   if(bOk != nullptr)
@@ -965,6 +1082,11 @@ size_t CcVariant::getSize(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       uiRet = static_cast<size_t>(m_Data.bData);
       break;
@@ -1015,7 +1137,12 @@ size_t CcVariant::getSize(bool *bOk) const
       break;
     case CcVariant::EType::Pointer:
     case CcVariant::EType::ByteArray:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
+      bSuccess = false;
       break;
   }
   if(bOk != nullptr)
@@ -1030,6 +1157,11 @@ float CcVariant::getFloat(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       uiRet = static_cast<float>(m_Data.bData);
       break;
@@ -1080,7 +1212,12 @@ float CcVariant::getFloat(bool *bOk) const
       break;
     case CcVariant::EType::Pointer:
     case CcVariant::EType::ByteArray:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
+      bSuccess = false;
       break;
   }
   if (bOk != nullptr)
@@ -1095,6 +1232,11 @@ double CcVariant::getDouble(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       uiRet = static_cast<double>(m_Data.bData);
       break;
@@ -1145,7 +1287,12 @@ double CcVariant::getDouble(bool *bOk) const
       break;
     case CcVariant::EType::Pointer:
     case CcVariant::EType::ByteArray:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::StringList:
+      bSuccess = false;
       break;
   }
   if (bOk != nullptr)
@@ -1160,6 +1307,11 @@ CcDateTime CcVariant::getTime(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       uiRet = (time_t)m_Data.bData;
       break;
@@ -1193,11 +1345,11 @@ CcDateTime CcVariant::getTime(bool *bOk) const
     case CcVariant::EType::Size:
       uiRet = (time_t)m_Data.Size;
       break;
-    case CcVariant::EType::String:
-      {
-        uiRet = (time_t)m_Data.String->toUint64(&bSuccess);
-      }
-      break;
+    //case CcVariant::EType::String:
+    //  {
+    //    uiRet = (time_t)m_Data.String->toUint64(&bSuccess);
+    //  }
+    //  break;
     case CcVariant::EType::DateTime:
       uiRet = *m_Data.DateTime;
       bSuccess = true;
@@ -1206,7 +1358,13 @@ CcDateTime CcVariant::getTime(bool *bOk) const
     case CcVariant::EType::Double:
     case CcVariant::EType::Pointer:
     case CcVariant::EType::ByteArray:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::StringList:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::String:
+      bSuccess = false;
       break;
   }
   if(bOk != nullptr)
@@ -1221,6 +1379,11 @@ CcStringList CcVariant::getStringList(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       if (m_Data.bData == false)
         sRet = CcGlobalStrings::Numbers::i0;
@@ -1302,8 +1465,10 @@ CcStringList CcVariant::getStringList(bool *bOk) const
       sRet = m_Data.Uuid->getUuidString();
       bSuccess = true;
       break;
+    case CcVariant::EType::VariantList:
     case CcVariant::EType::Pointer:
-    default:
+    case CcVariant::EType::Ip:
+      bSuccess = false;
       break;
   }
   if(bOk != nullptr)
@@ -1318,6 +1483,11 @@ CcString CcVariant::getString(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       if (m_Data.bData == false)
         sRet = CcGlobalStrings::Numbers::i0;
@@ -1396,7 +1566,10 @@ CcString CcVariant::getString(bool *bOk) const
       bSuccess = true;
       break;
     case CcVariant::EType::Pointer:
-    default:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::StringList:
+    case CcVariant::EType::Ip:
+      bSuccess = false;
       break;
   }
   if(bOk != nullptr)
@@ -1411,6 +1584,9 @@ CcByteArray CcVariant::getByteArray(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
     case CcVariant::EType::ByteArray:
     {
       bSuccess = true;
@@ -1424,6 +1600,7 @@ CcByteArray CcVariant::getByteArray(bool *bOk) const
       break;
     }
     case CcVariant::EType::NoType:
+    case CcVariant::EType::Switch:
     case CcVariant::EType::Bool:
     case CcVariant::EType::Int8:
     case CcVariant::EType::Uint8:
@@ -1438,7 +1615,12 @@ CcByteArray CcVariant::getByteArray(bool *bOk) const
     case CcVariant::EType::Double:
     case CcVariant::EType::DateTime:
     case CcVariant::EType::Pointer:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::StringList:
+    case CcVariant::EType::Ip:
+      bSuccess = false;
       break;
   }
   if (bOk != nullptr)
@@ -1453,6 +1635,9 @@ void* CcVariant::getVoid(bool *bOk) const
   // Check fo correct value in Storage
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
     case CcVariant::EType::ByteArray:
     case CcVariant::EType::String:
     case CcVariant::EType::StringList:
@@ -1464,6 +1649,7 @@ void* CcVariant::getVoid(bool *bOk) const
     }
     case CcVariant::EType::NoType:
     case CcVariant::EType::Bool:
+    case CcVariant::EType::Switch:
     case CcVariant::EType::Int8:
     case CcVariant::EType::Uint8:
     case CcVariant::EType::Int16:
@@ -1476,7 +1662,11 @@ void* CcVariant::getVoid(bool *bOk) const
     case CcVariant::EType::Float:
     case CcVariant::EType::Double:
     case CcVariant::EType::DateTime:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::Ip:
+      bSuccess = false;
       break;
   }
   if (bOk != nullptr)
@@ -1591,9 +1781,14 @@ size_t CcVariant::writeData(void* pBuffer, size_t uiBufferSize) const
   bool bCopy = true;
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
     case CcVariant::EType::NoType:
       uiRet = 0;
       break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       uiRet = 1;
       break;
@@ -1691,7 +1886,9 @@ size_t CcVariant::writeData(void* pBuffer, size_t uiBufferSize) const
         }
       }
       break;
-    default:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::StringList:
+      // do nothing here
       break;
   }
   if (bCopy   &&
@@ -1712,9 +1909,14 @@ size_t CcVariant::writeData(IIo& oIo) const
   bool bCopy = true;
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
     case CcVariant::EType::NoType:
       uiRet = 0;
       break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       uiRet = 1;
       break;
@@ -1782,7 +1984,9 @@ size_t CcVariant::writeData(IIo& oIo) const
       bCopy = false;
       oIo.write(m_Data.Ip, uiRet);
       break;
-    default:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::StringList:
+      // Do nothing here
       break;
   }
   if (bCopy   &&
@@ -1798,9 +2002,14 @@ size_t CcVariant::getWriteDataSize() const
   size_t uiRet = SIZE_MAX;
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
     case CcVariant::EType::NoType:
       uiRet = 0;
       break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
       uiRet = 1;
       break;
@@ -1858,7 +2067,9 @@ size_t CcVariant::getWriteDataSize() const
     case CcVariant::EType::Ip:
       uiRet = sizeof(CcIp);
       break;
-    default:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::StringList:
+      // Do nothing here;
       break;
   }
   return uiRet;
@@ -2125,6 +2336,9 @@ bool CcVariant::isInt() const
   bool bRet = false;
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
     case CcVariant::EType::Int8:
     case CcVariant::EType::Int16:
     case CcVariant::EType::Int32:
@@ -2148,13 +2362,21 @@ bool CcVariant::isInt() const
         bRet = true;
       break;
     case CcVariant::EType::NoType:
+    case CcVariant::EType::Switch:
     case CcVariant::EType::Bool:
     case CcVariant::EType::Size:
     case CcVariant::EType::Float:
     case CcVariant::EType::Double:
     case CcVariant::EType::DateTime:
     case CcVariant::EType::Pointer:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::StringList:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::ByteArray:
+    case CcVariant::EType::String:
+      bRet = false;
       break;
   }
   return bRet;
@@ -2165,6 +2387,11 @@ bool CcVariant::isUint() const
   bool bRet = false;
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+    case CcVariant::EType::Bool:
     case CcVariant::EType::Uint8:
     case CcVariant::EType::Uint16:
     case CcVariant::EType::Uint32:
@@ -2189,12 +2416,18 @@ bool CcVariant::isUint() const
         bRet = true;
       break;
     case CcVariant::EType::NoType:
-    case CcVariant::EType::Bool:
     case CcVariant::EType::Float:
     case CcVariant::EType::Double:
     case CcVariant::EType::DateTime:
     case CcVariant::EType::Pointer:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::StringList:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::ByteArray:
+    case CcVariant::EType::String:
+      bRet = false;
       break;
   }
   return bRet;
@@ -2205,11 +2438,16 @@ bool CcVariant::isFloat() const
   bool bRet = false;
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
     case CcVariant::EType::Double:
     case CcVariant::EType::Float:
       bRet = true;
       break;
     case CcVariant::EType::NoType:
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
     case CcVariant::EType::Uint8:
     case CcVariant::EType::Int8:
@@ -2222,7 +2460,14 @@ bool CcVariant::isFloat() const
     case CcVariant::EType::Size:
     case CcVariant::EType::DateTime:
     case CcVariant::EType::Pointer:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::StringList:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::String:
+    case CcVariant::EType::ByteArray:
+      bRet = false;
       break;
   }
   return bRet;
@@ -2233,10 +2478,15 @@ bool CcVariant::isString() const
   bool bRet = false;
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
     case CcVariant::EType::String:
       bRet = true;
       break;
     case CcVariant::EType::NoType:
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
     case CcVariant::EType::Uint8:
     case CcVariant::EType::Int8:
@@ -2251,7 +2501,13 @@ bool CcVariant::isString() const
     case CcVariant::EType::Double:
     case CcVariant::EType::DateTime:
     case CcVariant::EType::Pointer:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::StringList:
+    case CcVariant::EType::Ip:
+    case CcVariant::EType::ByteArray:
+      bRet = false;
       break;
   }
   return bRet;
@@ -2262,10 +2518,15 @@ bool CcVariant::isByteArray() const
   bool bRet = false;
   switch (m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
     case CcVariant::EType::ByteArray:
       bRet = true;
       break;
     case CcVariant::EType::NoType:
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
     case CcVariant::EType::Uint8:
     case CcVariant::EType::Int8:
@@ -2280,7 +2541,13 @@ bool CcVariant::isByteArray() const
     case CcVariant::EType::Double:
     case CcVariant::EType::DateTime:
     case CcVariant::EType::Pointer:
-    default:
+    case CcVariant::EType::Version:
+    case CcVariant::EType::VariantList:
+    case CcVariant::EType::Uuid:
+    case CcVariant::EType::StringList:
+    case CcVariant::EType::String:
+    case CcVariant::EType::Ip:
+      bRet = false;
       break;
   }
   return bRet;
@@ -2291,6 +2558,11 @@ bool CcVariant::convert(CcVariant::EType eType)
   bool bSuccess = false;
   switch (eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
+    case CcVariant::EType::Switch:
+      CCFALLTHROUGH;
     case CcVariant::EType::Bool:
     {
       bool bConv = getBool(&bSuccess);
@@ -2418,8 +2690,8 @@ bool CcVariant::convert(CcVariant::EType eType)
       break;
     }
     break;
+    case CcVariant::EType::NoType:
     case CcVariant::EType::Pointer:
-    default:
       break;
   }
   return bSuccess;
@@ -2432,6 +2704,9 @@ bool CcVariant::operator==(const CcVariant& oToCompare) const
   {
     switch (m_eType)
     {
+      default:
+        // Force compiler warning here for unhandled types
+        break;
       case CcVariant::EType::String:
         if (*oToCompare.m_Data.String == *m_Data.String)
           bSuccess = true;
@@ -2456,9 +2731,35 @@ bool CcVariant::operator==(const CcVariant& oToCompare) const
         if (*oToCompare.m_Data.Ip == *m_Data.Ip)
           bSuccess = true;
         break;
-      default:
+      case CcVariant::EType::NoType:
+      case CcVariant::EType::Switch:
+      case CcVariant::EType::Bool:
+      case CcVariant::EType::Uint8:
+      case CcVariant::EType::Int8:
+      case CcVariant::EType::Uint16:
+      case CcVariant::EType::Int16:
+      case CcVariant::EType::Uint32:
+      case CcVariant::EType::Int32:
+      case CcVariant::EType::Uint64:
+      case CcVariant::EType::Int64:
+      case CcVariant::EType::Size:
+      case CcVariant::EType::Float:
+      case CcVariant::EType::Double:
         if (oToCompare.m_Data.ui64Data == m_Data.ui64Data)
           bSuccess = true;
+        break;
+      case CcVariant::EType::VariantList:
+        if (*oToCompare.m_Data.VariantList == *oToCompare.m_Data.VariantList)
+          bSuccess = true;
+        break;
+      case CcVariant::EType::StringList:
+        if (*oToCompare.m_Data.StringList == *oToCompare.m_Data.StringList)
+          bSuccess = true;
+        break;
+      case CcVariant::EType::Pointer:
+        if (oToCompare.m_Data.Pointer == oToCompare.m_Data.Pointer)
+          bSuccess = true;
+        break;
     }
   }
   return bSuccess;
@@ -2481,6 +2782,9 @@ CcVariant& CcVariant::operator=(const CcVariant& oToCopy)
 {
   switch (oToCopy.m_eType)
   {
+    default:
+      // Force compiler warning here for unhandled types
+      break;
     case CcVariant::EType::String:
       set(*oToCopy.m_Data.String);
       break;
@@ -2502,9 +2806,28 @@ CcVariant& CcVariant::operator=(const CcVariant& oToCopy)
     case CcVariant::EType::Ip:
       set(*oToCopy.m_Data.Ip);
       break;
-    default:
+    case CcVariant::EType::NoType:
+    case CcVariant::EType::Switch:
+    case CcVariant::EType::Bool:
+    case CcVariant::EType::Uint8:
+    case CcVariant::EType::Int8:
+    case CcVariant::EType::Uint16:
+    case CcVariant::EType::Int16:
+    case CcVariant::EType::Uint32:
+    case CcVariant::EType::Int32:
+    case CcVariant::EType::Uint64:
+    case CcVariant::EType::Int64:
+    case CcVariant::EType::Size:
+    case CcVariant::EType::Float:
+    case CcVariant::EType::Double:
       m_eType = oToCopy.getType();
       m_Data.ui64Data = oToCopy.m_Data.ui64Data;
+      break;
+    case CcVariant::EType::Pointer:
+      set(oToCopy.m_Data.Pointer);
+      break;
+    case CcVariant::EType::DateTime:
+      set(*oToCopy.m_Data.DateTime);
       break;
   }
   return *this;
@@ -2525,6 +2848,10 @@ CcVariant& CcVariant::operator=(const CcVariant& oToCopy)
 bool CcVariant::set(VARIANT& winVariant, VARENUM winVariantType, size_t uiIndex)
 {
   bool bConversionOk = false;
+  #ifdef _MSC_VER
+    // Disable unhandled warning here
+    #pragma warning(disable : 4061)
+  #endif
   switch (winVariantType)
   {
     case VT_BOOL:
@@ -2617,6 +2944,10 @@ bool CcVariant::set(VARIANT& winVariant, VARENUM winVariantType, size_t uiIndex)
         CCDEBUG("CcVariant: Unkown Conversion form WINVARIANT-type: " + CcString::fromNumber(winVariantType));
       }
   }
+  #ifdef _MSC_VER
+    // Reenable unhandled warning here
+    #pragma warning(default : 4061)
+  #endif
   return bConversionOk;
 }
 #endif

@@ -82,6 +82,8 @@ bool CcIcmpProtocol::receive(CcNetworkPacketRef pPacket)
           pResponse->transfer(pIcmpHeader, pPacket->getCurrentSize());
           break;
         }
+        case EType::Echo:
+          // Not a request.
         default:
           pResponse->clear();
       }

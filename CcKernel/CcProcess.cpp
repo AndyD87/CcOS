@@ -92,6 +92,11 @@ CcStatus CcProcess::waitForState(EThreadState eState, const CcDateTime& oTimeout
   CcStatus oRet(EStatus::InvalidHandle);
   switch(eState)
   {
+    case EThreadState::Starting:
+    case EThreadState::Stopping:
+      if (m_pPrivate->m_pThreadHandle != nullptr)
+        oRet = m_pPrivate->m_pThreadHandle->waitForState(eState, oTimeout);
+      break;
     case EThreadState::Stopped:
       oRet = waitForExit(oTimeout);
       break;

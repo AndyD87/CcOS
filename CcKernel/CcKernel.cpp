@@ -616,13 +616,17 @@ void CcKernel::message(EMessage eType)
         CcKernelPrivate::pPrivate->pSystem->warning();
       break;
     case EMessage::Error:
-    default:
       if(CcKernelPrivate::pPrivate && CcKernelPrivate::pPrivate->pSystem)
         CcKernelPrivate::pPrivate->pSystem->error();
 #ifdef DEBUG
       // Stuck on error!
       while(1);
 #endif
+    case EMessage::Info:
+    case EMessage::Debug:
+    case EMessage::Verbose:
+    default:
+      break;
   }
 }
 
@@ -635,8 +639,19 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
       message(eType);
       break;
     case EMessage::Error:
-    default:
       CcConsole::writeLine(CcLog::formatErrorMessage(sMessage));
+      message(eType);
+      break;
+    case EMessage::Info:
+      CcConsole::writeLine(CcLog::formatInfoMessage(sMessage));
+      message(eType);
+      break;
+    case EMessage::Debug:
+      CcConsole::writeLine(CcLog::formatDebugMessage(sMessage));
+      message(eType);
+      break;
+    case EMessage::Verbose:
+      CcConsole::writeLine(CcLog::formatVerboseMessage(sMessage));
       message(eType);
       break;
   }

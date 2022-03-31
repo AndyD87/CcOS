@@ -96,9 +96,8 @@ public:
       {
         case QEvent::Type::Resize:
           pText->setSize(ToCcSize(size()));
+          bHandled = true;
           break;
-        default:
-          bHandled = false;
       }
 
       if (!bHandled)
@@ -179,8 +178,6 @@ void CcText::event(CcInputEvent* pEventData)
       ToQLabel(getSubSysHandle())->setPixmap(oRatioPixmap);
       ToQLabel(getSubSysHandle())->setAlignment(Qt::AlignCenter);
     }
-    default:
-      break;
   }
   if(!bHandled)
   {

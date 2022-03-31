@@ -55,7 +55,6 @@ CcStatus MCP23017::onState(EState eState)
   switch(eState)
   {
     case EState::Start:
-      oStatus = true;
       if(m_pII2CDevice)
       {
         // Make sure IOCON.BANK is 0
@@ -67,14 +66,6 @@ CcStatus MCP23017::onState(EState eState)
           m_pII2CDevice->writeRegister8(REGISTER_IOCON, &uiValue, 1);
         }
       }
-      break;
-    case EState::Pause:
-      oStatus = true;
-      break;
-    case EState::Stop:
-      oStatus = true;
-      break;
-    default:
       break;
   }
   return oStatus;
@@ -125,6 +116,9 @@ bool MCP23017::setPinsDirection(size_t uiPinMask, IGpioPin::EDirection eDirectio
         bSuccess = false;
       }
       break;
+    case IGpioPin::EDirection::Unknown:
+    case IGpioPin::EDirection::Analog:
+    case IGpioPin::EDirection::Alternate:
     default:
       bSuccess = false;
   }
