@@ -42,7 +42,7 @@ CcStatus CcHttpCamera::execGet(CcHttpWorkData& oData)
   CcStatus oSuccess = false;
   if (m_Camera != nullptr)
   {
-    oSuccess = true;
+    oSuccess = false;
     CcImageData oImage = m_Camera->getImage();
     // Strore it to send-buffer
     oData.write(oImage.getBuffer());
@@ -51,20 +51,22 @@ CcStatus CcHttpCamera::execGet(CcHttpWorkData& oData)
     {
       case EImageType::Jpeg:
         oData.getResponse().setContentType(CcHttpGlobals::MIME_IMAGE_JPEG);
+        oSuccess = true;
         break;
       case EImageType::Png:
         oData.getResponse().setContentType(CcHttpGlobals::MIME_IMAGE_PNG);
+        oSuccess = true;
         break;
       case EImageType::Gif:
         oData.getResponse().setContentType(CcHttpGlobals::MIME_IMAGE_GIF);
+        oSuccess = true;
         break;
       case EImageType::Bmp:
         oData.getResponse().setContentType(CcHttpGlobals::MIME_IMAGE_BMP);
+        oSuccess = true;
         break;
       case EImageType::Unknown:
       case EImageType::Raw:
-      default:
-        oSuccess = false;
         break;
     }
   }

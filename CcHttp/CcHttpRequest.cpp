@@ -316,8 +316,6 @@ void CcHttpRequest::setRequestType(EHttpRequestType eType, const CcString& sPath
       sLine = CcHttpGlobalStrings::List;
       sLine << CcGlobalStrings::Space + sPath << " HTTP/1.1";
       break;
-    default:
-      m_eRequestType = EHttpRequestType::Unknown;
   }
   m_oHeaderLines.insert(0, sLine);
 }

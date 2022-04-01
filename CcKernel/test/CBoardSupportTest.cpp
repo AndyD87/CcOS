@@ -30,6 +30,39 @@
 #include "Devices/IBoardSupport.h"
 #include "Devices/Simulations/CcBoardSupportSimulation.h"
 
+class CBoardSupportTestSimulation : IBoardSupport
+{
+  CBoardSupportTestSimulation::CBoardSupportTestSimulation() :
+    IBoardSupport(
+      {
+        CHwDevice(EDeviceType::GpioPort, 0, {}, {CHwDevice::CPort(0,{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15})}),
+        CHwDevice(EDeviceType::I2C     , 0, {CHwDevice::CPort(0,{0,1})}, {CHwDevice::CPort(0,{0})}),
+        CHwDevice(EDeviceType::Spi     , 0, {CHwDevice::CPort(0,{0,1,2})}, {CHwDevice::CPort(0,{0})}),
+        CHwDevice(EDeviceType::Uart    , 0, {CHwDevice::CPort(0,{0,1})}, {})
+      },
+      {
+        CHwPort(0, {CHwPin(0,  0, {0, 2, 3},  "GPIO_I2C_SPI"),
+                    CHwPin(0,  1, {0, 2, 3},  "GPIO_I2C_SPI"),
+                    CHwPin(0,  2, {0, 3},     "GPIO_SPI"),
+                    CHwPin(0,  3, {0},        "GPIO"),
+                    CHwPin(0,  4, {0},        "GPIO"),
+                    CHwPin(0,  5, {0},        "GPIO"),
+                    CHwPin(0,  6, {0},        "GPIO"),
+                    CHwPin(0,  7, {0},        "GPIO"),
+                    CHwPin(0,  8, {0},        "GPIO"),
+                    CHwPin(0,  9, {0},        "GPIO"),
+                    CHwPin(0, 10, {0},        "GPIO"),
+                    CHwPin(0, 11, {0},        "GPIO"),
+                    CHwPin(0, 12, {0},        "GPIO"),
+                    CHwPin(0, 13, {0},        "GPIO"),
+                    CHwPin(0, 14, {0},        "GPIO"),
+                    CHwPin(0, 15, {0},        "GPIO")})
+      }
+    )
+  {
+  }
+};
+
 CBoardSupportTest::CBoardSupportTest() :
   CcTest("CBoardSupportTest")
 {

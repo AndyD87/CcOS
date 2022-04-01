@@ -38,6 +38,12 @@
 #include "CcStatic.h"
 #ifdef WINDOWS
   #include "propvarutil.h"
+
+   // Compiler specific settings
+  #ifdef _MSC_VER
+    #pragma warning(default : 4061) // Enable unhandled enum warning
+  #endif
+
 #endif // WINDOWS
 
 CcVariant CcVariant::oNullVariant;

@@ -112,7 +112,7 @@ void CcRemoteDeviceServerApp::run()
           i++;
           if (i < m_oArguments.size())
           {
-            oServiceArguments.parseLine(m_oArguments[i]);
+            oServiceArguments.parse(m_oArguments[i]);
           }
         }
         else

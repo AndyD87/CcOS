@@ -9,6 +9,8 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   # Add Source Files
   ##############################################################################
   set( SOURCE_FILES
+          ${CMAKE_CURRENT_LIST_DIR}/CArgumentTest.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/CArgumentTest.h
           ${CMAKE_CURRENT_LIST_DIR}/CBaseTest.cpp
           ${CMAKE_CURRENT_LIST_DIR}/CBaseTest.h
           ${CMAKE_CURRENT_LIST_DIR}/CBoardSupportTest.cpp

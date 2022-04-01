@@ -59,7 +59,7 @@ CcTestFramework::CPrivate& CcTestFramework::getPrivate()
 bool CcTestFramework::init(int iArgc, char** ppArgv)
 {
   bool bRet = true;
-  getPrivate().m_oArguments.init(iArgc, ppArgv);
+  getPrivate().m_oArguments.parse(iArgc, ppArgv);
   for (size_t i = 0; i < getPrivate().m_oArguments.size(); i++)
   {
     if (getPrivate().m_oArguments[i].compareInsensitve("repeats"))

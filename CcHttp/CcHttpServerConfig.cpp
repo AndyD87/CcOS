@@ -170,9 +170,6 @@ const CcConfigBinary::CItem* CcHttpServerConfig::parseBinary(const CcConfigBinar
       case CcConfigBinary::EType::Port:
         m_oAddressInfo.setPort(pItem->getUint16());
         break;
-      default:
-        // Ignore
-        break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);

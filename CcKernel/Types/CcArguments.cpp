@@ -28,21 +28,21 @@
 
 CcArguments::CcArguments(int argc, char **argv)
 {
-  init(argc, argv);
+  parse(argc, argv);
 }
 
 CcArguments::CcArguments(const CcString& sArgline)
 {
-  parseLine(sArgline);
+  parse(sArgline);
 }
 
-CcArguments::CcArguments( const CcArguments& oToCopy ) :
+CcArguments::CcArguments(const CcArguments& oToCopy) :
   CcStringList(oToCopy)
 {
   operator=(oToCopy);
 }
 
-CcArguments::CcArguments( CcArguments&& oToMove ) :
+CcArguments::CcArguments(CcArguments&& oToMove) :
   CcStringList(CCMOVE(oToMove))
 {
   operator=(CCMOVE(oToMove));
@@ -82,7 +82,7 @@ const CcString& CcArguments::operator[](size_t uiIndex) const
   return at(uiIndex);
 }
 
-bool CcArguments::init(int argc, char **argv)
+bool CcArguments::parse(int argc, char **argv)
 {
   for (int i = 0; i < argc; i++)
   {
@@ -143,7 +143,7 @@ CcString CcArguments::getLine() const
   return sLine;
 }
 
-bool CcArguments::parseLine(const CcString& sLine)
+bool CcArguments::parse(const CcString& sLine)
 {
   const uint8 _STATE_NO_STATE = 0;
   const uint8 _STATE_IN_QUOTE = 1;

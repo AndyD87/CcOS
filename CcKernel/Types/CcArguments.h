@@ -52,7 +52,9 @@ public:
   };
 
   typedef CcList<CVariableDefinition> CVariableDefinitionList;
-  class CcKernelSHARED CVariableDefinitionList;
+  #ifdef _MSC_VER
+    class CcKernelSHARED CVariableDefinitionList;
+  #endif
 
   CcArguments() = default;
   ~CcArguments() = default;
@@ -116,17 +118,17 @@ public:
   const CcString& operator[](size_t uiIndex) const;
 
   /**
-   * @brief Initialize Arguments with arguments in a format like main will get.
+   * @brief Parse Arguments with arguments in a format like main will get.
    * @param argc: Number of Arguments stored in argv
    * @param argv: Arguments in a array of char strings.
    */
-  bool init(int argc, char **argv);
+  bool parse(int argc, char **argv);
 
   /**
    * @brief Parse a line with arguments
    * @param sLine: Line to parse
    */
-  bool parseLine(const CcString& sLine);
+  bool parse(const CcString& sLine);
 
   /**
    * @brief Get Arguments in a line

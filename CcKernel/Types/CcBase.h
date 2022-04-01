@@ -39,11 +39,6 @@
 #endif
 //! @}
 
-// Compiler specific settings
-#ifdef _MSC_VER
-  #pragma warning(default : 4061) // Enable unhandled enum warning
-#endif
-
 #if defined(_MSC_VER) || (defined(__INTEL_COMPILER) && defined(_WIN32))
   #if defined(_M_X64)
     #define CCOS_X64 //!< Current build is for a 64 bit Environment
@@ -416,6 +411,17 @@
   #else
     #define DEBUG //!< If a System is just defining NDEBUG not DEBUG, define it too.
   #endif
+#endif
+
+#if !defined(__GNUC__) && !defined(__has_attribute)
+  #define __has_attribute(VAL) 0
+#endif
+#if defined(__GNUC__) || __has_attribute(always_inline)
+  #define CPPCODEC_ALWAYS_INLINE inline __attribute__((always_inline))
+#elif defined(_MSC_VER) && !__INTEL_COMPILER && _MSC_VER >= 1310 // since Visual Studio .NET 2003
+  #define CC_FORCE_INLINE inline __forceinline
+#else
+  #define CC_FORCE_INLINE inline
 #endif
 
 #if defined(DEBUG) && defined __cplusplus && !defined(NO_CCOS) && defined(FULL_OS_AVAILABLE)

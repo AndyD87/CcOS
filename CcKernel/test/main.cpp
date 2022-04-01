@@ -26,6 +26,7 @@
 #include "CcBase.h"
 #include "CcKernel.h"
 #include "CBaseTest.h"
+#include "CArgumentTest.h"
 #include "CKernelTest.h"
 #include "CIniFileTest.h"
 #include "CThreadTest.h"
@@ -79,6 +80,7 @@ int main(int iArgc, char** ppArgv)
 
   CcTestFramework_addTest(CBaseTest);
   CcTestFramework_addTest(CKernelTest);
+  CcTestFramework_addTest(CArgumentTest);
   CcTestFramework_addTest(CSystemTest);
   CcTestFramework_addTest(CSystemServiceTest);
   CcTestFramework_addTest(CVectorTest);
