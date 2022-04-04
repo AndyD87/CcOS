@@ -51,10 +51,7 @@ public:
     CcString          sDescription;
   };
 
-  typedef CcList<CVariableDefinition> CVariableDefinitionList;
-  #ifdef _MSC_VER
-    class CcKernelSHARED CVariableDefinitionList;
-  #endif
+  typedef class CcKernelSHARED CcList<CVariableDefinition> CVariableDefinitionList;
 
   CcArguments() = default;
   ~CcArguments() = default;

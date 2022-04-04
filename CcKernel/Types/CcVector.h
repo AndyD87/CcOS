@@ -1093,6 +1093,12 @@ private:
     m_uiSize = uiSize;
   }
 
+  /**
+   *  @brief  This method is required to force msvc to export CcVector(std::initializer_list<TYPE> oList) on inheriting and exporting classes
+   *          It will never be called.
+   */
+  void __force_export() { CcVector<TYPE> oTest({}); }
+
 private:
   TYPE* m_pArray = nullptr; //!< Operating array to work on in vector
   size_t m_uiSize = 0;      //!< Number of items available in m_pArray

@@ -496,7 +496,7 @@ public:
    * @brief Create a list from an braces initalized list like CcList o = {TYPE, TYPE};
    * @param oList: Initialized list to import
    */
-  CcList(std::initializer_list<TYPE> oList)
+  inline CcList(std::initializer_list<TYPE> oList)
   {
     for (const TYPE& e : oList)
     {
@@ -1180,7 +1180,6 @@ public:
     }
   }
 
-
 private:
   CItem* prvtItemAt(size_t uiPos) const
   {
@@ -1212,6 +1211,12 @@ private:
       m_pListBegin = pItemToRemove->pForward;
     }
   }
+
+  /**
+   *  @brief  This method is required to force msvc to export CcList(std::initializer_list<TYPE> oList) on inheriting and exporting classes
+   *          It will never be called.
+   */
+  void __force_export() { CcList<TYPE> oTest({}); }
 
 private:
   CItem* m_pListBegin = nullptr;
