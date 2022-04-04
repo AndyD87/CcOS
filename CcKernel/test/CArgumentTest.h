@@ -45,4 +45,5 @@ public:
   virtual ~CArgumentTest();
 private:
   bool testBasic();
+  bool testFailedTypes();
 };

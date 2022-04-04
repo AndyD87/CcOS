@@ -29,6 +29,7 @@ CArgumentTest::CArgumentTest() :
   CcTest("CArgumentTest")
 {
   appendTestMethod("Test basic callup", &CArgumentTest::testBasic);
+  appendTestMethod("Test string conversion checks", &CArgumentTest::testFailedTypes);
 }
 
 CArgumentTest::~CArgumentTest()
@@ -48,13 +49,80 @@ bool CArgumentTest::testBasic()
       {"-output",     CcVariant::EType::String}
     }
   );
-  oArguments.parse(" -url http://coolcow.de -request get -output \"Test File.html\"");
-  if (oArguments.contains("-url") &&
-      oArguments.contains("-request") &&
-      oArguments.contains("-output") &&
-      oArguments.getVariablesList().size() == 0)
+  if (oArguments.parse(" -url https://coolcow.de Unparsed0 -request get -output \"Test File.html\" Unparsed1"))
   {
-    bRet = true;
+    if (oArguments.contains("-url") &&
+        oArguments.contains("-request") &&
+        oArguments.contains("-output") &&
+        oArguments.getUnparsed().size() == 2)
+    {
+      if (oArguments.getValue("-url").getString() == "https://coolcow.de" &&
+          oArguments.getValue("-request").getString() == "get" &&
+          oArguments.getValue("-output").getString() == "Test File.html" &&
+          oArguments.getUnparsed()[0] == "Unparsed0" &&
+          oArguments.getUnparsed()[1] == "Unparsed1")
+      {
+        bRet = true;
+      }
+    }
+  }
+  return bRet;
+}
+
+bool CArgumentTest::testFailedTypes()
+{
+  bool bRet = false;
+  CcArguments oArguments;
+  oArguments.setVariablesList(
+    {
+      {"-url",        CcVariant::EType::Int32},
+      {"-request",    CcVariant::EType::String, "get"},
+      {"-stream",     CcVariant::EType::Switch},
+      {"-resolution", CcVariant::EType::Uint32},
+      {"-output",     CcVariant::EType::Bool}
+    }
+  );
+  if (!oArguments.parse(" -url string"))
+  {
+    if (oArguments.parse(" -url 20"))
+    {
+      if (!oArguments.parse(" -url 20000000000"))
+      {
+        if (!oArguments.parse(" -url 0x100000000"))
+        {
+          if (oArguments.parse(" -url 0xffffffff") &&
+              oArguments.getValue("-url").isInt() &&
+              oArguments.getValue("-url").getInt32() == -1)
+          {
+            if (oArguments.parse(" -url -1"))
+            {
+              bRet = true;
+            }
+          }
+        }
+      }
+    }
+  }
+  if (bRet == true)
+  {
+    if (oArguments.parse(" -resolution 20"))
+    {
+      if (!oArguments.parse(" -resolution 20000000000"))
+      {
+        if (!oArguments.parse(" -resolution 0x100000000"))
+        {
+          if (oArguments.parse(" -resolution 0xffffffff") &&
+              !oArguments.getValue("-resolution").isInt() &&
+              oArguments.getValue("-resolution").getUint32() == UINT32_MAX)
+          {
+            if (!oArguments.parse(" -resolution -1"))
+            {
+              bRet = true;
+            }
+          }
+        }
+      }
+    }
   }
   return bRet;
 }
