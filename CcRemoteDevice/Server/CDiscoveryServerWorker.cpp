@@ -31,6 +31,7 @@
 #include "Network/CcCommonPorts.h"
 #include "Packets/CRequestDiscover.h"
 #include "CcRemoteDeviceServer.h"
+#include "CcDebug.h"
 
 namespace NRemoteDevice
 {
@@ -55,7 +56,7 @@ void CDiscoveryServerWorker::run()
         }
         else
         {
-          CCERROR("Query response failed");
+          CcDebug::writeInfo("Query response failed for server" + m_oServer.getName());
         }
       }
       oSocket.close();

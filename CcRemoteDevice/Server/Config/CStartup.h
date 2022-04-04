@@ -59,10 +59,7 @@ public:
   };
 
   //! Define list of commands to execute
-  typedef CcList<CCommand> CCommandList;
-  #ifdef _MSC_VER
-    class CcRemoteDeviceSHARED CCommandList;
-  #endif
+  typedef class CcRemoteDeviceSHARED CcList<CCommand> CCommandList;
 
   /**
    * @brief Parse json node to get settings for device from.

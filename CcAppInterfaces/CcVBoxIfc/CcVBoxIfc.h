@@ -126,6 +126,4 @@ private:
   bool m_bExeFound = false; //!< True if setExecutable succeeded otherwise false.
 };
 
-#ifdef _MSC_VER
 template class CcAppInterfacesSHARED CcList<CcVBoxIfc::CVmInfoListItem>;
-#endif

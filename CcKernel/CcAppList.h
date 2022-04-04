@@ -29,9 +29,7 @@
 #include "CcAppListItem.h"
 #include "CcList.h"
 
-#ifdef _MSC_VER
 template class CcKernelSHARED CcList<CcAppListItem>;
-#endif
 
 /**
  * @brief List of Applications and their instances.

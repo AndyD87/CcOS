@@ -67,6 +67,9 @@ CcStatus MCP23017::onState(EState eState)
         }
       }
       break;
+    default:
+      // Unhandled/Not required
+      break;
   }
   return oStatus;
 }

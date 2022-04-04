@@ -117,6 +117,8 @@ CcDevice CcBoardSupportSimulation::createDevice(EDeviceType eDeviceType, size_t 
         }
         break;
       }
+      default:
+        break;
     }
   }
   return oDevice;

@@ -76,6 +76,11 @@ CcDevice CcWindowsBoardSupport::createDevice(EDeviceType eDeviceType, size_t uiD
         }
         break;
       }
+      default:
+      {
+        // Not supported
+        break;
+      }
     }
   }
   else

@@ -136,6 +136,9 @@ CcStatus CcWindowsTimer::onState(EState eState)
       }
       break;
     }
+    default:
+      // Nothing to do
+      break;
   }
   return oStatus;
 }

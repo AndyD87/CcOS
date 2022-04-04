@@ -30,6 +30,8 @@
 #include "CcString.h"
 #include "Network/CcCommonPorts.h"
 #include "Packets/CRequestDiscover.h"
+#include "CcDebug.h"
+#include "CcRemoteDeviceServer.h"
 
 namespace NRemoteDevice
 {
@@ -52,7 +54,7 @@ void CInterfaceServerThread::run()
       }
       else
       {
-        CCERROR("Query response failed");
+        CcDebug::writeInfo("Query response failed for server" + m_oServer.getName());
       }
     }
   }

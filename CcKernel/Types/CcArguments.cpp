@@ -239,7 +239,8 @@ bool CcArguments::parse()
   bool bSuccess = true;
   for (size_t uiPos = 0; bSuccess && uiPos < size(); uiPos++)
   {
-    CcString sLowerValue(at(uiPos).toLower());
+    CcString sLowerValue(at(uiPos));
+    sLowerValue.toLower();
     CcVariant::EType eType = getType(sLowerValue);
     if (eType != CcVariant::EType::NoType &&
         uiPos+1 < size())

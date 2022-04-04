@@ -93,6 +93,9 @@ const CcConfigBinary::CItem* CSystem::parseBinary(const CcConfigBinary::CItem* p
       case CcConfigBinary::EType::WlanClient:
         pItem = oWlanClient.parseBinary(pItem, uiMaxSize);
         break;
+      default:
+        // Unhandled/Not required
+        break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);

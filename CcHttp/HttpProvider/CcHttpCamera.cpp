@@ -68,6 +68,9 @@ CcStatus CcHttpCamera::execGet(CcHttpWorkData& oData)
       case EImageType::Unknown:
       case EImageType::Raw:
         break;
+      default:
+        // Unhandled/Not required
+        break;
     }
   }
   return oSuccess;

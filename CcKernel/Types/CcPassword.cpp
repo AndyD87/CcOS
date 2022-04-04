@@ -99,6 +99,9 @@ bool CcPassword::setType(EHashType eType)
       bRet = true;
       m_eType = eType;
       break;
+    default:
+      // Unhandled/Not required
+      break;
   }
   return bRet;
 }
@@ -140,6 +143,9 @@ CcString CcPassword::getTypeAsString(EHashType eType)
       break;
     case EHashType::Sha256:
       sRet = CcGlobalStrings::Types::Hash::Sha256;
+      break;
+    default:
+      // Unhandled/Not required
       break;
   }
   return sRet;

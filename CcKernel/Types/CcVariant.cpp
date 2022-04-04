@@ -2755,15 +2755,15 @@ bool CcVariant::operator==(const CcVariant& oToCompare) const
           bSuccess = true;
         break;
       case CcVariant::EType::VariantList:
-        if (*oToCompare.m_Data.VariantList == *oToCompare.m_Data.VariantList)
+        if (*m_Data.VariantList == *oToCompare.m_Data.VariantList)
           bSuccess = true;
         break;
       case CcVariant::EType::StringList:
-        if (*oToCompare.m_Data.StringList == *oToCompare.m_Data.StringList)
+        if (*m_Data.StringList == *oToCompare.m_Data.StringList)
           bSuccess = true;
         break;
       case CcVariant::EType::Pointer:
-        if (oToCompare.m_Data.Pointer == oToCompare.m_Data.Pointer)
+        if (m_Data.Pointer == oToCompare.m_Data.Pointer)
           bSuccess = true;
         break;
     }

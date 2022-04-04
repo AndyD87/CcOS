@@ -112,6 +112,9 @@ const CcConfigBinary::CItem* CUsers::parseBinary(const CcConfigBinary::CItem* pI
             case CcConfigBinary::EType::Password:
               sPassword = pItem->getString();
               break;
+            default:
+              // Unhandled/Not required
+              break;
           }
           if (bAllOk)
             bAllOk = pItem->getNext(pItem, uiMaxSize);
@@ -122,6 +125,9 @@ const CcConfigBinary::CItem* CUsers::parseBinary(const CcConfigBinary::CItem* pI
         }
         break;
       }
+      default:
+        // Unhandled/Not required
+        break;
     }
     if (bAllOk)
       bAllOk = pItem->getNext(pItem, uiMaxSize);

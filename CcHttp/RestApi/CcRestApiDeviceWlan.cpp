@@ -55,9 +55,11 @@ bool CcRestApiDeviceWlan::get(CcHttpWorkData& oData)
   {
     case EDeviceType::Wlan:
       return getWlanInfo(oData);
+    default:
+      oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
+      oData.sendHeader();
+      break;
   }
-  oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
-  oData.sendHeader();
   return false;
 }
 
@@ -67,9 +69,11 @@ bool CcRestApiDeviceWlan::post(CcHttpWorkData& oData)
   {
     case EDeviceType::Wlan:
       return postWlanInfo(oData);
+    default:
+      oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
+      oData.sendHeader();
+      break;
   }
-  oData.getResponse().setError(CcHttpGlobals::EError::ErrorMethodNotAllowed);
-  oData.sendHeader();
   return false;
 }
 

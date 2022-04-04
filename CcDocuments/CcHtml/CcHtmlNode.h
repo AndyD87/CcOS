@@ -36,9 +36,7 @@
 class CcHtmlNodeList;
 class CcHtmlNodeListIterator;
 
-#ifdef _MSC_VER
 template class CcDocumentsSHARED CcVector<CcHtmlAttribute>;
-#endif
 
 /**
  * @brief HtmlNode with different Types

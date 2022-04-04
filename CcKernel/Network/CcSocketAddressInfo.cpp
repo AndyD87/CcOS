@@ -141,6 +141,9 @@ void CcSocketAddressInfo::init(ESocketType eSocketType)
       ai_protocol = Cc_IPPROTO_UDP;
       ai_addr->sin_family = Cc_AF_INET;
       break;
+    default:
+      // Unhandled/Not required
+      break;
   }
 }
 

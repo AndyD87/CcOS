@@ -935,10 +935,14 @@ if(NOT CC_MACRO_LOADED)
   ################################################################################
   macro( CcTargetIncludes ProjectName )
     foreach(DIR ${ARGN})
-      list(APPEND DIRS ${DIR} )
-      target_include_directories( ${ProjectName} PUBLIC
-                                    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${DIR}>
-                                    $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/${DIR}> )
+      list(APPEND DIRS ${DIR})
+      if(NOT IS_ABSOLUTE ${DIR} )
+        target_include_directories( ${ProjectName} PUBLIC
+                                      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${DIR}>
+                                      $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/${DIR}> )
+      else()
+        target_include_directories( ${ProjectName} PRIVATE ${DIR})
+      endif()
     endforeach()
     target_include_directories( ${ProjectName} PUBLIC
                                   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>

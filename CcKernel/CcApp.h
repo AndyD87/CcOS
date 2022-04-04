@@ -34,9 +34,7 @@
 class CcVersion;
 class CcApp;
 
-#ifdef _MSC_VER
 template class CcKernelSHARED CcHandle<CcApp>;
-#endif
 
 //! Define a handle for applications.
 typedef CcHandle<CcApp> CcAppHandle;
