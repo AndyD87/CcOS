@@ -49,7 +49,10 @@ bool CArgumentTest::testBasic()
     }
   );
   oArguments.parse(" -url http://coolcow.de -request get -output \"Test File.html\"");
-  if (oArguments.contains("-url"))
+  if (oArguments.contains("-url") &&
+      oArguments.contains("-request") &&
+      oArguments.contains("-output") &&
+      oArguments.getVariablesList().size() == 0)
   {
     bRet = true;
   }

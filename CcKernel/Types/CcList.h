@@ -1212,12 +1212,6 @@ private:
     }
   }
 
-  /**
-   *  @brief  This method is required to force msvc to export CcList(std::initializer_list<TYPE> oList) on inheriting and exporting classes
-   *          It will never be called.
-   */
-  void __force_export() { CcList<TYPE> oTest({}); }
-
 private:
   CItem* m_pListBegin = nullptr;
   CItem* m_pListEnd = nullptr;

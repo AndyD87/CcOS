@@ -38,12 +38,19 @@ public:
   class CcKernelSHARED CVariableDefinition
   {
   public:
-    CVariableDefinition(const CcString& sName, CcVariant::EType eType, const CcString& sDefault = "", const CcString& sDescription = "") :
+    CVariableDefinition(const CcString& sName = "", CcVariant::EType eType = CcVariant::EType::NoType, const CcString& sDefault = "", const CcString& sDescription = "") :
       sName(sName),
       eType(eType),
       sDefault(sDefault),
       sDescription(sDescription)
     {}
+
+    bool operator==(const CVariableDefinition& toCompare) const
+    {
+      return sName == toCompare.sName && eType == toCompare.eType &&
+        sDefault == toCompare.sDefault && sDescription == toCompare.sDescription;
+    }
+
     CcString          sName;
     CcVariant::EType  eType;
     CcString          sDefault;
@@ -175,6 +182,13 @@ public:
   const CcVariantMap& getSetVariables() const
   { return m_oVariablesParsed; }
 
+  //! @return All unused/undefined variables from commandline
+  const CcStringList& getUnparsed() const
+  { return m_oUnparsed; }
+
+  const CcVariant& getValue(const CcString& sKey)
+  { return m_oVariablesParsed.getValue(sKey); }
+
 private:
   //! @return Get Type of variable if found, otherwise CcVariant::EType::NoType.
   CcVariant::EType getType(const CcString& sName);
@@ -185,3 +199,5 @@ private:
   CcVariantMap              m_oVariablesParsed;
   CcStringList              m_oUnparsed;
 };
+
+template class CcKernelSHARED CcList<CcArguments::CVariableDefinition>;
