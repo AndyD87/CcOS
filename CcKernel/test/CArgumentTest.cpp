@@ -42,21 +42,21 @@ bool CArgumentTest::testBasic()
   CcArguments oArguments;
   oArguments.setVariablesList(
     {
-      {"-url",        CcVariant::EType::String},
+      {"-int32",      CcVariant::EType::String},
       {"-request",    CcVariant::EType::String, "get"},
       {"-stream",     CcVariant::EType::String},
-      {"-resolution", CcVariant::EType::Uint32},
+      {"-uint32",     CcVariant::EType::Uint32},
       {"-output",     CcVariant::EType::String}
     }
   );
-  if (oArguments.parse(" -url https://coolcow.de Unparsed0 -request get -output \"Test File.html\" Unparsed1"))
+  if (oArguments.parse(" -int32 https://coolcow.de Unparsed0 -request get -output \"Test File.html\" Unparsed1"))
   {
-    if (oArguments.contains("-url") &&
+    if (oArguments.contains("-int32") &&
         oArguments.contains("-request") &&
         oArguments.contains("-output") &&
         oArguments.getUnparsed().size() == 2)
     {
-      if (oArguments.getValue("-url").getString() == "https://coolcow.de" &&
+      if (oArguments.getValue("-int32").getString() == "https://coolcow.de" &&
           oArguments.getValue("-request").getString() == "get" &&
           oArguments.getValue("-output").getString() == "Test File.html" &&
           oArguments.getUnparsed()[0] == "Unparsed0" &&
@@ -75,26 +75,62 @@ bool CArgumentTest::testFailedTypes()
   CcArguments oArguments;
   oArguments.setVariablesList(
     {
-      {"-url",        CcVariant::EType::Int32},
+      {"-int32",        CcVariant::EType::Int32},
+      {"-uint32",       CcVariant::EType::Uint32},
+      {"-int64",        CcVariant::EType::Int64},
+      {"-uint64",       CcVariant::EType::Uint64},
+      {"-int16",        CcVariant::EType::Int16},
+      {"-uint16",       CcVariant::EType::Uint16},
+      {"-int8",         CcVariant::EType::Int8},
+      {"-uint8",        CcVariant::EType::Uint8},
       {"-request",    CcVariant::EType::String, "get"},
       {"-stream",     CcVariant::EType::Switch},
-      {"-resolution", CcVariant::EType::Uint32},
       {"-output",     CcVariant::EType::Bool}
     }
   );
-  if (!oArguments.parse(" -url string"))
+  if (!oArguments.parse(" -int32 string"))
   {
-    if (oArguments.parse(" -url 20"))
+    if (oArguments.parse(" -int32 20"))
     {
-      if (!oArguments.parse(" -url 20000000000"))
+      if (!oArguments.parse(" -int32 20000000000"))
       {
-        if (!oArguments.parse(" -url 0x100000000"))
+        if (!oArguments.parse(" -int32 0x100000000"))
         {
-          if (oArguments.parse(" -url 0xffffffff") &&
-              oArguments.getValue("-url").isInt() &&
-              oArguments.getValue("-url").getInt32() == -1)
+          if (oArguments.parse(" -int32 -0x1") &&
+              oArguments.getValue("-int32").isInt() &&
+              oArguments.getValue("-int32").getInt32() == -1)
           {
-            if (oArguments.parse(" -url -1"))
+            if (oArguments.parse(" -int32 -1"))
+            {
+              if (!oArguments.parse(" -int32 2147483648"))
+              { 
+                if (oArguments.parse(" -int32 -2147483648"))
+                {
+                  if (!oArguments.parse(" -int32 -2147483649"))
+                  {
+                    bRet = true;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (bRet == true)
+  {
+    if (oArguments.parse(" -uint32 20"))
+    {
+      if (!oArguments.parse(" -uint32 20000000000"))
+      {
+        if (!oArguments.parse(" -uint32 0x100000000"))
+        {
+          if (oArguments.parse(" -uint32 0xffffffff") &&
+              !oArguments.getValue("-uint32").isInt() &&
+              oArguments.getValue("-uint32").getUint32() == UINT32_MAX)
+          {
+            if (!oArguments.parse(" -uint32 -1"))
             {
               bRet = true;
             }
@@ -105,17 +141,158 @@ bool CArgumentTest::testFailedTypes()
   }
   if (bRet == true)
   {
-    if (oArguments.parse(" -resolution 20"))
+    if (!oArguments.parse(" -int64 string"))
     {
-      if (!oArguments.parse(" -resolution 20000000000"))
+      if (oArguments.parse(" -int64 20"))
       {
-        if (!oArguments.parse(" -resolution 0x100000000"))
+        if (!oArguments.parse(" -int64 19223372036854775807"))
         {
-          if (oArguments.parse(" -resolution 0xffffffff") &&
-              !oArguments.getValue("-resolution").isInt() &&
-              oArguments.getValue("-resolution").getUint32() == UINT32_MAX)
+          if (!oArguments.parse(" -int64 0x10000000000000000"))
           {
-            if (!oArguments.parse(" -resolution -1"))
+            if (oArguments.parse(" -int64 -0x1") &&
+                oArguments.getValue("-int64").isInt() &&
+                oArguments.getValue("-int64").getInt64() == -1)
+            {
+              if (oArguments.parse(" -int64 -1"))
+              {
+                if (!oArguments.parse(" -int64 9223372036854775808"))
+                {
+                  if (oArguments.parse(" -int64 -9223372036854775808"))
+                  {
+                    if (!oArguments.parse(" -int64 -9223372036854775809"))
+                    {
+                      bRet = true;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (bRet == true)
+  {
+    if (oArguments.parse(" -uint64 20"))
+    {
+      if (!oArguments.parse(" -uint64 19223372036854775807"))
+      {
+        if (!oArguments.parse(" -uint64 0x10000000000000000"))
+        {
+          if (oArguments.parse(" -uint64 0xffffffffffffffff") &&
+              !oArguments.getValue("-uint64").isInt() &&
+              oArguments.getValue("-uint64").getUint64() == UINT64_MAX)
+          {
+            if (!oArguments.parse(" -uint64 -1"))
+            {
+              bRet = true;
+            }
+          }
+        }
+      }
+    }
+  }
+  if (bRet == true)
+  {
+    if (!oArguments.parse(" -int16 string"))
+    {
+      if (oArguments.parse(" -int16 20"))
+      {
+        if (!oArguments.parse(" -int16 165535"))
+        {
+          if (!oArguments.parse(" -int16 0x10000"))
+          {
+            if (oArguments.parse(" -int16 -0x1") &&
+                oArguments.getValue("-int16").isInt() &&
+                oArguments.getValue("-int16").getInt16() == -1)
+            {
+              if (oArguments.parse(" -int16 -1"))
+              {
+                if (!oArguments.parse(" -int16 32768"))
+                {
+                  if (oArguments.parse(" -int16 -32768"))
+                  {
+                    if (!oArguments.parse(" -int16 -32769"))
+                    {
+                      bRet = true;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (bRet == true)
+  {
+    if (oArguments.parse(" -uint16 20"))
+    {
+      if (!oArguments.parse(" -uint16 165535"))
+      {
+        if (!oArguments.parse(" -uint16 0x10000"))
+        {
+          if (oArguments.parse(" -uint16 0xffff") &&
+              !oArguments.getValue("-uint16").isInt() &&
+              oArguments.getValue("-uint16").getUint16() == UINT16_MAX)
+          {
+            if (!oArguments.parse(" -uint16 -1"))
+            {
+              bRet = true;
+            }
+          }
+        }
+      }
+    }
+  }
+  if (bRet == true)
+  {
+    if (!oArguments.parse(" -int8 string"))
+    {
+      if (oArguments.parse(" -int8 20"))
+      {
+        if (!oArguments.parse(" -int8 1255"))
+        {
+          if (!oArguments.parse(" -int8 0x100"))
+          {
+            if (oArguments.parse(" -int8 -0x1") &&
+                oArguments.getValue("-int8").isInt() &&
+                oArguments.getValue("-int8").getInt8() == -1)
+            {
+              if (oArguments.parse(" -int8 -1"))
+              {
+                if (!oArguments.parse(" -int8 256"))
+                {
+                  if (oArguments.parse(" -int8 -256"))
+                  {
+                    if (!oArguments.parse(" -int8 -257"))
+                    {
+                      bRet = true;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  if (bRet == true)
+  {
+    if (oArguments.parse(" -uint8 20"))
+    {
+      if (!oArguments.parse(" -uint8 256"))
+      {
+        if (!oArguments.parse(" -uint8 0x100"))
+        {
+          if (oArguments.parse(" -uint8 0xff") &&
+              !oArguments.getValue("-uint8").isInt() &&
+              oArguments.getValue("-uint8").getUint8() == UINT8_MAX)
+          {
+            if (!oArguments.parse(" -uint8 -1"))
             {
               bRet = true;
             }

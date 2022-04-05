@@ -854,6 +854,11 @@ uint32 CcStringUtil::toUint32(const char* pcString, size_t uiLen, bool* pbOk, ui
         break;
       }
     }
+    if(uiPos < uiLen &&
+       !CcStringUtil::isWhiteSpace(pcString[uiPos]))
+    {
+      bOk = false;
+    }
   }
   if (pbOk != nullptr)
   {

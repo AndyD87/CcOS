@@ -409,6 +409,7 @@ int64 CcString::toInt64( bool *pbOk, uint8 uiBase) const
 {
   int64 uiRet = 0;
   bool bNeg = false;
+  bool bOk = false;
   size_t uiPos = posNextNotWhitespace();
   if (uiPos < length() && m_pBuffer[uiPos] == '-')
   {
@@ -417,13 +418,27 @@ int64 CcString::toInt64( bool *pbOk, uint8 uiBase) const
   }
   if (uiPos < length())
   {
-    uiRet = CcStringUtil::toUint64(getCharString() + uiPos, length() - uiPos, pbOk, uiBase);
-    if (bNeg)
-      uiRet = 0 - uiRet;
+    uint64 uiTemp = CcStringUtil::toUint64(getCharString() + uiPos, length() - uiPos, &bOk, uiBase);
+    if (bOk &&
+        bNeg && uiTemp <= 0x8000000000000000)
+    {
+      uiRet = 0l - uiTemp;
+      bOk = true;
+    }
+    else if (
+      bOk && !bNeg && uiTemp <= ~0x8000000000000000)
+    {
+      uiRet = uiTemp;
+      bOk = true;
+    }
+    else
+    {
+      bOk = false;
+    }
   }
-  else if (pbOk != nullptr)
+  if (pbOk != nullptr)
   {
-    *pbOk = false;
+    *pbOk = bOk;
   }
   return uiRet;
 }
@@ -432,6 +447,7 @@ int32 CcString::toInt32(bool *pbOk, uint8 uiBase) const
 {
   int32 uiRet = 0;
   bool bNeg = false;
+  bool bOk = false;
   size_t uiPos = posNextNotWhitespace();
   if (uiPos < length() && m_pBuffer[uiPos] == '-')
   {
@@ -440,25 +456,87 @@ int32 CcString::toInt32(bool *pbOk, uint8 uiBase) const
   }
   if (uiPos < length())
   {
-    uiRet = CcStringUtil::toUint32(getCharString() + uiPos, length() - uiPos, pbOk, uiBase);
-    if (bNeg)
-      uiRet = 0 - uiRet;
+    uint32 uiTemp = CcStringUtil::toUint32(getCharString() + uiPos, length() - uiPos, &bOk, uiBase);
+    if (bOk &&
+      bNeg && uiTemp <= 0x80000000)
+    {
+      uiRet = 0l - uiTemp;
+      bOk = true;
+    }
+    else if (
+      bOk && !bNeg && uiTemp <= ~0x80000000)
+    {
+      uiRet = uiTemp;
+      bOk = true;
+    }
+    else
+    {
+      bOk = false;
+    }
   }
-  else if (pbOk != nullptr)
+  if (pbOk != nullptr)
   {
-    *pbOk = false;
+    *pbOk = bOk;
   }
   return uiRet;
 }
 
 int16 CcString::toInt16(bool *pbOk, uint8 uiBase) const
 {
-  return static_cast<int16>(toInt32(pbOk, uiBase));
+  bool bOk = false;
+  int16 i16 = 0;
+  int32 i32 = toInt32(&bOk, uiBase);
+  if (bOk)
+  {
+    if (i32 >= 0 &&
+        i32 < 0x8000)
+    {
+      i16 = static_cast<int16>(i32);
+    }
+    else if (i32 < 0 &&
+             i32 >= -0x8000)
+    {
+      i16 = static_cast<int16>(i32);
+    }
+    else
+    {
+      bOk = false;
+    }
+  }
+  if (pbOk != nullptr)
+  {
+    *pbOk = bOk;
+  }
+  return i16;
 }
 
 int8 CcString::toInt8(bool *pbOk, uint8 uiBase) const
 {
-  return static_cast<int8>(toInt32(pbOk, uiBase));
+  bool bOk = false;
+  int8 i8 = 0;
+  int32 i32 = toInt32(&bOk, uiBase);
+  if (bOk)
+  {
+    if (i32 >= 0 &&
+        i32 < 0x80)
+    {
+      i8 = static_cast<int8>(i32);
+    }
+    else if (i32 < 0 &&
+             i32 >= -0x80)
+    {
+      i8 = static_cast<int8>(i32);
+    }
+    else
+    {
+      bOk = false;
+    }
+  }
+  if (pbOk != nullptr)
+  {
+    *pbOk = bOk;
+  }
+  return i8;
 }
 
 float CcString::toFloat(bool* pbOk) const
