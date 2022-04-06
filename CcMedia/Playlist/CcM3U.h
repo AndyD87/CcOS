@@ -49,7 +49,7 @@ public:
   public:
     float fLength;
     CcString sName;
-    CcString sPath
+    CcString sPath;
   };
 
   class CcMediaSHARED CExtXMediaType
