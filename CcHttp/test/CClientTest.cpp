@@ -29,10 +29,10 @@
 #include "CcProcess.h"
 #include "CcStringUtil.h"
 #include "CcHttpClient.h"
-#include "CcJson/CcJsonDocument.h"
-#include "CcJson/CcJsonArray.h"
-#include "CcJson/CcJsonObject.h"
-#include "CcJson/CcJsonNode.h"
+#include "Json/CcJsonDocument.h"
+#include "Json/CcJsonArray.h"
+#include "Json/CcJsonObject.h"
+#include "Json/CcJsonNode.h"
 
 //! Default timeout value for nginx operations
 #define DEFAULT_TIMEOUT_TEST CcDateTimeFromSeconds(5)

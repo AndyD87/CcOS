@@ -24,8 +24,8 @@
  */
 #include "CcOSBuildConfigProject.h"
 #include "CcOSBuildConfigGlobals.h"
-#include "CcXml/CcXmlNode.h"
-#include "CcXml/CcXmlUtil.h"
+#include "Xml/CcXmlNode.h"
+#include "Xml/CcXmlUtil.h"
 #include "CcSharedPointer.h"
 #include "CcOSBuildConfigDirectory.h"
 #include "CcGlobalStrings.h"

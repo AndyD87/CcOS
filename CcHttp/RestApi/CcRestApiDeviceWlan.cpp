@@ -24,9 +24,9 @@
  */
 #include "CcRestApiDeviceWlan.h"
 #include "CcHttpWorkData.h"
-#include "CcJson/CcJsonDocument.h"
-#include "CcJson/CcJsonArray.h"
-#include "CcJson/CcJsonObject.h"
+#include "Json/CcJsonDocument.h"
+#include "Json/CcJsonArray.h"
+#include "Json/CcJsonObject.h"
 #include "CcKernel.h"
 #include "CcSystem.h"
 #include "CcVersion.h"

@@ -701,6 +701,10 @@
 //! @param ARRAY: Array to get number of items from
 #define CCSIZEOFARRAY(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 
+//! @brief Get length of a string, not it's size
+//! @param STRING: String to get the length from
+#define CCLENGTHOFSTRING(STRING) (sizeof(STRING)-1)
+
 #ifndef CCTHROW_BAD_ALLOC
   #if defined(_MSC_VER) || defined(__clang__)
     #define CCTHROW_BAD_ALLOC        //!< Define an empty CCTHROW_BAD_ALLOC if not existing

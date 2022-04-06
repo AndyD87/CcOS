@@ -25,7 +25,7 @@
 #include "CcImageRaw.h"
 #include "CcFile.h"
 #include "CcStatic.h"
-#include "Converter/IImageConverter.h"
+#include "IImageConverter.h"
 
 CcImageRaw::CcImageRaw()
 {

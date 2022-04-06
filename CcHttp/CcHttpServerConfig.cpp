@@ -27,8 +27,8 @@
 #include "CcHttpServerConfig.h"
 #include "Network/CcSocket.h"
 #include "Network/CcCommonIps.h"
-#include "CcJson/CcJsonNode.h"
-#include "CcJson/CcJsonObject.h"
+#include "Json/CcJsonNode.h"
+#include "Json/CcJsonObject.h"
 #include "NDocumentsGlobals.h"
 
 const CcString CcHttpServerConfig::s_sDefaultSslKey("Key.crt");

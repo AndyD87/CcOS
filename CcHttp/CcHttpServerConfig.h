@@ -31,7 +31,7 @@
 #include "CcHttpTransferEncoding.h"
 #include "Network/CcSocketAddressInfo.h"
 #include "Network/CcCommonPorts.h"
-#include "CcConfig/CcConfigBinary.h"
+#include "Config/CcConfigBinary.h"
 
 class CcJsonNode;
 

@@ -160,6 +160,7 @@
     <StaticRuntime>true</StaticRuntime>
     <Dependencies>
       <Dependency>CcKernel</Dependency>
+      <Dependency>CcHttp</Dependency>
     </Dependencies>
     <Features>
       <Feature>jpeg</Feature>

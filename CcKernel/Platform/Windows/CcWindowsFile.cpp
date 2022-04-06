@@ -182,11 +182,6 @@ bool CcWindowsFile::isFile() const
   {
     oSuccess = true;
   }
-  else
-  {
-    DWORD dwError = GetLastError();
-    oSuccess.setSystemError(dwError);
-  }
   return oSuccess;
 }
 

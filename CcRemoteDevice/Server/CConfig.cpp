@@ -31,7 +31,7 @@
 #include "CcKernel.h"
 #include "CcMemoryMonitor.h"
 #include "CcUuidKnown.h"
-#include "CcJson/CcJsonObject.h"
+#include "Json/CcJsonObject.h"
 #include "Resources/CcRemoteDeviceGeneric.json.h"
 #include "CcFile.h"
 #include "NDocumentsGlobals.h"

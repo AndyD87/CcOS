@@ -30,9 +30,9 @@
 #include "CcString.h"
 #include "CcList.h"
 #include "CcPassword.h"
-#include "CcJson/CcJsonObject.h"
+#include "Json/CcJsonObject.h"
 #include "IIo.h"
-#include "CcConfig/CcConfigBinary.h"
+#include "Config/CcConfigBinary.h"
 
 namespace NRemoteDevice
 {

@@ -24,10 +24,10 @@
  */
 #include "CcBitcoinClient.h"
 #include "CcByteArray.h"
-#include "CcJson/CcJsonDocument.h"
-#include "CcJson/CcJsonNode.h"
-#include "CcJson/CcJsonObject.h"
-#include "CcJson/CcJsonArray.h"
+#include "Json/CcJsonDocument.h"
+#include "Json/CcJsonNode.h"
+#include "Json/CcJsonObject.h"
+#include "Json/CcJsonArray.h"
 
 CcBitcoinClient::CcBitcoinClient() :
   m_sUser("Testnet"),

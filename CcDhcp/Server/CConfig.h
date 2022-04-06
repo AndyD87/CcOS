@@ -28,7 +28,7 @@
 #include "CcDhcp.h"
 #include "Network/CcCommonPorts.h"
 #include "Network/CcSocketAddressInfo.h"
-#include "CcConfig/CcConfig.h"
+#include "Config/CcConfig.h"
 
 namespace NDhcp
 {

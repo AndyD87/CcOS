@@ -23,8 +23,8 @@
  * @brief     Implemtation of class CXmlTest
  */
 #include "CXmlTest.h"
-#include "CcXml/CcXmlNode.h"
-#include "CcXml/CcXmlDocument.h"
+#include "Xml/CcXmlNode.h"
+#include "Xml/CcXmlDocument.h"
 
 //! Large xml data to parse
 const char cTestXml[] = "<CcSyncClient>                          \

@@ -8,10 +8,19 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.c"
-        "*.cpp"
-        "*.h")
+  set(SOURCE_FILES
+        CImageBmpTest.cpp
+        CImageBmpTest.h
+        CImagePpmTest.cpp
+        CImagePpmTest.h
+        CImageRawTest.cpp
+        CImageRawTest.h
+        CImageTest.cpp
+        CImageTest.h
+        CM3UTest.cpp
+        CM3UTest.h
+        main.cpp
+  )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 

@@ -25,7 +25,7 @@
  * @brief     Implemtation of class CSystem
  */
 #include "CSystem.h"
-#include "CcConfig/CcConfigBinary.h"
+#include "Config/CcConfigBinary.h"
 #include "NDocumentsGlobals.h"
 
 namespace NRemoteDevice

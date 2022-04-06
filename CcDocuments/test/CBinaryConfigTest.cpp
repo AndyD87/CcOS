@@ -24,7 +24,7 @@
  */
 #include "CBinaryConfigTest.h"
 #include "CcKernel.h"
-#include "CcConfig/CcConfigBinary.h"
+#include "Config/CcConfigBinary.h"
 
 CBinaryConfigTest::CBinaryConfigTest() :
   CcTest<CBinaryConfigTest>("CBinaryConfigTest")

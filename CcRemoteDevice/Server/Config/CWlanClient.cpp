@@ -25,7 +25,7 @@
  * @brief     Implemtation of class CWlanClient
  */
 #include "CWlanClient.h"
-#include "CcJson/CcJsonArray.h"
+#include "Json/CcJsonArray.h"
 #include "NDocumentsGlobals.h"
 
 namespace NRemoteDevice

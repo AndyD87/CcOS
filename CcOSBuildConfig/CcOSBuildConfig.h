@@ -25,7 +25,7 @@
 #pragma once
 
 #include "CcBase.h"
-#include "CcXml/CcXmlFile.h"
+#include "Xml/CcXmlFile.h"
 #include "CcOSBuildConfigBase.h"
 #include "CcOSBuildConfigDirectory.h"
 #include "CcOSBuildConfigProject.h"

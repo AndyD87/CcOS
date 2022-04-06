@@ -27,7 +27,7 @@
 #include "CcFile.h"
 #include "CcString.h"
 #include "Resources/CcRemoteDeviceGeneric.json.h"
-#include "CcJson/CcJsonDocument.h"
+#include "Json/CcJsonDocument.h"
 #include "CcRemoteDeviceServer.h"
 #include "Server/CConfig.h"
 

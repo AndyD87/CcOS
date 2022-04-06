@@ -29,6 +29,7 @@
 #include "CImageRawTest.h"
 #include "CImageBmpTest.h"
 #include "CImagePpmTest.h"
+#include "CM3UTest.h"
 
 /**
  * @brief Default application entry point
@@ -43,6 +44,7 @@ int main(int iArgc, char** ppArgv)
   CcTestFramework_addTest(CImageRawTest);
   CcTestFramework_addTest(CImageBmpTest);
   CcTestFramework_addTest(CImagePpmTest);
+  CcTestFramework_addTest(CM3UTest);
 
   CcTestFramework::runTests();
   return CcTestFramework::deinit();

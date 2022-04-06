@@ -24,8 +24,8 @@
  */
 #include "IRestApi.h"
 #include "CcHttpWorkData.h"
-#include "CcJson/CcJsonDocument.h"
-#include "CcJson/CcJsonArray.h"
+#include "Json/CcJsonDocument.h"
+#include "Json/CcJsonArray.h"
 
 IRestApi::IRestApi(IRestApi* pParent, const CcString& sPath) :
   m_pParent(pParent),

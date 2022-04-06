@@ -10,9 +10,10 @@ elseif(${CCOS_CCMEDIA_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         CcImageRaw.h
         CcMedia.h
         CcVideo.h
-        Converter/CImageBmp.h
-        Converter/CImagePpm.h
-        Converter/IImageConverter.h
+        IImageConverter.h
+        Image/CImageBmp.h
+        Image/CImagePpm.h
+        Playlist/CcM3U.h
   )
 
   set (SOURCE_FILES
@@ -20,9 +21,10 @@ elseif(${CCOS_CCMEDIA_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         CcImage.cpp
         CcImageRaw.cpp
         CcVideo.cpp
-        Converter/CImageBmp.cpp
-        Converter/CImagePpm.cpp
-        Converter/IImageConverter.cpp
+        IImageConverter.cpp
+        Image/CImageBmp.cpp
+        Image/CImagePpm.cpp
+        Playlist/CcM3U.cpp
   )
 
   set( LIBRARIES
@@ -30,8 +32,8 @@ elseif(${CCOS_CCMEDIA_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
 
   if( CCOS_THIRDPARTY_LIBJPG )
-    list(APPEND SOURCE_FILES "External/CImageJpeg.h" )
-    list(APPEND SOURCE_FILES "External/CImageJpeg.cpp" )
+    list(APPEND SOURCE_FILES "Image/CImageJpeg.h" )
+    list(APPEND SOURCE_FILES "Image/CImageJpeg.cpp" )
     list(APPEND LIBRARIES jpeg)
   endif()
 
@@ -46,7 +48,7 @@ elseif(${CCOS_CCMEDIA_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS")
   CcTargetHeaders( ${CURRENT_PROJECT} "${HEADER_FILES}")
 
-  target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC ${LIBRARIES} )
+  target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC ${LIBRARIES} CcHttp )
 
   #################
   # Post configuration steps

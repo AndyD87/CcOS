@@ -24,9 +24,9 @@
  */
 #include "CcImage.h"
 #include "CcFile.h"
-#include "Converter/IImageConverter.h"
-#include "Converter/CImageBmp.h"
-#include "Converter/CImagePpm.h"
+#include "IImageConverter.h"
+#include "Image/CImageBmp.h"
+#include "Image/CImagePpm.h"
 
 size_t                               CcImage::m_iInit(0);
 CcMutex                              CcImage::m_oConverterListLock;

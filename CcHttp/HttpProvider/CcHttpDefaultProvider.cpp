@@ -23,8 +23,8 @@
  * @brief     Implementation of Class CcHttpDefaultProvider
  */
 #include "CcHttpDefaultProvider.h"
-#include "CcHtml/Common/CcHtmlRoot.h"
-#include "CcHtml/Common/CcHtmlH.h"
+#include "Html/Common/CcHtmlRoot.h"
+#include "Html/Common/CcHtmlH.h"
 
 CcHttpDefaultProvider::CcHttpDefaultProvider()
 {

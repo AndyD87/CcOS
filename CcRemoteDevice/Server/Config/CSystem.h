@@ -32,9 +32,9 @@
 #include "CcPassword.h"
 #include "CWlanAccessPoint.h"
 #include "CWlanClient.h"
-#include "CcJson/CcJsonObject.h"
+#include "Json/CcJsonObject.h"
 #include "IIo.h"
-#include "CcConfig/CcConfigBinary.h"
+#include "Config/CcConfigBinary.h"
 
 namespace NRemoteDevice
 {
