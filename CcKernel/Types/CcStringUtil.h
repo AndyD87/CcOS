@@ -89,6 +89,20 @@ public:
   { return findCharEscaped(pcString.getCharString(), cToFind, cEscape, uiOffset, CCMIN(uiLength, pcString.length() - uiOffset)); }
 
   /**
+   * @brief Find a character in character string, but escape found character if escaped paramter is set before.
+   *        Ignore characters wich are within a quoted string.
+   * @param pcString: String to search in
+   * @param uiLength: Maximum length of pcString
+   * @param cToFind:  Target Character to find
+   * @param cQoute:  Target Character to find
+   * @param cEscape:  Character to ignore next character if it is cToFind
+   * @return Position of found character or SIZE_MAX if not found
+   */
+  static size_t findCharEscapedSkipQuotes(const char* pcString, char cToFind, char cEscape, char cQoute, size_t uiOffset = 0, size_t uiLength = SIZE_MAX);
+  static size_t findCharEscapedSkipQuotes(const CcString& pcString, char cToFind, char cEscape, char cQoute, size_t uiOffset = 0, size_t uiLength = SIZE_MAX)
+  { return findCharEscapedSkipQuotes(pcString.getCharString(), cToFind, cEscape, cQoute, uiOffset, CCMIN(uiLength, pcString.length() - uiOffset)); }
+
+  /**
    * @brief Find specific character from a list of character in string.
    * @param pcString:     String to search in
    * @param uiLength:     Maximum length of string to search
@@ -147,6 +161,13 @@ public:
   static bool isWhiteSpace(const char toTest);
 
   /**
+   * @brief Check if character is a number from 0-9
+   * @param toTest: Character to test
+   * @return True if whitespace
+   */
+  static bool isNumber(const char toTest);
+
+  /**
    * @brief Get length of \\0 terminated char array
    * @param pcString: Char array to search for
    * @param uiMaxLen: Max length of char array to search for
@@ -170,6 +191,15 @@ public:
    * @return Pointer to first match, nullptr if not found
    */
   static wchar_t* strchr(wchar_t* pcString, wchar_t cToFind);
+
+  /**
+   * @brief Remove quotes if string is surrounded by it.
+   * @param[in,out] sString: String to remove quotes from
+   * @param cQuote: Quote to search for. For example ", ' or `
+   * @return Reference to sString for inline execution.
+   */
+  static CcString& stripQuotes(CcString& sString, char cQuote = '"');
+
   /**
    * @brief Find a character in character string
    * @param pcString: String to search in

@@ -121,6 +121,30 @@ size_t CcStringUtil::findCharEscaped(const char* pcString, char cToFind, char cE
   return SIZE_MAX;
 }
 
+size_t CcStringUtil::findCharEscapedSkipQuotes(const char* pcString, char cToFind, char cEscape, char cQoute, size_t uiOffset, size_t uiLength)
+{
+  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+  {
+    if (pcString[i] == '\0')
+      return SIZE_MAX;
+    else if (pcString[i] == cEscape)
+      i++;
+    else if (pcString[i] == cQoute)
+      for (i++; i < uiLength + uiOffset; i++)
+      {
+        if (pcString[i] == '\0')
+          return SIZE_MAX;
+        else if (pcString[i] == cEscape)
+          i++;
+        else if (pcString[i] == cQoute)
+          break;
+      }
+    else if (pcString[i] == cToFind)
+      return i;
+  }
+  return SIZE_MAX;
+}
+
 size_t CcStringUtil::findCharOf(const char* pcString, size_t uiLength, const char* pcToFind, size_t uiToFindSize, char& cFound)
 {
   for (size_t i = 0; i < uiLength; i++)
@@ -202,6 +226,14 @@ bool CcStringUtil::isWhiteSpace(const char toTest)
   return bRet;
 }
 
+bool CcStringUtil::isNumber(const char toTest)
+{
+  bool bRet = false;
+  if (toTest >= '0' && toTest <= '9')
+    bRet = true;
+  return bRet;
+}
+
 size_t CcStringUtil::strlen(const wchar_t* pcString, size_t uiMaxLen)
 {
   size_t uiRet = SIZE_MAX;
@@ -249,6 +281,17 @@ wchar_t* CcStringUtil::strchr(wchar_t* pcString, wchar_t cToFind)
     pcCurrent++;
   }
   return nullptr;
+}
+
+CcString& CcStringUtil::stripQuotes(CcString& sString, char cQuote)
+{
+  if (sString.size() > 1 &&
+      sString[0] == cQuote &&
+      sString.last() == cQuote)
+  {
+    sString = sString.substr(1, sString.length() - 2);
+  }
+  return sString;
 }
 
 size_t CcStringUtil::findCharEscaped(const wchar_t* pcString, wchar_t cToFind, wchar_t cEscape, size_t uiOffset, size_t uiLength)
@@ -606,6 +649,22 @@ char CcStringUtil::getBase64DecodedStringChar(char cIn)
   else if (cIn == '+')
     cOut = 62;
   else if (cIn == '/')
+    cOut = 63;
+  return cOut;
+}
+
+char CcStringUtil::getBase64DecodedUrlStringChar(char cIn)
+{
+  char cOut = 0;
+  if (cIn >= 'A' && cIn <= 'Z')
+    cOut = cIn - 'A';
+  else if (cIn >= 'a' && cIn <= 'z')
+    cOut = (cIn - 'a') + 26;
+  else if (cIn >= '0' && cIn <= '9')
+    cOut = (cIn - '0') + 52;
+  else if (cIn == '-')
+    cOut = 62;
+  else if (cIn == '_')
     cOut = 63;
   return cOut;
 }

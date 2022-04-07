@@ -676,9 +676,9 @@
 
 //! @brief Define a copy and move construction which is calling operator=&&
 //! @param CLASS: Class to define this operators.
-#define CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CLASS) \
-      CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CLASS);\
-      CCDEFINE_MOVE_CONSTRUCTOR_TO_OPERATOR(CLASS);
+#define CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CLASS)   \
+      CCDEFINE_COPY_CONSTRUCTOR_TO_OPERATOR(CLASS) \
+      CCDEFINE_MOVE_CONSTRUCTOR_TO_OPERATOR(CLASS)
 
 //! @brief Define a copy and move consturctor as denied
 #define CCDEFINE_COPY_DENIED(CLASS)         \

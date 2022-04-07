@@ -25,6 +25,19 @@
 #include "Playlist/CcM3U.h"
 #include "CcFile.h"
 #include "CcHttpClient.h"
+#include "CcMapCommon.h"
+#include "CcStringUtil.h"
+
+#define EXT_M3U                       "#EXTM3U"
+#define EXT_INF                       "#EXTINF:"
+#define EXT_X_VERSION                 "#EXT-X-VERSION:"
+#define EXT_X_MEDIA                   "#EXT-X-MEDIA"
+#define EXT_X_INDEPENDENT_SEGMENTS    "#EXT-X-INDEPENDENT-SEGMENTS"
+#define EXT_X_STREAM_INF              "#EXT-X-STREAM-INF:"
+#define EXT_X_TARGETDURATION          "#EXT-X-TARGETDURATION:"
+#define EXT_X_MEDIA_SEQUENCE          "#EXT-X-MEDIA-SEQUENCE:"
+#define EXT_X_DISCONTINUITY_SEQUENCE  "#EXT-X-DISCONTINUITY-SEQUENCE:"
+#define EXT_X_PROGRAM_DATE_TIME       "#EXT-X-PROGRAM-DATE-TIME:"
 
 CcM3U::CcM3U(const CcUrl& sUrl)
 {
@@ -39,6 +52,7 @@ CcStatus CcM3U::open(const CcUrl& sUrl)
 {
   CcStringList oDataLines;
   CcStatus oSuccess = false;
+  m_oUrl = sUrl;
   if (sUrl.getProtocol() == "http" || 
       sUrl.getProtocol() == "https")
   {
@@ -62,26 +76,63 @@ CcStatus CcM3U::open(const CcUrl& sUrl)
   }
   if (oDataLines.size())
   {
-    parseLines(oDataLines);
+    oSuccess = parseLines(oDataLines);
   }
   return oSuccess;
 }
 
-#define EXT_M3U                       "#EXTM3U"
-#define EXT_INF                       "#EXTINF"
-#define EXT_X_VERSION                 "#EXT-X-VERSION:"
-#define EXT_X_MEDIA                   "#EXT-X-MEDIA"
-#define EXT_X_INDEPENDENT_SEGMENTS    "#EXT-X-INDEPENDENT-SEGMENTS"
-#define EXT_X_STREAM_INF              "#EXT-X-STREAM-INF:"
-#define EXT_X_TARGETDURATION          "#EXT-X-TARGETDURATION:"
-#define EXT_X_MEDIA_SEQUENCE          "#EXT-X-MEDIA-SEQUENCE:"
-#define EXT_X_DISCONTINUITY_SEQUENCE  "#EXT-X-DISCONTINUITY-SEQUENCE:"
-#define EXT_X_PROGRAM_DATE_TIME       "#EXT-X-PROGRAM-DATE-TIME:"
-
-void CcM3U::parseLines(const CcStringList& oLines)
+size_t  CcM3U::getStreamBest() const
 {
+  size_t uiStream = SIZE_MAX;
+  CcSize oLastBestSize;
+  size_t uiCnt = 0;
+  for (const CExtXStreamInf& oStream : m_oStreams)
+  {
+    if (oStream.oResoulution > oLastBestSize)
+    {
+      oLastBestSize = oStream.oResoulution;
+      uiStream = uiCnt;
+    }
+    uiCnt++;
+  }
+  return uiStream;
+}
+
+CcStatus CcM3U::downloadStream(size_t uiIndex, const CcString& sFile)
+{
+  CcStatus oStatus = false;
+  CCUNUSED(uiIndex);
+  CCUNUSED(sFile);
+  if (uiIndex < m_oStreams.size())
+  {
+    CExtXStreamInf& oInfData = m_oStreams[uiIndex];
+    if (oInfData.sAudio.length() == 0 &&
+        oInfData.sVideo.length() == 0)
+    {
+      CcUrl oNewUrl = m_oUrl;
+      oNewUrl.setPath(oInfData.sUri);
+
+      CcM3U oStreamReader;
+      if ((oStatus = oStreamReader.open(oNewUrl)) == true)
+      {
+
+      }
+    }
+  }
+  else
+  {
+    oStatus = EStatus::OutOfRange;
+  }
+  return oStatus;
+}
+
+CcStatus CcM3U::parseLines(const CcStringList& oLines)
+{
+  CcStatus oSuccess;
   CcStringList::const_iterator oIterator = oLines.begin();
-  while(oIterator != oLines.end())
+  CExtInf oActiveExtInf;
+  CcDateTime oActiveDateInf;
+  while(oSuccess && oIterator != oLines.end())
   {
     CcString& sLine = *oIterator;
     if (sLine.length() > 0)
@@ -97,40 +148,53 @@ void CcM3U::parseLines(const CcStringList& oLines)
           CcString sVersion = sLine.substr(CCLENGTHOFSTRING(EXT_X_VERSION));
           m_uiVersion = sVersion.toUint16();
         }
-        else if (sLine.startsWith(EXT_X_MEDIA))
-        {
-
-        }
         else if (sLine.startsWith(EXT_X_INDEPENDENT_SEGMENTS))
         {
-
+          m_bIndependentSegments = true;
+        }
+        else if (sLine.startsWith(EXT_X_MEDIA))
+        {
+          CCDEBUG("");
         }
         else if (sLine.startsWith(EXT_X_STREAM_INF))
         {
-
+          CcStringMap oList = getValuePares(sLine, CCLENGTHOFSTRING(EXT_X_STREAM_INF));
+          CExtXStreamInf oInfData;
+          oSuccess = parseExtStreamInf(oInfData, oList);
+          if (oInfData.sAudio.length() == 0 &&
+              oInfData.sVideo.length() == 0)
+          {
+            oIterator++;
+            oInfData.sUri = *oIterator;
+          }
+          m_oStreams.append(oInfData);
         }
         else if (sLine.startsWith(EXT_INF))
         {
-          CItem oItem;
-          oItem.eItemType = EItemType::File;
-          oItem.Data.pFileItem = new CFileInf();
-          oItem.Data.pFileItem->sName = "Name";
-
-          oIterator++;
-          if (oIterator != oLines.end())
-          {
-            CcString& sFileLine = *oIterator;
-            oItem.Data.pFileItem->sPath = sFileLine;
-          }
+          CcStringMap oList = getValuePares(sLine, CCLENGTHOFSTRING(EXT_INF));
+          if (oList.size() > 0)
+            oActiveExtInf.fLength = oList[0].getKey().toFloat();
+          else
+            oActiveExtInf.fLength = 0.0;
+          if (oList.size() > 1)
+            oActiveExtInf.sName = oList[1].getKey();
+          else
+            oActiveExtInf.sName = "";
+        }
+        else if (sLine.startsWith(EXT_X_PROGRAM_DATE_TIME))
+        {
+          CcStringMap oList = getValuePares(sLine, CCLENGTHOFSTRING(EXT_X_PROGRAM_DATE_TIME));
+          if(oList.size() > 0)
+            oActiveDateInf.fromIso8601(oList[0].getKey());
         }
       }
       else
       {
-        CItem oItem;
-        oItem.eItemType = EItemType::File;
-        oItem.Data.pFileItem = new CFileInf();
-        oItem.Data.pFileItem->sPath = sLine;
-
+        CFileInf oFileItem;
+        oFileItem.ExtInf = oActiveExtInf;
+        CcString& sFileLine = *oIterator;
+        oFileItem.sPath = sFileLine;
+        m_oFiles.append(oFileItem);
       }
     }
     else
@@ -139,4 +203,69 @@ void CcM3U::parseLines(const CcStringList& oLines)
     }
     oIterator++;
   }
+  return oSuccess;
+}
+
+CcStringMap CcM3U::getValuePares(const CcString& sLine, size_t uiOffset)
+{
+  CcStringMap oReturn;
+  while (uiOffset < sLine.length())
+  {
+    size_t uiFoundComma = CcStringUtil::findCharEscapedSkipQuotes(sLine, ',', '\\', '"', uiOffset);
+    size_t uiFoundColon = CcStringUtil::findCharEscapedSkipQuotes(sLine, '=', '\\', '"', uiOffset, uiFoundComma - uiOffset);
+    if (uiFoundColon < uiFoundComma)
+    {
+      CcString sKey = sLine.substr(uiOffset, uiFoundColon - uiOffset);
+      CcString sValue = sLine.substr(uiFoundColon+1, uiFoundComma - (uiFoundColon + 1));
+      oReturn.append(sKey, CcStringUtil::stripQuotes(sValue));
+    }
+    else
+    {
+      CcString sKey = sLine.substr(uiOffset, uiFoundComma - uiOffset);
+      oReturn.append(CcStringUtil::stripQuotes(sKey), "");
+    }
+    if(uiFoundComma < sLine.length())
+      uiOffset = uiFoundComma + 1;
+    else
+      uiOffset = SIZE_MAX;
+  }
+  return oReturn;
+}
+
+CcStatus CcM3U::parseExtStreamInf(CExtXStreamInf& oData, CcStringMap& oMap)
+{
+  CcStatus oStatus;
+  for (CcStringPair& oPair : oMap)
+  {
+    if (oPair.getKey().compare("BANDWIDTH"))
+    {
+      oData.uiBandwidth = oPair.getValue().toUint64();
+    }
+    else if (oPair.getKey().compare("AVERAGE-BANDWIDTH"))
+    {
+      oData.uiAverageBandwidth = oPair.getValue().toUint64();
+    }
+    else if (oPair.getKey().compare("CODECS"))
+    {
+      oData.oCodecs = oPair.getValue().split(',');
+    }
+    else if (oPair.getKey().compare("RESOLUTION"))
+    {
+      CcStringList oValues = oPair.getValue().split('x');
+      if (oValues.size() == 2)
+      {
+        oData.oResoulution.setWidth(oValues[0].toUint32());
+        oData.oResoulution.setHeight(oValues[1].toUint32());
+      }
+    }
+    else if (oPair.getKey().compare("FRAME-RATE"))
+    {
+      oData.fFrameRate = oPair.getValue().toFloat();
+    }
+    else
+    {
+      CCDEBUG("Unhandled key");
+    }
+  }
+  return oStatus;
 }

@@ -27,32 +27,42 @@
 
 #include "CcMedia.h"
 #include "CcUrl.h"
-#include "CcRectangle.h"
+#include "CcSize.h"
 #include "CcList.h"
+#include "CcMapCommon.h"
+#include "CcStringList.h"
+#include "CcDateTime.h"
 
 /**
  * @brief Example Class implementation
  */
-class CcMediaSHARED CcM3U
+class CcM3U
 {
 public:
   enum class EItemType
   {
     File,
-    ExtXIndependentSements,
     ExtXMediaType,
     ExtXStreamInf,
   };
 
-  class CcMediaSHARED CFileInf
+  class CExtInf
   {
   public:
-    float fLength;
+    float fLength = 0.0;
     CcString sName;
     CcString sPath;
   };
 
-  class CcMediaSHARED CExtXMediaType
+  class CFileInf
+  {
+  public:
+    CExtInf     ExtInf;
+    CcDateTime  DateInf;
+    CcString sPath;
+  };
+
+  class CExtXMediaType
   {
   public:
     CcString sType;
@@ -62,51 +72,53 @@ public:
     CcString sUri;
   };
 
-  class CcMediaSHARED CExtXStreamInf
+  class CExtXStreamInf
   {
   public:
-    CcString    sPath;
-    CcString    sCodecs;
-    uint64      uiBandwidth;
-    uint64      uiAverageBandwidth;
-    CcString    sAudio;
-    CcString    sSubtitles;
-    float       fFrameRate;
-    CcRectangle oResoulution;
+    CcString     sUri;
+    CcStringList oCodecs;
+    uint64       uiBandwidth = 0;
+    uint64       uiAverageBandwidth = 0;
+    CcString     sSubtitles;
+    float        fFrameRate = 0.0;
+    CcSize       oResoulution;
+
+    CcString     sAudio;
+    CcString     sVideo;
   };
 
-  class CcMediaSHARED CItem
-  {
-  public:
-    EItemType eItemType;
-    union
-    {
-      CExtXStreamInf* pExtXStreamInf;
-      CFileInf*       pFileItem;
-    } Data;
-  };
-
-  typedef class CcMediaSHARED CcList<CItem> CItemList;
+  CcMediaSHARED CcM3U() = default;
 
   /**
    * @brief Constructor
    */
-  CcM3U(const CcUrl& sUrl);
+  CcMediaSHARED CcM3U(const CcUrl& sUrl);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcM3U();
+  CcMediaSHARED virtual ~CcM3U();
 
-  CcStatus open(const CcUrl& sUrl);
+  CcStatus CcMediaSHARED open(const CcUrl& sUrl);
+
+  size_t   CcMediaSHARED getStreamCount() const
+  { return m_oStreams.size(); }
+  size_t   CcMediaSHARED getStreamBest() const;
+  CcStatus CcMediaSHARED downloadStream(size_t uiIndex, const CcString& sFile);
 
 private:
-  void parseLines(const CcStringList& oLines);
+  CcStatus parseLines(const CcStringList& oLines);
+  static CcStringMap getValuePares(const CcString& sLine, size_t uiOffset);
 
+  CcStatus parseExtStreamInf(CExtXStreamInf& oData, CcStringMap& oMap);
 private:
   CcUrl m_oUrl;
   bool m_bIsPath = false;
 
   uint16_t m_uiVersion = 1;
-  CItemList m_oItems;
+  bool     m_bIndependentSegments = false;
+
+  CcList<CExtXStreamInf> m_oStreams;
+  CcList<CExtXMediaType> m_oMedias;
+  CcList<CFileInf      > m_oFiles;
 };

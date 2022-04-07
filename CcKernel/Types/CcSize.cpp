@@ -64,8 +64,8 @@ bool CcSize::operator<(const CcSize& oToCompare) const
 
 bool CcSize::operator>(const CcSize& oToCompare) const
 {
-  if (getWidth() < oToCompare.getWidth() &&
-    getHeight() < oToCompare.getHeight())
+  if (getWidth() > oToCompare.getWidth() &&
+    getHeight() > oToCompare.getHeight())
   {
     return true;
   }

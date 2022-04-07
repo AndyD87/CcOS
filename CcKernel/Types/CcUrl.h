@@ -46,19 +46,21 @@ public: //methods
    */
   CcUrl() = default;
 
+  CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcUrl)
+
   /**
    * @brief Create a URL by String or empty if no String is set.
    * @param sUrl: Init String
    */
   CcUrl(const CcString& sUrl)
-    {setUrl(CcString(sUrl));}
+  { setUrl(CcString(sUrl));}
 
   /**
    * @brief Create a URL by String or empty if no String is set.
    * @param pcUrl: Init String as \\0 terminated char array
    */
   CcUrl(const char* pcUrl)
-  {setUrl(CcString(pcUrl));}
+  { setUrl(CcString(pcUrl));}
 
   /**
    * @brief Move content from other url to this

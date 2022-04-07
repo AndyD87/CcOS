@@ -49,8 +49,11 @@ private:
   CcString m_sTestDir;
   CcString m_sMasterFilePath;
   CcString m_sChuncksFilePath;
+  CcString m_sStreamFile;
+  CcString m_sStreamFileDownload;
 
   bool generateTestFiles();
   bool testBasic();
+  bool testStreamLoad();
 
 };
