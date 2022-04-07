@@ -25,6 +25,7 @@
 #include "CcDateTime.h"
 #include "CcString.h"
 #include "CcGlobalStrings.h"
+#include "CcStringUtil.h"
 
 //!< Epoc time with number of 100ns since 1601-01-01 until 1970-01-01
 #define SEC_TO_UNIX_EPOCH 116444736000000000LL
@@ -308,15 +309,248 @@ CcDateTime& CcDateTime::sub(CcDateTime oDateTimeToAdd)
   return *this;
 }
 
-CcDateTime& CcDateTime::fromDateTime(uint16 uiYear, uint8 uiMonth, uint8 uiDay, uint8 uiHours, uint8 uiMinutes, uint8 uiSeconds)
+CcDateTime& CcDateTime::fromDateTime(uint16 uiYear, uint8 uiMonth, uint8 uiDay, uint8 uiHours, uint8 uiMinutes, uint8 uiSeconds, uint16 uiMillisecconds)
 {
-  CCUNUSED(uiYear);
-  CCUNUSED(uiMonth);
-  CCUNUSED(uiDay);
-  CCUNUSED(uiHours);
-  CCUNUSED(uiMinutes);
-  CCUNUSED(uiSeconds);
+  uint32 uiYears = uiYear - 1970;
+  this->addDays(uiYears * 365);
+
+  uint32 uiSwitchYears = 0;
+  if (uiYears > 1)
+    uiSwitchYears = ((uiYears - 2) / 4);
+  this->addDays(uiSwitchYears);
+
+  if (uiMonth > 2)
+  {
+    // We had an additional day this year
+    this->addDays(1);
+  }
+
+  switch (uiMonth)
+  {
+    case 12:
+      this->addDays(30);
+    case 11:
+      this->addDays(31);
+    case 10:
+      this->addDays(30);
+    case 9:
+      this->addDays(31);
+    case 8:
+      this->addDays(31);
+    case 7:
+      this->addDays(30);
+    case 6:
+      this->addDays(31);
+    case 5:
+      this->addDays(30);
+    case 4:
+      this->addDays(31);
+    case 3:
+      this->addDays(28);
+    case 2:
+      this->addDays(31);
+    default:
+      break;
+  };
+  
+
+  this->addDays(uiDay - 1);
+  this->addHours(uiHours);
+  this->addMinutes(uiMinutes);
+  this->addSeconds(uiSeconds);
+  this->addMSeconds(uiMillisecconds);
   return *this;
+}
+
+CcStatus CcDateTime::fromFormat(const CcString& sFormat, const CcString& sValue)
+{
+  uint16 uiYear = 0;
+  uint8 uiMonth = 0;
+  uint8 uiDay = 0;
+  uint8 uiHours = 0;
+  uint8 uiMinutes = 0;
+  uint8 uiSeconds=0;
+  uint16 uiMillisecconds = 0;
+  uint16 uiMicroseconds = 0;
+
+  CcStatus oSuccess;
+  size_t uiOffset = 0;
+  size_t uiOffsetValue = 0;
+  while (uiOffset < sFormat.length() &&
+         uiOffsetValue < sValue.length())
+  {
+    if (sFormat.isStringAtOffset("yyyy", uiOffset))
+    {
+      uiYear = sValue.substr(uiOffset, 4).toUint16();
+      uiOffset += 4;
+      uiOffsetValue += 4;
+    }
+    else if (sFormat.isStringAtOffset("MM", uiOffset))
+    {
+      uiMonth = sValue.substr(uiOffset, 2).toUint8();
+      uiOffset += 2;
+      uiOffsetValue += 2;
+    }
+    else if (sFormat.isStringAtOffset("M", uiOffset))
+    {
+      if (sValue.size() > uiOffsetValue + 1)
+      {
+        if (CcStringUtil::isNumber(sValue[uiOffsetValue + 1]))
+        {
+          uiMonth = sValue.substr(uiOffsetValue, 2).toUint8();
+          uiOffsetValue += 2;
+        }
+        else
+        {
+          uiMonth = sValue.substr(uiOffsetValue, 1).toUint8();
+          uiOffsetValue += 1;
+        }
+      }
+      else
+      {
+        uiMonth = sValue.substr(uiOffsetValue, 1).toUint8();
+        uiOffsetValue += 1;
+      }
+      uiOffset += 1;
+    }
+    else if (sFormat.isStringAtOffset("dd", uiOffset))
+    {
+      uiDay = sValue.substr(uiOffsetValue, 2).toUint8();
+      uiOffsetValue += 2;
+      uiOffset      += 2;
+    }
+    else if (sFormat.isStringAtOffset("d", uiOffset))
+    {
+      if (sValue.size() > uiOffsetValue + 1)
+      {
+        if (CcStringUtil::isNumber(sValue[uiOffsetValue + 1]))
+        {
+          uiDay = sValue.substr(uiOffsetValue, 2).toUint8();
+          uiOffsetValue += 2;
+        }
+        else
+        {
+          uiDay = sValue.substr(uiOffsetValue, 1).toUint8();
+          uiOffsetValue += 1;
+        }
+      }
+      else
+      {
+        uiDay = sValue.substr(uiOffsetValue, 1).toUint8();
+        uiOffsetValue += 1;
+      }
+      uiOffset += 1;
+    }
+    else if (sFormat.isStringAtOffset("hh", uiOffset))
+    {
+      uiHours = sValue.substr(uiOffsetValue, 2).toUint8();
+      uiOffsetValue += 2;
+      uiOffset += 2;
+    }
+    else if (sFormat.isStringAtOffset("h", uiOffset))
+    {
+      if (sValue.size() > uiOffsetValue + 1)
+      {
+        if (CcStringUtil::isNumber(sValue[uiOffsetValue + 1]))
+        {
+          uiHours = sValue.substr(uiOffsetValue, 2).toUint8();
+          uiOffsetValue += 2;
+        }
+        else
+        {
+          uiHours = sValue.substr(uiOffsetValue, 1).toUint8();
+          uiOffsetValue += 1;
+        }
+      }
+      else
+      {
+        uiHours = sValue.substr(uiOffsetValue, 1).toUint8();
+        uiOffsetValue += 1;
+      }
+      uiOffset += 1;
+    }
+    else if (sFormat.isStringAtOffset("mm", uiOffset))
+    {
+      uiMinutes = sValue.substr(uiOffsetValue, 2).toUint8();
+      uiOffsetValue += 2;
+      uiOffset += 2;
+    }
+    else if (sFormat.isStringAtOffset("m", uiOffset))
+    {
+      if (sValue.size() > uiOffsetValue + 1)
+      {
+        if (CcStringUtil::isNumber(sValue[uiOffsetValue + 1]))
+        {
+          uiMinutes = sValue.substr(uiOffsetValue, 2).toUint8();
+          uiOffsetValue += 2;
+        }
+        else
+        {
+          uiMinutes = sValue.substr(uiOffsetValue, 1).toUint8();
+          uiOffsetValue += 1;
+        }
+      }
+      else
+      {
+        uiMinutes = sValue.substr(uiOffsetValue, 1).toUint8();
+        uiOffsetValue += 1;
+      }
+      uiOffset += 1;
+    }
+    else if (sFormat.isStringAtOffset("ss", uiOffset))
+    {
+      uiSeconds = sValue.substr(uiOffsetValue, 2).toUint8();
+      uiOffsetValue += 2;
+      uiOffset += 2;
+    }
+    else if (sFormat.isStringAtOffset("s", uiOffset))
+    {
+      if (sValue.size() > uiOffsetValue + 1)
+      {
+        if (CcStringUtil::isNumber(sValue[uiOffsetValue + 1]))
+        {
+          uiSeconds = sValue.substr(uiOffsetValue, 2).toUint8();
+          uiOffsetValue += 2;
+        }
+        else
+        {
+          uiSeconds = sValue.substr(uiOffsetValue, 1).toUint8();
+          uiOffsetValue += 1;
+        }
+      }
+      else
+      {
+        uiSeconds = sValue.substr(uiOffsetValue, 1).toUint8();
+        uiOffsetValue += 1;
+      }
+      uiOffset += 1;
+    }
+    else if (sFormat.isStringAtOffset("zzz", uiOffset))
+    {
+      uiMillisecconds = sValue.substr(uiOffsetValue, 3).toUint16();
+      uiOffsetValue += 3;
+      uiOffset += 3;
+    }
+    else if (sFormat.isStringAtOffset("uuu", uiOffset))
+    {
+      uiMicroseconds = sValue.substr(uiOffsetValue, 3).toUint16();
+      uiOffsetValue += 3;
+      uiOffset += 3;
+    }
+    else
+    {
+      if (sValue[uiOffsetValue] != sFormat[uiOffset])
+      {
+        oSuccess = false;
+      }
+      // Ignore this sign
+      uiOffsetValue += 1;
+      uiOffset += 1;
+    }
+  }
+  fromDateTime(uiYear, uiMonth, uiDay, uiHours, uiMinutes, uiSeconds, uiMillisecconds);
+  m_iTimeStampUs += uiMicroseconds; 
+  return oSuccess;
 }
 
 CcString CcDateTime::getString(const CcString& sFormat) const
@@ -344,16 +578,12 @@ CcString CcDateTime::getString(const CcString& sFormat) const
   if (sRet.find("MMMM") != SIZE_MAX)
   {
     // @todo: replace with long name for month form locale
-    CcString sMonth = CcString::fromNumber(uiMonth);
-    sMonth.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
-    sRet = sRet.replace("MMMM", sMonth);
+    sRet = sRet.replace("MMMM", CcGlobalStrings::DateTime::Months[uiMonth - 1]);
   }
   if (sRet.find("MMM") != SIZE_MAX)
   {
     // @todo: replace with short name for month form locale
-    CcString sMonth = CcString::fromNumber(uiMonth);
-    sMonth.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
-    sRet = sRet.replace("MMM", sMonth);
+    sRet = sRet.replace("MMM", CcGlobalStrings::DateTime::MonthsShort[uiMonth - 1]);
   }
   if (sRet.find("MM") != SIZE_MAX)
   {
@@ -371,16 +601,12 @@ CcString CcDateTime::getString(const CcString& sFormat) const
   if (sRet.find("dddd") != SIZE_MAX)
   {
     // @todo: replace with long name for month form locale
-    CcString sDay = CcString::fromNumber(uiDay);
-    sDay.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
-    sRet = sRet.replace("dddd", sDay);
+    sRet = sRet.replace("dddd", CcGlobalStrings::DateTime::Days[uiDay - 1]);
   }
   if (sRet.find("ddd") != SIZE_MAX)
   {
     // @todo: replace with short name for month form locale
-    CcString sDay = CcString::fromNumber(uiDay);
-    sDay.fillBeginUpToLength(CcGlobalStrings::Numbers::i0, 2);
-    sRet = sRet.replace("ddd", sDay);
+    sRet = sRet.replace("ddd", CcGlobalStrings::DateTime::DaysShort[uiDay - 1]);
   }
   if (sRet.find("dd") != SIZE_MAX)
   {

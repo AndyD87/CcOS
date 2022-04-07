@@ -125,3 +125,53 @@ CcConstStringClass_C(AccessDenied,    "Access denied",            CcGlobalString
 CcConstStringClass_C(DefaultRebootMessage, "Reboot initiated by CcOS", CcGlobalStrings::System);
 CcConstStringClass_C(DefaultShutdownMessage, "Shutdown initiated by CcOS", CcGlobalStrings::System);
 
+const CcStringList CcGlobalStrings::DateTime::Months({
+                            "January",
+                            "February",
+                            "March",
+                            "April",
+                            "May",
+                            "June",
+                            "July",
+                            "August",
+                            "September",
+                            "October",
+                            "November",
+                            "December"
+                          }
+);
+const CcStringList CcGlobalStrings::DateTime::MonthsShort({
+                            "Jan",
+                            "Feb",
+                            "Mar",
+                            "Apr",
+                            "May",
+                            "Jun",
+                            "Jul",
+                            "Aug",
+                            "Sep",
+                            "Oct",
+                            "Nov",
+                            "Dec"
+                                }
+);
+const CcStringList CcGlobalStrings::DateTime::Days({
+                              "Monday",
+                              "Tuesday",
+                              "Wednesday",
+                              "Thursday",
+                              "Friday",
+                              "Saturday",
+                              "Sunday",
+                        }
+);
+const CcStringList CcGlobalStrings::DateTime::DaysShort({
+                              "Mon",
+                              "Tue",
+                              "Wed",
+                              "Thu",
+                              "Fri",
+                              "Sat",
+                              "Sun",
+                              }
+);

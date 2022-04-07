@@ -25,6 +25,7 @@
 #pragma once
 
 #include "CcBase.h"
+#include "CcString.h"
 
 //! Create CcDateTime with numer of seconds
 #define CcDateTimeFromSeconds(SECONDS)  CcDateTime(SECONDS * 1000000)
@@ -366,14 +367,38 @@ public:
    */
   CcDateTime& sub(CcDateTime oDateTimeToAdd);
 
-  CcDateTime& fromDateTime(uint16 uiYear, uint8 uiMonth, uint8 uiDay, uint8 uiHours, uint8 uiMinutes, uint8 uiSeconds);
+  CcDateTime& fromDateTime(uint16 uiYear, uint8 uiMonth, uint8 uiDay, uint8 uiHours, uint8 uiMinutes, uint8 uiSeconds, uint16 uiMillisecconds);
+  CcStatus fromFormat(const CcString& sFormat, const CcString& sValue);
+  //! Simplified method to read ISO 8601 Strings
+  CcStatus fromIso8601(const CcString& sValue)
+  { return fromFormat("yyyy-MM-ddThh:mm:ss.zzzZ", sValue); }
 
   /**
    * @brief Get time as formated string
    *        Format|  Result   | Description
    *        ------|-----------|------------
    *        yyyy  |  2021     | Year 4 number
-   *        yyyy  |    21     | Year 2 number
+   *        MM    |    01     | Month 2 numbers
+   *        M     |     1     | Month 1/2 numbers
+   *        dd    |    06     | Day 2 numbers
+   *        d     |     6     | Day 1/2 numbers
+   *        hh    |    01     | Hours 2 numbers
+   *        h     |     1     | Hours 1/2 numbers
+   *        mm    |    05     | Minutes 2 numbers
+   *        m     |     5     | Minutes 1/2 numbers
+   *        ss    |    05     | Seconds 2 numbers
+   *        s     |     5     | Seconds 1/2 numbers
+   *        zzz   |     5     | Milliseconds 3 numbers
+   *        uuu   |    05     | Microseconds 3 numbers
+   *
+  CcStatus fromFormat(const CcString& sFormat, const CcString& sValue);
+
+  /**
+   * @brief Get time as formated string
+   *        Format|  Result   | Description
+   *        ------|-----------|------------
+   *        yyyy  |  2021     | Year 4 number
+   *        yy    |    21     | Year 2 number
    *        MMMM  |  January  | Month long name
    *        MMM   |   Jan     | Month short name
    *        MM    |    01     | Month 2 numbers

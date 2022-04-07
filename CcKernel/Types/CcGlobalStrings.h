@@ -26,6 +26,7 @@
 
 #include "CcString.h"
 #include "CcBase.h"
+#include "CcStringList.h"
 
 /**
  * @brief Common global strings, which are often used will be statically defined here.
@@ -165,5 +166,13 @@ public:
   {
     static CcKernelSHARED CcConstString_H(DefaultShutdownMessage);       //!< Default message to be displayed on shutdown
     static CcKernelSHARED CcConstString_H(DefaultRebootMessage);         //!< Default message to be displayed on reboot
+  };
+
+  struct DateTime
+  {
+    static const CcKernelSHARED CcStringList Months;
+    static const CcKernelSHARED CcStringList MonthsShort;
+    static const CcKernelSHARED CcStringList Days;
+    static const CcKernelSHARED CcStringList DaysShort;
   };
 };
