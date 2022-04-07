@@ -59,6 +59,7 @@ public:
   public:
     CExtInf     ExtInf;
     CcDateTime  DateInf;
+    float       TimeZone;
     CcString sPath;
   };
 

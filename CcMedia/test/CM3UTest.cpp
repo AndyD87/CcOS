@@ -138,7 +138,11 @@ bool CM3UTest::testStreamLoad()
     size_t uiBestStream = oReader.getStreamBest();
     if (uiBestStream == 3)
     {
-      oReader.downloadStream(uiBestStream, m_sStreamFileDownload);
+      bRet = oReader.downloadStream(uiBestStream, m_sStreamFileDownload);
+      if (bRet)
+      {
+        // Check if files are identical
+      }
     }
   }
   return bRet;

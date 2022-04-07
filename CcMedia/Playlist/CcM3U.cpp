@@ -115,7 +115,44 @@ CcStatus CcM3U::downloadStream(size_t uiIndex, const CcString& sFile)
       CcM3U oStreamReader;
       if ((oStatus = oStreamReader.open(oNewUrl)) == true)
       {
+        CcFile oOutput(sFile);
+        if ((oStatus = oOutput.open(EOpenFlags::Write)))
+        {
+          if ((oStatus = oStreamReader.open(oNewUrl)) == true)
+          {
+            for (CFileInf& oFileInf : oStreamReader.m_oFiles)
+            {
+              if (m_oUrl.getProtocol() == "http" ||
+                  m_oUrl.getProtocol() == "https")
+              {
+                CcUrl oInUrl = oStreamReader.m_oUrl;
+                oInUrl.setPath(oFileInf.sPath);
 
+                CcHttpClient oInFile(oFileInf.sPath);
+                if ((oStatus = oInFile.execGet()) == true)
+                {
+                  oOutput.writeArray(oInFile.getByteArray());
+                }
+              }
+              else
+              {
+                CcString sPath = oFileInf.sPath;
+                if (sPath.length() != 0 && sPath[0] != '/')
+                {
+                  sPath = oStreamReader.m_oUrl.getPath().extractPath();
+                  sPath.appendPath(oFileInf.sPath);
+                }
+                CcFile oInFile(sPath);
+                if ((oStatus = oInFile.open(EOpenFlags::Read)) == true)
+                {
+                  oOutput.writeArray(oInFile.readAll());
+                  oInFile.close();
+                }
+              }
+            }
+          }
+          oOutput.close();
+        }
       }
     }
   }
@@ -132,6 +169,7 @@ CcStatus CcM3U::parseLines(const CcStringList& oLines)
   CcStringList::const_iterator oIterator = oLines.begin();
   CExtInf oActiveExtInf;
   CcDateTime oActiveDateInf;
+  float   fActiveTimezone = 0.0;
   while(oSuccess && oIterator != oLines.end())
   {
     CcString& sLine = *oIterator;
@@ -183,15 +221,24 @@ CcStatus CcM3U::parseLines(const CcStringList& oLines)
         }
         else if (sLine.startsWith(EXT_X_PROGRAM_DATE_TIME))
         {
-          CcStringMap oList = getValuePares(sLine, CCLENGTHOFSTRING(EXT_X_PROGRAM_DATE_TIME));
-          if(oList.size() > 0)
-            oActiveDateInf.fromIso8601(oList[0].getKey());
+          CcString sTime = sLine.substr(CCLENGTHOFSTRING(EXT_X_PROGRAM_DATE_TIME));
+          CcStringList oList = sTime.split("+");
+          if (oList.size() > 0)
+            oSuccess = oActiveDateInf.fromIso8601(oList[0]);
+          else
+            oSuccess = false;
+          if (oList.size() > 1)
+            fActiveTimezone = oList[1].toFloat();
+          else
+            fActiveTimezone = 0.0;
         }
       }
       else
       {
         CFileInf oFileItem;
         oFileItem.ExtInf = oActiveExtInf;
+        oFileItem.DateInf = oActiveDateInf;
+        oFileItem.TimeZone = fActiveTimezone;
         CcString& sFileLine = *oIterator;
         oFileItem.sPath = sFileLine;
         m_oFiles.append(oFileItem);

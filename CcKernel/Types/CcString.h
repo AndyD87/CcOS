@@ -1150,7 +1150,7 @@ public:
    *        String is ending with /
    * @return Filname as String
    */
-  CcString extractPath();
+  CcString extractPath() const;
 
   /**
    * @brief Append a Path to current String

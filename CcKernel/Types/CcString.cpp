@@ -1391,7 +1391,7 @@ CcString CcString::extractFilename() const
   return sRet;
 }
 
-CcString CcString::extractPath()
+CcString CcString::extractPath() const
 {
   CcString sRet;
   size_t pos1 = findLast(CcGlobalStrings::Seperators::Path);
