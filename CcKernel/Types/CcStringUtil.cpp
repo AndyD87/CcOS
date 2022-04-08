@@ -87,7 +87,7 @@ size_t CcStringUtil::findChar(const wchar_t* pcString, wchar_t cToFind, size_t u
 {
   for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
   {
-    if(pcString[i] == '\0')
+    if(pcString[i] == '\0' && cToFind != '\0')
       return SIZE_MAX;
     if (pcString[i] == cToFind)
       return i;
@@ -99,7 +99,7 @@ size_t CcStringUtil::findChar(const char* pcString, char cToFind, size_t uiOffse
 {
   for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
   {
-    if(pcString[i] == '\0')
+    if(pcString[i] == '\0' && cToFind != '\0')
       return SIZE_MAX;
     if (pcString[i] == cToFind)
       return i;
@@ -111,7 +111,7 @@ size_t CcStringUtil::findCharEscaped(const char* pcString, char cToFind, char cE
 {
   for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
   {
-    if(pcString[i] == '\0')
+    if(pcString[i] == '\0' && cToFind != '\0')
       return SIZE_MAX;
     else if (pcString[i] == cEscape)
       i++;
@@ -125,14 +125,14 @@ size_t CcStringUtil::findCharEscapedSkipQuotes(const char* pcString, char cToFin
 {
   for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
   {
-    if (pcString[i] == '\0')
+    if (pcString[i] == '\0' && cToFind != '\0')
       return SIZE_MAX;
     else if (pcString[i] == cEscape)
       i++;
     else if (pcString[i] == cQoute)
       for (i++; i < uiLength + uiOffset; i++)
       {
-        if (pcString[i] == '\0')
+        if (pcString[i] == '\0' && cToFind != '\0')
           return SIZE_MAX;
         else if (pcString[i] == cEscape)
           i++;
@@ -298,7 +298,7 @@ size_t CcStringUtil::findCharEscaped(const wchar_t* pcString, wchar_t cToFind, w
 {
   for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
   {
-    if(pcString[i] == '\0')
+    if(pcString[i] == '\0' && cToFind != '\0')
       return SIZE_MAX;
     else if (pcString[i] == cEscape)
       i++;

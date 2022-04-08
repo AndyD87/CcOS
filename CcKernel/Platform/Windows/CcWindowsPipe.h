@@ -82,6 +82,8 @@ public:
    */
   virtual CcStatus cancel() override;
 
+  virtual CcStatus flush() override;
+
   /**
    * @brief Read data from windows cache to m_oReadBuffer
    */

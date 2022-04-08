@@ -306,14 +306,6 @@ public:
   virtual size_t write(const void* pBuffer, size_t uSize) = 0;
 
   /**
-   * @brief Flush written data to output.
-   *        Clean all caches.
-   * @return Succeess if data written successufll.
-   *
-   */
-  virtual CcStatus flush(){ return EStatus::NotSupported; }
-
-  /**
    * @brief Open File with flags for type of access to be created
    * @param flags:
    * @return true if file was successfully opend

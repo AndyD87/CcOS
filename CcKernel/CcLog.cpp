@@ -42,7 +42,7 @@ size_t CcLog::write(const void* pBuffer, size_t uSize)
   if (m_bFileValid)
   {
     m_oOutputFile.write(pBuffer, uSize);
-    m_oOutputFile.flush();
+    //m_oOutputFile.flush();
   }
   if(m_bWriteToConsole)
   {

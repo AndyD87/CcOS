@@ -58,6 +58,11 @@ CcStatus CcStdOut::close()
   return false;
 }
 
+CcStatus CcStdOut::flush()
+{
+  return false;
+}
+
 void CcStdOut::disableBuffer()
 {
 #if !defined(GENERIC)

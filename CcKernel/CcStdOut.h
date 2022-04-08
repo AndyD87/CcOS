@@ -68,12 +68,15 @@ public:
    * @return alway successfuly state.
    */
   CcStatus close() override;
+
   /**
    * @brief Cancel all currently running Operations
    * @return true if all was canceled successfully
    * @todo Implementation if required
    */
   CcStatus cancel()override {return false;}
+
+  CcStatus flush() override;
 
   /**
    * @brief Disable output buffering.

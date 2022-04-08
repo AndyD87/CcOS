@@ -93,6 +93,7 @@ size_t CcWindowsPipe::read(void* buffer, size_t size)
   {
     uiReadAll = static_cast<DWORD>(m_oReadBuffer.read(buffer, size));
     m_oReadBuffer.remove(0, uiReadAll);
+    CCDEBUG("CcWindowsPipe:: uiReadAll: " + CcString::fromNumber(uiReadAll));
   }
   while ( PeekNamedPipe(m_hRead, NULL, 0, NULL, &uiSizePeeked, NULL) &&
           uiSizePeeked > 0 &&
@@ -103,6 +104,7 @@ size_t CcWindowsPipe::read(void* buffer, size_t size)
     DWORD uiSizeRead = 0;
     if ( ReadFile(m_hRead, (unsigned char*) buffer + uiReadAll, uiSizePeeked, &uiSizeRead, nullptr) )
     {
+      CCDEBUG("CcWindowsPipe::Read: " + CcByteArray((unsigned char*)buffer + uiReadAll, (size_t)uiSizeRead));
       uiReadAll += uiSizeRead;
     }
   }
@@ -112,26 +114,21 @@ size_t CcWindowsPipe::read(void* buffer, size_t size)
 
 size_t CcWindowsPipe::write(const void* buffer, size_t size)
 {
-  DWORD readSize=0;
+  size_t uiReturn = SIZE_MAX;;
   if (size > 0)
   {
+    DWORD readSize = 0;
     if (WriteFile(m_hWrite,   // open file handle
       buffer,        // start of data to write
       static_cast<DWORD>(size),      // number of bytes to write
       &readSize,     // number of bytes written
       nullptr))      // no overlapped structure
     {
-      if (FlushFileBuffers(m_hWrite))
-      {
-        return readSize;
-      }
-    }
-    else
-    {
-      return SIZE_MAX;
+      if (readSize) FlushFileBuffers(m_hWrite);
+      uiReturn = readSize;
     }
   }
-  return readSize;
+  return uiReturn;
 }
 
 CcStatus CcWindowsPipe::open(EOpenFlags)
@@ -147,6 +144,16 @@ CcStatus CcWindowsPipe::close()
 CcStatus CcWindowsPipe::cancel()
 {
   return true;
+}
+
+CcStatus CcWindowsPipe::flush()
+{
+  CcStatus oStatus(false);
+  //if(FlushFileBuffers(m_hWrite))
+  {
+    oStatus = true;
+  }
+  return oStatus;
 }
 
 void CcWindowsPipe::readCache()
@@ -176,6 +183,7 @@ void CcWindowsPipe::readCache()
     {
 
     }
+    CCDEBUG("CcWindowsPipe::ReadCache: " + m_oReadBuffer);
   }
   unlock();
 }

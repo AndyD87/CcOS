@@ -43,19 +43,22 @@ size_t CcStdIn::read(void* pBuffer, size_t uSize)
   wchar_t* pOutput;
   if ((pOutput = fgetws(pwcBuffer, (int)uSize, stdin)) != nullptr)
   {
-    size_t uiRead = CcStringUtil::findChar(pwcBuffer, L'\0', uSize);
-    m_sTemporaryBackup.appendWchar(pwcBuffer, uiRead);
-    if (m_sTemporaryBackup.length() > uSize)
+    size_t uiRead = CcStringUtil::findChar(pwcBuffer, L'\0', 0, uSize);
+    if (uiRead <= uSize)
     {
-      memcpy(pBuffer, m_sTemporaryBackup.getCharString(), uSize);
-      iRet = uSize;
-      m_sTemporaryBackup.remove(0, uSize);
-    }
-    else
-    {
-      memcpy(pBuffer, m_sTemporaryBackup.getCharString(), m_sTemporaryBackup.length());
-      iRet = m_sTemporaryBackup.length();
-      m_sTemporaryBackup.clear();
+      m_sTemporaryBackup.appendWchar(pwcBuffer, uiRead);
+      if (m_sTemporaryBackup.length() > uSize)
+      {
+        memcpy(pBuffer, m_sTemporaryBackup.getCharString(), uSize);
+        iRet = uSize;
+        m_sTemporaryBackup.remove(0, uSize);
+      }
+      else
+      {
+        memcpy(pBuffer, m_sTemporaryBackup.getCharString(), m_sTemporaryBackup.length());
+        iRet = m_sTemporaryBackup.length();
+        m_sTemporaryBackup.clear();
+      }
     }
   }
   else

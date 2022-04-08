@@ -181,7 +181,15 @@ public:
    * @return System file handle or nullptr if not existing.
    */
   virtual void* getStdFile();
-  
+
+  /**
+   * @brief Flush written data to output.
+   *        Clean all caches.
+   * @return Succeess if data written successufll.
+   *
+   */
+  virtual CcStatus flush() { return EStatus::NotSupported; }
+
   /**
    * @brief Read data from IO direct to a ByteArray.
    * @param[in,out] oOutputArray: Target preallocated OutputBuffer to write the read data to.
