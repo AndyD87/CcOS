@@ -100,6 +100,8 @@ public:
    */
   CcMediaSHARED virtual ~CcM3U();
 
+  void CcMediaSHARED clear();
+
   CcStatus CcMediaSHARED open(const CcUrl& sUrl);
 
   size_t   CcMediaSHARED getStreamCount() const
@@ -113,11 +115,11 @@ private:
 
   CcStatus parseExtStreamInf(CExtXStreamInf& oData, CcStringMap& oMap);
 private:
-  CcUrl m_oUrl;
-  bool m_bIsPath = false;
+  CcUrl                  m_oUrl;
+  bool                   m_bIsPath = false;
 
-  uint16_t m_uiVersion = 1;
-  bool     m_bIndependentSegments = false;
+  uint16_t               m_uiVersion = 1;
+  bool                   m_bIndependentSegments = false;
 
   CcList<CExtXStreamInf> m_oStreams;
   CcList<CExtXMediaType> m_oMedias;

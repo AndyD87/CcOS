@@ -91,16 +91,16 @@ public:
 
   /**
    * @brief Create a String-class with initialized const char array
-   * @param cString: pointer to char array containing a null terminated string
+   * @param pcString: pointer to char array containing a null terminated string
    */
-  CcString(const char* cString);
+  CcString(const char* pcString);
 
   /**
    * @brief Create a String-class with an initialized string of variable length
-   * @param cString:  pointer to char array to be inserted
+   * @param pcString:  pointer to char array to be inserted
    * @param uiLength: Size of char-string to be stored in class
    */
-  CcString(const char* cString, size_t uiLength);
+  CcString(const char* pcString, size_t uiLength);
 
   /**
    * @brief Create a String-class with initialized const wchar array

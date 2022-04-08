@@ -214,6 +214,15 @@ public:
    */
   void deinit();
 
+  /**
+   * @breif add hostname of target for verifying the certificates.
+   * @return 
+   */
+  void setHostname(const CcString& sName);
+
+  int getError(int iReturnCode);
+  CcString getErrorString(int iReturnCode);
+
 private:
   /** @brief Do not allow copy of socket */
   CcSslSocket(const CcSslSocket&) = delete;
@@ -225,4 +234,5 @@ private: // Types
   class CPrivate;
 private: // Member
   CPrivate* m_pPrivate = nullptr; //<! Private data
+  CcString  m_sHostname;
 };

@@ -60,15 +60,21 @@ CcString::CcString(size_t uiLength, const char cDefaultChar)
   reserve(uiLength, cDefaultChar);
 }
 
-CcString::CcString(const char* cString)
+CcString::CcString(const char* pcString)
 {
-  size_t uiLength = CcStringUtil::strlen(cString);
-  append(cString, uiLength);
+  if (pcString)
+  {
+    size_t uiLength = CcStringUtil::strlen(pcString);
+    append(pcString, uiLength);
+  }
 }
 
-CcString::CcString(const wchar_t * wstr)
+CcString::CcString(const wchar_t * pcwString)
 {
-  appendWchar(wstr);
+  if (pcwString)
+  {
+    appendWchar(pcwString);
+  }
 }
 
 CcString::CcString(const wchar_t * wstr, size_t uiLength)

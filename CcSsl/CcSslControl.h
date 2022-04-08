@@ -68,6 +68,11 @@ public:
    */
   static CcByteArray getBioData(bio_st* pBioData);
 
+  static void printAllErrors();
+
+private:
+  static int printCallback(const char *str, size_t len, void *u);
+
 private:
   CcSslControl() = delete;
   ~CcSslControl() = delete;

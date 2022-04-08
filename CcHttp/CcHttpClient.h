@@ -134,24 +134,25 @@ private: //methods
   void closeSocket();
   bool readHeader();
   bool receiveChunked();
+  void writeOutput(void* pData, size_t uiSize);
 
 private:
   uint16 m_uiRetries;
 
 private:
-  CcSocket m_Socket;
-  CcString m_WD;
-  CcString m_sRequestString;
-  CcStringMap m_oRequestData;
-  CcStringMap m_oRequestFiles;
-  IIo *m_Output = nullptr;
+  CcSocket        m_Socket;
+  CcString        m_WD;
+  CcString        m_sRequestString;
+  CcStringMap     m_oRequestData;
+  CcStringMap     m_oRequestFiles;
   CcHttpCookies   m_oCookies;
   CcHttpRequest   m_HeaderRequest;
   CcHttpResponse  m_HeaderResponse;
-  bool m_Done;
-  CcString    m_sHeader;
-  CcByteArray m_oBuffer;
-  CcUrl m_oUrl;
+  bool            m_Done;
+  CcString        m_sHeader;
+  IIo*            m_pOutput = nullptr;
+  CcByteArray     m_oOutputBuffer;
+  CcUrl           m_oUrl;
 private:
   static uint16 s_uiRetries;  //!< Default retries to get a valid connection and HTTP result lower than 300
 };

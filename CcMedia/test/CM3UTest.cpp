@@ -26,13 +26,15 @@
 #include "CcString.h"
 #include "Playlist/CcM3U.h"
 #include "CcFile.h"
+#include "CcByteArray.h"
 
 CM3UTest::CM3UTest() :
   CcTest("CM3UTest")
 {
   appendTestMethod("Setup test env", &CM3UTest::generateTestFiles);
   appendTestMethod("Test basics", &CM3UTest::testBasic);
-  appendTestMethod("Test stream download", &CM3UTest::testStreamLoad);
+  appendTestMethod("Test stream download from filesystem", &CM3UTest::testStreamLoad);
+  appendTestMethod("Test stream download from http", &CM3UTest::testStreamWebLoad);
 }
 
 CM3UTest::~CM3UTest()
@@ -138,12 +140,40 @@ bool CM3UTest::testStreamLoad()
     size_t uiBestStream = oReader.getStreamBest();
     if (uiBestStream == 3)
     {
-      bRet = oReader.downloadStream(uiBestStream, m_sStreamFileDownload);
-      if (bRet)
+      if(oReader.downloadStream(uiBestStream, m_sStreamFileDownload))
       {
         // Check if files are identical
+        CcFile oFile1(m_sStreamFileDownload);
+        CcFile oFile2(m_sStreamFile);
+        if (oFile1.open(EOpenFlags::Read))
+        {
+          if (oFile2.open(EOpenFlags::Read))
+          {
+            if (oFile2.readAll() == oFile1.readAll())
+            {
+              bRet = true;
+            }
+            oFile2.close();
+          }
+          oFile1.close();
+        }
       }
     }
   }
+  return bRet;
+}
+
+bool CM3UTest::testStreamWebLoad()
+{
+  // Not yet done, Webserver required to start before
+  bool bRet = true;
+  //CcM3U oReader("https://mcdn.daserste.de/daserste/de/master.m3u8");
+  //if (oReader.getStreamCount() > 0)
+  //{
+  //  size_t uiBestStream = oReader.getStreamBest();
+  //  if (oReader.downloadStream(uiBestStream, m_sStreamFileDownload))
+  //  {
+  //  }
+  //}
   return bRet;
 }

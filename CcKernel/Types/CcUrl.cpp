@@ -77,6 +77,17 @@ bool CcUrl::operator==(const CcUrl& oToCompare) const
   return false;
 }
 
+void CcUrl::clear()
+{
+  m_Hostname = "";
+  m_uiPort = 0;
+  m_Username = "";
+  m_Password = "";
+  m_Protocol = "";
+  m_Path = "";
+  m_IsUrl = false;
+}
+
 bool CcUrl::setUrl(const CcString& sUrl)
 {
   m_IsUrl = false;

@@ -55,5 +55,6 @@ private:
   bool generateTestFiles();
   bool testBasic();
   bool testStreamLoad();
+  bool testStreamWebLoad();
 
 };

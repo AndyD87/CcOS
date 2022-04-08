@@ -226,15 +226,19 @@ CcStatus CcSslSocket::connect()
     {
       m_pPrivate->m_pSsl = SSL_new(m_pPrivate->m_pSslCtx.ptr());
       CCMONITORNEW(m_pPrivate->m_pSsl.ptr());
-      SSL_set_fd(m_pPrivate->m_pSsl.ptr(), m_pPrivate->m_pParentSocket->getSocketFD());
-      int iSocketReturn = SSL_connect(m_pPrivate->m_pSsl.ptr());
-      if (iSocketReturn == -1)
+      if (SSL_set_fd(m_pPrivate->m_pSsl.ptr(), m_pPrivate->m_pParentSocket->getSocketFD()))
       {
-        bRet = false;
-      }
-      else
-      {
-        bRet = true;
+        SSL_ctrl(m_pPrivate->m_pSsl.ptr(), SSL_CTRL_SET_TLSEXT_HOSTNAME, TLSEXT_NAMETYPE_host_name, (void*)m_sHostname.getCharString());
+        int iSocketReturn = SSL_connect(m_pPrivate->m_pSsl.ptr());
+        if (iSocketReturn < 0)
+        {
+          getError(iSocketReturn);
+          CcSslControl::printAllErrors();
+        }
+        else
+        {
+          bRet = true;
+        }
       }
     }
   }
@@ -412,6 +416,24 @@ void CcSslSocket::deinit()
       m_pPrivate->m_pSsl = nullptr;
     }
   }
+}
+
+void CcSslSocket::setHostname(const CcString& sName)
+{
+  m_sHostname = sName;
+}
+
+int CcSslSocket::getError(int iReturnCode)
+{
+  int iErrorCode = SSL_get_error(m_pPrivate->m_pSsl.ptr(), iReturnCode);
+  CCDEBUG(getErrorString(iReturnCode));
+  return iErrorCode;
+}
+
+CcString CcSslSocket::getErrorString(int iReturnCode)
+{
+  int iErrorCode = SSL_get_error(m_pPrivate->m_pSsl.ptr(), iReturnCode);
+  return CcString(ERR_func_error_string(iErrorCode));
 }
 
 bool CcSslSocket::loadCertificate(const CcString& sCertificateFile)

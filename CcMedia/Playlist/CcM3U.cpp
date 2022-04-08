@@ -27,6 +27,7 @@
 #include "CcHttpClient.h"
 #include "CcMapCommon.h"
 #include "CcStringUtil.h"
+#include "CcConsole.h"
 
 #define EXT_M3U                       "#EXTM3U"
 #define EXT_INF                       "#EXTINF:"
@@ -46,6 +47,17 @@ CcM3U::CcM3U(const CcUrl& sUrl)
 
 CcM3U::~CcM3U()
 {
+}
+
+void CcM3U::clear()
+{
+  m_oUrl.clear();
+  m_bIsPath = false;
+  m_uiVersion = 1;
+  m_bIndependentSegments = false;
+  m_oStreams.clear();
+  m_oMedias.clear();
+  m_oFiles.clear();
 }
 
 CcStatus CcM3U::open(const CcUrl& sUrl)
@@ -116,38 +128,40 @@ CcStatus CcM3U::downloadStream(size_t uiIndex, const CcString& sFile)
       if ((oStatus = oStreamReader.open(oNewUrl)) == true)
       {
         CcFile oOutput(sFile);
-        if ((oStatus = oOutput.open(EOpenFlags::Write)))
+        CcConsole::writeLine("Download to: " + sFile);
+        if ((oStatus = oOutput.open(EOpenFlags::Overwrite)))
         {
-          if ((oStatus = oStreamReader.open(oNewUrl)) == true)
+          size_t uiFilesToRead = oStreamReader.m_oFiles.size();
+          size_t uiFilesWritten = 0;
+          for (CFileInf& oFileInf : oStreamReader.m_oFiles)
           {
-            for (CFileInf& oFileInf : oStreamReader.m_oFiles)
+            if (m_oUrl.getProtocol() == "http" ||
+                m_oUrl.getProtocol() == "https")
             {
-              if (m_oUrl.getProtocol() == "http" ||
-                  m_oUrl.getProtocol() == "https")
-              {
-                CcUrl oInUrl = oStreamReader.m_oUrl;
-                oInUrl.setPath(oFileInf.sPath);
+              CcUrl oInUrl = oStreamReader.m_oUrl;
+              oInUrl.setPath(oFileInf.sPath);
 
-                CcHttpClient oInFile(oFileInf.sPath);
-                if ((oStatus = oInFile.execGet()) == true)
-                {
-                  oOutput.writeArray(oInFile.getByteArray());
-                }
-              }
-              else
+              CcHttpClient oInFile(oInUrl);
+              CcConsole::writeLine("File " + CcString::fromNumber(++uiFilesWritten) + "/" + CcString::fromNumber(uiFilesToRead) + ": " + oInUrl.getUrl());
+              oInFile.setOutputDevice(&oOutput);
+              if ((oStatus = oInFile.execGet()) != true)
               {
-                CcString sPath = oFileInf.sPath;
-                if (sPath.length() != 0 && sPath[0] != '/')
-                {
-                  sPath = oStreamReader.m_oUrl.getPath().extractPath();
-                  sPath.appendPath(oFileInf.sPath);
-                }
-                CcFile oInFile(sPath);
-                if ((oStatus = oInFile.open(EOpenFlags::Read)) == true)
-                {
-                  oOutput.writeArray(oInFile.readAll());
-                  oInFile.close();
-                }
+                CcConsole::writeLine("Download failed");
+              }
+            }
+            else
+            {
+              CcString sPath = oFileInf.sPath;
+              if (sPath.length() != 0 && sPath[0] != '/')
+              {
+                sPath = oStreamReader.m_oUrl.getPath().extractPath();
+                sPath.appendPath(oFileInf.sPath);
+              }
+              CcFile oInFile(sPath);
+              if ((oStatus = oInFile.open(EOpenFlags::Read)) == true)
+              {
+                oOutput.writeArray(oInFile.readAll());
+                oInFile.close();
               }
             }
           }

@@ -98,6 +98,8 @@ public: //methods
   inline bool operator!=(const CcUrl& oToCompare) const
   { return !operator==(oToCompare);}
 
+  void clear();
+
   /**
    * @brief Set a String as new Url
    * @param sUrl: String with url as content
@@ -209,11 +211,11 @@ private:
   void getPortByProtocol();
 
 private:
-  CcString m_Hostname; //!< Hostname part in URL
-  uint16   m_uiPort =0;//!< Port part in URL
-  CcString m_Username; //!< Username part in URL
-  CcString m_Password; //!< Password part in URL
-  CcString m_Protocol; //!< Protocol part in URL
-  CcString m_Path;     //!< Path part in URL
-  bool m_IsUrl = false;//!< true if URL is valid
+  CcString  m_Hostname; //!< Hostname part in URL
+  uint16    m_uiPort =0;//!< Port part in URL
+  CcString  m_Username; //!< Username part in URL
+  CcString  m_Password; //!< Password part in URL
+  CcString  m_Protocol; //!< Protocol part in URL
+  CcString  m_Path;     //!< Path part in URL
+  bool      m_IsUrl = false;//!< true if URL is valid
 };

@@ -38,20 +38,50 @@
 #include <openssl/engine.h>
 #endif
 
+#include "CcConsole.h"
+
 bool CcSslControl::s_bIsInitialized = false;
 
 bool CcSslControl::initSsl()
 {
   if (s_bIsInitialized == false)
   {
-      // Do not check return values of loading ssl
-      // Not all versions of openss does support this.
-      // Later it should be checked again with OPENSSL Version definitions
-      SSL_library_init();
-      ERR_load_BIO_strings();
-      SSL_load_error_strings();
-      OpenSSL_add_all_algorithms();
-      s_bIsInitialized = true;
+    // Do not check return values of loading ssl
+    // Not all versions of openss does support this.
+    // Later it should be checked again with OPENSSL Version definitions
+    int iSslInit = SSL_load_error_strings();
+    if (iSslInit < 0)
+    {
+
+    }
+    else
+    {
+      iSslInit = ERR_load_BIO_strings();
+      if (iSslInit < 0)
+      {
+
+      }
+      else
+      {
+        iSslInit = SSL_library_init();
+        if (iSslInit < 0)
+        {
+
+        }
+        else
+        {
+          iSslInit = OpenSSL_add_all_algorithms();
+          if (iSslInit < 0)
+          {
+
+          }
+          else
+          {
+            s_bIsInitialized = true;
+          }
+        }
+      }
+    }
   }
   return s_bIsInitialized;
 }
@@ -68,7 +98,7 @@ CcString CcSslControl::getErrorString(uint32 uiErrorCode)
   return sError;
 }
 
-CcByteArray CcSslControl::getBioData(BIO * pBioData)
+CcByteArray CcSslControl::getBioData(bio_st* pBioData)
 {
   CcByteArray oByteArray;
   char buffer[1024];
@@ -79,4 +109,15 @@ CcByteArray CcSslControl::getBioData(BIO * pBioData)
     size = BIO_read(pBioData, buffer, 1024);
   }
   return oByteArray;
+}
+
+void CcSslControl::printAllErrors()
+{
+  ERR_print_errors_cb(CcSslControl::printCallback, nullptr);
+}
+
+int CcSslControl::printCallback(const char *str, size_t len, void* CCUNUSED_PARAM(pContext))
+{
+  CcConsole::writeLine(CcString(str, len));
+  return 0;
 }
