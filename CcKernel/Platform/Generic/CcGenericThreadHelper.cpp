@@ -1,5 +1,5 @@
 /*
- * @copyright  Andreas Dirmeier (C) 2015
+ * @copyright  Andreas Dirmeier (C) 2022
  *
  * This file is part of CcOS.
  *

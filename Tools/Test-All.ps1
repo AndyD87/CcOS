@@ -142,14 +142,6 @@ function StartBuildProcess
 Function Test-VisualStudio()
 {
     $VisualStudios = @()
-    if( (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat") -and
-        (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe") -and # IDE
-        (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\cl.exe"))              # Compiler
-    {
-        $VisualStudio14 += @{ Name     = "Visual Studio 14 2015"};
-        $VisualStudio14 += @{ Extended = $false};
-        $VisualStudios += $VisualStudio14
-    }
     if((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") -and
        (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2017"))
     {

@@ -18,7 +18,7 @@
 /**
  * @file
  * @author    Andreas Dirmeier
- * @copyright  Andreas Dirmeier (C) 2015
+ * @copyright  Andreas Dirmeier (C) 2022
  * @par       Language: C++11
  * @brief     Class CcLinuxFile
  */

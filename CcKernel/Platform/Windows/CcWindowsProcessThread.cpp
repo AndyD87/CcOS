@@ -94,6 +94,9 @@ void CcWindowsProcessThread::run()
     DWORD uiExitCode;
     GetExitCodeProcess(m_pPrivate->pi.hProcess, &uiExitCode);
 
+    static_cast<CcWindowsPipe&>(m_hProcess->pipe()).readCache();
+    m_hProcess->pipe().close();
+
     // Close process and thread handles.
     if (m_pPrivate->pi.hProcess != INVALID_HANDLE_VALUE)
     {

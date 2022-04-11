@@ -173,7 +173,7 @@ bool CcHttpClient::exec(EHttpRequestType eRequestType, const CcByteArray& oData)
             uint64 uiDataWritten = m_oOutputBuffer.size();
             if (m_pOutput && uiDataWritten)
             {
-              writeOutput(m_oOutputBuffer.getArray(), uiDataWritten);
+              writeOutput(m_oOutputBuffer.getArray(), static_cast<size_t>(uiDataWritten));
               m_oOutputBuffer.clear();
             }
             while (uiDataWritten < uiDataSize)

@@ -24,11 +24,68 @@
  */
 #include "CcWindowsPipe.h"
 #include "CcKernel.h"
+#include "CcWString.h"
 
 //! Default buffer size for common buffer on windows
 #define CcWindowsPipe_CommonBufferSize 1024 * 10
 
 CcWindowsPipe::CcWindowsPipe()
+{
+  open(EOpenFlags::ReadWrite);
+}
+
+CcWindowsPipe::~CcWindowsPipe()
+{
+  close();
+}
+
+size_t CcWindowsPipe::read(void* buffer, size_t size)
+{
+  lock();
+  DWORD uiReadAll = 0;
+  DWORD uiSizePeeked = 0;
+  if (m_oReadBuffer.size() > 0)
+  {
+    uiReadAll = static_cast<DWORD>(m_oReadBuffer.read(buffer, size));
+    m_oReadBuffer.remove(0, uiReadAll);
+  }
+  while ( PeekNamedPipe(m_hRead, NULL, 0, NULL, &uiSizePeeked, NULL) &&
+          uiSizePeeked > 0 &&
+          uiReadAll < size )
+  {
+    if (uiSizePeeked > size - uiReadAll)
+      uiSizePeeked = static_cast<DWORD>(size - uiReadAll);
+    DWORD uiSizeRead = 0;
+    if ( ReadFile(m_hRead, (unsigned char*) buffer + uiReadAll, uiSizePeeked, &uiSizeRead, nullptr) )
+    {
+      uiReadAll += uiSizeRead;
+    }
+  }
+  unlock();
+  return uiReadAll;
+}
+
+size_t CcWindowsPipe::write(const void* pBuffer, size_t uSize)
+{
+  size_t uiReturn = SIZE_MAX;;
+  if (uSize > 0)
+  {
+    DWORD readSize = 0;
+    if (WriteFile(m_hWrite,        // open file handle
+		pBuffer,                   // start of data to write
+		static_cast<DWORD>(uSize), // number of bytes to write
+		&readSize,                 // number of bytes written
+		nullptr)	               // no overlapped structure
+    )
+    {
+      if (readSize) FlushFileBuffers(m_hWrite);
+      uiReturn = readSize;
+    }
+  }
+  return uiReturn;
+}
+
+CcStatus CcWindowsPipe::open(EOpenFlags)
 {
   SECURITY_ATTRIBUTES saAttr1;
   saAttr1.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -38,6 +95,7 @@ CcWindowsPipe::CcWindowsPipe()
     CCDEBUG("StdoutRd CreatePipe");
 
   // Ensure the read handle to the pipe for STDOUT is not inherited.
+
   if (!SetHandleInformation(m_hWrite, HANDLE_FLAG_INHERIT, 0))
     CCDEBUG("Stdout SetHandleInformation");
 
@@ -52,9 +110,10 @@ CcWindowsPipe::CcWindowsPipe()
 
   if (!SetHandleInformation(m_hRead, HANDLE_FLAG_INHERIT, 0))
     CCDEBUG("Stdout SetHandleInformation");
+  return true;
 }
 
-CcWindowsPipe::~CcWindowsPipe()
+CcStatus CcWindowsPipe::close()
 {
   CancelIo(m_hWrite);
   CancelIo(m_HandleIn);
@@ -82,62 +141,6 @@ CcWindowsPipe::~CcWindowsPipe()
     CloseHandle(m_hRead);
     m_hRead = INVALID_HANDLE_VALUE;
   }
-}
-
-size_t CcWindowsPipe::read(void* buffer, size_t size)
-{
-  lock();
-  DWORD uiReadAll = 0;
-  DWORD uiSizePeeked = 0;
-  if (m_oReadBuffer.size() > 0)
-  {
-    uiReadAll = static_cast<DWORD>(m_oReadBuffer.read(buffer, size));
-    m_oReadBuffer.remove(0, uiReadAll);
-    CCDEBUG("CcWindowsPipe:: uiReadAll: " + CcString::fromNumber(uiReadAll));
-  }
-  while ( PeekNamedPipe(m_hRead, NULL, 0, NULL, &uiSizePeeked, NULL) &&
-          uiSizePeeked > 0 &&
-          uiReadAll < size )
-  {
-    if (uiSizePeeked > size - uiReadAll)
-      uiSizePeeked = static_cast<DWORD>(size - uiReadAll);
-    DWORD uiSizeRead = 0;
-    if ( ReadFile(m_hRead, (unsigned char*) buffer + uiReadAll, uiSizePeeked, &uiSizeRead, nullptr) )
-    {
-      CCDEBUG("CcWindowsPipe::Read: " + CcByteArray((unsigned char*)buffer + uiReadAll, (size_t)uiSizeRead));
-      uiReadAll += uiSizeRead;
-    }
-  }
-  unlock();
-  return uiReadAll;
-}
-
-size_t CcWindowsPipe::write(const void* buffer, size_t size)
-{
-  size_t uiReturn = SIZE_MAX;;
-  if (size > 0)
-  {
-    DWORD readSize = 0;
-    if (WriteFile(m_hWrite,   // open file handle
-      buffer,        // start of data to write
-      static_cast<DWORD>(size),      // number of bytes to write
-      &readSize,     // number of bytes written
-      nullptr))      // no overlapped structure
-    {
-      if (readSize) FlushFileBuffers(m_hWrite);
-      uiReturn = readSize;
-    }
-  }
-  return uiReturn;
-}
-
-CcStatus CcWindowsPipe::open(EOpenFlags)
-{
-  return true;
-}
-
-CcStatus CcWindowsPipe::close()
-{
   return true;
 }
 

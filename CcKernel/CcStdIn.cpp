@@ -26,6 +26,7 @@
 #include "CcStdIn.h"
 #include "CcWString.h"
 #include "CcStringUtil.h"
+#include "CcStatic.h"
 #include <stdio.h>
 
 #ifdef WINDOWS

@@ -1,6 +1,6 @@
 /**
  * @author     Andreas Dirmeier
- * @copyright  Andreas Dirmeier (c) 2015
+ * @copyright  Andreas Dirmeier (C) 2022
  * @par       Language: C++11
  */
 /**

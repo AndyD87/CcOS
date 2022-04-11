@@ -15,16 +15,16 @@ Current status:
 
 ## Build on Windows
 
-For building on Windows, at least Visual Studio 2015 is required, earlier Version doesn't fully support c++11.
+For building on Windows, at least Visual Studio 2017 is required, earlier Version doesn't fully support c++11.
 In subdirectory "Tools", you can find some scripts for creating Solutions depending on Version and Architecture.
 Direct builds with nmake are possbile. Look at cmake documentation, how to make it.
 
 Execute following to get a Solution:
 
-    cd Tools
-    CmakeVS2013.x64.bat
-    cd ..\Solution
-    Main.sln
+    mkdir Solution
+    cd Solution
+    cmake ..
+    CcOS.sln
     
 ## Build on Linux
 

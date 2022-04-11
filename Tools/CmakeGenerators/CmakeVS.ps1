@@ -1,6 +1,6 @@
 PARAM(
     [String]
-    [ValidateSet("2015", "2017", "2019", "2022")]
+    [ValidateSet("2017", "2019", "2022")]
     $Version = $null,
     [String]
     [ValidateSet("x64", "x86")]
@@ -69,17 +69,6 @@ if((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.
     $VisualStudio.Full   = "Visual Studio 15 2017"
     $VisualStudio.CmakeX86  = @("-G", "`"Visual Studio 15 2017`"")
     $VisualStudio.CmakeX64  = @("-G", "`"Visual Studio 15 2017 Win64`"")
-    $VisualStudios      += $VisualStudio
-}
-if( (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat") -and
-    (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\devenv.exe") -and # IDE
-    (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\cl.exe"))              # Compiler
-{
-    $VisualStudio        = @{}
-    $VisualStudio.Year   = "2015"
-    $VisualStudio.Full   = "Visual Studio 14 2015"
-    $VisualStudio.CmakeX86  = @("-G", "`"Visual Studio 14 2015`"")
-    $VisualStudio.CmakeX64  = @("-G", "`"Visual Studio 14 2015 Win64`"")
     $VisualStudios      += $VisualStudio
 }
 
