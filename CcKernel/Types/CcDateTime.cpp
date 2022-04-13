@@ -362,6 +362,19 @@ CcDateTime& CcDateTime::fromDateTime(uint16 uiYear, uint8 uiMonth, uint8 uiDay, 
   return *this;
 }
 
+CcStatus CcDateTime::fromIso8601(const CcString& sValue)
+{
+  CcStatus oStatus;
+  // Try it with milliseconds:
+  oStatus = fromFormat("yyyy-MM-ddThh:mm:ss.zzzZ", sValue);
+  // If not working, try it with seconds
+  if (!oStatus)
+  {
+    oStatus = fromFormat("yyyy-MM-ddThh:mm:ssZ", sValue);
+  }
+  return oStatus;
+}
+
 CcStatus CcDateTime::fromFormat(const CcString& sFormat, const CcString& sValue)
 {
   uint16 uiYear = 0;

@@ -25,6 +25,7 @@
 #include "CcArguments.h"
 #include "CcStringUtil.h"
 #include "CcGlobalStrings.h"
+#include "IIo.h"
 
 CcArguments::CcArguments(int argc, char **argv)
 {
@@ -210,14 +211,28 @@ bool CcArguments::parse(const CcString& sLine)
 
 bool CcArguments::contains(const CcString& sKey)
 {
-  for (const CcString& sArgument : *this)
+  for (const CcStringVariantPair& sArgument : m_oVariablesParsed)
   {
-    if (sArgument == sKey)
+    if (sArgument.getKey().compareInsensitve(sKey))
     {
       return true;
     }
   }
   return false;
+}
+
+void CcArguments::printHelp(IIo& oOutput)
+{
+  oOutput.writeString("Arguments");
+  for (const CVariableDefinition& sArgument : m_oVariables)
+  {
+    oOutput.writeString("  ");
+    oOutput.writeString(sArgument.sName);
+    oOutput.writeString(CcGlobalStrings::EolOs);
+    oOutput.writeString("    ");
+    oOutput.writeString(sArgument.sDescription);
+    oOutput.writeString(CcGlobalStrings::EolOs);
+  }
 }
 
 CcVariant::EType CcArguments::getType(const CcString& sName)
@@ -236,8 +251,7 @@ CcVariant::EType CcArguments::getType(const CcString& sName)
 
 bool CcArguments::parse()
 {
-  bool bSuccess = true;
-  for (size_t uiPos = 0; bSuccess && uiPos < size(); uiPos++)
+  for (size_t uiPos = 0; m_eValidity && uiPos < size(); uiPos++)
   {
     CcString sLowerValue(at(uiPos));
     sLowerValue.toLower();
@@ -247,14 +261,17 @@ bool CcArguments::parse()
     {
       uiPos++;
       CcVariant oValue(at(uiPos));
-      bSuccess &= oValue.convert(eType);
-      if (m_oVariablesParsed.containsKey(sLowerValue))
+      m_eValidity = oValue.convert(eType);
+      if (m_eValidity)
       {
-        m_oVariablesParsed[sLowerValue] = oValue;
-      }
-      else
-      {
-        m_oVariablesParsed.append(sLowerValue, oValue);
+        if (m_oVariablesParsed.containsKey(sLowerValue))
+        {
+          m_oVariablesParsed[sLowerValue] = oValue;
+        }
+        else
+        {
+          m_oVariablesParsed.append(sLowerValue, oValue);
+        }
       }
     }
     else if (eType == CcVariant::EType::NoType)
@@ -264,8 +281,8 @@ bool CcArguments::parse()
     else
     {
       // Missing value, we are at the end
-      bSuccess = false;
+      m_eValidity = false;
     }
   }
-  return bSuccess;
+  return m_eValidity;
 }

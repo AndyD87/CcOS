@@ -121,8 +121,12 @@ CcStatus CcM3U::downloadStream(size_t uiIndex, const CcString& sFile)
     if (oInfData.sAudio.length() == 0 &&
         oInfData.sVideo.length() == 0)
     {
-      CcUrl oNewUrl = m_oUrl;
-      oNewUrl.setPath(oInfData.sUri);
+      CcUrl oNewUrl(oInfData.sUri);
+      if (oNewUrl.getProtocol().length() == 0)
+      {
+        oNewUrl = m_oUrl;
+        oNewUrl.setPath(oInfData.sUri);
+      }
 
       CcM3U oStreamReader;
       if ((oStatus = oStreamReader.open(oNewUrl)) == true)
@@ -239,8 +243,6 @@ CcStatus CcM3U::parseLines(const CcStringList& oLines)
           CcStringList oList = sTime.split("+");
           if (oList.size() > 0)
             oSuccess = oActiveDateInf.fromIso8601(oList[0]);
-          else
-            oSuccess = false;
           if (oList.size() > 1)
             fActiveTimezone = oList[1].toFloat();
           else

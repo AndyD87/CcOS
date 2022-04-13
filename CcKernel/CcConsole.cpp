@@ -239,12 +239,12 @@ void CcConsole::disableBuffering()
   CcStdOut::disableBuffer();
 }
 
-CcStdOut* CcConsole::getOutStream()
+IIo& CcConsole::getOutStream()
 {
-  return s_pOutput;
+  return *s_pOutput;
 }
 
-CcStdIn* CcConsole::getInStream()
+IIo& CcConsole::getInStream()
 {
-  return s_pInput;
+  return *s_pInput;
 }

@@ -76,6 +76,13 @@ public:
   CcArguments(const CcString& sArgline);
 
   /**
+   * @brief Constructor with argument line to parse initialy
+   * @param sArgline: Line to parse for arguments
+   */
+  CcArguments(const CVariableDefinitionList& oVariables)
+  { setVariablesList(oVariables); }
+
+  /**
    * @brief CopyConstructor
    * @param oToCopy: Object to copy
    */
@@ -164,6 +171,8 @@ public:
    */
   bool contains(const CcString& sKey);
 
+  void printHelp(IIo& oOutput);
+
   /**
    * @brief Get all variables the parser is using.
    * @return Paires of values and variables as Map
@@ -189,12 +198,17 @@ public:
   const CcVariant& getValue(const CcString& sKey)
   { return m_oVariablesParsed.getValue(sKey); }
 
+  //! @return Get last parsing validation information.
+  CcStatus isValid() const
+  { return m_eValidity; }
+  
 private:
   //! @return Get Type of variable if found, otherwise CcVariant::EType::NoType.
   CcVariant::EType getType(const CcString& sName);
   bool parse();
 
 private:
+  CcStatus                  m_eValidity;
   CVariableDefinitionList   m_oVariables;
   CcVariantMap              m_oVariablesParsed;
   CcStringList              m_oUnparsed;

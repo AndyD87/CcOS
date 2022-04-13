@@ -25,6 +25,7 @@
 #pragma once
 
 #include "CcBase.h"
+#include "IIo.h"
 
 class CcString;
 class CcStdIn;
@@ -151,13 +152,13 @@ public:
    * @brief Get pointer to default output stream
    * @return Default stdout instance
    */
-  static CcStdOut* getOutStream();
+  static IIo& getOutStream();
 
   /**
    * @brief Get pointer to default input stream
    * @return Default stdin instance
    */
-  static CcStdIn* getInStream();
+  static IIo& getInStream();
 private:
   /**
    * @brief Constructor

@@ -369,8 +369,7 @@ public:
 
   CcDateTime& fromDateTime(uint16 uiYear, uint8 uiMonth, uint8 uiDay, uint8 uiHours, uint8 uiMinutes, uint8 uiSeconds, uint16 uiMillisecconds);
   //! Simplified method to read ISO 8601 Strings
-  CcStatus fromIso8601(const CcString& sValue)
-  { return fromFormat("yyyy-MM-ddThh:mm:ss.zzzZ", sValue); }
+  CcStatus fromIso8601(const CcString& sValue);
 
   /**
    * @brief Get time as formated string
