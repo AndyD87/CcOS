@@ -503,6 +503,9 @@ public:
   bool set(VARIANT &winVariant, VARENUM winVariantType, size_t uiIndex = SIZE_MAX);
 #endif
 
+  static const CcString& getStringFromType(EType eType);
+  static EType getTypeFromString(const CcString& eType);
+
 private:
   /**
    * @brief Union of all types

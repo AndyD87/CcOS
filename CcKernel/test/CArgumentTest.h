@@ -46,4 +46,5 @@ public:
 private:
   bool testBasic();
   bool testFailedTypes();
+  bool testRequirements();
 };

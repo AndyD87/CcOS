@@ -2957,3 +2957,110 @@ bool CcVariant::set(VARIANT& winVariant, VARENUM winVariantType, size_t uiIndex)
   return bConversionOk;
 }
 #endif
+
+const CcString g_sNoType          ("notype");
+const CcString g_sBool            ("bool");
+const CcString g_sSwitch          ("switch");
+const CcString g_sInt8            ("int8");
+const CcString g_sUint8           ("uint8");
+const CcString g_sInt16           ("int16");
+const CcString g_sUint16          ("uint16");
+const CcString g_sInt32           ("int32");
+const CcString g_sUint32          ("uint32");
+const CcString g_sInt64           ("int64");
+const CcString g_sUint64          ("uint64");
+const CcString g_sSize            ("size");
+const CcString g_sFloat           ("float");
+const CcString g_sDouble          ("double");
+const CcString g_sDateTime        ("datetime");
+const CcString g_sString          ("string");
+const CcString g_sByteArray       ("bytearray");
+const CcString g_sStringList      ("stringlist");
+const CcString g_sPointer         ("pointer");
+const CcString g_sVariantList     ("variantlist");
+const CcString g_sVersion         ("version");
+const CcString g_sUuid            ("uuid");
+const CcString g_sIp              ("ip");
+
+const CcString& CcVariant::getStringFromType(CcVariant::EType eType)
+{
+  switch (eType)
+  {
+    case EType::NoType:
+      return g_sNoType;
+    case EType::Bool:
+      return g_sBool;
+    case EType::Switch:
+      return g_sSwitch;
+    case EType::Int8:
+      return g_sInt8;
+    case EType::Uint8:
+      return g_sUint8;
+    case EType::Int16:
+      return g_sInt16;
+    case EType::Uint16:
+      return g_sUint16;
+    case EType::Int32:
+      return g_sInt32;
+    case EType::Uint32:
+      return g_sUint32;
+    case EType::Int64:
+      return g_sInt64;
+    case EType::Uint64:
+      return g_sUint64;
+    case EType::Size:
+      return g_sSize;
+    case EType::Float:
+      return g_sFloat;
+    case EType::Double:
+      return g_sDouble;
+    case EType::DateTime:
+      return g_sDateTime;
+    case EType::String:
+      return g_sString;
+    case EType::ByteArray:
+      return g_sByteArray;
+    case EType::StringList:
+      return g_sStringList;
+    case EType::Pointer:
+      return g_sPointer;
+    case EType::VariantList:
+      return g_sVariantList;
+    case EType::Version:
+      return g_sNoType;
+    case EType::Uuid:
+      return g_sUuid;
+    case EType::Ip:
+      return g_sIp;
+  }
+  return CcGlobalStrings::Empty;
+}
+
+CcVariant::EType CcVariant::getTypeFromString(const CcString& sType)
+{
+  CcString sLower(sType.getLower());
+  if(g_sNoType            .compare(sLower)) return EType::NoType     ;
+  else if(g_sBool         .compare(sLower)) return EType::Bool       ;
+  else if(g_sSwitch       .compare(sLower)) return EType::Switch     ;
+  else if(g_sInt8         .compare(sLower)) return EType::Int8       ;
+  else if(g_sUint8        .compare(sLower)) return EType::Uint8      ;
+  else if(g_sInt16        .compare(sLower)) return EType::Int16      ;
+  else if(g_sUint16       .compare(sLower)) return EType::Uint16     ;
+  else if(g_sInt32        .compare(sLower)) return EType::Int32      ;
+  else if(g_sUint32       .compare(sLower)) return EType::Uint32     ;
+  else if(g_sInt64        .compare(sLower)) return EType::Int64      ;
+  else if(g_sUint64       .compare(sLower)) return EType::Uint64     ;
+  else if(g_sSize         .compare(sLower)) return EType::Size       ;
+  else if(g_sFloat        .compare(sLower)) return EType::Float      ;
+  else if(g_sDouble       .compare(sLower)) return EType::Double     ;
+  else if(g_sDateTime     .compare(sLower)) return EType::DateTime   ;
+  else if(g_sString       .compare(sLower)) return EType::String     ;
+  else if(g_sByteArray    .compare(sLower)) return EType::ByteArray  ;
+  else if(g_sStringList   .compare(sLower)) return EType::StringList ;
+  else if(g_sPointer      .compare(sLower)) return EType::Pointer    ;
+  else if(g_sVariantList  .compare(sLower)) return EType::VariantList;
+  else if(g_sVersion      .compare(sLower)) return EType::Version    ;
+  else if(g_sUuid         .compare(sLower)) return EType::Uuid       ;
+  else if(g_sIp           .compare(sLower)) return EType::Ip         ;
+  return EType::NoType;
+}

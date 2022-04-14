@@ -567,6 +567,22 @@
       </Platforms>
     </Project>
     <Project>
+      <Name>CcOSArgumentsApp</Name>
+      <Version></Version>
+      <Active>1</Active>
+      <Prebuild>false</Prebuild>
+      <Static>false</Static>
+      <StaticRuntime>false</StaticRuntime>
+      <Dependencies>
+        <Dependency>CcKernel</Dependency>
+        <Dependency>CcDocuments</Dependency>
+      </Dependencies>
+      <Platforms>
+        <Platform>Windows</Platform>
+        <Platform>Linux</Platform>
+      </Platforms>
+    </Project>
+    <Project>
       <Name>CcOSResourceApp</Name>
       <Version></Version>
       <Active>1</Active>

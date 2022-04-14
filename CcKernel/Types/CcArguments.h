@@ -38,11 +38,18 @@ public:
   class CcKernelSHARED CVariableDefinition
   {
   public:
-    CVariableDefinition(const CcString& sName = "", CcVariant::EType eType = CcVariant::EType::NoType, const CcString& sDefault = "", const CcString& sDescription = "") :
+    CVariableDefinition(const CcString& sName = "", 
+                        CcVariant::EType eType = CcVariant::EType::NoType, 
+                        const CcString& sDefault = "", 
+                        const CcString& sDescription = "", 
+                        CcList<CVariableDefinition> pRequiredParameters={},
+                        CcList<CVariableDefinition> pOptionalParameters={}) :
       sName(sName),
       eType(eType),
       sDefault(sDefault),
-      sDescription(sDescription)
+      sDescription(sDescription),
+      pRequired(pRequiredParameters),
+      pOptional(pOptionalParameters)
     {}
 
     bool operator==(const CVariableDefinition& toCompare) const
@@ -51,10 +58,14 @@ public:
         sDefault == toCompare.sDefault && sDescription == toCompare.sDescription;
     }
 
+    typedef class CcKernelSHARED CcList<CVariableDefinition> CList;
+
     CcString          sName;
     CcVariant::EType  eType;
     CcString          sDefault;
     CcString          sDescription;
+    CList             pRequired;
+    CList             pOptional;
   };
 
   typedef class CcKernelSHARED CcList<CVariableDefinition> CVariableDefinitionList;

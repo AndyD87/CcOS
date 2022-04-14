@@ -30,6 +30,7 @@ CArgumentTest::CArgumentTest() :
 {
   appendTestMethod("Test basic callup", &CArgumentTest::testBasic);
   appendTestMethod("Test string conversion checks", &CArgumentTest::testFailedTypes);
+  appendTestMethod("Test requirements", &CArgumentTest::testRequirements);
 }
 
 CArgumentTest::~CArgumentTest()
@@ -90,6 +91,7 @@ bool CArgumentTest::testFailedTypes()
   );
   if (!oArguments.parse(" -int32 string"))
   {
+    bRet = false;
     if (oArguments.parse(" -int32 20"))
     {
       if (!oArguments.parse(" -int32 20000000000"))
@@ -120,6 +122,7 @@ bool CArgumentTest::testFailedTypes()
   }
   if (bRet == true)
   {
+    bRet = false;
     if (oArguments.parse(" -uint32 20"))
     {
       if (!oArguments.parse(" -uint32 20000000000"))
@@ -141,6 +144,7 @@ bool CArgumentTest::testFailedTypes()
   }
   if (bRet == true)
   {
+    bRet = false;
     if (!oArguments.parse(" -int64 string"))
     {
       if (oArguments.parse(" -int64 20"))
@@ -174,6 +178,7 @@ bool CArgumentTest::testFailedTypes()
   }
   if (bRet == true)
   {
+    bRet = false;
     if (oArguments.parse(" -uint64 20"))
     {
       if (!oArguments.parse(" -uint64 19223372036854775807"))
@@ -195,6 +200,7 @@ bool CArgumentTest::testFailedTypes()
   }
   if (bRet == true)
   {
+    bRet = false;
     if (!oArguments.parse(" -int16 string"))
     {
       if (oArguments.parse(" -int16 20"))
@@ -228,6 +234,7 @@ bool CArgumentTest::testFailedTypes()
   }
   if (bRet == true)
   {
+    bRet = false;
     if (oArguments.parse(" -uint16 20"))
     {
       if (!oArguments.parse(" -uint16 165535"))
@@ -249,6 +256,7 @@ bool CArgumentTest::testFailedTypes()
   }
   if (bRet == true)
   {
+    bRet = false;
     if (!oArguments.parse(" -int8 string"))
     {
       if (oArguments.parse(" -int8 20"))
@@ -263,11 +271,11 @@ bool CArgumentTest::testFailedTypes()
             {
               if (oArguments.parse(" -int8 -1"))
               {
-                if (!oArguments.parse(" -int8 256"))
+                if (!oArguments.parse(" -int8 128"))
                 {
-                  if (oArguments.parse(" -int8 -256"))
+                  if (oArguments.parse(" -int8 -128"))
                   {
-                    if (!oArguments.parse(" -int8 -257"))
+                    if (!oArguments.parse(" -int8 -129"))
                     {
                       bRet = true;
                     }
@@ -282,6 +290,7 @@ bool CArgumentTest::testFailedTypes()
   }
   if (bRet == true)
   {
+    bRet = false;
     if (oArguments.parse(" -uint8 20"))
     {
       if (!oArguments.parse(" -uint8 256"))
@@ -300,6 +309,28 @@ bool CArgumentTest::testFailedTypes()
         }
       }
     }
+  }
+  return bRet;
+}
+
+bool CArgumentTest::testRequirements()
+{
+  bool bRet = false;
+  CcArguments oArguments;
+  oArguments.setVariablesList(
+    {
+      { 
+        "-i",      CcVariant::EType::String, "", "", 
+        { 
+          {"-o",      CcVariant::EType::String, "", ""},
+          {"-t",      CcVariant::EType::String, "", ""}
+        }
+      }
+    }
+  );
+  if (oArguments.parse(" -i input -o output -t test"))
+  {
+    bRet = true;
   }
   return bRet;
 }

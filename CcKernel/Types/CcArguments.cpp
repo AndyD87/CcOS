@@ -148,6 +148,7 @@ bool CcArguments::parse(const CcString& sLine)
 {
   const uint8 _STATE_NO_STATE = 0;
   const uint8 _STATE_IN_QUOTE = 1;
+  m_eValidity = true;
   clear();
   CcString sCurrentArgument;
   uint8 uiState = _STATE_NO_STATE;
