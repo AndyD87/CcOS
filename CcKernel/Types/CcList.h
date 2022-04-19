@@ -1069,6 +1069,8 @@ public:
    */
   bool operator==(const CcList<TYPE>& oToCompare) const
   {
+    if (oToCompare.m_pListBegin == m_pListBegin)
+      return true;
     if (oToCompare.size() != size())
       return false;
     CcList<TYPE>::const_iterator oList1 = begin();

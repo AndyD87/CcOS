@@ -26,6 +26,7 @@
 #include "CcStringUtil.h"
 #include "CcGlobalStrings.h"
 #include "IIo.h"
+#include "CcLog.h"
 
 CcArguments::CcArguments(int argc, char **argv)
 {
@@ -236,35 +237,53 @@ void CcArguments::printHelp(IIo& oOutput)
   }
 }
 
-CcVariant::EType CcArguments::getType(const CcString& sName)
+CcArguments::CVariableDefinition* CcArguments::findVariableDefinition(CVariableDefinitionList& oActiveList, const CcString& sName)
 {
-  CcVariant::EType eType = CcVariant::EType::NoType;
-  for (CVariableDefinition& oDef : m_oVariables)
+  CVariableDefinition* pDef = nullptr;
+  for (CVariableDefinition& oDef : oActiveList)
   {
     if (sName == oDef.sName)
     {
-      eType = oDef.eType;
+      pDef = &oDef;
       break;
     }
   }
-  return eType;
+  return pDef;
 }
 
 bool CcArguments::parse()
 {
-  for (size_t uiPos = 0; m_eValidity && uiPos < size(); uiPos++)
+  size_t uiPos = 0;
+  m_oUnparsed = *this;
+  return parse(m_oVariables, uiPos);
+}
+
+bool CcArguments::parse(CVariableDefinitionList& oActiveList, size_t uiPos)
+{
+  while (m_eValidity && uiPos < m_oUnparsed.size())
   {
-    CcString sLowerValue(at(uiPos));
+    CcString sLowerValue(m_oUnparsed.at(uiPos));
     sLowerValue.toLower();
-    CcVariant::EType eType = getType(sLowerValue);
-    if (eType != CcVariant::EType::NoType &&
+    CVariableDefinition* pDef = findVariableDefinition(oActiveList, sLowerValue);
+    if (pDef &&
+        pDef->eType == CcVariant::EType::Switch)
+    {
+      m_oUnparsed.remove(uiPos);
+      pDef->uiCounter++;
+      CcVariant oValue(true);
+      m_oVariablesParsed.append(sLowerValue, oValue);
+    }
+    else if (pDef &&
+        pDef->eType != CcVariant::EType::NoType &&
         uiPos+1 < size())
     {
-      uiPos++;
-      CcVariant oValue(at(uiPos));
-      m_eValidity = oValue.convert(eType);
-      if (m_eValidity)
+      m_oUnparsed.remove(uiPos);
+      CcVariant oValue(m_oUnparsed.at(uiPos));
+      bool bSuccess = oValue.convert(pDef->eType);
+      if (bSuccess)
       {
+        m_oUnparsed.remove(uiPos);
+        pDef->uiCounter++;
         if (m_oVariablesParsed.containsKey(sLowerValue))
         {
           m_oVariablesParsed[sLowerValue] = oValue;
@@ -273,17 +292,57 @@ bool CcArguments::parse()
         {
           m_oVariablesParsed.append(sLowerValue, oValue);
         }
+        if (pDef->pRequired.size() > 0)
+        {
+          parse(pDef->pRequired, uiPos);
+          for (CVariableDefinition& oDef : pDef->pRequired)
+          {
+            if (oDef.uiCounter == 0)
+            {
+              // Missing value, we are at the end
+              m_eValidity = false;
+              m_sErrorMessage = CcLog::formatErrorMessage("Required parameter missing: " + oDef.sName);
+              break;
+            }
+          }
+        }
+        if (pDef->pOptional.size() > 0)
+          parse(pDef->pOptional, uiPos);
+      }
+      else
+      {
+        // Missing value, we are at the end
+        m_eValidity = false;
       }
     }
-    else if (eType == CcVariant::EType::NoType)
+    else if (pDef ==  nullptr ||
+             (pDef && pDef->eType == CcVariant::EType::NoType))
     {
-      m_oUnparsed.append(at(uiPos));
+      uiPos++;
     }
-    else
+    else if(pDef)
     {
       // Missing value, we are at the end
+      m_sErrorMessage = CcLog::formatErrorMessage("No value defined for: " + pDef->sName);
       m_eValidity = false;
     }
   }
   return m_eValidity;
+}
+
+void CcArguments::clear()
+{
+  m_sErrorMessage.clear();
+  CcList<CcString>::clear();
+  clear(m_oVariables);
+}
+
+void CcArguments::clear(CVariableDefinitionList& oActiveList)
+{
+  for (CVariableDefinition& oDef : oActiveList)
+  {
+    oDef.uiCounter = 0;
+    clear(oDef.pRequired);
+    clear(oDef.pOptional);
+  }
 }

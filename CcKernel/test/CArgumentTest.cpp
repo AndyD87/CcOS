@@ -320,17 +320,46 @@ bool CArgumentTest::testRequirements()
   oArguments.setVariablesList(
     {
       { 
-        "-i",      CcVariant::EType::String, "", "", 
+        "-i",      CcVariant::EType::String, "", "Description0", 
         { 
-          {"-o",      CcVariant::EType::String, "", ""},
-          {"-t",      CcVariant::EType::String, "", ""}
+          {"-o",      CcVariant::EType::String, "", "Description1"},
+          {"-t",      CcVariant::EType::String, "", "Description2"}
+        }
+      },
+      {
+        "-j",      CcVariant::EType::String, "", "Description4",
+        {
+          {"-t",      CcVariant::EType::String, "", "Description6"}
+        },
+        {
+          {"-o",      CcVariant::EType::String, "", "Description5"}
         }
       }
     }
   );
   if (oArguments.parse(" -i input -o output -t test"))
   {
-    bRet = true;
+    // Arguments can not be found correctly but are required
+    if (!oArguments.parse(" -i -o output -t test") &&
+          oArguments.getErrorMessage().size() != 0)
+    {
+      // Arguments can not be found correctly but are not required
+      // Verification of input value -o for argument -j has to be verified by application.
+      if (oArguments.parse(" -j -o output -t test") &&
+          oArguments.getErrorMessage().size() == 0 &&
+          oArguments.getValue("-j").getString() == "-o" &&
+          oArguments.getValue("-t").getString() == "test" &&
+          oArguments.getUnparsed().size() > 0 && oArguments.getUnparsed()[0] == "output")
+      {
+        if (oArguments.parse(" -j input -o output -t test") &&
+            oArguments.getValue("-j").getString() == "input" &&
+            oArguments.getValue("-o").getString() == "output" &&
+            oArguments.getValue("-t").getString() == "test")
+        {
+          bRet = true;
+        }
+      }
+    }
   }
   return bRet;
 }

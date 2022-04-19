@@ -66,6 +66,7 @@ public:
     CcString          sDescription;
     CList             pRequired;
     CList             pOptional;
+    size_t            uiCounter = 0;
   };
 
   typedef class CcKernelSHARED CcList<CVariableDefinition> CVariableDefinitionList;
@@ -191,6 +192,10 @@ public:
   const CVariableDefinitionList& getVariablesList() const
   { return m_oVariables; }
 
+  //! @return Get last error message from last parse execution.
+  const CcString& getErrorMessage() const
+  { return m_sErrorMessage; }
+
   //! @param oVariables: List of varibles the parser should look for.
   void setVariablesList(const CVariableDefinitionList& oVariables)
   { m_oVariables = oVariables; }
@@ -215,14 +220,18 @@ public:
   
 private:
   //! @return Get Type of variable if found, otherwise CcVariant::EType::NoType.
-  CcVariant::EType getType(const CcString& sName);
+  static CcArguments::CVariableDefinition* findVariableDefinition(CVariableDefinitionList& oActiveList, const CcString& sName);
   bool parse();
+  bool parse(CVariableDefinitionList& oActiveList, size_t uiPos);
+  void clear();
+  void clear(CVariableDefinitionList& oActiveList);
 
 private:
   CcStatus                  m_eValidity;
   CVariableDefinitionList   m_oVariables;
   CcVariantMap              m_oVariablesParsed;
   CcStringList              m_oUnparsed;
+  CcString                  m_sErrorMessage;
 };
 
 template class CcKernelSHARED CcList<CcArguments::CVariableDefinition>;
