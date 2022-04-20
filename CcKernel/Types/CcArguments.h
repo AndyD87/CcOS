@@ -38,34 +38,37 @@ public:
   class CcKernelSHARED CVariableDefinition
   {
   public:
-    CVariableDefinition(const CcString& sName = "", 
+    CVariableDefinition(CcStringList oNames = {""},
                         CcVariant::EType eType = CcVariant::EType::NoType, 
                         const CcString& sDefault = "", 
                         const CcString& sDescription = "", 
-                        CcList<CVariableDefinition> pRequiredParameters={},
-                        CcList<CVariableDefinition> pOptionalParameters={}) :
-      sName(sName),
+                        CcList<CVariableDefinition> oRequiredParameters={},
+                        CcList<CVariableDefinition> oOptionalParameters={}
+    ) :
+      oNames(oNames),
       eType(eType),
       sDefault(sDefault),
       sDescription(sDescription),
-      pRequired(pRequiredParameters),
-      pOptional(pOptionalParameters)
+      oRequired(oRequiredParameters),
+      oOptional(oOptionalParameters)
     {}
 
     bool operator==(const CVariableDefinition& toCompare) const
     {
-      return sName == toCompare.sName && eType == toCompare.eType &&
+      return oNames == toCompare.oNames && eType == toCompare.eType &&
         sDefault == toCompare.sDefault && sDescription == toCompare.sDescription;
     }
 
+    const CcString& getName() const;
+
     typedef class CcKernelSHARED CcList<CVariableDefinition> CList;
 
-    CcString          sName;
+    CcStringList      oNames;
     CcVariant::EType  eType;
     CcString          sDefault;
     CcString          sDescription;
-    CList             pRequired;
-    CList             pOptional;
+    CList             oRequired;
+    CList             oOptional;
     size_t            uiCounter = 0;
   };
 
@@ -183,7 +186,7 @@ public:
    */
   bool contains(const CcString& sKey);
 
-  void printHelp(IIo& oOutput);
+  void writeHelp(IIo& oOutput);
 
   /**
    * @brief Get all variables the parser is using.
@@ -234,4 +237,4 @@ private:
   CcString                  m_sErrorMessage;
 };
 
-template class CcKernelSHARED CcList<CcArguments::CVariableDefinition>;
+template class CcList<CcArguments::CVariableDefinition>;

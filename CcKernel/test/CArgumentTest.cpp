@@ -24,6 +24,7 @@
  */
 #include "CArgumentTest.h"
 #include "CcArguments.h"
+#include "CcStringStream.h"
 
 CArgumentTest::CArgumentTest() :
   CcTest("CArgumentTest")
@@ -31,6 +32,7 @@ CArgumentTest::CArgumentTest() :
   appendTestMethod("Test basic callup", &CArgumentTest::testBasic);
   appendTestMethod("Test string conversion checks", &CArgumentTest::testFailedTypes);
   appendTestMethod("Test requirements", &CArgumentTest::testRequirements);
+  appendTestMethod("Test print help", &CArgumentTest::testPrintHelp);
 }
 
 CArgumentTest::~CArgumentTest()
@@ -360,6 +362,40 @@ bool CArgumentTest::testRequirements()
         }
       }
     }
+  }
+  return bRet;
+}
+
+bool CArgumentTest::testPrintHelp()
+{
+  bool bRet = false;
+  CcArguments oArguments;
+  oArguments.setVariablesList(
+    {
+      { 
+        "-i",      CcVariant::EType::String, "", "Description0", 
+        { 
+          {"-o",      CcVariant::EType::String, "", "Description1"},
+          {"-t",      CcVariant::EType::String, "", "Description2"}
+        }
+      },
+      {
+        "-j",      CcVariant::EType::String, "", "Description4",
+        {
+          {"-t",      CcVariant::EType::String, "", "Description6"}
+        },
+        {
+          {"-o",      CcVariant::EType::String, "", "Description5"}
+        }
+      }
+    }
+  );
+  CcString oString;
+  CcStringStream oStream(oString);
+  oArguments.writeHelp(oStream);
+  if (oString.length() > 0)
+  {
+    bRet = true;
   }
   return bRet;
 }

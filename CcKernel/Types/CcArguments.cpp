@@ -28,6 +28,17 @@
 #include "IIo.h"
 #include "CcLog.h"
 
+
+const CcString& CcArguments::CVariableDefinition::getName() const
+{
+  if (oNames.size())
+  {
+    return oNames[0];
+  }
+  else return CcGlobalStrings::Empty;
+}
+
+
 CcArguments::CcArguments(int argc, char **argv)
 {
   parse(argc, argv);
@@ -223,16 +234,46 @@ bool CcArguments::contains(const CcString& sKey)
   return false;
 }
 
-void CcArguments::printHelp(IIo& oOutput)
+void CcArguments::writeHelp(IIo& oOutput)
 {
-  oOutput.writeString("Arguments");
+  oOutput.writeString("Commands");
+  oOutput.writeString(CcGlobalStrings::EolOs);
   for (const CVariableDefinition& sArgument : m_oVariables)
   {
-    oOutput.writeString("  ");
-    oOutput.writeString(sArgument.sName);
+    oOutput.writeString(" ");
+    oOutput.writeString(sArgument.getName());
     oOutput.writeString(CcGlobalStrings::EolOs);
-    oOutput.writeString("    ");
+    oOutput.writeString("  ");
     oOutput.writeString(sArgument.sDescription);
+    oOutput.writeString(CcGlobalStrings::EolOs);
+    if (sArgument.oRequired.size())
+    {
+      oOutput.writeString("  Required Parameters:");
+      oOutput.writeString(CcGlobalStrings::EolOs);
+      for (const CVariableDefinition& oParam : sArgument.oRequired)
+      {
+        oOutput.writeString("   ");
+        oOutput.writeString(oParam.getName());
+        oOutput.writeString(CcGlobalStrings::EolOs);
+        oOutput.writeString("    ");
+        oOutput.writeString(oParam.sDescription);
+        oOutput.writeString(CcGlobalStrings::EolOs);
+      }
+    }
+    if (sArgument.oRequired.size())
+    {
+      oOutput.writeString("  Optional Parameters:");
+      oOutput.writeString(CcGlobalStrings::EolOs);
+      for (const CVariableDefinition& oParam : sArgument.oRequired)
+      {
+        oOutput.writeString("   ");
+        oOutput.writeString(oParam.getName());
+        oOutput.writeString(CcGlobalStrings::EolOs);
+        oOutput.writeString("    ");
+        oOutput.writeString(oParam.sDescription);
+        oOutput.writeString(CcGlobalStrings::EolOs);
+      }
+    }
     oOutput.writeString(CcGlobalStrings::EolOs);
   }
 }
@@ -242,7 +283,7 @@ CcArguments::CVariableDefinition* CcArguments::findVariableDefinition(CVariableD
   CVariableDefinition* pDef = nullptr;
   for (CVariableDefinition& oDef : oActiveList)
   {
-    if (sName == oDef.sName)
+    if (sName == oDef.getName())
     {
       pDef = &oDef;
       break;
@@ -292,22 +333,22 @@ bool CcArguments::parse(CVariableDefinitionList& oActiveList, size_t uiPos)
         {
           m_oVariablesParsed.append(sLowerValue, oValue);
         }
-        if (pDef->pRequired.size() > 0)
+        if (pDef->oRequired.size() > 0)
         {
-          parse(pDef->pRequired, uiPos);
-          for (CVariableDefinition& oDef : pDef->pRequired)
+          parse(pDef->oRequired, uiPos);
+          for (CVariableDefinition& oDef : pDef->oRequired)
           {
             if (oDef.uiCounter == 0)
             {
               // Missing value, we are at the end
               m_eValidity = false;
-              m_sErrorMessage = CcLog::formatErrorMessage("Required parameter missing: " + oDef.sName);
+              m_sErrorMessage = CcLog::formatErrorMessage("Required parameter missing: " + oDef.getName());
               break;
             }
           }
         }
-        if (pDef->pOptional.size() > 0)
-          parse(pDef->pOptional, uiPos);
+        if (pDef->oOptional.size() > 0)
+          parse(pDef->oOptional, uiPos);
       }
       else
       {
@@ -323,7 +364,7 @@ bool CcArguments::parse(CVariableDefinitionList& oActiveList, size_t uiPos)
     else if(pDef)
     {
       // Missing value, we are at the end
-      m_sErrorMessage = CcLog::formatErrorMessage("No value defined for: " + pDef->sName);
+      m_sErrorMessage = CcLog::formatErrorMessage("No value defined for: " + pDef->getName());
       m_eValidity = false;
     }
   }
@@ -342,7 +383,7 @@ void CcArguments::clear(CVariableDefinitionList& oActiveList)
   for (CVariableDefinition& oDef : oActiveList)
   {
     oDef.uiCounter = 0;
-    clear(oDef.pRequired);
-    clear(oDef.pOptional);
+    clear(oDef.oRequired);
+    clear(oDef.oOptional);
   }
 }

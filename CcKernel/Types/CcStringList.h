@@ -47,9 +47,17 @@ public:
   CcStringList() = default;
 
   /**
-   * @brief Create stringlist with on entry
+   * @brief Create stringlist with one entry
    */
   CcStringList(const CcString& sItem);
+
+  /**
+   * @brief Create stringlist with one entry
+   */
+  inline CcStringList(const char* pItem) : 
+    CcStringList(CcString(pItem))
+  {}
+
 
   /**
    * @brief Copy-Constructor

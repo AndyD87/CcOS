@@ -308,8 +308,8 @@ public:
    * @param[in] uiCurrentPos: current position in oNodePath;
    * @return Target Node or NULL if not found
    */
-  inline CcXmlNode& getNode(const CcStringList& oNodePath, size_t uiCurrentPos=0) const
-    { size_t uiNr = 0; return getNode(oNodePath, uiCurrentPos, uiNr);}
+  inline CcXmlNode& getNodeFromPath(const CcStringList& oNodePath, size_t uiCurrentPos=0) const
+    { size_t uiNr = 0; return getNodeFromPath(oNodePath, uiCurrentPos, uiNr);}
 
   /**
    * @brief Get single Node from List by Name and existing number
@@ -320,7 +320,7 @@ public:
    * @param[in] uiCurrentPos: current position in oNodePath;
    * @return Target Node or NULL if not found
    */
-  CcXmlNode& getNode(const CcStringList& oNodePath, size_t uiCurrentPos, size_t& nr) const;
+  CcXmlNode& getNodeFromPath(const CcStringList& oNodePath, size_t uiCurrentPos, size_t& nr) const;
 
   //! @return Get handle to last added child node
   CcXmlNode& getLastAddedNode()

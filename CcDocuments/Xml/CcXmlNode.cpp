@@ -318,7 +318,7 @@ CcXmlNode& CcXmlNode::getNode(const CcString& nodeName, size_t nr) const
   if (nodeName.contains(CcGlobalStrings::Seperators::Slash))
   {
     CcStringList oNodes = nodeName.split(CcGlobalStrings::Seperators::Slash);
-    return getNode(oNodes, 0, nr);
+    return getNodeFromPath(oNodes, 0, nr);
   }
   else
   {
@@ -341,7 +341,7 @@ CcXmlNode& CcXmlNode::getNode(const CcString& nodeName, size_t nr) const
   return s_oNullNode;
 }
 
-CcXmlNode& CcXmlNode::getNode(const CcStringList& oNodeNames, size_t uiCurrentPos, size_t& nr) const
+CcXmlNode& CcXmlNode::getNodeFromPath(const CcStringList& oNodeNames, size_t uiCurrentPos, size_t& nr) const
 {
   for (CcXmlNode& rNode : getNodeList())
   {
@@ -349,7 +349,7 @@ CcXmlNode& CcXmlNode::getNode(const CcStringList& oNodeNames, size_t uiCurrentPo
     {
       if (oNodeNames.size() > uiCurrentPos + 1)
       {
-        CcXmlNode& Node = rNode.getNode(oNodeNames, uiCurrentPos + 1, nr);
+        CcXmlNode& Node = rNode.getNodeFromPath(oNodeNames, uiCurrentPos + 1, nr);
         if (Node.isNotNull())
         {
           return Node;
