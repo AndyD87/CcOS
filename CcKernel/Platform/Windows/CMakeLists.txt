@@ -65,7 +65,6 @@ endif(CCOS_GENERIC_NETWORK_WINDOWS)
 
 add_to_kernel_sources    ( ${SOURCE_FILES} )
 add_to_kernel_definitions( ${DEFINITIONS} )
-add_to_kernel_includes   ( Platform/Windows )
 if(NOT DEFINED GCC)
   add_to_kernel_libraries  ( Mincore )
 else()

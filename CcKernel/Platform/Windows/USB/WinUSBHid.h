@@ -26,8 +26,9 @@
 #pragma once
 
 #include "CcBase.h"
-#include "CcWindowsGlobals.h"
 #include "Devices/IUsbHid.h"
+#include "../CcWindowsGlobals.h"
+
 CCEXTERNC_BEGIN
 #include <basetyps.h>
 #include <hidsdi.h>

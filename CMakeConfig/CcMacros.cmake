@@ -118,7 +118,7 @@ if(NOT CC_MACRO_LOADED)
   macro( CcAppendStaticLinkerFlags Flags )
     set ( LinkerFlags
             CMAKE_STATIC_LINKER_FLAGS
-        )
+    )
     foreach(LinkerFlag ${LinkerFlags})
       CcAppendStringNotTwice(${LinkerFlag} ${Flags})
     endforeach()
@@ -530,13 +530,20 @@ if(NOT CC_MACRO_LOADED)
     if(NOT EXISTS ${TargetDir})
       if(NOT EXISTS ${TargetZipFile})
         message("- Download ${TargetName}")
-        file( DOWNLOAD ${SourceUrl}
-              ${TargetZipFile}
-              INACTIVITY_TIMEOUT 5     # Maximum 5 Seconds inactivity
-              TIMEOUT            1800  # 30 Minute for download
-              STATUS DOWNLOAD_STATUS
-              LOG    DOWNLOAD_LOG
-        )
+        # Check for local directory
+        if(EXISTS ${SourceUrl})
+         set(DOWNLOAD_STATUS 0)
+         message("${SourceUrl} ${TargetZipFile}")
+         CcCopyFile(${SourceUrl} ${TargetZipFile})
+        else()
+          file( DOWNLOAD ${SourceUrl}
+                ${TargetZipFile}
+                INACTIVITY_TIMEOUT 5     # Maximum 5 Seconds inactivity
+                TIMEOUT            1800  # 30 Minute for download
+                STATUS DOWNLOAD_STATUS
+                LOG    DOWNLOAD_LOG
+          )
+        endif()
         list(GET DOWNLOAD_STATUS 0 NUMERIC_STATUS)
         if(NOT ${NUMERIC_STATUS} EQUAL 0)
           CcRemoveFile(${TargetZipFile})
@@ -939,7 +946,7 @@ if(NOT CC_MACRO_LOADED)
       if(NOT IS_ABSOLUTE ${DIR} )
         target_include_directories( ${ProjectName} PUBLIC
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${DIR}>
-                                      $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/${DIR}> )
+                                      $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/${ProjectName}/${DIR}> )
       else()
         target_include_directories( ${ProjectName} PRIVATE ${DIR})
       endif()
@@ -1010,12 +1017,23 @@ if(NOT CC_MACRO_LOADED)
   ################################################################################
   macro(CcTargetInstall ProjectName )
     install( TARGETS                    ${ProjectName}
-             EXPORT Find${ProjectName}
              LIBRARY
                COMPONENT           bin
                DESTINATION         lib
              RUNTIME
                COMPONENT           bin
+               DESTINATION         bin
+             ARCHIVE
+               COMPONENT           dev
+               DESTINATION         lib/static
+    )
+    install( TARGETS                    ${ProjectName}
+             EXPORT Find${ProjectName}
+             LIBRARY
+               COMPONENT           dev
+               DESTINATION         lib
+             RUNTIME
+               COMPONENT           dev
                DESTINATION         bin
              PUBLIC_HEADER
                COMPONENT           dev

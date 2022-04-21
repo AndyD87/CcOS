@@ -41,7 +41,7 @@ elseif(${CCOS_CCSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                   CcKernel
-                                  CcOS::ThirParty::ssl )
+                                  CcThirdPartySsl )
 
   #################
   # Post configuration steps

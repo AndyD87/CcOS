@@ -22,7 +22,7 @@
  * @par       Language: C++11
  * @brief      Create Access to an USB-Hid-Device through Windows API
  */
-#include "USB/WinUSBHid.h"
+#include "WinUSBHid.h"
 #include "CcString.h"
 #include <stdio.h>
 
