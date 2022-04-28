@@ -148,10 +148,10 @@ private:
   CcHttpCookies   m_oCookies;
   CcHttpRequest   m_HeaderRequest;
   CcHttpResponse  m_HeaderResponse;
-  bool            m_Done;
   CcString        m_sHeader;
   IIo*            m_pOutput = nullptr;
   CcByteArray     m_oOutputBuffer;
+  bool            m_Done;
   CcUrl           m_oUrl;
 private:
   static uint16 s_uiRetries;  //!< Default retries to get a valid connection and HTTP result lower than 300

@@ -31,8 +31,10 @@
 #include "CcQt.h"
 #include "Qt/CStyleSheet.h"
 
+INCLUDE_WARNING_LEVEL_START
 #include <QPainter>
 #include <QWidget>
+INCLUDE_WARNING_LEVEL_STOP
 
 class CcWidget::CPrivate
 {

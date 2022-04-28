@@ -23,12 +23,6 @@
  * @brief     Class CcWindow
  */
 
-#include <QMainWindow>
-#include <QApplication>
-#include <QString>
-#include <QResizeEvent>
-#include <QMoveEvent>
-
 #include "CcWindow.h"
 #include "CcQt.h"
 #include "CcKernel.h"
@@ -37,6 +31,14 @@
 #include "Widgets/CcTitlebar.h"
 #include "CcGuiSubsystem.h"
 #include "CcGlobalStrings.h"
+
+INCLUDE_WARNING_LEVEL_START
+#include <QMainWindow>
+#include <QApplication>
+#include <QString>
+#include <QResizeEvent>
+#include <QMoveEvent>
+INCLUDE_WARNING_LEVEL_STOP
 
 class CcWindowMainWidget : public CcWidget, public QWidget
 {

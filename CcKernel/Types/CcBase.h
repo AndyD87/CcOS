@@ -810,3 +810,11 @@ typedef union
     uint32  H;    //!< High part of 64bit as unsigned 32bit
   } ui32;   //!< unsigned 32bit values within 64bit value
 } SInt64Converter;
+
+#ifdef _MSC_VER
+  #define INCLUDE_WARNING_LEVEL_START __pragma( warning(push, 3) )
+  #define INCLUDE_WARNING_LEVEL_STOP  __pragma( warning(pop) )
+#else
+  #define INCLUDE_WARNING_LEVEL_START
+  #define INCLUDE_WARNING_LEVEL_STOP 
+#endif

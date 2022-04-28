@@ -64,7 +64,6 @@ bool CRemoteDeviceComTest::testStartServer()
     if (m_pDevice->start())
     {
       oStatus = m_pDevice->waitForState(EThreadState::Running);
-      CcKernel::sleep(1000);
     }
   }
   return oStatus;
@@ -75,10 +74,20 @@ bool CRemoteDeviceComTest::testDiscover()
   CcStatus oStatus = EStatus::NotFound;
   CcRemoteDeviceDiscovery oDiscvover;
   oDiscvover.getAddressInfo().setIp(CcIp("127.0.0.1"));
-  if (0 < oDiscvover.findAllDevices(CRemoteDeviceComTest_uiTestPort))
+  size_t uiTimeout = 5;
+  while (uiTimeout-- > 0)
   {
-    oStatus = true;
+    if (0 != oDiscvover.findAllDevices(CRemoteDeviceComTest_uiTestPort))
+    {
+      oStatus = true;
+      break;
+    }
+    else
+    {
+      CcKernel::delayS(1);
+    }
   }
+  
   return oStatus;
 }
 

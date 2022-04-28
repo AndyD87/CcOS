@@ -329,26 +329,37 @@ CcDateTime& CcDateTime::fromDateTime(uint16 uiYear, uint8 uiMonth, uint8 uiDay, 
   {
     case 12:
       this->addDays(30);
+      CCFALLTHROUGH;
     case 11:
       this->addDays(31);
+      CCFALLTHROUGH;
     case 10:
       this->addDays(30);
+      CCFALLTHROUGH;
     case 9:
       this->addDays(31);
+      CCFALLTHROUGH;
     case 8:
       this->addDays(31);
+      CCFALLTHROUGH;
     case 7:
       this->addDays(30);
+      CCFALLTHROUGH;
     case 6:
       this->addDays(31);
+      CCFALLTHROUGH;
     case 5:
       this->addDays(30);
+      CCFALLTHROUGH;
     case 4:
       this->addDays(31);
+      CCFALLTHROUGH;
     case 3:
       this->addDays(28);
+      CCFALLTHROUGH;
     case 2:
       this->addDays(31);
+      CCFALLTHROUGH;
     default:
       break;
   };

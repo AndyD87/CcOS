@@ -31,10 +31,12 @@
 #include "CcQt.h"
 #include "CcGuiSubsystem.h"
 
+INCLUDE_WARNING_LEVEL_START
 #include <QLabel>
 #include <QEvent>
 #include <QMouseEvent>
 #include <QPixmap>
+INCLUDE_WARNING_LEVEL_STOP
 
 class CcText::CPrivate : public QLabel, public CcObject
 {

@@ -31,9 +31,12 @@
 #include "CcGuiSubsystem.h"
 
 #include "CcQt.h"
+
+INCLUDE_WARNING_LEVEL_START
 #include <QPushButton>
 #include <QEvent>
 #include <QMouseEvent>
+INCLUDE_WARNING_LEVEL_STOP
 
 class CcButton::CPrivate : public CcObject, public QPushButton
 {

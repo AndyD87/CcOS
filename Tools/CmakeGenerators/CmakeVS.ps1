@@ -41,8 +41,9 @@ if($TestEnv)
 # Search for available versions
 ##
 $VisualStudios = @()
-if((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") -and
-    (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2022"))
+if( (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") -and
+    ((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2022") -or
+    (Test-Path "C:\Program Files\Microsoft Visual Studio\2022")) )
 {
     $VisualStudio        = @{}
     $VisualStudio.Year   = "2022"

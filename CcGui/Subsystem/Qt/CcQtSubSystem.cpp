@@ -27,8 +27,11 @@
 #include "CcGuiSubsystem.h"
 #include "CcKernel.h"
 #include "CcWindow.h"
+
+INCLUDE_WARNING_LEVEL_START
 #include <QEvent>
 #include <QMouseEvent>
+INCLUDE_WARNING_LEVEL_STOP
 
 class CcGuiSubsystem::CPrivate
 {

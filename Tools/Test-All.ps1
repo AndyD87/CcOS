@@ -156,8 +156,9 @@ Function Test-VisualStudio()
         $VisualStudio16 += @{ Extended = $true};
         $VisualStudios += $VisualStudio16
     }
-    if((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") -and
-       (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2022"))
+    if( (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe") -and
+       ((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2022") -or
+        (Test-Path "C:\Program Files\Microsoft Visual Studio\2022")) )
     {
         $VisualStudio17 += @{ Name     = "Visual Studio 17 2022"};
         $VisualStudio17 += @{ Extended = $true};
