@@ -21,6 +21,11 @@ if(NOT CC_MACRO_LOADED)
   # Load Cmake modules
   ################################################################################
   # currently no required
+  
+  ################################################################################
+  # Setup debug postfix
+  ################################################################################
+  set(CMAKE_DEBUG_POSTFIX "d")
 
   ################################################################################
   # Make find files available for cmake
@@ -251,7 +256,7 @@ if(NOT CC_MACRO_LOADED)
 
     set(StaticSharedLocal "${StaticShared}")
 
-    string(TOLOWER ${DebugRelease} DebugReleaseLower)
+    string(TOLOWER "${DebugRelease}" DebugReleaseLower)
 
     if(MSVC_VERSION)
       # limit higher versions to highest known today
@@ -294,6 +299,8 @@ if(NOT CC_MACRO_LOADED)
       set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_relwithdebinfo")
     elseif("${DebugReleaseLower}" STREQUAL "release")
       set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_release")
+    elseif("${DebugReleaseLower}" STREQUAL "")
+      # ignore this value
     else()
       set( VSEXTIONSION_STRING "${VSEXTIONSION_STRING}_${DebugRelease}")
     endif()
@@ -439,14 +446,14 @@ if(NOT CC_MACRO_LOADED)
         string(TOUPPER ${OUTPUTCONFIG} UPPER_TYPE)
         add_test( NAME    ${Project}_${OUTPUTCONFIG}
                   CONFIGURATIONS ${OUTPUTCONFIG}
-                  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_${UPPER_TYPE}}/${Project}
+                  COMMAND ${Project}
                   WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_${UPPER_TYPE}} )
       endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
     else()
       # No configuration was found, default build settings are used
       add_test( NAME    ${Project}
                 CONFIGURATIONS
-                COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${Project}
+                COMMAND ${Project}
                 WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
     endif()
     CcPrintHexSize(${Project})
@@ -778,6 +785,7 @@ if(NOT CC_MACRO_LOADED)
         target_link_libraries(${CC_APPLICATION_LIB} ${ProjectName})
       else()
         add_executable(${ProjectName} ${AddExecutable_SOURCES})
+	set_target_properties(${ProjectName} PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
     	CcPrintHexSize(${ProjectName})
       endif()
   endmacro()
@@ -1045,6 +1053,21 @@ if(NOT CC_MACRO_LOADED)
 
     # generate and install export file
     CcTargetExport(${ProjectName})
+  endmacro()
+  
+  ################################################################################
+  # Get string of current build configuration
+  ################################################################################
+  macro(CcGetBuildString Output)
+    string(TOLOWER ${CC_BUILD_ARCH}       CC_BUILD_ARCH_LOWER)
+    string(TOLOWER ${CC_LINK_TYPE}        CC_LINK_TYPE_LOWER)
+    if(LINUX)
+      set(${Output} "${CMAKE_SYSTEM_NAME}-${CC_COMPILER}-${CC_BUILD_ARCH_LOWER}-${CC_LINK_TYPE_LOWER}")
+    elseif (WINDOWS)
+      CcVisualStudioPostFix(${Output} "" ${CC_LINK_TYPE} ${CC_LINK_TYPE})
+    else()
+      set(${Output} "")
+    endif()
   endmacro()
 
 endif(NOT CC_MACRO_LOADED)

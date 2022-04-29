@@ -46,9 +46,9 @@ bool CTestModuleTest::faileTest()
   bool bSuccess = false;
   CcString sBinDir = CcTestFramework::getBinaryDir();
 #ifdef WINDOWS
-  sBinDir.appendPath("CcOSModuleLoader.exe");
+  sBinDir.appendPath("CcOSModuleLoader" CC_DEBUG_EXTENSION ".exe");
 #else
-  sBinDir.appendPath("CcOSModuleLoader");
+  sBinDir.appendPath("CcOSModuleLoader" CC_DEBUG_EXTENSION);
 #endif
 
   if (CcFile::exists(sBinDir))
@@ -68,11 +68,11 @@ bool CTestModuleTest::successTest()
   CcString sBinDir = CcTestFramework::getBinaryDir();
   CcString sLibDir = CcTestFramework::getBinaryDir();
 #ifdef WINDOWS
-  sBinDir.appendPath("CcOSModuleLoader.exe");
-  sLibDir.appendPath("CcTesting.dll");
+  sBinDir.appendPath("CcOSModuleLoader" CC_DEBUG_EXTENSION ".exe");
+  sLibDir.appendPath("CcTesting" CC_DEBUG_EXTENSION ".dll");
 #else
-  sBinDir.appendPath("CcOSModuleLoader");
-  sLibDir.appendPath("../lib/libCcTesting.so");
+  sBinDir.appendPath("CcOSModuleLoader" CC_DEBUG_EXTENSION);
+  sLibDir.appendPath("../lib/libCcTesting" CC_DEBUG_EXTENSION ".so");
 #endif
 
   if (CcFile::exists(sBinDir) &&

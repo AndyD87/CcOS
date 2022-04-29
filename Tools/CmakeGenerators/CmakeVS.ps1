@@ -208,9 +208,12 @@ else
 }
 
 $BuildTypes = @("Debug","Release")
+$JoinedBuild = ""
 
 foreach($BuildType in $BuildTypes)
 {
+    if($JoinedBuild -eq "") {$JoinedBuild = $BuildType}
+    else                    {$JoinedBuild += (";" + $BuildType)}
     $SolutionDir = "..\..\Solution." + $VisualStudio.Year + ".$Architecture.$StaticString"
 
     if((Test-Path $SolutionDir) -ne $true)
@@ -278,10 +281,10 @@ foreach($BuildType in $BuildTypes)
         $BuildParam = @("./", "-C", $BuildType, "--output-on-failure")
         RunCommand ctest $BuildParam
     }
-
+    
     if($DoPackage)
     {
-        $BuildParam = @("-C", $BuildType)
+        $BuildParam = @("-C", ("`"" + $JoinedBuild + "`""))
         RunCommand cpack $BuildParam
     }
 
