@@ -25,6 +25,10 @@
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
+#include "IThread.h"
+#include "CcGenericThreadHelper.h"
+#include "Driver/CPU/Common/CcThreadData.h"
+#include "CcGlobalStrings.h"
 
 /**
  * @brief Setup STM32F407 microcontroller as Cpu.
@@ -53,8 +57,30 @@ public: // methods
   virtual void enterCriticalSection() override;
   virtual void leaveCriticalSection() override;
   virtual bool isInIsr() override;
+
+  inline static STM32F407Cpu* getCpu()
+  { return pCpu; }
+
 private:
   CcStatus startSysClock();
 private: // member
-  CPrivate* m_pPrivate;
+  class STM32F407CpuThread : public IThread
+  {
+  public:
+    STM32F407CpuThread() :
+      IThread(CcGlobalStrings::CcOS)
+      {enterState(EThreadState::Running);}
+    virtual void run() override
+      {}
+    virtual size_t getStackSize() override
+      { return 4; }
+  };
+
+  STM32F407CpuThread   oCpuThread;
+  CcThreadContext       oCpuThreadContext;
+  CcThreadData          oCpuThreadData;
+  static STM32F407Cpu* pCpu;
+  #ifdef THREADHELPER
+  static CcGenericThreadHelper oThreadHelper;
+  #endif
 };

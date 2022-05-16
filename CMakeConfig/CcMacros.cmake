@@ -433,22 +433,24 @@ if(NOT CC_MACRO_LOADED)
   macro(CcAddTest Project )
     # Get number of configurations to build
     list(LENGTH CMAKE_CONFIGURATION_TYPES CMAKE_CONFIGURATION_TYPES_COUNT)
-    if(CMAKE_CONFIGURATION_TYPES_COUNT GREATER 0)
-      # Setup a test for each configuration
-      foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
-        string(TOUPPER ${OUTPUTCONFIG} UPPER_TYPE)
-        add_test( NAME    ${Project}_${OUTPUTCONFIG}
-                  CONFIGURATIONS ${OUTPUTCONFIG}
-                  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_${UPPER_TYPE}}/${Project}
-                  WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_${UPPER_TYPE}} )
-      endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
-    else()
-      # No configuration was found, default build settings are used
-      add_test( NAME    ${Project}
-                CONFIGURATIONS
-                COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${Project}
-                WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
-    endif()
+    if(NOT GENERIC)
+      if(CMAKE_CONFIGURATION_TYPES_COUNT GREATER 0)
+        # Setup a test for each configuration
+        foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
+          string(TOUPPER ${OUTPUTCONFIG} UPPER_TYPE)
+          add_test( NAME    ${Project}_${OUTPUTCONFIG}
+                    CONFIGURATIONS ${OUTPUTCONFIG}
+                    COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_${UPPER_TYPE}}/${Project}
+                    WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_${UPPER_TYPE}} )
+        endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
+      else()
+        # No configuration was found, default build settings are used
+        add_test( NAME    ${Project}
+                  CONFIGURATIONS
+                  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${Project}
+                  WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
+      endif()
+	endif()
     CcPrintHexSize(${Project})
   endmacro()
 

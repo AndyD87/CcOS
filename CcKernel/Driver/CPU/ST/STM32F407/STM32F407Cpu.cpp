@@ -27,52 +27,15 @@
 #include "STM32F407Cpu.h"
 #include "STM32F407Driver.h"
 #include "CcKernel.h"
-#include "CcGlobalStrings.h"
-#include "CcGenericThreadHelper.h"
 #include "CcStatic.h"
-#include "IThread.h"
-#include <Driver/CPU/Common/CcThreadData.h>
 #include <stdlib.h>
 
-/*-----------------------------------------------------------*/
-
-class STM32F407Cpu::CPrivate
-{
-private:
-  class STM32F407CpuThread : public IThread
-  {
-  public:
-    STM32F407CpuThread() :
-      IThread(CcGlobalStrings::CcOS)
-      {enterState(EThreadState::Running);}
-    virtual void run() override
-      {}
-    virtual size_t getStackSize() override
-      { return 4; }
-  };
-public:
-  CPrivate() :
-    oCpuThreadContext(&oCpuThread, nullptr),
-    oCpuThreadData(&oCpuThreadContext)
-  {
-  }
-
-public:
-  STM32F407CpuThread   oCpuThread;
-  CcThreadContext       oCpuThreadContext;
-  CcThreadData          oCpuThreadData;
-  static STM32F407Cpu* pCpu;
-  #ifdef THREADHELPER
-  static CcGenericThreadHelper oThreadHelper;
-  #endif
-};
-
-STM32F407Cpu* STM32F407Cpu::CPrivate::pCpu      = nullptr;  //!< Cpu data initialized on cpu start
+STM32F407Cpu* STM32F407Cpu::pCpu      = nullptr;  //!< Cpu data initialized on cpu start
 volatile CcThreadContext* pCurrentThreadContext = nullptr;  //!< Cpu current running thread Context
-volatile CcThreadData* pCurrentThreadData       = nullptr;  //!< Cpu current running thread Data
+volatile CcThreadData*    pCurrentThreadData    = nullptr;  //!< Cpu current running thread Data
 
 #ifdef THREADHELPER
-CcGenericThreadHelper STM32F407Cpu::CPrivate::oThreadHelper;
+CcGenericThreadHelper STM32F407Cpu::oThreadHelper;
 #endif
 
 /**
@@ -81,9 +44,9 @@ CcGenericThreadHelper STM32F407Cpu::CPrivate::oThreadHelper;
 CCEXTERNC void STM32F407Cpu_SysTick()
 {
   HAL_IncTick();
-  if(STM32F407Cpu::CPrivate::pCpu != nullptr)
+  if(STM32F407Cpu::getCpu() != nullptr)
   {
-    STM32F407Cpu::CPrivate::pCpu->tick();
+    STM32F407Cpu::getCpu()->tick();
   }
 }
 
@@ -93,9 +56,9 @@ CCEXTERNC void STM32F407Cpu_SysTick()
 CCEXTERNC void STM32F407Cpu_ThreadTick()
 {
   NVIC_ClearPendingIRQ(USART3_IRQn);
-  if(STM32F407Cpu::CPrivate::pCpu != nullptr)
+  if(STM32F407Cpu::getCpu() != nullptr)
   {
-    STM32F407Cpu::CPrivate::pCpu->changeThread();
+    STM32F407Cpu::getCpu()->changeThread();
   }
 }
 
@@ -111,11 +74,11 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("  ldr  r3, pCurrentThreadContextConst\n"); // Load current thread context
   __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
   __asm volatile("                                 \n");
-  __asm volatile("  tst r14, #0x10                 \n"); //******************
+  __asm volatile("  tst r12, #0x10                 \n"); //******************
   __asm volatile("  it eq                          \n"); // Backup FPU
   __asm volatile("  vstmdbeq r0!, {s16-s31}        \n"); //******************
   __asm volatile("                                 \n");
-  __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
+  __asm volatile("  stmdb r0!, {r4-r11, r12}       \n"); // Backup Registers to stack of current thread
   __asm volatile("  str r0, [r2]                   \n"); // Backup new stack pointer in thread context
   __asm volatile("                                 \n");
   __asm volatile("  stmdb sp!, {r0, r3}            \n"); // Backup current register state on Main Stack Pointer
@@ -132,14 +95,14 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("                                 \n");
   __asm volatile("  ldr r1, [r3]                   \n"); // Get back thread context
   __asm volatile("  ldr r0, [r1]                   \n"); // Get back stack pointer form thread context
-  __asm volatile("  ldmia r0!, {r4-r11, r14}       \n"); // Get back registers from stack of thread
+  __asm volatile("  ldmia r0!, {r4-r11, r12}       \n"); // Get back registers from stack of thread
   __asm volatile("                                 \n");
-  __asm volatile("  tst r14, #0x10                 \n"); //******************
+  __asm volatile("  tst r12, #0x10                 \n"); //******************
   __asm volatile("  it eq                          \n"); // Restore FPU
   __asm volatile("  vldmiaeq r0!, {s16-s31}        \n"); //******************
   __asm volatile("                                 \n");
   __asm volatile("  msr psp, r0                    \n"); // Load stack pointer of thread context
-  __asm volatile("  bx r14                         \n"); // continue execution.
+  __asm volatile("  bx r12                         \n"); // continue execution.
   __asm volatile("                                 \n");
   __asm volatile("  .align 4                       \n");
   __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadData  \n");
@@ -157,11 +120,11 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("  ldr  r3, pCurrentThreadContextConst2\n"); // Load current thread context
   __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
   __asm volatile("                                 \n");
-  __asm volatile("  tst r14, #0x10                 \n"); //******************
+  __asm volatile("  tst r12, #0x10                 \n"); //******************
   __asm volatile("  it eq                          \n"); // Backup FPU
   __asm volatile("  vstmdbeq r0!, {s16-s31}        \n"); //******************
   __asm volatile("                                 \n");
-  __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
+  __asm volatile("  stmdb r0!, {r4-r11, r12}       \n"); // Backup Registers to stack of current thread
   __asm volatile("  str r0, [r2]                   \n"); // Backup new stack pointer in thread context
   __asm volatile("                                 \n");
   __asm volatile("  stmdb sp!, {r0, r3}            \n"); // Backup current register state on Main Stack Pointer
@@ -178,26 +141,27 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("                                 \n");
   __asm volatile("  ldr r1, [r3]                   \n"); // Get back thread context
   __asm volatile("  ldr r0, [r1]                   \n"); // Get back stack pointer form thread context
-  __asm volatile("  ldmia r0!, {r4-r11, r14}       \n"); // Get back registers from stack of thread
+  __asm volatile("  ldmia r0!, {r4-r11, r12}       \n"); // Get back registers from stack of thread
   __asm volatile("                                 \n");
-  __asm volatile("  tst r14, #0x10                 \n"); //******************
+  __asm volatile("  tst r12, #0x10                 \n"); //******************
   __asm volatile("  it eq                          \n"); // Restore FPU
   __asm volatile("  vldmiaeq r0!, {s16-s31}        \n"); //******************
   __asm volatile("                                 \n");
   __asm volatile("  msr psp, r0                    \n"); // Load stack pointer of thread context
-  __asm volatile("  bx r14                         \n"); // continue execution.
+  __asm volatile("  bx r12                         \n"); // continue execution.
   __asm volatile("                                 \n");
   __asm volatile("  .align 4                       \n");
   __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadData  \n");
 }
 
-STM32F407Cpu::STM32F407Cpu()
+STM32F407Cpu::STM32F407Cpu():
+  oCpuThreadContext(&oCpuThread, nullptr),
+  oCpuThreadData(&oCpuThreadContext)
 {
-  CCNEW(m_pPrivate, CPrivate);
-  m_pPrivate->pCpu = this;
-  m_pPrivate->oCpuThreadContext.setData(&m_pPrivate->oCpuThreadData);
-  pCurrentThreadContext    = &m_pPrivate->oCpuThreadContext;
-  pCurrentThreadData       = &m_pPrivate->oCpuThreadData;
+  pCpu = this;
+  oCpuThreadContext.setData(&oCpuThreadData);
+  pCurrentThreadContext    = &oCpuThreadContext;
+  pCurrentThreadData       = &oCpuThreadData;
   enterCriticalSection();
   leaveCriticalSection();
   startSysClock();
@@ -206,7 +170,6 @@ STM32F407Cpu::STM32F407Cpu()
 
 STM32F407Cpu::~STM32F407Cpu()
 {
-  CCDELETE(m_pPrivate);
 }
 
 size_t STM32F407Cpu::coreNumber()
@@ -216,7 +179,7 @@ size_t STM32F407Cpu::coreNumber()
 
 CcThreadContext* STM32F407Cpu::mainThread()
 {
-  return &m_pPrivate->oCpuThreadContext;
+  return &oCpuThreadContext;
 }
 
 CcThreadContext* STM32F407Cpu::createThread(IThread* pTargetThread)

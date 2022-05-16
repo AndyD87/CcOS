@@ -88,7 +88,7 @@ CcStatus STM32F407Driver::unload()
 {
   while(m_oSystemDevices.size())
   {
-    delete m_oSystemDevices[0].ptr();
+	CCDELETE_RO(m_oSystemDevices[0].ptr());
     m_oSystemDevices.remove(0);
   }
   // System device should never fail, we would have big problems
@@ -107,7 +107,7 @@ IGpioPort* STM32F407Driver::getGpioPort(size_t uiNr)
 
 void STM32F407Driver::setupSystem()
 {
-  STM32F407Cpu* pCpu = new STM32F407Cpu();
+  CCNEWTYPE(pCpu, STM32F407Cpu);
   CcKernel::addDevice(CcDevice(pCpu,EDeviceType::Cpu));
   m_oSystemDevices.append(pCpu);
 }

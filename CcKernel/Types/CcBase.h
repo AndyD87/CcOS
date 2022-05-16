@@ -567,6 +567,12 @@
 #define CCDELETE(VAR) if(VAR!=nullptr){CCMONITORDELETE(VAR);delete VAR;VAR = nullptr;}void(0)
 
 /**
+ * @brief Check if null, then delete a variable, remove it from monitoring if running, but do not set variable to null.
+ * @param VAR: Variable to delete
+ */
+#define CCDELETE_RO(VAR) if(VAR!=nullptr){CCMONITORDELETE(VAR);delete VAR;}void(0)
+
+/**
  * @brief Check if null, then delete a variable, remove it from monitoring if running and set variable to null.
  * @param VAR: Variable to delete
  */

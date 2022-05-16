@@ -91,6 +91,8 @@ if(WINDOWS OR LINUX)
   if(EXISTS  ${CMAKE_CURRENT_SOURCE_DIR}/Testing)
     add_subdirectory(Testing)
   endif()
+else()
+  add_subdirectory(Testing/CcTestCli)
 endif()
 
 ################################################################################
