@@ -122,5 +122,5 @@ bool CKernelTest::testThreadOnShutdown()
 bool CKernelTest::testLoadModule()
 {
   // Load testmodule without extension
-  return CcKernel::loadModule("CcTesting4Test");
+  return CcKernel::loadModule("CcTesting4Test" CC_DEBUG_EXTENSION);
 }

@@ -48,7 +48,7 @@ if( (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere
     $VisualStudio        = @{}
     $VisualStudio.Year   = "2022"
     $VisualStudio.Full   = "Visual Studio 17 2022"
-    $VisualStudio.CmakeX86  = @("-G", "`"Visual Studio 17 2022`"")
+    $VisualStudio.CmakeX86  = @("-G", "`"Visual Studio 17 2022`"", "-A", "Win32")
     $VisualStudio.CmakeX64  = @("-G", "`"Visual Studio 17 2022`"", "-A", "x64")
     $VisualStudios      += $VisualStudio
 }
@@ -58,7 +58,7 @@ if((Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.
     $VisualStudio           = @{}
     $VisualStudio.Year      = "2019"
     $VisualStudio.Full      = "Visual Studio 16 2019"
-    $VisualStudio.CmakeX86  = @("-G", "`"Visual Studio 16 2019`"")
+    $VisualStudio.CmakeX86  = @("-G", "`"Visual Studio 16 2019`"", "-A", "Win32")
     $VisualStudio.CmakeX64  = @("-G", "`"Visual Studio 16 2019`"", "-A", "x64")
     $VisualStudios          += $VisualStudio
 }
@@ -208,9 +208,12 @@ else
 }
 
 $BuildTypes = @("Debug","Release")
+$JoinedBuild = ""
 
 foreach($BuildType in $BuildTypes)
 {
+    if($JoinedBuild -eq "") {$JoinedBuild = $BuildType}
+    else                    {$JoinedBuild += (";" + $BuildType)}
     $SolutionDir = "..\..\Solution." + $VisualStudio.Year + ".$Architecture.$StaticString"
 
     if((Test-Path $SolutionDir) -ne $true)
@@ -278,10 +281,10 @@ foreach($BuildType in $BuildTypes)
         $BuildParam = @("./", "-C", $BuildType, "--output-on-failure")
         RunCommand ctest $BuildParam
     }
-
+    
     if($DoPackage)
     {
-        $BuildParam = @("-C", $BuildType)
+        $BuildParam = @("-C", ("`"" + $JoinedBuild + "`""))
         RunCommand cpack $BuildParam
     }
 

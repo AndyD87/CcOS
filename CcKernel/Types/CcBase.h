@@ -824,3 +824,11 @@ typedef union
   #define INCLUDE_WARNING_LEVEL_START
   #define INCLUDE_WARNING_LEVEL_STOP 
 #endif
+
+#ifdef DEBUG
+  //! Cc Projects are using name extensions for every debug generated file
+  #define CC_DEBUG_EXTENSION "d"
+#else
+  //! Cc Projects are using name extensions for every debug generated file
+  #define CC_DEBUG_EXTENSION ""
+#endif

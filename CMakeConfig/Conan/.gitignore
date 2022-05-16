@@ -1,0 +1,7 @@
+# Ignore everything
+*
+
+# but this:
+!.gitignore
+!conan.cmake
+!conanfile.py

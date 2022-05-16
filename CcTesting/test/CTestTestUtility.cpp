@@ -69,7 +69,7 @@ bool CTestTestUtility::fileGenerationTestExecutable()
   CcString sTempDir = CcTestFramework::getTemporaryDir();
   sTempDir.appendPath("Test Spaced.file");
   CcString sBinDir = CcTestFramework::getBinaryDir();
-  sBinDir.appendPath("CcTestingTest");
+  sBinDir.appendPath("CcTestingTest" CC_DEBUG_EXTENSION);
 #ifdef WINDOWS
   sBinDir.append(".exe");
 #endif
@@ -119,7 +119,7 @@ bool CTestTestUtility::testExitCodeInstant()
   CcString sTempDir = CcTestFramework::getTemporaryDir();
   sTempDir.appendPath("Test.file");
   CcString sBinDir = CcTestFramework::getBinaryDir();
-  sBinDir.appendPath("CcTestingTest");
+  sBinDir.appendPath("CcTestingTest" CC_DEBUG_EXTENSION);
 #ifdef WINDOWS
   sBinDir.append(".exe");
 #endif
@@ -143,7 +143,7 @@ bool CTestTestUtility::testExitCodeTimed()
   CcString sTempDir = CcTestFramework::getTemporaryDir();
   sTempDir.appendPath("Test.file");
   CcString sBinDir = CcTestFramework::getBinaryDir();
-  sBinDir.appendPath("CcTestingTest");
+  sBinDir.appendPath("CcTestingTest" CC_DEBUG_EXTENSION);
 #ifdef WINDOWS
   sBinDir.append(".exe");
 #endif

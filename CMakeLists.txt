@@ -104,7 +104,8 @@ add_custom_target(${CMAKE_PROJECT_NAME})
 
 # generate and install export file
 CcTargetFiles(${CMAKE_PROJECT_NAME} CMakeConfig/CcMacros.cmake)
-CcExportFiles(CMakeConfig/FindCcOS.cmake)
+file(GLOB FIND_FILES CMakeConfig/Find/Find*.cmake)
+CcExportFiles(${FIND_FILES})
 
 set(CPACK_PACKAGE_DESCRIPTION         ${CMAKE_PROJECT})
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "CcOS Framework")
@@ -122,12 +123,11 @@ if(LINUX)
   set(CPACK_DEB_COMPONENT_INSTALL       "ON")
   string(TOLOWER ${CC_BUILD_ARCH}       CC_BUILD_ARCH_LOWER)
   string(TOLOWER ${CC_LINK_TYPE}        CC_LINK_TYPE_LOWER)
-  string(TOLOWER ${CMAKE_BUILD_TYPE}    CMAKE_BUILD_TYPE_LOWER)
-  set(CPACK_SYSTEM_NAME                 "${CMAKE_SYSTEM_NAME}-${CC_COMPILER}-${CC_BUILD_ARCH_LOWER}-${CC_LINK_TYPE_LOWER}-${CMAKE_BUILD_TYPE_LOWER}")
+  set(CPACK_SYSTEM_NAME                 "${CMAKE_SYSTEM_NAME}-${CC_COMPILER}-${CC_BUILD_ARCH_LOWER}-${CC_LINK_TYPE_LOWER}")
 
   include(CPack)
 elseif(WINDOWS)
-  CcVisualStudioPostFix(VS_POSTFIX "$\\\{CPACK_BUILD_CONFIG\\\}" ${CC_LINK_TYPE} ${CC_LINK_TYPE})
+  CcVisualStudioPostFix(VS_POSTFIX      "" ${CC_LINK_TYPE} ${CC_LINK_TYPE})
   set(CPACK_SYSTEM_NAME                 ${VS_POSTFIX})
   set(CPACK_GENERATOR                   "ZIP")
 
