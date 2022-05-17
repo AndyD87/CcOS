@@ -27,9 +27,10 @@ fi
 run()
 {
   cd ..
+  cd ..
   mkdir Solution.$COMPILER.$BUILD_TYPE
   cd Solution.$COMPILER.$BUILD_TYPE
-  cmake ../ -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_INSTALL_PREFIX=/usr
+  cmake ../Sources -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DCMAKE_INSTALL_PREFIX=/usr
   if [ $? -ne 0 ]
   then
       exit -1

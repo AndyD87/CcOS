@@ -31,8 +31,8 @@ if(Doxygen_FOUND)
   set( SOURCE_FILES
     ${CMAKE_CURRENT_LIST_DIR}/config.in.txt
     ${CMAKE_CURRENT_LIST_DIR}/doxygen.h
-    ${CMAKE_CURRENT_LIST_DIR}/../MarkDown/Mainpage.md
-    ${CMAKE_CURRENT_LIST_DIR}/../MarkDown/CodingGuide.md
+    ${CMAKE_CURRENT_LIST_DIR}/MarkDown/Mainpage.md
+    ${CMAKE_CURRENT_LIST_DIR}/MarkDown/CodingGuide.md
   )
 
   add_custom_target(

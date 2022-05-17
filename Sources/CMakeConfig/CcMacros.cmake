@@ -447,14 +447,14 @@ if(NOT CC_MACRO_LOADED)
           string(TOUPPER ${OUTPUTCONFIG} UPPER_TYPE)
           add_test( NAME    ${Project}_${OUTPUTCONFIG}
                     CONFIGURATIONS ${OUTPUTCONFIG}
-                    COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_${UPPER_TYPE}}/${Project}
+                    COMMAND $<TARGET_FILE:${Project}>
                     WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_${UPPER_TYPE}} )
         endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
       else()
         # No configuration was found, default build settings are used
         add_test( NAME    ${Project}
                   CONFIGURATIONS
-                  COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${Project}
+                  COMMAND $<TARGET_FILE:${Project}>
                   WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
       endif()
 	endif()

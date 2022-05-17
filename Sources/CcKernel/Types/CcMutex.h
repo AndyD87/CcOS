@@ -36,7 +36,7 @@
   #define CcMutex_Type KMUTEX            //!< Define mutex kernel mutex for drivers
 #elif defined(WINDOWS)
   #include <windows.h>
-  #define CcMutex_Type CRITICAL_SECTION  //!< Define mutex as critical section for Windows
+  #define CcMutex_Type HANDLE  //!< Define mutex as critical section for Windows
 #else
   #define CcMutex_Type bool              //!< Define mutex as spinnlock for generic devices
 #endif

@@ -29,6 +29,7 @@
 #include "Network/CcSocket.h"
 #include "CcString.h"
 #include "CcMqttClientConfig.h"
+#include "CcMutex.h"
 
 /**
  * @brief Button for GUI Applications
@@ -62,4 +63,5 @@ public:
 private: // Member
   CcMqttClientConfig  m_oConfig;
   CcSocket            m_oSocket;
+  CcMutex             m_oSocketLock;
 };

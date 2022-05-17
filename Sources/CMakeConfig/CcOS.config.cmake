@@ -130,7 +130,7 @@ macro(CcOSLoadProjects)
     set(CCOS_BUILDLEVEL 0)
   endif(NOT DEFINED CCOS_BUILDLEVEL)
 
-  set(CC_CURRENT_CONFIG_DIR ${CONFIG_DIR})
+  set(CC_CURRENT_CONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR})
   include( ${CONFIG_DIR}/CcOSBuildConfig.cmake )
 endmacro()
 

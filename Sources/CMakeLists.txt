@@ -43,7 +43,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/CcOS.config.cmake)
 ################################################################################
 # To be able to overwrite global output root use -DCC_OUTPUT_DIR=/path on configuration
 if(NOT CC_OUTPUT_DIR)
-  set(CC_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Output")
+  set(CC_OUTPUT_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../Output")
 endif()
 
 ################################################################################
@@ -93,7 +93,7 @@ endif()
 ################################################################################
 # Update dokumentation
 ################################################################################
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Documents/Doxygen)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Doxygen)
 
 # generate and install export file
 file(GLOB FIND_FILES CMakeConfig/Find/Find*.cmake)
@@ -112,8 +112,8 @@ set(CPACK_PACKAGE_VENDOR              "Andreas Dirmeier")
 set(CPACK_PACKAGE_CONTACT             "coolcow_ccos@yahoo.com")
 set(CPACK_PACKAGE_VERSION             ${PROJECT_VERSION})
 set(CPACK_PACKAGE_INSTALL_DIRECTORY   ${CMAKE_INSTALL_PREFIX})
-set(CPACK_PACKAGE_DIRECTORY           ${CMAKE_CURRENT_SOURCE_DIR}/Packs)
-set(CPACK_RESOURCE_FILE_LICENSE       ${CMAKE_CURRENT_SOURCE_DIR}/Documents/COPYING.LESSER.rtf)
+set(CPACK_PACKAGE_DIRECTORY           ${CMAKE_CURRENT_SOURCE_DIR}/../Packs)
+set(CPACK_RESOURCE_FILE_LICENSE       ${CMAKE_CURRENT_SOURCE_DIR}/../Documents/COPYING.LESSER.rtf)
 set(CPACK_ARCHIVE_COMPONENT_INSTALL   "ON")
 
 if(LINUX)

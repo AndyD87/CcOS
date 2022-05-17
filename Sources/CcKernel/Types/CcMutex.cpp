@@ -36,7 +36,8 @@ CcMutex::CcMutex()
 #elif defined(WINDOWSKERNEL)
   KeInitializeMutex(&m_oContext, 0);
 #elif defined(WINDOWS)
-  InitializeCriticalSection(&m_oContext);
+  m_oContext = CreateMutex(NULL, FALSE, NULL);
+  CCMONITORNEW(m_oContext);
 #else
   m_oContext = false;
 #endif
@@ -47,7 +48,7 @@ CcMutex::~CcMutex()
 #ifdef USE_STD_MUTEX
 #elif defined(LINUX)
 #elif defined(WINDOWS)
-  DeleteCriticalSection(&m_oContext);
+  CloseHandle(m_oContext);
 #else
   lock();
   unlock();
@@ -69,7 +70,7 @@ void CcMutex::lock()
     NULL
   );
 #elif defined(WINDOWS)
-  EnterCriticalSection(&m_oContext);
+  WaitForSingleObject(m_oContext, INFINITE);
 #else
   while (isLocked() == true)
     CcKernel::delayMs(0);
@@ -92,7 +93,7 @@ bool CcMutex::tryLock()
     NULL
   );
 #elif defined(WINDOWS)
-  return FALSE != TryEnterCriticalSection(&m_oContext);
+  return 0 == WaitForSingleObject(m_oContext, 0);
 #else
   if(m_oContext == true)
     return false;
@@ -110,7 +111,7 @@ void CcMutex::unlock()
 #elif defined(WINDOWSKERNEL)
   KeReleaseMutex(&m_oContext, FALSE);
 #elif defined(WINDOWS)
-  LeaveCriticalSection(&m_oContext);
+  ReleaseMutex(m_oContext);
 #else
   m_oContext = false;
 #endif
@@ -141,9 +142,9 @@ bool CcMutex::isLocked()
 #elif defined(WINDOWSKERNEL)
   return false;
 #elif defined(WINDOWS)
-  if(TryEnterCriticalSection(&m_oContext))
+  if(tryLock())
   {
-    LeaveCriticalSection(&m_oContext);
+    ReleaseMutex(m_oContext);
     return false;
   }
   else

@@ -30,7 +30,7 @@ if($PSScriptRoot)
     cd $PSScriptRoot
 }
 
-Import-Module ..\..\ThirdParty\Powershell-Common\VisualStudio.ps1
+Import-Module .\VisualStudio.ps1
 
 if($TestEnv)
 {
@@ -214,7 +214,7 @@ foreach($BuildType in $BuildTypes)
 {
     if($JoinedBuild -eq "") {$JoinedBuild = $BuildType}
     else                    {$JoinedBuild += (";" + $BuildType)}
-    $SolutionDir = "..\..\Solution." + $VisualStudio.Year + ".$Architecture.$StaticString"
+    $SolutionDir = "..\..\..\Solution." + $VisualStudio.Year + ".$Architecture.$StaticString"
 
     if((Test-Path $SolutionDir) -ne $true)
     {
@@ -236,7 +236,7 @@ foreach($BuildType in $BuildTypes)
         }
     }
 
-    $Paramters += "../"
+    $Paramters += "../Sources"
 
     if($Static)
     {

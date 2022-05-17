@@ -38,21 +38,18 @@ CcMqttClient::CcMqttClient() :
 
 CcMqttClient::~CcMqttClient()
 {
+  onStop();
 }
 
-void CcMqttClient::run()
+void CcMqttClient::run() 
 {
   CCDEBUG("in  CcMqttClient::run");
+  m_oSocketLock.lock();
   #ifdef CCSSL_ENABLED
     if (m_oConfig.isSsl())
     {
-      CcSslSocket *pSocket = nullptr;
       if(isRunning())
-        CCNEW(pSocket, CcSslSocket);
-      if(isRunning() && pSocket)
-        m_oSocket = pSocket;
-      else if(pSocket)
-        CCDELETE(pSocket);
+        m_oSocket = CCNEW_INLINE(CcSslSocket);
     }
     else
     {
@@ -62,6 +59,7 @@ void CcMqttClient::run()
     m_oSocket = CcKernel::getSocket(ESocketType::TCP);
   #endif // CCSSL_ENABLED
   m_oSocket.setPeerInfo(getConfig().getAddressInfo());
+  m_oSocketLock.unlock();
   while(isRunning())
   {
     if (m_oSocket.connect())
@@ -78,7 +76,9 @@ void CcMqttClient::run()
 
 void CcMqttClient::onStop()
 {
+  m_oSocketLock.lock();
   m_oSocket.close();
+  m_oSocketLock.unlock();
 }
 
 bool CcMqttClient::connect()
