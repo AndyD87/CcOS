@@ -36,8 +36,10 @@ Function runCmake()
   $TOOLS_DIR=(Get-Item .).FullName
   cd ..
   cd ..
-  $SOLUTION_POSTFIX="Solution.ECL.$CMAKE_BOARD"
-  $TARGET_DIR_FIXED=(Get-Item .).FullName + ".$SOLUTION_POSTFIX"
+  $SOURCES_DIR=(Get-Item .).FullName
+  cd ..
+  $SOLUTION_POSTFIX="Generic.Solution.ECL.$CMAKE_BOARD"
+  $TARGET_DIR_FIXED=(Get-Item .).FullName + "/$SOLUTION_POSTFIX"
 
   #rm -rf "$TARGET_DIR_FIXED"
   if((Test-Path $TARGET_DIR_FIXED) -ne $true)
@@ -45,7 +47,7 @@ Function runCmake()
     mkdir "$TARGET_DIR_FIXED"
   }
   cd "$TARGET_DIR_FIXED"
-  cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/../.." "-DCMAKE_ECLIPSE_VERSION=4.9" "-DCCOS_BOARD=CMakeConfig/Boards/ST/${CMAKE_BOARD}" "-DCMAKE_BUILD_TYPE=Debug"
+  cmake -G "Eclipse CDT4 - Unix Makefiles" "$SOURCES_DIR" "-DCMAKE_ECLIPSE_VERSION=4.9" "-DCCOS_BOARD=${CMAKE_BOARD}" "-DCMAKE_BUILD_TYPE=Debug"
   if($LASTEXITCODE -ne 0)
   {
     cd $TOOLS_DIR
