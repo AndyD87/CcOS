@@ -92,5 +92,11 @@ int main(int iArgc, char** ppArgv)
 
     }
   }
+#ifdef GENERIC
+  while(1)
+  {
+    CcKernel::sleep(10);
+  }
+#endif
   return iRet;
 }

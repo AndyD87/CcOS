@@ -88,11 +88,11 @@ if(WINDOWS OR LINUX)
   ################################################################################
   # Add Testing-Apps too
   ################################################################################
-  if(EXISTS  ${CMAKE_CURRENT_SOURCE_DIR}/Testing)
+  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Testing)
     add_subdirectory(Testing)
   endif()
 else()
-  add_subdirectory(Testing/CcTestCli)
+  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Testing/GenericTest)
 endif()
 
 ################################################################################
