@@ -35,7 +35,8 @@ message("-- Default build type: ${CMAKE_BUILD_TYPE}")
 ################################################################################
 # Setup Globals
 ################################################################################
-include(${CMAKE_CURRENT_LIST_DIR}/CcOS.config.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/VERSION.cmake )
+include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/CcOS.config.cmake)
 
 ################################################################################
 # Setup Output Directory if not set
@@ -70,16 +71,10 @@ endif()
 message("- Compiler-ID: ${CMAKE_CXX_COMPILER_ID}")
 
 ################################################################################
-# Setup Default Values for CMAKE
-################################################################################
-CcNoConfigurationDirs()
-enable_testing()
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-################################################################################
 # Load all Projects
 ################################################################################
-include(${CMAKE_CURRENT_SOURCE_DIR}/CcOS.cmake)
+CcOSLoadBuildSettings()
+CcOSLoadProjects()
 
 ################################################################################
 # Do not build apps for generic platform
@@ -100,12 +95,16 @@ endif()
 ################################################################################
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Documents/Doxygen)
 
-add_custom_target(${CMAKE_PROJECT_NAME})
-
 # generate and install export file
-CcTargetFiles(${CMAKE_PROJECT_NAME} CMakeConfig/CcMacros.cmake)
 file(GLOB FIND_FILES CMakeConfig/Find/Find*.cmake)
-CcExportFiles(${FIND_FILES})
+CcExportFiles(cmake ${FIND_FILES})
+CcExportDirectory(cmake/Boards      ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Boards)
+CcExportDirectory(cmake/Conan       ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Conan)
+CcExportDirectory(cmake/Configs     ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Configs)
+CcExportDirectory(cmake/CPU         ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CPU)
+CcExportDirectory(cmake/Toolchains  ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Toolchains)
+CcExportFiles(cmake ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcOS.config.cmake)
+CcExportFiles(cmake ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcMacros.cmake)
 
 set(CPACK_PACKAGE_DESCRIPTION         ${CMAKE_PROJECT})
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "CcOS Framework")

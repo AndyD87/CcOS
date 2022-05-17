@@ -21,7 +21,7 @@ if(NOT CC_MACRO_LOADED)
   # Load Cmake modules
   ################################################################################
   # currently no required
-  
+
   ################################################################################
   # Setup debug postfix
   ################################################################################
@@ -952,7 +952,6 @@ if(NOT CC_MACRO_LOADED)
   ################################################################################
   macro( CcTargetIncludes ProjectName )
     foreach(DIR ${ARGN})
-      list(APPEND DIRS ${DIR})
       if(NOT IS_ABSOLUTE ${DIR} )
         target_include_directories( ${ProjectName} PUBLIC
                                       $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${DIR}>
@@ -996,16 +995,31 @@ if(NOT CC_MACRO_LOADED)
   endmacro()
 
   ################################################################################
-  # Setup Include Directorys for importing CcOS
+  # Export files to installation directory
   ################################################################################
-  macro( CcExportFiles )
+  macro( CcExportFiles TargetDir )
     foreach(CMACROS ${ARGN})
       foreach(CMACRO ${CMACROS})
         get_filename_component(CMACRONAME ${CMACRO} NAME)
         install(FILES ${CMACRO}
                 COMPONENT dev
-                DESTINATION cmake)
+                DESTINATION ${TargetDir})
       endforeach()
+    endforeach()
+  endmacro()
+
+  ################################################################################
+  # Export a full directory with respect to it's subdirectories
+  ################################################################################
+  macro( CcExportDirectory TargetDir Directory )
+    file(GLOB_RECURSE
+      DIR_CONTENT
+      RELATIVE ${Directory}
+      "${Directory}/*")
+    foreach(DIR_FILE ${DIR_CONTENT})
+      install(FILES "${Directory}/${DIR_FILE}"
+              COMPONENT dev
+              DESTINATION ${TargetDir}/${DIR_FILE})
     endforeach()
   endmacro()
 
@@ -1056,7 +1070,7 @@ if(NOT CC_MACRO_LOADED)
     # generate and install export file
     CcTargetExport(${ProjectName})
   endmacro()
-  
+
   ################################################################################
   # Get string of current build configuration
   ################################################################################

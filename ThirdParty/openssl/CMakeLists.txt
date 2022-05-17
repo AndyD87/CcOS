@@ -1,6 +1,8 @@
 if(NOT DEFINED CCOS_THIRDPARTY_OPENSSL_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
 elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
-  if( WINDOWS )
+  if( CONAN2_FOUND )
+    ConanInstall("openssl/1.1.1n")
+  elseif(WINDOWS)
     if("${CCOS_THIRDPARTY_OPENSSL_PREBUILD}" STREQUAL true)
       set(OPENSSL_VERSION ${CCOS_THIRDPARTY_OPENSSL_VERSION})
 
@@ -41,13 +43,13 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
       message("- OpenSsl found")
       add_library(CcThirdPartySsl INTERFACE)
-      target_include_directories(CcThirdPartySsl INTERFACE 
+      target_include_directories(CcThirdPartySsl INTERFACE
         $<BUILD_INTERFACE:${OPENSSL_INCLUDE_DIR}>
       )
       target_link_libraries     (CcThirdPartySsl INTERFACE ${OPENSSL_LIBRARIES})
       #add_library(CcOS::ThirParty::ssl ALIAS CcThirdPartySsl)
       CcTargetInstall(CcThirdPartySsl)
-      
+
       #message(FATAL_ERROR "${OPENSSL_STATIC_TYPE}")
 
       if("${OPENSSL_STATIC_TYPE}" STREQUAL SHARED)
@@ -55,7 +57,7 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
           add_custom_target(_ssl_copy ALL)
 
           add_dependencies(CcThirdPartySsl _ssl_copy)
-          
+
           set_property( TARGET _ssl_copy PROPERTY FOLDER "CcOS/ThirdParty")
 
           file (GLOB OPENSLL_BIN_FILES "${OPENSLL_BIN_DIR}/*.dll")
