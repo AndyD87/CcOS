@@ -48,6 +48,7 @@ CcMutex::~CcMutex()
 #ifdef USE_STD_MUTEX
 #elif defined(LINUX)
 #elif defined(WINDOWS)
+  CCMONITORDELETE(m_oContext);
   CloseHandle(m_oContext);
 #else
   lock();
