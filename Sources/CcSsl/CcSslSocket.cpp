@@ -322,18 +322,18 @@ bool CcSslSocket::initClient()
     m_pPrivate->m_pSslCtx = SSL_CTX_new(SSLv23_client_method());
     if (m_pPrivate->m_pSslCtx == nullptr)
     {
-      CCDEBUG(ERR_func_error_string(ERR_get_error()));
+      CCDEBUG(getErrorString(ERR_get_error()));
       m_pPrivate->m_pSslCtx = SSL_CTX_new(TLSv1_1_client_method());
     }
     if (m_pPrivate->m_pSslCtx == nullptr)
     {
-      CCDEBUG(ERR_func_error_string(ERR_get_error()));
+      CCDEBUG(getErrorString(ERR_get_error()));
       m_pPrivate->m_pSslCtx = SSL_CTX_new(TLSv1_client_method());
     }
     #ifndef OPENSSL_NO_SSL3
       if (m_pPrivate->m_pSslCtx == nullptr)
       {
-        CCDEBUG(ERR_func_error_string(ERR_get_error()));
+        CCDEBUG(getErrorString(ERR_get_error()));
         m_pPrivate->m_pSslCtx = SSL_CTX_new(SSLv3_client_method());
       }
     #endif
@@ -358,19 +358,19 @@ bool CcSslSocket::initServer()
     if (m_pPrivate->m_pSslCtx == nullptr)
     {
       ERR_print_errors_fp(stdout);
-      CCDEBUG(ERR_func_error_string(ERR_get_error()));
+      CCDEBUG(getErrorString(ERR_get_error()));
       m_pPrivate->m_pSslCtx = SSL_CTX_new(TLSv1_1_server_method());
     }
     if (m_pPrivate->m_pSslCtx == nullptr)
     {
       ERR_print_errors_fp(stdout);
-      CCDEBUG(ERR_func_error_string(ERR_get_error()));
+      CCDEBUG(getErrorString(ERR_get_error()));
       m_pPrivate->m_pSslCtx = SSL_CTX_new(TLSv1_server_method());
     }
   #ifndef OPENSSL_NO_SSL3
     if (m_pPrivate->m_pSslCtx == nullptr)
     {
-      CCDEBUG(ERR_func_error_string(ERR_get_error()));
+      CCDEBUG(getErrorString(ERR_get_error()));
       m_pPrivate->m_pSslCtx = SSL_CTX_new(SSLv3_server_method());
     }
   #endif
@@ -383,12 +383,6 @@ bool CcSslSocket::initServer()
   }
   else
   {
-
-    //SSL_CTX_set_ecdh_auto(m_pPrivate->m_pSslCtx, 1);
-    //SSL_CTX_set_options(m_pPrivate->m_pSslCtx,
-    //  SSL_OP_SINGLE_DH_USE |
-    //  SSL_OP_SINGLE_ECDH_USE |
-    //  SSL_OP_NO_SSLv2);
     bRet = true;
     SSL_CTX_set_mode(m_pPrivate->m_pSslCtx.ptr(), SSL_MODE_AUTO_RETRY);
     //SSL_CTX_set_verify(m_pPrivate->m_pSslCtx.ptr(), SSL_VERIFY_PEER | SSL_VERIFY_CLIENT_ONCE, nullptr);
@@ -433,7 +427,7 @@ int CcSslSocket::getError(int iReturnCode)
 CcString CcSslSocket::getErrorString(int iReturnCode)
 {
   int iErrorCode = SSL_get_error(m_pPrivate->m_pSsl.ptr(), iReturnCode);
-  return CcString(ERR_func_error_string(iErrorCode));
+  return "openssl-error " + CcString::fromInt(iReturnCode) + ": " + CcString(ERR_reason_error_string(iErrorCode)) + ": " + CcString(ERR_reason_error_string(iErrorCode));
 }
 
 bool CcSslSocket::loadCertificate(const CcString& sCertificateFile)
@@ -455,7 +449,7 @@ bool CcSslSocket::loadKey(const CcString& sKeyFile)
   bool bRet = true;
   if (SSL_CTX_use_PrivateKey_file(m_pPrivate->m_pSslCtx.ptr(), sKeyFile.getOsPath().getCharString(), SSL_FILETYPE_PEM) != 1)
   {
-    CCDEBUG(ERR_func_error_string(ERR_get_error()));
+    CCDEBUG(getErrorString(ERR_get_error()));
     bRet = false;
   }
   else
@@ -463,7 +457,7 @@ bool CcSslSocket::loadKey(const CcString& sKeyFile)
     // Check pvt key
     if (1 != SSL_CTX_check_private_key(m_pPrivate->m_pSslCtx.ptr()))
     {
-      CCDEBUG(ERR_func_error_string(ERR_get_error()));
+      CCDEBUG(getErrorString(ERR_get_error()));
     }
   }
   return bRet;

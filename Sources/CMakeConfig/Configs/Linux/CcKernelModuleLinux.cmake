@@ -35,6 +35,7 @@ file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/${ProjectName}MakeFile "clean:\n")
 file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/${ProjectName}MakeFile "\tmake -C ${KERNELHEADERS_DIR} M=${CMAKE_CURRENT_BINARY_DIR} clean\n")
 file(APPEND ${CMAKE_CURRENT_BINARY_DIR}/${ProjectName}MakeFile "\n")
 
+
 add_custom_command( OUTPUT ${ProjectName}.ko
                     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${CCKERNELMODULE_OBJECT_NAME}.o
                     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${ProjectName_OBJECT_NAME}.o
@@ -43,6 +44,8 @@ add_custom_command( OUTPUT ${ProjectName}.ko
                     DEPENDS ${CCKERNELMODULE_OBJECT}
                     DEPENDS ${ProjectName_OBJECT}
                       COMMAND echo copy from "${CCKERNELMODULE_OBJECT}" to "${CMAKE_CURRENT_BINARY_DIR}"
+                      COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/.${CCKERNELMODULE_OBJECT_NAME}.o.cmd
+                      COMMAND ${CMAKE_COMMAND} -E touch ${CMAKE_CURRENT_BINARY_DIR}/.${ProjectName_OBJECT_NAME}.o.cmd
                       COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CCKERNELMODULE_OBJECT} ${CMAKE_CURRENT_BINARY_DIR}/${CCKERNELMODULE_OBJECT_NAME}.o
                       COMMAND ${CMAKE_COMMAND} -E copy_if_different ${ProjectName_OBJECT} ${CMAKE_CURRENT_BINARY_DIR}/${ProjectName_OBJECT_NAME}.o
                       COMMAND ${CMAKE_MAKE_PROGRAM} ${VERBOSE_OUTPUT} -f ${ProjectName}MakeFile

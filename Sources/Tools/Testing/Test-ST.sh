@@ -1,17 +1,14 @@
-
-TOOLS_DIR=$(pwd)/..
-cd ..
-SOLUTION_POSTFIX=".Solution.ECL.Testing"
-TARGET_DIR=$(pwd)
-TARGET_DIR_FIXED="$TARGET_DIR$SOLUTION_POSTFIX"
+SOLUTION_POSTFIX="Testing.Solution.ECL.Testing"
+TEST_DIR=$(pwd)/../../../Sources
+TEST_DIR_FIXED=$(pwd)/../../../$SOLUTION_POSTFIX
 
 runDebug()
 {
-  cd "$TOOLS_DIR"
-  rm -rf "$TARGET_DIR_FIXED"
-  mkdir "$TARGET_DIR_FIXED"
-  cd "$TARGET_DIR_FIXED"
-  cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/.." -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/ST/$Board -DCMAKE_BUILD_TYPE=Debug
+  cd "$TEST_DIR"
+  rm -rf "$TEST_DIR_FIXED"
+  mkdir "$TEST_DIR_FIXED"
+  cd "$TEST_DIR_FIXED"
+  cmake -G "Eclipse CDT4 - Unix Makefiles" "$TEST_DIR" -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=$Board -DCMAKE_BUILD_TYPE=Debug
   if [ $? -ne 0 ]
   then
       exit -1
@@ -26,12 +23,12 @@ runDebug()
 
 runRelease()
 {
-  cd "$TOOLS_DIR"
-  rm -rf "$TARGET_DIR_FIXED"
-  mkdir "$TARGET_DIR_FIXED"
-  cd "$TARGET_DIR_FIXED"
+  cd "$TEST_DIR"
+  rm -rf "$TEST_DIR_FIXED"
+  mkdir "$TEST_DIR_FIXED"
+  cd "$TEST_DIR_FIXED"
 
-  cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/.." -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/ST/$Board -DCMAKE_BUILD_TYPE=Release
+  cmake -G "Eclipse CDT4 - Unix Makefiles" "$TEST_DIR" -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=$Board -DCMAKE_BUILD_TYPE=Release
   if [ $? -ne 0 ]
   then
       exit -1
@@ -60,5 +57,5 @@ Board=STM32F407VET
 runDebug
 runRelease
 
-cd "$TOOLS_DIR"
-rm -rf "$TARGET_DIR_FIXED"
+cd "$TEST_DIR"
+rm -rf "$TEST_DIR_FIXED"

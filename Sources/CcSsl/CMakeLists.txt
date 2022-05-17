@@ -28,8 +28,7 @@ elseif(${CCOS_CCSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         config/openssl.conf
   )
 
-  include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
-
+  add_definitions(-DOPENSSL_API_COMPAT=10100)
   if(WINDOWS)
     CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
   endif()

@@ -457,8 +457,7 @@ if(NOT CC_MACRO_LOADED)
                   COMMAND $<TARGET_FILE:${Project}>
                   WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} )
       endif()
-	endif()
-    CcPrintHexSize(${Project})
+	  endif()
   endmacro()
 
   ################################################################################
@@ -787,8 +786,10 @@ if(NOT CC_MACRO_LOADED)
         target_link_libraries(${CC_APPLICATION_LIB} ${ProjectName})
       else()
         add_executable(${ProjectName} ${AddExecutable_SOURCES})
-	set_target_properties(${ProjectName} PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
-    	CcPrintHexSize(${ProjectName})
+        set_target_properties(${ProjectName} PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
+        if(GENERIC)
+    	    CcPrintHexSize(${ProjectName})
+        endif()
       endif()
   endmacro()
 

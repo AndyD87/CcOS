@@ -16,17 +16,17 @@ else (MTP_INCLUDE_DIR AND MTP_LIBRARIES AND MTP_VERSION_OKAY)
   if(NOT WIN32)
     # use pkg-config to get the directories and then use these values
     # in the FIND_PATH() and FIND_LIBRARY() calls
-    INCLUDE(FindPkgConfig)
+    find_package(PkgConfig)
 
     pkg_check_modules(_MTP libmtp QUIET)
 
     set(MTP_DEFINITIONS ${_MTP_CFLAGS})
   endif(NOT WIN32)
-  FIND_PATH(MTP_INCLUDE_DIR libmtp.h
+  find_path(MTP_INCLUDE_DIR libmtp.h
     ${_MTP_INCLUDE_DIRS}
   )
 
-  FIND_LIBRARY(MTP_LIBRARIES NAMES mtp
+  find_library(MTP_LIBRARIES NAMES mtp
     PATHS
     ${_MTP_LIBRARY_DIRS}
   )

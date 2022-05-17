@@ -26,7 +26,7 @@ set(CMAKE_C_FLAGS           "${MCPU_FLAGS}     --specs=nosys.specs -falign-funct
 set(CMAKE_CXX_FLAGS         "${CMAKE_C_FLAGS}  -fno-exceptions -fno-rtti -fabi-version=0 -fno-use-cxa-atexit" )
 CcSetAllAssemblerFlags(     ""   CACHE)
 set(CMAKE_ASM_FLAGS         "${MCPU_FLAGS}")
-#message(FATAL_ERROR "test")
+
 set(CC_EXECUTABLE_SUFFIX ".elf" )
 
 enable_language(CXX C ASM)

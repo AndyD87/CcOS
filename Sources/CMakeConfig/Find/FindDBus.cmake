@@ -16,7 +16,7 @@ else (DBus_INCLUDE_DIR AND DBus_LIBRARIES AND DBus_VERSION_OKAY)
   if(NOT WIN32)
     # use pkg-config to get the directories and then use these values
     # in the FIND_PATH() and FIND_LIBRARY() calls
-    INCLUDE(FindPkgConfig)
+    find_package(PkgConfig)
 
     pkg_check_modules(_DBus dbus-1)
 

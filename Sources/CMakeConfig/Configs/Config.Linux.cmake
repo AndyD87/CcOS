@@ -18,8 +18,9 @@ if(KERNELHEADERS_FOUND)
   endfunction()
 
   macro(CcAddDriverLibraryOverride ProjectName Sources)
+    set(CMAKE_DEBUG_POSTFIX "")
     set(AddDriver_SOURCES ${Sources})
-    foreach (_src ${ARGN})
+    foreach(_src ${ARGN})
       CcListAppendOnce(AddDriver_SOURCES "${_src}")
     endforeach()
 
