@@ -74,11 +74,11 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("  ldr  r3, pCurrentThreadContextConst\n"); // Load current thread context
   __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
   __asm volatile("                                 \n");
-  __asm volatile("  tst r12, #0x10                 \n"); //******************
+  __asm volatile("  tst r14, #0x10                 \n"); //******************
   __asm volatile("  it eq                          \n"); // Backup FPU
   __asm volatile("  vstmdbeq r0!, {s16-s31}        \n"); //******************
   __asm volatile("                                 \n");
-  __asm volatile("  stmdb r0!, {r4-r11, r12}       \n"); // Backup Registers to stack of current thread
+  __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
   __asm volatile("  str r0, [r2]                   \n"); // Backup new stack pointer in thread context
   __asm volatile("                                 \n");
   __asm volatile("  stmdb sp!, {r0, r3}            \n"); // Backup current register state on Main Stack Pointer
@@ -95,14 +95,14 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("                                 \n");
   __asm volatile("  ldr r1, [r3]                   \n"); // Get back thread context
   __asm volatile("  ldr r0, [r1]                   \n"); // Get back stack pointer form thread context
-  __asm volatile("  ldmia r0!, {r4-r11, r12}       \n"); // Get back registers from stack of thread
+  __asm volatile("  ldmia r0!, {r4-r11, r14}       \n"); // Get back registers from stack of thread
   __asm volatile("                                 \n");
-  __asm volatile("  tst r12, #0x10                 \n"); //******************
+  __asm volatile("  tst r14, #0x10                 \n"); //******************
   __asm volatile("  it eq                          \n"); // Restore FPU
   __asm volatile("  vldmiaeq r0!, {s16-s31}        \n"); //******************
   __asm volatile("                                 \n");
   __asm volatile("  msr psp, r0                    \n"); // Load stack pointer of thread context
-  __asm volatile("  bx r12                         \n"); // continue execution.
+  __asm volatile("  bx r14                         \n"); // continue execution.
   __asm volatile("                                 \n");
   __asm volatile("  .align 4                       \n");
   __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadData  \n");
@@ -120,11 +120,11 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("  ldr  r3, pCurrentThreadContextConst2\n"); // Load current thread context
   __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
   __asm volatile("                                 \n");
-  __asm volatile("  tst r12, #0x10                 \n"); //******************
+  __asm volatile("  tst r14, #0x10                 \n"); //******************
   __asm volatile("  it eq                          \n"); // Backup FPU
   __asm volatile("  vstmdbeq r0!, {s16-s31}        \n"); //******************
   __asm volatile("                                 \n");
-  __asm volatile("  stmdb r0!, {r4-r11, r12}       \n"); // Backup Registers to stack of current thread
+  __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
   __asm volatile("  str r0, [r2]                   \n"); // Backup new stack pointer in thread context
   __asm volatile("                                 \n");
   __asm volatile("  stmdb sp!, {r0, r3}            \n"); // Backup current register state on Main Stack Pointer
@@ -141,14 +141,14 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("                                 \n");
   __asm volatile("  ldr r1, [r3]                   \n"); // Get back thread context
   __asm volatile("  ldr r0, [r1]                   \n"); // Get back stack pointer form thread context
-  __asm volatile("  ldmia r0!, {r4-r11, r12}       \n"); // Get back registers from stack of thread
+  __asm volatile("  ldmia r0!, {r4-r11, r14}       \n"); // Get back registers from stack of thread
   __asm volatile("                                 \n");
-  __asm volatile("  tst r12, #0x10                 \n"); //******************
+  __asm volatile("  tst r14, #0x10                 \n"); //******************
   __asm volatile("  it eq                          \n"); // Restore FPU
   __asm volatile("  vldmiaeq r0!, {s16-s31}        \n"); //******************
   __asm volatile("                                 \n");
   __asm volatile("  msr psp, r0                    \n"); // Load stack pointer of thread context
-  __asm volatile("  bx r12                         \n"); // continue execution.
+  __asm volatile("  bx r14                         \n"); // continue execution.
   __asm volatile("                                 \n");
   __asm volatile("  .align 4                       \n");
   __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadData  \n");
