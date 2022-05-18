@@ -71,15 +71,15 @@ private: // member
       IThread(CcGlobalStrings::CcOS)
       {enterState(EThreadState::Running);}
     virtual void run() override
-      {}
+    {}
     virtual size_t getStackSize() override
-      { return 4; }
+    { return 4; }
   };
 
-  STM32F407CpuThread   oCpuThread;
+  STM32F407CpuThread    oCpuThread;
   CcThreadContext       oCpuThreadContext;
   CcThreadData          oCpuThreadData;
-  static STM32F407Cpu* pCpu;
+  static STM32F407Cpu*  pCpu;
   #ifdef THREADHELPER
   static CcGenericThreadHelper oThreadHelper;
   #endif

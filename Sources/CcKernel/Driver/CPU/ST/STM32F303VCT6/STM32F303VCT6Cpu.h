@@ -25,6 +25,11 @@
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
+#include "Driver/CPU/Common/CcThreadData.h"
+#include "CcKernel.h"
+#include "CcGlobalStrings.h"
+#include "CcGenericThreadHelper.h"
+#include "IThread.h"
 
 /**
  * @brief Cpu interface for STM32F303VCT6 microcontroller
@@ -55,5 +60,23 @@ public: // methods
 private:
   CcStatus startSysClock();
 private: // member
-  CPrivate* m_pPrivate;
+  class STM32F303VCT6CpuThread : public IThread
+  {
+  public:
+    STM32F303VCT6CpuThread() :
+      IThread(CcGlobalStrings::CcOS)
+      {enterState(EThreadState::Running);}
+    virtual void run() override
+      {}
+    virtual size_t getStackSize() override
+      { return 4; }
+  };
+
+  STM32F303VCT6CpuThread    oCpuThread;
+  CcThreadContext         oCpuThreadContext;
+  CcThreadData            oCpuThreadData;
+  static STM32F303VCT6Cpu*  pCpu;
+  #ifdef THREADHELPER
+  static CcGenericThreadHelper oThreadHelper;
+  #endif
 };

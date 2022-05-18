@@ -25,6 +25,11 @@
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
+#include "Driver/CPU/Common/CcThreadData.h"
+#include "CcGlobalStrings.h"
+#include "CcKernel.h"
+#include "CcGenericThreadHelper.h"
+#include "IThread.h"
 
 /**
  * @brief Setup STM32F207IG microcontroller as Cpu.
@@ -32,8 +37,6 @@
  */
 class STM32F207IGCpu : public ICpu
 {
-public: // types
-  class CPrivate;
 public: // methods
   STM32F207IGCpu();
   virtual ~STM32F207IGCpu();
@@ -46,9 +49,9 @@ public: // methods
   virtual void nextThread() override;
   virtual CcThreadContext* currentThread() override;
   virtual void changeThread() override
-    { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
+  { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
   virtual void tick()
-    { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
+  { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
   virtual bool checkOverflow() override;
   virtual void enterCriticalSection() override;
   virtual void leaveCriticalSection() override;
@@ -56,5 +59,23 @@ public: // methods
 private:
   CcStatus startSysClock();
 private: // member
-  CPrivate* m_pPrivate;
+  class STM32F207IGCpuThread : public IThread
+  {
+  public:
+    STM32F207IGCpuThread() :
+      IThread(CcGlobalStrings::CcOS)
+      {enterState(EThreadState::Running);}
+    virtual void run() override
+    {}
+    virtual size_t getStackSize() override
+    { return 4; }
+  };
+
+  STM32F207IGCpuThread    oCpuThread;
+  CcThreadContext         oCpuThreadContext;
+  CcThreadData            oCpuThreadData;
+  static STM32F207IGCpu*  pCpu;
+  #ifdef THREADHELPER
+  static CcGenericThreadHelper oThreadHelper;
+  #endif
 };

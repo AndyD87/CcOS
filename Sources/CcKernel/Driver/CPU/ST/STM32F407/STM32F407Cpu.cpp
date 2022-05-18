@@ -33,6 +33,7 @@
 STM32F407Cpu* STM32F407Cpu::pCpu      = nullptr;  //!< Cpu data initialized on cpu start
 volatile CcThreadContext* pCurrentThreadContext = nullptr;  //!< Cpu current running thread Context
 volatile CcThreadData*    pCurrentThreadData    = nullptr;  //!< Cpu current running thread Data
+volatile CcThreadData**   pCurrentThreadDataLocation    = nullptr;  //!< Cpu current running thread Data
 
 #ifdef THREADHELPER
 CcGenericThreadHelper STM32F407Cpu::oThreadHelper;
@@ -71,12 +72,12 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
   __asm volatile("  isb                            \n");
   __asm volatile("                                 \n");
-  __asm volatile("  ldr  r3, pCurrentThreadContextConst\n"); // Load current thread context
+  __asm volatile("  ldr  r3, pCurrentThreadDataConst\n"); // Load current thread context
   __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
   __asm volatile("                                 \n");
-  __asm volatile("  tst r14, #0x10                 \n"); //******************
-  __asm volatile("  it eq                          \n"); // Backup FPU
-  __asm volatile("  vstmdbeq r0!, {s16-s31}        \n"); //******************
+  __asm volatile("  tst r14, #0x10                 \n"); // Is the task using the FPU context?  If so, push high vfp registers.
+  __asm volatile("  it eq                          \n");
+  __asm volatile("  vstmdbeq r0!, {s16-s31}        \n"); // Backup FPU
   __asm volatile("                                 \n");
   __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
   __asm volatile("  str r0, [r2]                   \n"); // Backup new stack pointer in thread context
@@ -102,10 +103,11 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("  vldmiaeq r0!, {s16-s31}        \n"); //******************
   __asm volatile("                                 \n");
   __asm volatile("  msr psp, r0                    \n"); // Load stack pointer of thread context
+  __asm volatile("  isb                            \n");
   __asm volatile("  bx r14                         \n"); // continue execution.
   __asm volatile("                                 \n");
   __asm volatile("  .align 4                       \n");
-  __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadData  \n");
+  __asm volatile("pCurrentThreadDataConst: .word pCurrentThreadData  \n");
 }
 
 /**
@@ -162,6 +164,7 @@ STM32F407Cpu::STM32F407Cpu():
   oCpuThreadContext.setData(&oCpuThreadData);
   pCurrentThreadContext    = &oCpuThreadContext;
   pCurrentThreadData       = &oCpuThreadData;
+  pCurrentThreadDataLocation = &pCurrentThreadData;
   enterCriticalSection();
   leaveCriticalSection();
   startSysClock();

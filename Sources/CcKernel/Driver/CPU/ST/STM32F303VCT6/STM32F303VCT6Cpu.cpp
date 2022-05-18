@@ -23,50 +23,14 @@
  * @brief     Implementation of class STM32F303VCT6Cpu
  **/
 #include <stm32f3xx_hal.h>
-#include "Driver/CPU/Common/CcThreadData.h"
 #include "STM32F303VCT6Cpu.h"
 #include "STM32F303VCT6Driver.h"
-#include "CcKernel.h"
-#include "CcGlobalStrings.h"
-#include "CcGenericThreadHelper.h"
 #include "CcStatic.h"
-#include "IThread.h"
 #include <stdlib.h>
 
-class STM32F303VCT6Cpu::CPrivate
-{
-private:
-  class STM32F303VCT6CpuThread : public IThread
-  {
-  public:
-    STM32F303VCT6CpuThread() :
-      IThread(CcGlobalStrings::CcOS)
-      {enterState(EThreadState::Running);}
-    virtual void run() override
-      {}
-    virtual size_t getStackSize() override
-      { return 4; }
-  };
-public:
-  CPrivate() :
-    oCpuThreadContext(&oCpuThread, nullptr),
-    oCpuThreadData(&oCpuThreadContext)
-  {
-  }
-
-public:
-  STM32F303VCT6CpuThread    oCpuThread;
-  CcThreadContext         oCpuThreadContext;
-  CcThreadData            oCpuThreadData;
-  static STM32F303VCT6Cpu*  pCpu;
-  #ifdef THREADHELPER
-  static CcGenericThreadHelper oThreadHelper;
-  #endif
-};
-
-STM32F303VCT6Cpu* STM32F303VCT6Cpu::CPrivate::pCpu  = nullptr;  //!< Cpu data initialized on cpu start
+STM32F303VCT6Cpu* STM32F303VCT6Cpu::pCpu  = nullptr;  //!< Cpu data initialized on cpu start
 volatile CcThreadContext* pCurrentThreadContext     = nullptr;  //!< Cpu current running thread Context
-volatile CcThreadData* pCurrentThreadData           = nullptr;  //!< Cpu current running thread Data
+volatile CcThreadData*    pCurrentThreadData        = nullptr;  //!< Cpu current running thread Data
 
 #ifdef THREADHELPER
 CcGenericThreadHelper STM32F303VCT6Cpu::CPrivate::oThreadHelper;
@@ -172,13 +136,14 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("pCurrentThreadDataConst2: .word pCurrentThreadData  \n");
 }
 
-STM32F303VCT6Cpu::STM32F303VCT6Cpu()
+STM32F303VCT6Cpu::STM32F303VCT6Cpu() :
+        oCpuThreadContext(&oCpuThread, nullptr),
+        oCpuThreadData(&oCpuThreadContext)
 {
-  CCNEW(m_pPrivate, CPrivate);
-  m_pPrivate->pCpu = this;
-  m_pPrivate->oCpuThreadContext.setData(&m_pPrivate->oCpuThreadData);
-  pCurrentThreadContext    = &m_pPrivate->oCpuThreadContext;
-  pCurrentThreadData       = &m_pPrivate->oCpuThreadData;
+  pCpu = this;
+  oCpuThreadContext.setData(&oCpuThreadData);
+  pCurrentThreadContext    = &oCpuThreadContext;
+  pCurrentThreadData       = &oCpuThreadData;
   enterCriticalSection();
   leaveCriticalSection();
   startSysClock();
@@ -187,7 +152,6 @@ STM32F303VCT6Cpu::STM32F303VCT6Cpu()
 
 STM32F303VCT6Cpu::~STM32F303VCT6Cpu()
 {
-  CCDELETE(m_pPrivate);
 }
 
 size_t STM32F303VCT6Cpu::coreNumber()
@@ -197,7 +161,7 @@ size_t STM32F303VCT6Cpu::coreNumber()
 
 CcThreadContext* STM32F303VCT6Cpu::mainThread()
 {
-  return &m_pPrivate->oCpuThreadContext;
+  return &oCpuThreadContext;
 }
 
 CcThreadContext* STM32F303VCT6Cpu::createThread(IThread* pTargetThread)
