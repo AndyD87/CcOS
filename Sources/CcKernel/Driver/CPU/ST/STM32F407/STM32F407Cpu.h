@@ -49,10 +49,6 @@ public: // methods
   virtual void deleteThread(CcThreadContext* pThreadData) override;
   virtual void nextThread() override;
   virtual CcThreadContext* currentThread() override;
-  virtual void changeThread() override
-    { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
-  virtual void tick()
-    { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
   virtual bool checkOverflow() override;
   virtual void enterCriticalSection() override;
   virtual void leaveCriticalSection() override;
@@ -79,6 +75,8 @@ private: // member
   STM32F407CpuThread    oCpuThread;
   CcThreadContext       oCpuThreadContext;
   CcThreadData          oCpuThreadData;
+  uint32                uiThreadChangeCount = 0;
+  uint32                uiThreadChangeDoneCount = 0;
   static STM32F407Cpu*  pCpu;
   #ifdef THREADHELPER
   static CcGenericThreadHelper oThreadHelper;

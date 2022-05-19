@@ -10,6 +10,8 @@ set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/CcGenericFilesystem.h
         ${CMAKE_CURRENT_LIST_DIR}/CcGenericThreadHelper.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcGenericThreadHelper.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcGenericThreadManager.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcGenericThreadManager.h
         ${CMAKE_CURRENT_LIST_DIR}/CcGenericThreadHelper_prvt.h
         ${CMAKE_CURRENT_LIST_DIR}/CcGenericTimer.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcGenericTimer.h

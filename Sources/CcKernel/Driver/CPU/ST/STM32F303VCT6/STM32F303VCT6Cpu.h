@@ -49,10 +49,6 @@ public: // methods
   virtual void deleteThread(CcThreadContext* pThreadData) override;
   virtual void nextThread() override;
   virtual CcThreadContext* currentThread() override;
-  virtual void changeThread() override
-  { if(m_pThreadTickMethod != nullptr) (*m_pThreadTickMethod)(); }
-  virtual void tick()
-  { if(m_pSystemTickMethod != nullptr) (*m_pSystemTickMethod)(); }
   virtual bool checkOverflow() override;
   virtual void enterCriticalSection() override;
   virtual void leaveCriticalSection() override;

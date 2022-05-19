@@ -622,6 +622,7 @@ void CcKernel::message(EMessage eType)
       // Stuck on error!
       while(1);
 #endif
+      break;
     case EMessage::Info:
     case EMessage::Debug:
     case EMessage::Verbose:

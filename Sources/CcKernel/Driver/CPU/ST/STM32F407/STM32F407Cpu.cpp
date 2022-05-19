@@ -51,16 +51,23 @@ CCEXTERNC void STM32F407Cpu_SysTick()
   }
 }
 
+uint32 uiThreadTicks = 0;
+
 /**
  * @brief ISR for Thread Tick every 10ms
  */
 CCEXTERNC void STM32F407Cpu_ThreadTick()
 {
-  NVIC_ClearPendingIRQ(USART3_IRQn);
+  uiThreadTicks++;
+  if(uiThreadTicks > 166510)
+  {
+    HAL_IncTick();
+  }
   if(STM32F407Cpu::getCpu() != nullptr)
   {
     STM32F407Cpu::getCpu()->changeThread();
   }
+  NVIC_ClearPendingIRQ(USART3_IRQn);
 }
 
 /**

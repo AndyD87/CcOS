@@ -9,7 +9,7 @@ list (APPEND SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/STM32F103SystemGpioPin.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F103SystemGpioPort.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F103Timer.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/../STM32FX_IrqHandlers.cpp")
+      "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32FX_IrqHandlers.cpp")
 
 
 ########

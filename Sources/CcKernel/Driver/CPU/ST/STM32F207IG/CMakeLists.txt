@@ -9,7 +9,7 @@ list (APPEND SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGDriver.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGSystemGpioPort.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGSystemGpioPin.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/../STM32FX_IrqHandlers.cpp")
+      "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32FX_IrqHandlers.cpp")
 
 ########
 # Add Source Files

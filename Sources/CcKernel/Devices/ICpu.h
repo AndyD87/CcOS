@@ -27,9 +27,9 @@
 #include "CcBase.h"
 #include "IDevice.h"
 #include "CcThreadContext.h"
+#include "CcGenericThreadManager.h"
 
 class IThread;
-class CcThreadContext;
 
 /**
  * @brief Control the Input and Outputports on device
@@ -114,35 +114,23 @@ public:
   virtual bool isInIsr() = 0;
 
   /**
-   * @brief Set a method to call ever system tick has called
-   * @param pSystemTickMethod
-   */
-  void setSystemTick(FSystemTick pSystemTickMethod)
-  { m_pSystemTickMethod = pSystemTickMethod; }
-
-  /**
-   * @brief Set a method wich get called if
-   * @param pThreadTickMethod
-   */
-  void setThreadTick(FThreadTick pThreadTickMethod)
-  { m_pThreadTickMethod = pThreadTickMethod; }
-
-  /**
    * @brief Create and start thread method.
    * @param pParam: Thread to start.
    */
   static void CreateThreadMethod(CcThreadContext* pParam);
 
-protected:
   /**
    * @brief Change thred context.
    */
-  virtual void changeThread() = 0;
+  void changeThread()
+  { CcGenericThreadManager::changeThread();}
 
   /**
    * @brief Execute a system tick.
    */
-  virtual void tick() = 0;
+  void tick()
+  { CcGenericThreadManager::tick();}
+
 protected:
   FSystemTick m_pSystemTickMethod = nullptr;  //!< Target method to call for System tick event
   FThreadTick m_pThreadTickMethod = nullptr;  //!< Target method to call for Thread tick event
