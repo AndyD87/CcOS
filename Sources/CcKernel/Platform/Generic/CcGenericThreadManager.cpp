@@ -18,78 +18,76 @@ CcGenericThreadManager::CcGenericThreadManager()
   s_pInstance = this;
 }
 
+CcGenericThreadManager::~CcGenericThreadManager()
+{
+  s_pInstance = nullptr;
+}
+
 void CcGenericThreadManager::init()
 {
   pCpu = CcKernel::getDevice(EDeviceType::Cpu).cast<ICpu>();
 }
 
-#ifndef CCOS_CCKERNEL_GENERIC_NO_SYSTEM_TIMER
-  void CcGenericThreadManager::tick()
+void CcGenericThreadManager::tick()
+{
+  uiUpTime += 1000;
+  uiThreadCount++;
+  if(uiThreadCount >= 10)
   {
-    s_pInstance->uiUpTime += 1000;
-    s_pInstance->uiThreadCount++;
-    if(s_pInstance->uiThreadCount >= 10)
-    {
-      changeThread();
-    }
+    changeThread();
   }
+}
 
-  void CcGenericThreadManager::changeThread()
+void CcGenericThreadManager::changeThread()
+{
+  if(pCpu.isValid() &&
+      pCpu->checkOverflow() &&
+      oThreadsWaiting.size() > 0)
   {
-    if(s_pInstance->pCpu.isValid() &&
-        s_pInstance->pCpu->checkOverflow())
+    if(oThreadListLock.isLocked() == false)
     {
-      if(s_pInstance->oThreadListLock.isLocked() == false)
+      oThreadListLock.lock();
+      uiThreadCount = 0;
+      CcThreadContext* pCurrentThreadContext = pCpu->currentThread();
+      if(pCurrentThreadContext != nullptr)
       {
-        s_pInstance->oThreadListLock.lock();
-        s_pInstance->uiThreadCount = 0;
-        CcThreadContext* pCurrentThreadContext = s_pInstance->pCpu->currentThread();
-        if(pCurrentThreadContext != nullptr)
+        size_t uiPos = oThreadsRunning.find(pCurrentThreadContext);
+        if(uiPos < oThreadsRunning.size())
         {
-          size_t uiPos = s_pInstance->oThreadsRunning.find(pCurrentThreadContext);
-          if(uiPos < s_pInstance->oThreadsRunning.size())
+          CcList<CcThreadContext*>::iterator oListItem = oThreadsRunning.dequeue(uiPos);
+          if((*oListItem)->bClosed == false)
           {
-            CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsRunning.dequeue(uiPos);
-            if(pCurrentThreadContext->bClosed == false)
-            {
-              s_pInstance->oThreadsWaiting.append(oListItem);
-            }
-            else
-            {
-              s_pInstance->pCpu->deleteThread(*oListItem);
-              s_pInstance->oThreadsRunning.removeIterator(oListItem);
-            }
+            oThreadsWaiting.append(oListItem);
           }
           else
           {
-            // Ignore temporarily because of missing startup thread.
-            //CcKernel::message(EMessage::Error);
+            pCpu->deleteThread(*oListItem);
+            oThreadsRunning.cleanupIterator(oListItem);
           }
+          CcList<CcThreadContext*>::iterator oListItemWaiting = oThreadsWaiting.dequeueFirst();
+          oThreadsRunning.append(oListItemWaiting);
+          pCpu->loadThread((*oListItemWaiting));
         }
         else
         {
+          // Ignore temporarily because of missing startup thread.
           CcKernel::message(EMessage::Error);
         }
-
-        if(s_pInstance->oThreadsWaiting.size() > 0)
-        {
-          CcList<CcThreadContext*>::iterator oListItem = s_pInstance->oThreadsWaiting.dequeueFirst();
-          s_pInstance->oThreadsRunning.append(oListItem);
-          s_pInstance->pCpu->loadThread((*oListItem));
-        }
-        else
-        {
-          s_pInstance->pCpu->loadThread(s_pInstance->pCpu->mainThread());
-        }
-        s_pInstance->oThreadListLock.unlock();
       }
+      else
+      {
+        CcKernel::message(EMessage::Error);
+      }
+
+      oThreadListLock.unlock();
     }
-    //else
-    //{
-    //  CcKernel::message(EMessage::Error);
-    //}
   }
-#endif
+  else
+  {
+    // May be we are in the startup state
+    //CcKernel::message(EMessage::Error);
+  }
+}
 
 bool CcGenericThreadManager::appendThread(IThread* pThread)
 {
@@ -115,31 +113,35 @@ void CcGenericThreadManager::nextThread()
   pCpu->nextThread();
 }
 
-#ifndef CCOS_NO_SYSTEM_THREAD
-  void CcGenericThreadManager::run()
-  {
-    pLedRun = CcKernel::getDevice(EDeviceType::Led, 0).cast<ILed>().ptr();
-    if(pLedRun) pLedRun->off();
-    pLedWarning = CcKernel::getDevice(EDeviceType::Led, 1).cast<ILed>().ptr();
-    if(pLedWarning) pLedWarning->off();
-    pLedError = CcKernel::getDevice(EDeviceType::Led, 2).cast<ILed>().ptr();
-    if(pLedError) pLedError->off();
-    CcDateTime oNextToggle = 0;
-    while(getThreadState() == EThreadState::Running)
-    {
-      if( pLedRun != nullptr &&
-          oNextToggle < CcDateTime(uiUpTime))
-      {
-        oNextToggle.addMSeconds(500);
-        pLedRun->toggle();
-      }
-      for(IDevice* pDev : oIdleList)
-        pDev->idle();
-    }
-  }
+void CcGenericThreadManager::start()
+{
+  pLedRun = CcKernel::getDevice(EDeviceType::Led, 0).cast<ILed>().ptr();
+  if(pLedRun) pLedRun->off();
+  pLedWarning = CcKernel::getDevice(EDeviceType::Led, 1).cast<ILed>().ptr();
+  if(pLedWarning) pLedWarning->off();
+  pLedError = CcKernel::getDevice(EDeviceType::Led, 2).cast<ILed>().ptr();
+  if(pLedError) pLedError->off();
+}
 
-  size_t CcGenericThreadManager::getStackSize()
+bool CcGenericThreadManager::idle()
+{
+  bool bKeepLooping = true;
+  if( pLedWarning != nullptr &&
+      m_oNextToggle + 500000 < uiUpTime)
   {
-    return 256;
+    pLedWarning->toggle();
   }
-#endif // CCOS_NO_SYSTEM_THREAD
+  if( pLedRun != nullptr &&
+      m_oNextToggle < uiUpTime)
+  {
+    m_oNextToggle += 500000;
+    pLedRun->toggle();
+  }
+  for(IDevice* pDev : oIdleList)
+    pDev->idle();
+  return bKeepLooping;
+}
+
+void CcGenericThreadManager::stop()
+{
+}

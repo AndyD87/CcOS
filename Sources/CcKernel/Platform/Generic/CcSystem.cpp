@@ -82,9 +82,6 @@ CcSystem::~CcSystem()
 void CcSystem::init()
 {
   m_pPrivate->oThreadManager.init();
-  #ifndef CCOS_NO_SYSTEM_THREAD
-    m_pPrivate->oThreadManager.start();
-  #endif // CCOS_NO_SYSTEM_THREAD
 
   #ifdef CCOS_GENERIC_NETWORK
     #if defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
@@ -101,11 +98,6 @@ void CcSystem::init()
 
 void CcSystem::deinit()
 {
-  #ifndef CCOS_NO_SYSTEM_THREAD
-    m_pPrivate->oThreadManager.stop();
-    m_pPrivate->oThreadManager.waitForExit();
-  #endif // CCOS_NO_SYSTEM_THREAD
-
   #ifdef CCOS_GENERIC_NETWORK
     m_pPrivate->pNetworkStack->deinit();
     CCDELETE(m_pPrivate->pNetworkStack);
@@ -164,7 +156,6 @@ CcDateTime CcSystem::getDateTime()
   return getUpTime();
 }
 
-#ifndef CCOS_NO_SYSTEM_THREAD
 CcDateTime CcSystem::getUpTime()
 {
   return CcDateTime(m_pPrivate->oThreadManager.uiUpTime);
@@ -179,9 +170,7 @@ void CcSystem::sleep(uint32 timeoutMs)
   {
     m_pPrivate->oThreadManager.nextThread();
   } while(uiSystemTime > m_pPrivate->oThreadManager.uiUpTime);
-  m_pPrivate->oThreadManager.nextThread();
 }
-#endif
 
 const CcDevice& CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 {

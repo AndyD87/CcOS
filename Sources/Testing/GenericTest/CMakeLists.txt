@@ -4,15 +4,19 @@ set ( CURRENT_PROJECT GenericTest )
 ########
 # Add Source Files
 ########
-file (GLOB SOURCE_FILES
-      "*.c"
-      "*.cpp")
+set(SOURCE_FILES
+  main.cpp
+  GenericApp.cpp 
+  GenericService.cpp 
+)
 
 ########
 # Add Source Files
 ########
-file (GLOB HEADER_FILES
-      "*.h")
+set(HEADER_FILES
+  GenericApp.h 
+  GenericService.h 
+)
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}  )
 

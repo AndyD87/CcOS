@@ -23,12 +23,13 @@
  * @brief     Implementation of class STM32F407Cpu
  **/
 
-#include <stm32f4xx_hal.h>
+#include "stm32f4xx_hal.h"
 #include "STM32F407Cpu.h"
 #include "STM32F407Driver.h"
 #include "CcKernel.h"
 #include "CcStatic.h"
-#include <stdlib.h>
+#include "CcGenericThreadManager.h"
+#include "stdlib.h"
 
 STM32F407Cpu* STM32F407Cpu::pCpu      = nullptr;  //!< Cpu data initialized on cpu start
 volatile CcThreadContext* pCurrentThreadContext = nullptr;  //!< Cpu current running thread Context
@@ -51,18 +52,11 @@ CCEXTERNC void STM32F407Cpu_SysTick()
   }
 }
 
-uint32 uiThreadTicks = 0;
-
 /**
  * @brief ISR for Thread Tick every 10ms
  */
 CCEXTERNC void STM32F407Cpu_ThreadTick()
 {
-  uiThreadTicks++;
-  if(uiThreadTicks > 166510)
-  {
-    HAL_IncTick();
-  }
   if(STM32F407Cpu::getCpu() != nullptr)
   {
     STM32F407Cpu::getCpu()->changeThread();
@@ -172,6 +166,7 @@ STM32F407Cpu::STM32F407Cpu():
   pCurrentThreadContext    = &oCpuThreadContext;
   pCurrentThreadData       = &oCpuThreadData;
   pCurrentThreadDataLocation = &pCurrentThreadData;
+  CcGenericThreadManager::getInstance()->oThreadsRunning.append(&oCpuThreadContext);
   enterCriticalSection();
   leaveCriticalSection();
   startSysClock();
@@ -180,6 +175,7 @@ STM32F407Cpu::STM32F407Cpu():
 
 STM32F407Cpu::~STM32F407Cpu()
 {
+  CcGenericThreadManager::getInstance()->oThreadsRunning.removeItem(&oCpuThreadContext);
 }
 
 size_t STM32F407Cpu::coreNumber()

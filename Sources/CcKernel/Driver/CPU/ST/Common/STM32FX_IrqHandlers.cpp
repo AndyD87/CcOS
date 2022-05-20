@@ -41,10 +41,11 @@ __attribute__( ( always_inline ) ) inline uint32 GetPSP(void)
 }
 
 //! Storage for unimplemented irq handler id
-size_t g_uiFailedHandler = 0x00;
-size_t g_uiCrashRunning  = 0x00;
+volatile size_t g_uiFailedHandler = 0x00;
+volatile size_t g_uiCrashRunning  = 0x00;
 
-typedef struct __attribute__((packed)) ContextStateFrame {
+struct __attribute__((packed)) _ContextStateFrame
+{
   uint32_t r0;
   uint32_t r1;
   uint32_t r2;
@@ -53,12 +54,13 @@ typedef struct __attribute__((packed)) ContextStateFrame {
   uint32_t lr;
   uint32_t return_address;
   uint32_t xpsr;
-} sContextStateFrame;
+} *puiStack;
 
 //! @brief method to call from unimplemented irq handler
-#define Crashed()                         \
-  g_uiCrashRunning  = 0x01;               \
-  while(g_uiCrashRunning)
+void Crashed(){
+  g_uiCrashRunning  = 0x01;
+  while(g_uiCrashRunning);
+}
 
 #pragma GCC push_options
 #pragma GCC optimize("O0")
@@ -71,7 +73,7 @@ typedef struct __attribute__((packed)) ContextStateFrame {
 CCEXTERNC void HardFault_Handler            ()
 {
   g_uiFailedHandler = 0x02;
-  struct ContextStateFrame*  puiStack     = reinterpret_cast<struct ContextStateFrame*>(GetPSP());
+  puiStack     = reinterpret_cast<struct _ContextStateFrame*>(GetPSP());
   CCUNUSED(puiStack);
   Crashed();
 }

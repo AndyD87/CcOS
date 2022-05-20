@@ -29,6 +29,7 @@
 class CcServiceSystem::CPrivate
 {
 public:
+  CcService* pService;
 };
 
 CcServiceSystem::CcServiceSystem()
@@ -47,15 +48,28 @@ void CcServiceSystem::stop()
 
 CcStatus CcServiceSystem::init(CcService& pService)
 {
-  CcStatus oStatus(false);
-  CCUNUSED(pService);
-  return oStatus;
+  if(m_pPrivate)
+  {
+    m_pPrivate->pService = &pService;
+  }
+  CcStatus oRunStatus = pService.run();
+  if(m_pPrivate &&
+     m_pPrivate->pService == &pService)
+  {
+    m_pPrivate->pService = nullptr;
+  }
 }
 
 CcStatus CcServiceSystem::deinit(CcService& pService)
 {
   CcStatus oStatus(false);
-  CCUNUSED(pService);
+  CCDEBUG("Deinit Service: " + pService.getName());
+  pService.stop();
+  if(m_pPrivate->pService == &pService)
+  {
+    oStatus = true;
+    m_pPrivate->pService = nullptr;
+  }
   return oStatus;
 }
 

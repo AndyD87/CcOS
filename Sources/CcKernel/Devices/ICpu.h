@@ -123,15 +123,11 @@ public:
    * @brief Change thred context.
    */
   void changeThread()
-  { CcGenericThreadManager::changeThread();}
+  { CcGenericThreadManager::getInstance()->changeThread();}
 
   /**
    * @brief Execute a system tick.
    */
   void tick()
-  { CcGenericThreadManager::tick();}
-
-protected:
-  FSystemTick m_pSystemTickMethod = nullptr;  //!< Target method to call for System tick event
-  FThreadTick m_pThreadTickMethod = nullptr;  //!< Target method to call for Thread tick event
+  { CcGenericThreadManager::getInstance()->tick();}
 };

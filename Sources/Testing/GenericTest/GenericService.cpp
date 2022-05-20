@@ -20,19 +20,18 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class ICpu
+ * @brief     Class GenericService
+ *
+ *  Implementation of Main Application
  */
 
-#include "Devices/ICpu.h"
-#include "IThread.h"
-#include "CcKernel.h"
-#include "CcThreadContext.h"
+#include "GenericService.h"
 
-void ICpu::CreateThreadMethod(CcThreadContext* pThreadContext)
+GenericService::GenericService() :
+  CcService(CCNEW_INLINE(GenericApp))
 {
-  pThreadContext->pThreadObject->startOnThread();
-  // @todo force thread switch
-  pThreadContext->bClosed = true;
-  while(1);
 }
 
+GenericService::~GenericService()
+{
+}

@@ -25,9 +25,7 @@
 
 #include "CcBase.h"
 #include "CcKernel.h"
-#include "Devices/CcBoardSupport.h"
-#include "Devices/CcDeviceI2C.h"
-#include "Driver/I2C/PortExpander/MCP23017.h"
+#include "GenericService.h"
 
 /**
  * @brief Default application entry point
@@ -39,62 +37,6 @@ int main(int iArgc, char** ppArgv)
 {
   CCUNUSED(iArgc);
   CCUNUSED(ppArgv);
-  int iRet = 0;
-  CcDeviceI2C oI2CDevice        = CcKernel::getDevice(EDeviceType::I2C);
-  if(!oI2CDevice.isValid())
-  {
-    CcBoardSupport oBoardSupport  = CcKernel::getDevice(EDeviceType::BoardSupport);
-    if(oBoardSupport.isValid())
-    {
-      oBoardSupport.getDevice()->getDeviceSize(EDeviceType::I2C);
-    }
-  }
-  if(oI2CDevice.isValid())
-  {
-    II2CSlave* pInterface = oI2CDevice.getDevice()->createInterface(0x20);
-    if(pInterface)
-    {
-      CCDEBUG("Check interface register");
-      char pChar[16];
-      pInterface->readRegister8(0x00, pChar, 0x20);
-
-      for(int i = 0; i < 0x20; i++)
-      {
-        CCDEBUG("  Register: " + CcString::fromNumber(i) + " " + CcString::fromNumber(pChar[i], 16).fillBeginUpToLength("0",2));
-      }
-
-      CCDEBUG("");
-      CCDEBUG("Setup PortExpander");
-      MCP23017 oPortexpander(pInterface);
-      if(oPortexpander.start())
-      {
-        CCDEBUG("Setup 8 Pins output");
-        if (oPortexpander.setPinsDirection(0xff, IGpioPin::EDirection::Output))
-        {
-          for(int iAlternate = 0; ;iAlternate++)
-          {
-            if(iAlternate & 1)
-              oPortexpander.setValue(0x5555 << 1);
-            else
-              oPortexpander.setValue(0x5555 << 1);
-            CcKernel::sleep(1000);
-            CCDEBUG("Read register again");
-            pInterface->readRegister8(0x00, pChar, 0x20);
-            for (int i = 0; i < 0x20; i++)
-            {
-              CCDEBUG("  Register: " + CcString::fromNumber(i) + " " + CcString::fromNumber(pChar[i], 16).fillBeginUpToLength("0", 2));
-            }
-          }
-        }
-
-      }
-
-
-    }
-  }
-  while(1)
-  {
-    CcKernel::sleep(10);
-  }
-  return iRet;
+  GenericService oService;
+  return oService.exec().getErrorInt();
 }

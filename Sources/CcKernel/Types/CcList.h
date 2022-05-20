@@ -889,6 +889,16 @@ public:
   }
 
   /**
+   * @brief Delete Item of given iterator and update it to next item.
+   * @param oIterator: Iterator with stored item
+   * @return Next element of iterator.
+   */
+  static void cleanupIterator(iterator& oIterator)
+  {
+    CCDELETE(oIterator.m_pItem);
+  }
+
+  /**
    * @brief Insert a Item at a defined Position.
    * @param uiPos: Position to store at
    * @param oToAppend: Item to store

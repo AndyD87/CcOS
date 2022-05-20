@@ -26,6 +26,9 @@
 #include "CcKernel.h"
 #include "CcEventHandler.h"
 #include "CcServiceSystem.h"
+#ifdef GENERIC
+  #include "CcGenericThreadManager.h"
+#endif
 
 CcService::CcService(CcSharedPointer<CcApp> pApplication) :
   m_oApplication(pApplication)
@@ -95,6 +98,10 @@ void CcService::idle()
 
 CcStatus CcService::run()
 {
+  #ifdef GENERIC
+    CcGenericThreadManager::getInstance()->start();
+  #endif
+
   if (m_oApplication.isValid())
   {
     m_oApplication->start();
@@ -105,13 +112,24 @@ CcStatus CcService::run()
   loop();
   CCDEBUG("Service stopped");
   eventStop();
+
+  #ifdef GENERIC
+    CcGenericThreadManager::getInstance()->stop();
+  #endif
   return m_oApplication->getExitCode();
 }
 
+size_t uiCount = 0;
+
 bool CcService::onLoop()
 {
+  uiCount++;
   idle();
-  bool bKeepLooping = m_oApplication->isRunning();
+  #ifdef GENERIC
+    bool bKeepLooping = CcGenericThreadManager::getInstance()->idle();
+  #else
+    bool bKeepLooping = m_oApplication->isRunning();
+  #endif
   return bKeepLooping;
 }
 
