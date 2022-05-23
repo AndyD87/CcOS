@@ -38,7 +38,7 @@
   #include <windows.h>
   #define CcMutex_Type HANDLE  //!< Define mutex as critical section for Windows
 #else
-  #define CcMutex_Type bool              //!< Define mutex as spinnlock for generic devices
+  #define CcMutex_Type volatile bool              //!< Define mutex as spinnlock for generic devices
 #endif
 
 /**

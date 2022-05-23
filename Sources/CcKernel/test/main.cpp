@@ -81,6 +81,7 @@ int main(int iArgc, char** ppArgv)
   CcTestFramework_addTest(CBaseTest);
   CcTestFramework_addTest(CKernelTest);
   CcTestFramework_addTest(CArgumentTest);
+  CcTestFramework_addTest(CGenericMallocTest);
   CcTestFramework_addTest(CSystemTest);
   CcTestFramework_addTest(CSystemServiceTest);
   CcTestFramework_addTest(CVectorTest);
@@ -107,7 +108,6 @@ int main(int iArgc, char** ppArgv)
   CcTestFramework_addTest(CBufferTest);
   CcTestFramework_addTest(CMutexTest);
   CcTestFramework_addTest(CStringListTest);
-  CcTestFramework_addTest(CGenericMallocTest);
 
   CcTestFramework::runTests();
 

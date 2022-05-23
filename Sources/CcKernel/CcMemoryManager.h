@@ -27,6 +27,18 @@
 #include "CcBase.h"
 
 /**
+ * @brief Initialize global memory manager
+ * @return True if init succeeded.
+ */
+CCEXTERNC CcKernelSHARED void CcMemoryManager__init(void);
+
+//! End of static variables
+#ifndef GENERIC
+CCEXTERNC CcKernelSHARED uintptr __bss_end__;
+CCEXTERNC CcKernelSHARED uintptr __data_end__;
+#endif
+
+/**
  * @brief This class is designed to manage memory allocations on generic devices.
  */
 class CcKernelSHARED CcMemoryManager
@@ -127,6 +139,7 @@ private:
   static size_t s_uiSize;
   static size_t s_uiBufferAvailable;
   static size_t s_uiBufferCount;
+  static size_t s_uiBufferMax;
   static size_t s_uiBufferGranularity;
   static size_t s_uiBufferUsed;
   static bool s_bMallocInitialized;

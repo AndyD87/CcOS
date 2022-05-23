@@ -27,7 +27,9 @@
 #include "CcBase.h"
 #include "IDevice.h"
 #include "CcThreadContext.h"
-#include "CcGenericThreadManager.h"
+#ifdef GENERIC
+  #include "CcGenericThreadManager.h"
+#endif
 
 class IThread;
 
@@ -119,15 +121,17 @@ public:
    */
   static void CreateThreadMethod(CcThreadContext* pParam);
 
-  /**
-   * @brief Change thred context.
-   */
-  void changeThread()
-  { CcGenericThreadManager::getInstance()->changeThread();}
+  #ifdef GENERIC
+    /**
+     * @brief Change thred context.
+     */
+    void changeThread()
+    { CcGenericThreadManager::getInstance()->changeThread();}
 
-  /**
-   * @brief Execute a system tick.
-   */
-  void tick()
-  { CcGenericThreadManager::getInstance()->tick();}
+    /**
+     * @brief Execute a system tick.
+     */
+    void tick()
+    { CcGenericThreadManager::getInstance()->tick();}
+  #endif
 };

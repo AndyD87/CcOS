@@ -31,20 +31,55 @@
 //! Cast pointer to uint
 #define CcMemoryManager_castToUint(VAR) reinterpret_cast<uintptr>(CcMemoryManager_castToVoid(VAR))
 
-uintptr CcMemoryManager::s_uiBufferStart       = 0;
-uintptr CcMemoryManager::s_uiBufferEnd        = 0;
-size_t CcMemoryManager::s_uiSize              = 0;
-size_t CcMemoryManager::s_uiBufferAvailable   = 0;
-size_t CcMemoryManager::s_uiBufferCount       = 0;
-size_t CcMemoryManager::s_uiBufferGranularity = 0;
-size_t CcMemoryManager::s_uiBufferUsed        = 0;
-bool   CcMemoryManager::s_bMallocInitialized  = false;
+uintptr CcMemoryManager::s_uiBufferStart;
+uintptr CcMemoryManager::s_uiBufferEnd;
+size_t CcMemoryManager::s_uiSize;
+size_t CcMemoryManager::s_uiBufferAvailable;
+size_t CcMemoryManager::s_uiBufferCount;
+size_t CcMemoryManager::s_uiBufferMax;
+size_t CcMemoryManager::s_uiBufferGranularity;
+size_t CcMemoryManager::s_uiBufferUsed;
+bool   CcMemoryManager::s_bMallocInitialized;
 CcMemoryManager::CcMemoryItem* CcMemoryManager::s_pMemoryStart;
 CcMemoryManager::CcMemoryItem* CcMemoryManager::s_pMemoryUser;
 CcMemoryManager::CcMemoryItem* CcMemoryManager::s_pMemoryEnd;
 
+//! Set default granularity to system memory width
+#ifndef MEMORY_GRANULARITY
+  #define MEMORY_GRANULARITY  sizeof(void*)
+#endif
+
+//! End of static variables
+#ifndef GENERIC
+  uintptr __bss_end__;
+  uintptr __data_end__;
+#else
+  extern uintptr __bss_end__;
+  extern uintptr __data_end__;
+#endif
+
+void CcMemoryManager__init()
+{
+  CcMemoryManager::init(reinterpret_cast<uintptr>(&__bss_end__),
+                        reinterpret_cast<uintptr>(&__data_end__ ),
+                        MEMORY_GRANULARITY);
+
+}
+
 bool CcMemoryManager::init(uintptr uiStartAddress, uintptr uiEndAddress, size_t uiGranularity)
 {
+  CcMemoryManager::s_uiBufferStart        = 0;
+  CcMemoryManager::s_uiBufferEnd          = 0;
+  CcMemoryManager::s_uiSize               = 0;
+  CcMemoryManager::s_uiBufferAvailable    = 0;
+  CcMemoryManager::s_uiBufferCount        = 0;
+  CcMemoryManager::s_uiBufferGranularity  = 0;
+  CcMemoryManager::s_uiBufferUsed         = 0;
+  CcMemoryManager::s_bMallocInitialized   = false;
+  CcMemoryManager::s_pMemoryStart         = nullptr;
+  CcMemoryManager::s_pMemoryUser          = nullptr;;
+  CcMemoryManager::s_pMemoryEnd           = nullptr;;
+
   if(CcMemoryManager_castToUint(uiStartAddress) % uiGranularity)
   {
     uiStartAddress += uiGranularity - (uiStartAddress % uiGranularity);
@@ -136,6 +171,8 @@ void* CcMemoryManager::malloc(size_t uiSize, bool bForceKernelSpace)
   {
     pBuffer = &pSlot->oBuffer;
     CcMemoryManager::s_uiBufferCount++;
+    if(CcMemoryManager::s_uiBufferCount > CcMemoryManager::s_uiBufferMax)
+      CcMemoryManager::s_uiBufferMax = CcMemoryManager::s_uiBufferCount;
     CcMemoryManager::s_uiBufferUsed     +=uiSizeRequired;
     CcMemoryManager::s_uiBufferAvailable-=uiSizeRequired;
   }

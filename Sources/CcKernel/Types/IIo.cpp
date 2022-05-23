@@ -144,7 +144,8 @@ CcStatus IIo::writeString(const CcString& oString)
 CcStatus IIo::writeLine(const CcString& oString)
 {
   bool bRet = true;
-  bRet &= writeString(oString + CcGlobalStrings::EolOs);
+  bRet &= writeString(oString);
+  bRet &= writeString(CcGlobalStrings::EolOs);
   flush();
   return bRet;
 }

@@ -119,11 +119,11 @@ CcStatus CcService::run()
   return m_oApplication->getExitCode();
 }
 
-size_t uiCount = 0;
+size_t CcService_uiCount = 0;
 
 bool CcService::onLoop()
 {
-  uiCount++;
+  CcService_uiCount++;
   idle();
   #ifdef GENERIC
     bool bKeepLooping = CcGenericThreadManager::getInstance()->idle();

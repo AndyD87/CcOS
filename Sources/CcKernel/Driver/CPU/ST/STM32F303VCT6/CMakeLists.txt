@@ -3,7 +3,7 @@
 ########
 list (APPEND SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/../../Common/ARM_CM4/CcThreadData_ARM_CM4.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/../../Common/CortexMx/malloc_lock.c"
+      "${CMAKE_CURRENT_LIST_DIR}/../../Common/CortexMx/malloc_lock.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/startup_stm32f303xc.s"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F303VCT6Cpu.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F303VCT6Driver.cpp"

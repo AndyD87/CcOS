@@ -38,9 +38,11 @@ CcStdOut*   CcConsole::s_pOutput(nullptr);
 
 void CcConsole::init()
 {
-  CCNEW(s_pInput, CcStdIn);
-  CCNEW(s_pOutput, CcStdOut);
-  CCNEW(s_pLock, CcMutex);
+  #ifndef GENERIC4
+    CCNEW(s_pInput, CcStdIn);
+    CCNEW(s_pOutput, CcStdOut);
+    CCNEW(s_pLock, CcMutex);
+  #endif
 }
 
 void CcConsole::deinit()
@@ -191,8 +193,8 @@ void CcConsole::writeSameLine(const CcString& sOutput)
   if (s_pOutput != nullptr)
   {
     s_pLock->lock();
-    s_pOutput->write(CcGlobalStrings::EolCr.getCharString(), 1);
-    s_pOutput->write(sOutput.getCharString(), sOutput.length());
+    //s_pOutput->writeString(CcGlobalStrings::EolCr);
+    s_pOutput->writeString(sOutput + CcGlobalStrings::EolCr);
     s_pLock->unlock();
   }
 }

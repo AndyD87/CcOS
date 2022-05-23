@@ -14,19 +14,17 @@ set(WINDOWS TRUE)
 
 # Driver mode is only available wit msvc compiler
 if(DEFINED MSVC)
-  if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
-    find_package(WDK)
-    if(WDK_FOUND)
-      message("-- WDK available")
-      set(CCKERNEL_MODULE_AVAILABLE TRUE)
-    endif()
-    file (GLOB CCKERNEL_MODULE_SOURCE_FILES
-          "${CMAKE_CURRENT_LIST_DIR}/Windows/*.cpp"
-    )
+  find_package(WDK)
+  if(WDK_FOUND)
+    message("-- WDK available")
+    set(CCKERNEL_MODULE_AVAILABLE TRUE)
   endif()
+  file (GLOB CCKERNEL_MODULE_SOURCE_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/Windows/*.cpp"
+  )
 
   set(CCKERNEL_MODULE_INCLUDE_DIRS  ${CMAKE_CURRENT_LIST_DIR}/Windows)
-  
+
   macro(CcCheckCertificate)
     # Setup TestCertificate
     set(WDK_TESTCERT_NAME "CcKernelModule_TestCert") # CACHE INTERNAL "Name of Certificate for signing drivers")
@@ -69,17 +67,17 @@ if(DEFINED MSVC)
       endif()
     endif()
   endmacro()
-  
+
   function(CcAddDriverOverride _target)
-      find_package(WDK)
+    if(WDK_FOUND)
       CcCheckCertificate()
 
       cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
-      
+
       CcAppendToBinaryOuptutPath("../drv")
-      
+
       add_executable(${_target} ${WDK_UNPARSED_ARGUMENTS})
-      
+
       # Sign Sys-File
       if(EXISTS ${WDK_SIGNTOOL_FILE})
         add_custom_command(TARGET ${_target} POST_BUILD
@@ -88,7 +86,7 @@ if(DEFINED MSVC)
       else()
         message(WARNING "SignTool.exe not found for test signing driver")
       endif()
-      
+
       # Generate and Sign Cat-File
       foreach(SOURCE_FILE ${WDK_UNPARSED_ARGUMENTS})
         if(${SOURCE_FILE} MATCHES ".inf$")
@@ -102,7 +100,7 @@ if(DEFINED MSVC)
           )
         endif()
       endforeach()
-      
+
       # Custom command required for generating Cat-Files and signing them
 
       set_target_properties(${_target} PROPERTIES SUFFIX ".sys")
@@ -112,26 +110,26 @@ if(DEFINED MSVC)
           "${WDK_COMPILE_DEFINITIONS};$<$<CONFIG:Debug>:${WDK_COMPILE_DEFINITIONS_DEBUG}>;_WIN32_WINNT=${WDK_WINVER}"
           )
       set_target_properties(${_target} PROPERTIES LINK_FLAGS "${WDK_LINK_FLAGS}")
-  
+
       target_include_directories(${_target} SYSTEM PRIVATE
           "${WDK_ROOT}/Include/${WDK_VERSION}/shared"
           "${WDK_ROOT}/Include/${WDK_VERSION}/km"
           "${WDK_ROOT}/Include/wdf/kmdf/1.9"
           )
-  
+
       target_link_libraries(${_target} PUBLIC WDK::NTOSKRNL WDK::HAL WDK::BUFFEROVERFLOWK WDK::WMILIB)
-  
+
       if(CMAKE_SIZEOF_VOID_P EQUAL 4)
           target_link_libraries(${_target} PUBLIC WDK::MEMCMP)
       endif()
-  
+
       if(DEFINED WDK_KMDF)
           target_include_directories(${_target} SYSTEM PRIVATE "${WDK_ROOT}/Include/wdf/kmdf/${WDK_KMDF}")
           target_link_libraries(${_target}
               "${WDK_ROOT}/Lib/wdf/kmdf/${WDK_PLATFORM}/${WDK_KMDF}/WdfDriverEntry.lib"
               "${WDK_ROOT}/Lib/wdf/kmdf/${WDK_PLATFORM}/${WDK_KMDF}/WdfLdr.lib"
               )
-  
+
           if(CMAKE_SIZEOF_VOID_P EQUAL 4)
               set_property(TARGET ${_target} APPEND_STRING PROPERTY LINK_FLAGS "/ENTRY:FxDriverEntry@8")
           elseif(CMAKE_SIZEOF_VOID_P  EQUAL 8)
@@ -144,15 +142,15 @@ if(DEFINED MSVC)
               set_property(TARGET ${_target} APPEND_STRING PROPERTY LINK_FLAGS "/ENTRY:GsDriverEntry")
           endif()
       endif()
+    endif(WDK_FOUND)
   endfunction()
-  
-  function(CcAddDriverLibraryOverride _target)
-      find_package(WDK)
 
+  function(CcAddDriverLibraryOverride _target)
+    if(WDK_FOUND)
       cmake_parse_arguments(WDK "" "KMDF;WINVER" "" ${ARGN})
 
       CcAppendLinkerFlags(/ignore:4210)
-      
+
       add_library(${_target} ${WDK_UNPARSED_ARGUMENTS})
 
       set_target_properties(${_target} PROPERTIES COMPILE_FLAGS ${WDK_COMPILE_FLAGS})
@@ -160,15 +158,16 @@ if(DEFINED MSVC)
       set_target_properties(${_target} PROPERTIES COMPILE_DEFINITIONS
           "${WDK_COMPILE_DEFINITIONS};$<$<CONFIG:Debug>:${WDK_COMPILE_DEFINITIONS_DEBUG};_WIN32_WINNT=${WDK_WINVER}>"
           )
-  
+
       target_include_directories(${_target} SYSTEM PRIVATE
           "${WDK_ROOT}/Include/${WDK_VERSION}/shared"
           "${WDK_ROOT}/Include/${WDK_VERSION}/km"
           "${WDK_ROOT}/Include/wdf/kmdf/1.9"
           )
-  
+
       if(DEFINED WDK_KMDF)
           target_include_directories(${_target} SYSTEM PRIVATE "${WDK_ROOT}/Include/wdf/kmdf/${WDK_KMDF}")
       endif()
+    endif(WDK_FOUND)
   endfunction()
 endif()

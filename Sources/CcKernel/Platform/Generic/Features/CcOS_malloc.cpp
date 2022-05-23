@@ -27,21 +27,6 @@
 #include "CcKernel.h"
 #include "CcMemoryManager.h"
 
-//! Set default granularity to system memory width
-#ifndef MEMORY_GRANULARITY
-  #define MEMORY_GRANULARITY  sizeof(void*)
-#endif
-
-//! End of static variables
-#ifndef __bss_end__
-  extern uintptr __bss_end__;
-#endif
-
-//! End of static data
-#ifndef __data_end__
-  extern uintptr __data_end__;
-#endif
-
 /**
  * @brief Create memory from free memory pool
  * @param uiSize: Number of bytes to allocate
@@ -51,15 +36,7 @@ CCEXTERNC void* malloc(size_t uiSize)
 {
   __malloc_lock(nullptr);
   void* pBuffer = nullptr;
-  if(uiSize > 0 &&
-	  ( CcMemoryManager::isInitialized() ||
-    	  //(
-      ( CcMemoryManager::init(reinterpret_cast<uintptr>(&__bss_end__),
-                              reinterpret_cast<uintptr>(&__data_end__ ),
-                              MEMORY_GRANULARITY))))
-  {
-    pBuffer = CcMemoryManager::malloc(uiSize);
-  }
+  pBuffer = CcMemoryManager::malloc(uiSize);
   __malloc_unlock(nullptr);
   return pBuffer;
 }

@@ -78,6 +78,11 @@ CGenericMallocTest::~CGenericMallocTest()
 
 bool CGenericMallocTest::testBasic()
 {
+  CcMemoryManager::init(
+    reinterpret_cast<uintptr>(pTestBuffer), 
+    reinterpret_cast<uintptr>(pTestBuffer) + sizeof(pTestBuffer), 
+    8
+  );
   bool bRet = false;
   char* pData = static_cast<char*>(malloc(100));
   if(pData)

@@ -183,7 +183,6 @@ CCEXTERNC void HAL_HCD_SOF_Callback(HCD_HandleTypeDef* hhcd)
  */
 CCEXTERNC void HAL_HCD_Connect_Callback(HCD_HandleTypeDef* hhcd)
 {
-  print_here();
   USBH_LL_Connect(static_cast<USBH_HandleTypeDef*>(hhcd->pData));
 }
 
@@ -193,7 +192,6 @@ CCEXTERNC void HAL_HCD_Connect_Callback(HCD_HandleTypeDef* hhcd)
  */
 CCEXTERNC void HAL_HCD_Disconnect_Callback(HCD_HandleTypeDef* hhcd)
 {
-  print_here();
   USBH_LL_Disconnect(static_cast<USBH_HandleTypeDef*>(hhcd->pData));
 }
 
@@ -203,7 +201,6 @@ CCEXTERNC void HAL_HCD_Disconnect_Callback(HCD_HandleTypeDef* hhcd)
  */
 CCEXTERNC void HAL_HCD_PortEnabled_Callback(HCD_HandleTypeDef* hhcd)
 {
-  print_here();
   USBH_LL_PortEnabled(static_cast<USBH_HandleTypeDef*>(hhcd->pData));
 }
 
@@ -213,7 +210,6 @@ CCEXTERNC void HAL_HCD_PortEnabled_Callback(HCD_HandleTypeDef* hhcd)
  */
 CCEXTERNC void HAL_HCD_PortDisabled_Callback(HCD_HandleTypeDef* hhcd)
 {
-  print_here();
   USBH_LL_PortDisabled(static_cast<USBH_HandleTypeDef*>(hhcd->pData));
 }
 
@@ -226,7 +222,6 @@ CCEXTERNC void HAL_HCD_PortDisabled_Callback(HCD_HandleTypeDef* hhcd)
   */
 CCEXTERNC void HAL_HCD_HC_NotifyURBChange_Callback(HCD_HandleTypeDef* hhcd, uint8_t chnum, HCD_URBStateTypeDef urb_state)
 {
-  print_here();
   CCUNUSED(hhcd);
   CCUNUSED(chnum);
   CCUNUSED(urb_state);
@@ -244,7 +239,6 @@ CCEXTERNC void HAL_HCD_HC_NotifyURBChange_Callback(HCD_HandleTypeDef* hhcd, uint
   */
 CCEXTERNC USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef* phost)
 {
-  print_here();
   /* Set the LL Driver parameters */
   CcStatic_memsetZeroObject(STM32F407Usb::s_hHcd);
   STM32F407Usb::s_hHcd.Instance = USB_OTG_FS;
@@ -277,7 +271,6 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_Init(USBH_HandleTypeDef* phost)
   */
 CCEXTERNC USBH_StatusTypeDef USBH_LL_DeInit(USBH_HandleTypeDef *phost)
 {
-  print_here();
   HAL_HCD_DeInit(static_cast<HCD_HandleTypeDef*>(phost->pData));
   return USBH_OK;
 }
@@ -289,7 +282,6 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_DeInit(USBH_HandleTypeDef *phost)
   */
 CCEXTERNC USBH_StatusTypeDef USBH_LL_Start(USBH_HandleTypeDef *phost)
 {
-  print_here();
   HAL_HCD_Start(static_cast<HCD_HandleTypeDef*>(phost->pData));
   return USBH_OK;
 }
@@ -301,7 +293,6 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_Start(USBH_HandleTypeDef *phost)
   */
 CCEXTERNC USBH_StatusTypeDef USBH_LL_Stop(USBH_HandleTypeDef *phost)
 {
-  print_here();
   HAL_HCD_Stop(static_cast<HCD_HandleTypeDef*>(phost->pData));
   return USBH_OK;
 }
@@ -313,7 +304,6 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_Stop(USBH_HandleTypeDef *phost)
   */
 CCEXTERNC USBH_SpeedTypeDef USBH_LL_GetSpeed(USBH_HandleTypeDef *phost)
 {
-  print_here();
   USBH_SpeedTypeDef speed = USBH_SPEED_HIGH;
 
   switch (HAL_HCD_GetCurrentSpeed(static_cast<HCD_HandleTypeDef*>(phost->pData)))
@@ -344,7 +334,6 @@ CCEXTERNC USBH_SpeedTypeDef USBH_LL_GetSpeed(USBH_HandleTypeDef *phost)
   */
 CCEXTERNC USBH_StatusTypeDef USBH_LL_ResetPort (USBH_HandleTypeDef *phost)
 {
-  print_here();
   HAL_HCD_ResetPort(static_cast<HCD_HandleTypeDef*>(phost->pData));
   return USBH_OK;
 }
@@ -357,7 +346,6 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_ResetPort (USBH_HandleTypeDef *phost)
   */
 CCEXTERNC uint32_t USBH_LL_GetLastXferSize(USBH_HandleTypeDef *phost, uint8_t pipe)
 {
-  print_here();
   return HAL_HCD_HC_GetXferCount(static_cast<HCD_HandleTypeDef*>(phost->pData), pipe);
 }
 
@@ -380,7 +368,6 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_OpenPipe(USBH_HandleTypeDef *phost,
                                     uint8_t ep_type,
                                     uint16_t mps)
 {
-  print_here();
   HAL_HCD_HC_Init(static_cast<HCD_HandleTypeDef*>(phost->pData),
                   pipe,
                   epnum,
@@ -399,7 +386,6 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_OpenPipe(USBH_HandleTypeDef *phost,
   */
 CCEXTERNC USBH_StatusTypeDef USBH_LL_ClosePipe(USBH_HandleTypeDef *phost, uint8_t pipe)
 {
-  print_here();
   HAL_HCD_HC_Halt(static_cast<HCD_HandleTypeDef*>(phost->pData), pipe);
   return USBH_OK;
 }
@@ -440,7 +426,6 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_SubmitURB(USBH_HandleTypeDef *phost,
                                      uint16_t length,
                                      uint8_t do_ping)
 {
-  print_here();
   HAL_HCD_HC_SubmitRequest(static_cast<HCD_HandleTypeDef*>(phost->pData),
                            pipe,
                            direction,
@@ -468,7 +453,6 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_SubmitURB(USBH_HandleTypeDef *phost,
   */
 CCEXTERNC USBH_URBStateTypeDef USBH_LL_GetURBState(USBH_HandleTypeDef *phost, uint8_t pipe)
 {
-  print_here();
   return (USBH_URBStateTypeDef)HAL_HCD_HC_GetURBState (static_cast<HCD_HandleTypeDef*>(phost->pData), pipe);
 }
 
@@ -483,7 +467,6 @@ CCEXTERNC USBH_URBStateTypeDef USBH_LL_GetURBState(USBH_HandleTypeDef *phost, ui
   */
 CCEXTERNC USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8_t state)
 {
-  print_here();
   CCUNUSED(phost);
   if(state == 0)
   {
@@ -506,7 +489,6 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_DriverVBUS(USBH_HandleTypeDef *phost, uint8
   */
 CCEXTERNC USBH_StatusTypeDef USBH_LL_SetToggle(USBH_HandleTypeDef *phost, uint8_t pipe, uint8_t toggle)
 {
-  print_here();
   CCUNUSED(phost);
   if(STM32F407Usb::s_hHcd.hc[pipe].ep_is_in)
   {
@@ -527,7 +509,6 @@ CCEXTERNC USBH_StatusTypeDef USBH_LL_SetToggle(USBH_HandleTypeDef *phost, uint8_
   */
 CCEXTERNC uint8_t USBH_LL_GetToggle(USBH_HandleTypeDef *phost, uint8_t pipe)
 {
-  print_here();
   CCUNUSED(phost);
   uint8_t toggle = 0;
 
@@ -562,7 +543,6 @@ CCEXTERNC void USBH_Delay(uint32_t Delay)
   */
 CCEXTERNC  void USBH_UserProcess(USBH_HandleTypeDef *phost, uint8_t id)
 {
-  print_here();
   CCUNUSED(phost);
   switch(id)
   {

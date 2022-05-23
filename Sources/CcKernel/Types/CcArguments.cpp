@@ -26,7 +26,7 @@
 #include "CcStringUtil.h"
 #include "CcGlobalStrings.h"
 #include "IIo.h"
-#include "CcLog.h"
+#include "../CcLog.h"
 
 
 const CcString& CcArguments::CVariableDefinition::getName() const
@@ -37,7 +37,6 @@ const CcString& CcArguments::CVariableDefinition::getName() const
   }
   else return CcGlobalStrings::Empty;
 }
-
 
 CcArguments::CcArguments(int argc, char **argv)
 {

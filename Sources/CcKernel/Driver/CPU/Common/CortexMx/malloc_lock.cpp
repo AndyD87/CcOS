@@ -24,9 +24,10 @@
  **/
 
 #include "CcBase.h"
+#include "CcKernel.h"
 
-int g_iLocked = 0;    //!< Malloc lock variables
-int g_iLockPrimask;   //!< Malloc lock variables
+volatile int g_iLocked = 0;    //!< Malloc lock variables
+volatile int g_iLockPrimask;   //!< Malloc lock variables
 
 //! Forward declaration
 struct _reent;
@@ -35,35 +36,43 @@ struct _reent;
  * @brief Lock method vor c runtime
  * @param pReent: Memory data
  */
-void __malloc_lock(void* pReent)
+CCEXTERNC void __malloc_lock(void* pReent)
 {
   CCUNUSED(pReent);
+  __asm("stmfd      sp!, {r0-r1}");
+  __asm("ldr         r1, =g_iLockPrimask");
+  __asm("mrs         r0, primask");
+  __asm("str         r0, [r1]");
+  __asm("cpsid      i");
+  __asm("ldmfd      sp!, {r0-r1}");
   if(g_iLocked == 0)
   {
-    __asm("stmfd      sp!, {r0-r1}");
-    __asm("ldr         r1, =g_iLockPrimask");
-    __asm("mrs         r0, primask");
-    __asm("str         r0, [r1]");
-    __asm("cpsid      i");
-    __asm("ldmfd      sp!, {r0-r1}");
+    g_iLocked++;
   }
-  g_iLocked++;
+  else
+  {
+    CcKernel::message(EMessage::Error);
+  }
 }
 
 /**
- * @brief Unlokc method for c runtime
+ * @brief Unlock method for c runtime
  * @param pReent: Memory data
  */
-void __malloc_unlock(void* pReent)
+CCEXTERNC void __malloc_unlock(void* pReent)
 {
   CCUNUSED(pReent);
-  g_iLocked--;
-  if(g_iLocked == 0)
+  if(g_iLocked == 1)
   {
-    __asm("stmfd  sp!, {r0-r1}");
-    __asm("ldr     r1, =g_iLockPrimask");
-    __asm("ldr     r0, [r1]");
-    __asm("msr     primask, r0");
-    __asm("ldmfd  sp!, {r0-r1}");
+    g_iLocked--;
   }
+  else
+  {
+    CcKernel::message(EMessage::Error);
+  }
+  __asm("stmfd  sp!, {r0-r1}");
+  __asm("ldr     r1, =g_iLockPrimask");
+  __asm("ldr     r0, [r1]");
+  __asm("msr     primask, r0");
+  __asm("ldmfd  sp!, {r0-r1}");
 }

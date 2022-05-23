@@ -7,13 +7,13 @@
   *                - Set the initial SP
   *                - Set the initial PC == Reset_Handler,
   *                - Set the vector table entries with the exceptions ISR address,
-  *                - Configure the clock system  
+  *                - Configure the clock system
   *                - Branches to main in the C library (which eventually
   *                  calls main()).
   *            After Reset the Cortex-M4 processor is in Thread mode,
   *            priority is Privileged, and the Stack is set to Main.
   ******************************************************************************
-  * 
+  *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
   *   1. Redistributions of source code must retain the above copyright notice,
@@ -108,6 +108,8 @@ LoopFillZerobss:
   cmp  r2, r3
   bcc  FillZerobss
 
+  /* Setup malloc */
+  bl CcMemoryManager__init
   /* Call the clock system intitialization function.*/
   bl  SystemInit
   /* Call static constructors */
@@ -120,7 +122,7 @@ LoopFillZerobss:
 
 LoopForever:
     b LoopForever
-    
+
 .size  Reset_Handler, .-Reset_Handler
 
 /**
@@ -458,26 +460,26 @@ g_pfnVectors:
   .thumb_set DMA2_Channel5_IRQHandler,Default_Handler
 
   .weak  ADC4_IRQHandler
-  .thumb_set ADC4_IRQHandler,Default_Handler  
-  
+  .thumb_set ADC4_IRQHandler,Default_Handler
+
   .weak  COMP1_2_3_IRQHandler
   .thumb_set COMP1_2_3_IRQHandler,Default_Handler
-  
+
   .weak  COMP4_5_6_IRQHandler
   .thumb_set COMP4_5_6_IRQHandler,Default_Handler
-  
+
   .weak  COMP7_IRQHandler
-  .thumb_set COMP7_IRQHandler,Default_Handler  
-  
+  .thumb_set COMP7_IRQHandler,Default_Handler
+
   .weak  USB_HP_IRQHandler
   .thumb_set USB_HP_IRQHandler,Default_Handler
-  
+
   .weak  USB_LP_IRQHandler
   .thumb_set USB_LP_IRQHandler,Default_Handler
-  
+
   .weak  USBWakeUp_RMP_IRQHandler
   .thumb_set USBWakeUp_RMP_IRQHandler,Default_Handler
-  
+
   .weak  FPU_IRQHandler
   .thumb_set FPU_IRQHandler,Default_Handler
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
