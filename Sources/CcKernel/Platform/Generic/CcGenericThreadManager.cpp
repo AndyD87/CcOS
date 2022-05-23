@@ -117,20 +117,11 @@ void CcGenericThreadManager::start()
 {
   pLedRun = CcKernel::getDevice(EDeviceType::Led, 0).cast<ILed>().ptr();
   if(pLedRun) pLedRun->off();
-  pLedWarning = CcKernel::getDevice(EDeviceType::Led, 1).cast<ILed>().ptr();
-  if(pLedWarning) pLedWarning->off();
-  pLedError = CcKernel::getDevice(EDeviceType::Led, 2).cast<ILed>().ptr();
-  if(pLedError) pLedError->off();
 }
 
 bool CcGenericThreadManager::idle()
 {
   bool bKeepLooping = true;
-  if( pLedWarning != nullptr &&
-      m_oNextToggle + 500000 < uiUpTime)
-  {
-    pLedWarning->toggle();
-  }
   if( pLedRun != nullptr &&
       m_oNextToggle < uiUpTime)
   {
