@@ -1,0 +1,8 @@
+[
+    {
+        "name":"STM32F407VET",
+        "cmakeSettings": {
+            "CCOS_BOARD":"STM32F407VET"
+        }
+    }
+]

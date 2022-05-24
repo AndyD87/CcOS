@@ -58,6 +58,7 @@ CcStatus CcServiceSystem::init(CcService& pService)
   {
     m_pPrivate->pService = nullptr;
   }
+  return oRunStatus;
 }
 
 CcStatus CcServiceSystem::deinit(CcService& pService)
