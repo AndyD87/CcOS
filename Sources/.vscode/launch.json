@@ -4,12 +4,12 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-
         {
-            // Openocd was previously started with "d:\Cache\Toolchains\openocd\GNU MCU Eclipse\OpenOCD\0.10.0-10-20181020-0522\bin\openocd.exe" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -f d:\CcOS\Sources\CMakeConfig\Boards\ST\STM32F407VET\openocd-STM32F407VET.cfg -c "echo \"Started by GNU MCU Eclipse\""
+            // Openocd was previously started with "d:/Cache/Toolchains/openocd/GNU MCU Eclipse/OpenOCD/0.10.0-10-20181020-0522/bin/openocd.exe" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -f d:/CcOS/Sources/CMakeConfig/Boards/ST/STM32F407VET/openocd-STM32F407VET.cfg -c "echo /"Started by GNU MCU Eclipse/""
             "name": "STM32F407VET",
             "type": "cppdbg",
             "request": "launch",
+            "preLaunchTask": "OpenOCD for STM32F407VET",
             "targetArchitecture": "arm",
             "cwd": "${workspaceRoot}",
             "program": "${workspaceRoot}/../Output/arm32_debug_STM32F407VET/bin/GenericTestd.elf",

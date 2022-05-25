@@ -1,0 +1,12 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "OpenOCD for STM32F407VET",
+            "type": "process",
+            "command": "${workspaceRoot}\\..\\..\\Cache\\Toolchains\\openocd\\GNU MCU Eclipse\\OpenOCD\\0.10.0-10-20181020-0522\\bin\\openocd.exe",
+            "args": ["-c","gdb_port 3333","-c","telnet_port 4444","-c","tcl_port 6666","-f","${workspaceRoot}\\CMakeConfig\\Boards\\ST\\STM32F407VET\\openocd-STM32F407VET.cfg"],
+            "isBackground": true
+        }
+    ],
+}
