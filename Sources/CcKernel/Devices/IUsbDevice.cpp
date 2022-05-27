@@ -16,27 +16,19 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class GenericApp
- *
- *  Example GUI-Application with Menue Structure and Application Loader
+ * @brief     Create Access to an IUsbDevice
  */
-#pragma once
 
-#include "CcBase.h"
-#include "CcService.h"
+#include "IUsbDevice.h"
 
-class GenericApp: public CcApp
+IUsbDevice::IUsbDevice()
 {
-public:
-  GenericApp();
-  virtual ~GenericApp();
+}
 
-  virtual void run() override;
-
-private:
-};
+IUsbDevice::~IUsbDevice()
+{
+}

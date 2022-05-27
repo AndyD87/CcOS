@@ -82,6 +82,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Devices/CcDeviceTouch.h
     Devices/CcDeviceUart.h
     Devices/CcDeviceUsb.h
+    Devices/CcDeviceUsbDevice.h
     Devices/CcDeviceUsbHid.h
     Devices/CcDeviceWlan.h
     Devices/CcDeviceWlanAccessPoint.h
@@ -108,6 +109,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Devices/ITouch.h
     Devices/IUart.h
     Devices/IUsb.h
+    Devices/IUsbDevice.h
     Devices/IUsbHid.h
     Devices/IWlan.h
     Devices/IWlanAccessPoint.h
@@ -228,9 +230,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Devices/ITouch.cpp
     Devices/IUart.cpp
     Devices/IUsb.cpp
-    Devices/IUsbHid.cpp
-    Devices/IWlan.cpp
-    Devices/IUsb.cpp
+    Devices/IUsbDevice.cpp
     Devices/IUsbHid.cpp
     Devices/IWlan.cpp
 

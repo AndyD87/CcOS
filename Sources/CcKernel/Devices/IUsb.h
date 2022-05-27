@@ -28,6 +28,8 @@
 #include "CcString.h"
 #include "IDevice.h"
 
+class IUsbDevice;
+
 /**
  * @brief Class for communication with a USB-HIDevice
  */
@@ -53,9 +55,7 @@ public:
     Device
   };
 
-  //! @param eType Set type of USB Device
-  virtual bool setType(EType eType) = 0;
-
-  //! @return Get current type of USB Device this is.
-  virtual EType getType() = 0;
+  //! @return Create USB device
+  virtual IUsbDevice* createDevice()
+  { return nullptr; }
 };

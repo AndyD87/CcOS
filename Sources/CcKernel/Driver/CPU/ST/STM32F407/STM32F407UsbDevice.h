@@ -16,27 +16,31 @@
  **/
 /**
  * @file
- *
- * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:
+ * @copyright  Andreas Dirmeier (C) 2022
  * @par       Language: C++11
- * @brief     Class GenericApp
- *
- *  Example GUI-Application with Menue Structure and Application Loader
+ * @brief     Class STM32F407UsbDevice
  */
 #pragma once
 
 #include "CcBase.h"
-#include "CcService.h"
+#include "Devices/IUsbDevice.h"
+#include <stm32f4xx_ll_usb.h>
+#include <stm32f4xx_hal_pcd.h>
 
-class GenericApp: public CcApp
+/**
+ * @brief First test of an USB Implementation on STM32F4
+ */
+class STM32F407UsbDevice : public IUsbDevice
 {
-public:
-  GenericApp();
-  virtual ~GenericApp();
+public: //methods
+  STM32F407UsbDevice();
+  virtual ~STM32F407UsbDevice();
 
-  virtual void run() override;
+  virtual CcStatus onState(EState eState) override;
 
 private:
+  PCD_HandleTypeDef     m_oPcdHandle;
+  USB_OTG_GlobalTypeDef m_oGlobalDef;
+  USB_OTG_CfgTypeDef    m_oConfigDef;
 };

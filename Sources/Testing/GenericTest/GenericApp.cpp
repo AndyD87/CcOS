@@ -26,6 +26,9 @@
  */
 
 #include "GenericApp.h"
+#include "CcKernel.h"
+#include "Devices/CcDeviceUsb.h"
+#include "Devices/IUsbDevice.h"
 
 GenericApp::GenericApp()
 {
@@ -33,4 +36,17 @@ GenericApp::GenericApp()
 
 GenericApp::~GenericApp()
 {
+}
+
+void GenericApp::run()
+{
+  CcDeviceUsb oUsbDevice = CcKernel::getDevice(EDeviceType::Usb);
+  if(oUsbDevice.isValid())
+  {
+    IUsbDevice* pUsbDevice = oUsbDevice.getDevice()->createDevice();
+    if(pUsbDevice)
+    {
+      pUsbDevice->start();
+    }
+  }
 }

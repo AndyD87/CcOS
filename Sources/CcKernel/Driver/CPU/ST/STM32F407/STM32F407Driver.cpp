@@ -63,6 +63,20 @@ CcStatus STM32F407Driver::entry()
     m_pPort[uiPortNr] = new STM32F407SystemGpioPort(uiPortNr);
     CcKernel::addDevice(CcDevice(m_pPort[uiPortNr], EDeviceType::GpioPort));
   }
+  // Setup Timersource for pll
+
+  /* Connect PHx pins to FMC Alternate function */
+  GPIOH->AFR[0]  = 0x00C0CC00;
+  GPIOH->AFR[1]  = 0xCCCCCCCC;
+  /* Configure PHx pins in Alternate function mode */
+  GPIOH->MODER   = 0xAAAA08A0;
+  /* Configure PHx pins speed to 50 MHz */
+  GPIOH->OSPEEDR = 0xAAAA08A0;
+  /* Configure PHx pins Output type to push-pull */
+  GPIOH->OTYPER  = 0x00000000;
+  /* No pull-up, pull-down for PHx pins */
+  GPIOH->PUPDR   = 0x00000000;
+
 #ifdef CCOS_GENERIC_NETWORK
   IDevice* pNetworkDevice = new STM32F407Network();
   CcKernel::addDevice(CcDevice(pNetworkDevice,EDeviceType::Network));
@@ -76,11 +90,10 @@ CcStatus STM32F407Driver::entry()
   #ifdef CCOS_GENERIC_USB
     // Setup USB
     IUsb* pUsbDevice = new STM32F407Usb();
-    pUsbDevice->setType(IUsb::EType::Host);
-    pUsbDevice->start();
     CcKernel::addDevice(CcDevice(pUsbDevice,EDeviceType::Usb));
-    m_oSystemDevices.append(pTimerDevice);
   #endif
+  
+    m_oSystemDevices.append(pTimerDevice);
   return true;
 }
 

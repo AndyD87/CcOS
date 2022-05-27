@@ -449,6 +449,11 @@ public: // Methods
    */
   static void message(EMessage eType, const CcString& sMessage);
 
+  /**
+   * @brief Force a breakpoint because of unknown operation.
+   */
+  static void forceBreakpoint();
+
 private:
   class CPrivate;
   // always on last position!!!

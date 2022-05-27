@@ -42,7 +42,6 @@ endif()
 set(STM32F4_VERSION           "1.25.0" )
 set(STM32F4_DIR               ${CC_CACHE_DIR}/Sources/STM32F4Cube_Driver/${STM32F4_VERSION} )
 set(STM32F4_DRIVER_DIR        ${STM32F4_DIR}/Drivers )
-set(STM32F4_MIDDLEWARE_DIR    ${STM32F4_DIR}/Middlewares )
 
 CcDownloadAndExtract( "STM32F4Cube_Driver"
                       "${STM32F4_DIR}"
@@ -73,21 +72,13 @@ if(CCOS_GENERIC_NETWORK)
 endif(CCOS_GENERIC_NETWORK)
 
 if(CCOS_GENERIC_USB)
-  list(APPEND STM32F4_INCLUDE_DIR
-        "${STM32F4_MIDDLEWARE_DIR}/ST/STM32_USB_Host_Library/Core/Inc"
-        "${STM32F4_MIDDLEWARE_DIR}/ST/STM32_USB_Host_Library/Class/HID/Inc"
-  )
 
   list(APPEND SOURCE_FILES
         "${CMAKE_CURRENT_LIST_DIR}/STM32F407Usb.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/STM32F407Usb.h"
+        "${CMAKE_CURRENT_LIST_DIR}/STM32F407UsbDevice.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/STM32F407UsbDevice.h"
         "${CMAKE_CURRENT_LIST_DIR}/usbh_conf.h"
-  )
-  file (GLOB USB_SOURCE_FILES
-        "${STM32F4_MIDDLEWARE_DIR}/ST/STM32_USB_Host_Library/Class/HID/Inc/*.h"
-        "${STM32F4_MIDDLEWARE_DIR}/ST/STM32_USB_Host_Library/Class/HID/Src/*.c"
-        "${STM32F4_MIDDLEWARE_DIR}/ST/STM32_USB_Host_Library/Core/Inc/*.h"
-        "${STM32F4_MIDDLEWARE_DIR}/ST/STM32_USB_Host_Library/Core/Src/*.c"
   )
   list(FILTER USB_SOURCE_FILES EXCLUDE REGEX "template")
   list(APPEND STM_SOURCE_FILES

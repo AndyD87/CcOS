@@ -26,11 +26,8 @@
 #include "CcBase.h"
 #include "Devices/IUsb.h"
 #include "Devices/IGpioPort.h"
-#include <stm32f4xx_hal_hcd.h>
-#include <stm32f4xx_hal_pcd.h>
-#include <usbh_def.h>
-#include <usbh_conf.h>
-#include <usbh_core.h>
+#include "CcDeviceList.h"
+#include "STM32F407UsbDevice.h"
 
 /**
  * @brief First test of an USB Implementation on STM32F4
@@ -42,20 +39,14 @@ public: //methods
   virtual ~STM32F407Usb();
 
   virtual CcStatus onState(EState eState) override;
-  virtual bool setType(EType eType) override;
-  virtual EType getType() override;
 
-  virtual void idle() override;
+  virtual IUsbDevice* createDevice() override;
 
-public:
-  static HCD_HandleTypeDef s_hHcd;  //!< Hal handle for sb interface
-  static IGpioPin* s_pUsbPowerPin;  //!< Pin for controlling USB Power if available.
 private:
   EType m_eType;
-  USBH_HandleTypeDef hUSBHost;
   union
   {
-    HCD_HandleTypeDef oHcd;
-    PCD_HandleTypeDef oPcd;
-  } m_oData;
+    IDevice*            pBasicDevice;
+    STM32F407UsbDevice* pDevice;
+  } m_pType;
 };

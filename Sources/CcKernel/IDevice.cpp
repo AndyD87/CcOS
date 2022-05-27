@@ -33,102 +33,87 @@ CcStatus IDevice::setState(EState eState)
   switch(eState)
   {
     case EState::Start:
-      if(m_eState <= EState::Stop)
-      {
-        oStatus = setState(EState::Stopping);
-      }
+      oStatus = onState(EState::Start);
       if(oStatus)
       {
-        if(onState(EState::Start))
-        {
-          oStatus = setState(EState::Starting);
-        }
-        else
-        {
-          setState(EState::Stop);
-        }
-      }
-      break;
-    case EState::Starting:
-      if(m_eState <= EState::Stop)
-      {
-        oStatus = setState(EState::Stopping);
-      }
-      if(oStatus)
-      {
-        if(onState(EState::Starting))
-        {
-        }
-        else
-        {
-          setState(EState::Stop);
-        }
-        oStatus = setState(EState::Run);
-      }
-      break;
-    case EState::Run:
-      if(m_eState <= EState::Run)
-      {
-        if(oStatus == onState(EState::Run))
-        {
-          oStatus = setState(EState::Running);
-        }
-        else
-        {
-          setState(EState::Stop);
-        }
-      }
-      break;
-    case EState::Pause:
-      if(m_eState <= EState::Running)
-      {
-        if(oStatus == onState(EState::Pause))
-        {
-           oStatus = setState(EState::Paused);
-        }
-        else
-        {
-          setState(EState::Stop);
-        }
-      }
-      break;
-    case EState::Stop:
-      if(m_eState <= EState::Stop)
-      {
-        if(oStatus == onState(EState::Stop))
-        {
-          oStatus = setState(EState::Stopping);
-        }
-        else
-        {
-          setState(EState::Stop);
-        }
-      }
-      break;
-    case EState::Stopping:
-      if(m_eState <= EState::Stopping)
-      {
-        if(oStatus == onState(EState::Stopping))
-        {
-        }
-        else
-        {
-          setState(EState::Stopped);
-        }
-      }
-      break;
-    case EState::Running:
-      if(oStatus == onState(EState::Running))
-      {
-         m_eState= EState::Running;
+        m_eState = EState::Start;
+        oStatus = setState(EState::Starting);
       }
       else
       {
         setState(EState::Stop);
       }
       break;
+    case EState::Starting:
+      oStatus = onState(EState::Starting);
+      if(oStatus)
+      {
+        m_eState = EState::Starting;
+        oStatus = setState(EState::Run);
+      }
+      else
+      {
+        setState(EState::Stop);
+      }
+      break;
+    case EState::Run:
+      oStatus = onState(EState::Run);
+      if(oStatus)
+      {
+        m_eState = EState::Run;
+        oStatus = setState(EState::Running);
+      }
+      else
+      {
+        setState(EState::Stop);
+      }
+      break;
+    case EState::Running:
+      oStatus = onState(EState::Running);
+      if(oStatus)
+      {
+        m_eState= EState::Running;
+      }
+      else
+      {
+        setState(EState::Stop);
+      }
+      break;
+    case EState::Pause:
+      oStatus = onState(EState::Pause);
+      if(oStatus)
+      {
+        m_eState= EState::Pause;
+        oStatus = setState(EState::Paused);
+      }
+      else
+      {
+        setState(EState::Stop);
+      }
+      break;
+    case EState::Stop:
+      oStatus = onState(EState::Stop);
+      if(oStatus)
+      {
+        m_eState= EState::Stop;
+        oStatus = setState(EState::Stopping);
+      }
+      else
+      {
+        setState(EState::Stopped);
+      }
+      break;
+    case EState::Stopping:
+      oStatus = onState(EState::Stopping);
+      if(oStatus)
+      {
+        m_eState= EState::Stopping;
+        oStatus = setState(EState::Stopped);
+      }
+      break;
     case EState::Paused:
-      if(oStatus == onState(EState::Paused))
+      oStatus = onState(EState::Paused);
+      if(oStatus)
       {
         m_eState= EState::Paused;
       }

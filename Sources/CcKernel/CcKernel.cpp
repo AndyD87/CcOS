@@ -658,9 +658,28 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
   }
 }
 
-#ifndef GENERIC
-  #include <new>
-#endif
+void CcKernel::forceBreakpoint()
+{
+  #if defined(__i386__) || defined(__x86_64__)
+    __asm__ volatile("int $0x03");
+  #elif defined(__thumb__)
+    __asm__ volatile(".inst 0xde01");
+  #elif defined(__arm__) && !defined(__thumb__)
+    __asm__ volatile(".inst 0xe7f001f0");
+  #elif defined(__aarch64__) && defined(__APPLE__)
+    __builtin_debugtrap();
+  #elif defined(__aarch64__)
+    trap_instruction();
+  #elif defined(__riscv)
+    __asm__ volatile(".4byte 0x00100073");
+  #elif defined(_MSC_VER)
+    __debugbreak();
+  #else
+    bool bBreak = 0;
+    while(bBreak == 0)
+      CcKernel::sleep(1);
+  #endif
+}
 
 /**
  * @brief Overloaded new method for CcOS to track allocations and

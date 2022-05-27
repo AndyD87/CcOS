@@ -16,27 +16,34 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class GenericApp
- *
- *  Example GUI-Application with Menue Structure and Application Loader
+ * @brief     Create Access to an USB-Hid-Device
  */
 #pragma once
 
 #include "CcBase.h"
-#include "CcService.h"
+#include "Devices/IUsbDevice.h"
+#include "CcDevice.h"
 
-class GenericApp: public CcApp
+/**
+ * @brief Class for communication with a USB-HIDevice
+ */
+class CcKernelSHARED CcDeviceUsb : public CcDevice
 {
 public:
-  GenericApp();
-  virtual ~GenericApp();
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
+  CcDeviceUsb(const CcDevice& oHandle) :
+    CcDevice(oHandle)
+  {}
+  virtual ~CcDeviceUsb() = default;
 
-  virtual void run() override;
-
-private:
+  //! @return Get basic device handle
+  IUsbDevice* getDevice() const
+  { return CcDevice::getDevice<IUsbDevice>(); }
 };
