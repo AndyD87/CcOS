@@ -48,5 +48,9 @@ void GenericApp::run()
     {
       pUsbDevice->start();
     }
+    else
+    {
+      setExitCode(EStatus::InvalidHandle);
+    }
   }
 }

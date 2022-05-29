@@ -7,7 +7,7 @@ set CWD=%CWD:\=/%
 set START_DIR=%CWD%
 set TOOLSOUTPUT=%CWD%/CcOSTools
 set SOLUTION_DIR=%CWD%/Solution
-set CMAKE_DIR=%CWD%/..
+set CMAKE_DIR=%CWD%/../Sources
 cd ..
 
 REM ################################################################################

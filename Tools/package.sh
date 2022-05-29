@@ -26,7 +26,7 @@ fi
 
 run()
 {
-  cd ..
+  cd .. 
   mkdir Solution.$COMPILER.$BUILD_TYPE
   cd Solution.$COMPILER.$BUILD_TYPE
   cpack

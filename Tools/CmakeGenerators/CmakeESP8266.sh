@@ -2,8 +2,7 @@
 # Setup Dirs
 ####################################################
 TOOLS_DIR=$(pwd)/..
-cd ..
-cd ..
+cd ..´
 SOLUTION_POSTFIX=".Solution.ECL"
 TARGET_DIR=$(pwd)
 TARGET_DIR_FIXED="$TARGET_DIR$SOLUTION_POSTFIX"
@@ -15,7 +14,7 @@ cd "$TARGET_DIR_FIXED"
 export PATH=$PATH:$CC_CACHE_DIR/Toolchains/esp-open-sdk/1.22.0.0/xtensa-lx106-elf/bin
 export IDF_PATH=$CC_CACHE_DIR/Sources/espressif/ESP8266_RTOS
 
-cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/.." -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/espressif/ESP8266 -DCMAKE_BUILD_TYPE=Debug -DCC_CACHE_DIR="$CC_CACHE_DIR"
+cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/../../Sources" -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/espressif/ESP8266 -DCMAKE_BUILD_TYPE=Debug -DCC_CACHE_DIR="$CC_CACHE_DIR"
 
 echo "# PATHS for console:"
 echo export PATH=$PATH

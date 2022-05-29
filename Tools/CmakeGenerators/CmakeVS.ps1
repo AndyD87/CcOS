@@ -214,7 +214,7 @@ foreach($BuildType in $BuildTypes)
 {
     if($JoinedBuild -eq "") {$JoinedBuild = $BuildType}
     else                    {$JoinedBuild += (";" + $BuildType)}
-    $SolutionDir = "..\..\..\Solution." + $VisualStudio.Year + ".$Architecture.$StaticString"
+    $SolutionDir = "..\..\Solution." + $VisualStudio.Year + ".$Architecture.$StaticString"
 
     if((Test-Path $SolutionDir) -ne $true)
     {

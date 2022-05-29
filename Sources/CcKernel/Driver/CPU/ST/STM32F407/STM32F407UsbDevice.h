@@ -39,6 +39,8 @@ public: //methods
 
   virtual CcStatus onState(EState eState) override;
 
+  void ISR();
+
 private:
   PCD_HandleTypeDef     m_oPcdHandle;
   USB_OTG_GlobalTypeDef m_oGlobalDef;

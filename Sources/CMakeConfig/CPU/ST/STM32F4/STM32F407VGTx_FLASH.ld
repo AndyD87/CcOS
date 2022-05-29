@@ -16,7 +16,7 @@
 **
 **  Target      : STMicroelectronics STM32
 **
-**  Distribution: The file is distributed “as is,” without any warranty
+**  Distribution: The file is distributed â€œas is,â€� without any warranty
 **                of any kind.
 **
 *****************************************************************************
@@ -66,7 +66,7 @@ MEMORY
 {
 RAM (xrw)       : ORIGIN = 0x20000000, LENGTH = 128K
 CCMRAM (xrw)    : ORIGIN = 0x10000000, LENGTH = 64K
-FLASH (rx)      : ORIGIN = 0x10000000, LENGTH = 1024K
+FLASH (rx)      : ORIGIN = 0x8000000, LENGTH = 1024K
 }
 
 /* Define output sections */

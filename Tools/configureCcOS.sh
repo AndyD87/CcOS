@@ -6,7 +6,7 @@ CWD=$(pwd)
 START_DIR=$CWD
 TOOLSOUTPUT=$CWD/CcOSTools
 SOLUTION_DIR=$CWD/Solution
-CMAKE_DIR=$CWD/..
+CMAKE_DIR=$CWD/../Sources
 cd ..
 
 ################################################################################

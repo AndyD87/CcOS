@@ -96,10 +96,6 @@ protected:
 
 private:
   bool onLoop();
-  //void onStop();
-
-  void onApplicationStop(IThread* pApplication);
-
 private:
   CcSharedPointer<CcApp>  m_oApplication;
   CcString                m_sServiceName;

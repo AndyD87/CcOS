@@ -36,6 +36,7 @@ Function runCmake()
   $TOOLS_DIR=(Get-Item .).FullName
   cd ..
   cd ..
+  cd Sources
   $SOURCES_DIR=(Get-Item .).FullName
   cd ..
   $SOLUTION_POSTFIX="Generic.Solution.ECL.$CMAKE_BOARD"

@@ -138,12 +138,15 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef* pcdHandle)
   }
 }
 
+STM32F407UsbDevice* s_pInstance = nullptr;
+
 /**
  * @brief  This function handles USB-On-The-Go FS/HS global interrupt request.
  */
 CCEXTERNC void OTG_HS_IRQHandler(void)
 {
-  CcKernel::forceBreakpoint();
+  if(s_pInstance)
+	  s_pInstance->ISR();
 }
 
 /**
@@ -151,11 +154,18 @@ CCEXTERNC void OTG_HS_IRQHandler(void)
  */
 CCEXTERNC void OTG_FS_IRQHandler(void)
 {
-  CcKernel::forceBreakpoint();
+  if(s_pInstance)
+    s_pInstance->ISR();
+}
+
+void STM32F407UsbDevice::ISR()
+{
+  CcStatic_memsetZeroObject(m_oGlobalDef);
 }
 
 STM32F407UsbDevice::STM32F407UsbDevice()
 {
+  s_pInstance = this;
   CcStatic_memsetZeroObject(m_oGlobalDef);
   CcStatic_memsetZeroObject(m_oConfigDef);
   CcStatic_memsetZeroObject(m_oPcdHandle);

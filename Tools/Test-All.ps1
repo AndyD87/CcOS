@@ -53,10 +53,10 @@ function StartBuildProcess
     $ENV:CL="/MP"
 
     $CurrentDir  = (Get-Item .\).FullName
-    $TestLog     = $CurrentDir+"\Test.log"
-    $CcOSRootDir = $PSScriptRoot+"\.."
-    $SolutionDir = $PSScriptRoot+"\Solution"
-    $OutputDir   = $PSScriptRoot+"\Output"
+    $TestLog     = $CurrentDir+"/Test.log"
+    $CcOSRootDir = $PSScriptRoot+"/../Sources"
+    $SolutionDir = $PSScriptRoot+"/Solution"
+    $OutputDir   = $PSScriptRoot+"/Output"
     ResetDirs
 
     cd $SolutionDir
@@ -203,10 +203,10 @@ Function Test-MinGW()
     }
 
     $CurrentDir  = (Get-Item .\).FullName
-    $TestLog     = $CurrentDir+"\Test.log"
-    $CcOSRootDir = $PSScriptRoot+"\.."
-    $SolutionDir = $PSScriptRoot+"\Solution"
-    $OutputDir   = $PSScriptRoot+"\Output"
+    $TestLog     = $CurrentDir+"/Test.log"
+    $CcOSRootDir = $PSScriptRoot+"/../Sources"
+    $SolutionDir = $PSScriptRoot+"/Solution"
+    $OutputDir   = $PSScriptRoot+"/Output"
     ResetDirs
 
     $Versions  = @("6") # "4.8.2"

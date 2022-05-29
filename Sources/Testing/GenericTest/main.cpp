@@ -40,3 +40,4 @@ int main(int iArgc, char** ppArgv)
   GenericService oService;
   return oService.exec().getErrorInt();
 }
+

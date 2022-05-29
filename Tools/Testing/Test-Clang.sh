@@ -47,7 +47,7 @@ then
     mkdir Solution
     cd Solution
 
-    cmake ../../../ -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DCC_OUTPUT_DIR=$CWD/Output -DCC_WARNING_AS_ERROR=TRUE
+    cmake ../../Sources -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DCC_OUTPUT_DIR=$CWD/Output -DCC_WARNING_AS_ERROR=TRUE
     if [ $? -ne 0 ]
     then
         exit -1
@@ -71,7 +71,7 @@ then
     mkdir Solution
     cd Solution
 
-    cmake ../../../ -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/usr -DCC_OUTPUT_DIR=$CWD/Output -DCC_WARNING_AS_ERROR=TRUE
+    cmake ../../Sources -DCMAKE_BUILD_TYPE=Debug -DCMAKE_INSTALL_PREFIX=/usr -DCC_OUTPUT_DIR=$CWD/Output -DCC_WARNING_AS_ERROR=TRUE
     if [ $? -ne 0 ]
     then
         exit -1

@@ -1,6 +1,6 @@
 SOLUTION_POSTFIX="Testing.Solution.ECL.Testing"
 TEST_DIR=$(pwd)/../../../Sources
-TEST_DIR_FIXED=$(pwd)/../../../$SOLUTION_POSTFIX
+TEST_DIR_FIXED=$(pwd)/../../$SOLUTION_POSTFIX
 
 runDebug()
 {

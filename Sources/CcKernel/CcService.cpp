@@ -33,21 +33,12 @@
 CcService::CcService(CcSharedPointer<CcApp> pApplication) :
   m_oApplication(pApplication)
 {
-  if (m_oApplication.isValid())
-  {
-    m_sServiceName = m_oApplication->getName();
-    m_oApplication->registerOnStateChange(NewCcEvent(this, CcService::onApplicationStop));
-  }
 }
 
 CcService::CcService(const CcString& sServiceName, CcSharedPointer<CcApp> pApplication) :
   m_oApplication(pApplication),
   m_sServiceName(sServiceName)
 {
-  if (m_oApplication.isValid())
-  {
-    m_oApplication->registerOnStateChange(NewCcEvent(this, CcService::onApplicationStop));
-  }
 }
 
 CcService::~CcService()
@@ -131,13 +122,4 @@ bool CcService::onLoop()
     bool bKeepLooping = m_oApplication->isRunning();
   #endif
   return bKeepLooping;
-}
-
-void CcService::onApplicationStop(IThread* pApplication)
-{
-  if (pApplication == m_oApplication.getPtr() &&
-      m_oApplication->getThreadState() == EThreadState::Stopped)
-  {
-    //stop();
-  }
 }

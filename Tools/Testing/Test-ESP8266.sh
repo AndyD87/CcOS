@@ -21,7 +21,7 @@ export IDF_PATH=$CC_CACHE_DIR/Sources/espressif/ESP8266_RTOS
 if test "1" = "${PREBUILD_REQUIRED}"
 then
   # Next step can fail, it is just for loading sdk
-  cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/.." -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/espressif/ESP8266 -DCMAKE_BUILD_TYPE=Debug -DCC_CACHE_DIR="$CC_CACHE_DIR"
+  cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/../Sources" -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/espressif/ESP8266 -DCMAKE_BUILD_TYPE=Debug -DCC_CACHE_DIR="$CC_CACHE_DIR"
   python3 -V
   if [ $? -eq 0 ]
   then
@@ -43,7 +43,7 @@ then
   fi
 fi
 
-cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/.." -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/espressif/ESP8266 -DCMAKE_BUILD_TYPE=Debug -DCC_CACHE_DIR="$CC_CACHE_DIR"
+cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/../Sources" -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=CMakeConfig/Boards/espressif/ESP8266 -DCMAKE_BUILD_TYPE=Debug -DCC_CACHE_DIR="$CC_CACHE_DIR"
 if [ $? -ne 0 ]
 then
     exit -1
