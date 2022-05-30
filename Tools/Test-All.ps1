@@ -170,7 +170,7 @@ Function Test-VisualStudio()
     $Statics = @("Static", "Shared")
 
     $CurrentDir  = (Get-Item .\).FullName
-    $TestLog     = $CurrentDir+"\Test.log" 
+    $TestLog     = $CurrentDir+"\Test.log"
     if((Test-Path $TestLog))
     {
         Remove-Item $TestLog
@@ -223,7 +223,7 @@ Function Test-MinGW()
                 cd $SolutionDir
 
 
-                cmake.exe "$CcOSRootDir" "-G" "`"MinGW Makefiles`"" "-DCCOS_BOARD=CMakeConfig/Boards/MinGW" "-DCMAKE_BUILD_TYPE=$Configuration" "-DCC_OUTPUT_DIR=`"$OutputDir`"" "-DCMAKE_SYSTEM_PROCESSOR=`"$Architecture`"" "-DMINGW_VERSION=`"$Version`""
+                cmake.exe "$CcOSRootDir" "-G" "`"MinGW Makefiles`"" "-DCCOS_BOARD=MinGW" "-DCMAKE_BUILD_TYPE=$Configuration" "-DCC_OUTPUT_DIR=`"$OutputDir`"" "-DCMAKE_SYSTEM_PROCESSOR=`"$Architecture`"" "-DMINGW_VERSION=`"$Version`""
                 if($LASTEXITCODE -ne 0)
                 {
                     cd $CurrentDir

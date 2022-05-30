@@ -80,7 +80,7 @@ void CcWindowsProcessThread::run()
     oStatus.setSystemError(GetLastError());
     setExitCode(oStatus);
     m_hProcess->setExitCode(oStatus);
-    CCDEBUG("CreateProcess failed: " + CcString::fromNumber(oStatus.getErrorUint()));
+    CCDEBUG("CreateProcess failed: " + CcString::fromNumber(oStatus.getErrorUint(), 16));
   }
   else
   {
@@ -110,10 +110,12 @@ void CcWindowsProcessThread::run()
     }
 
     setExitCode(uiExitCode);
+    CCDEBUG("ExitCode: " + CcString::fromNumber(uiExitCode));
     m_hProcess->setExitCode(uiExitCode);
 
     m_bProcessStarted = false;
   }
+  CCDEBUG("Process finished");
 }
 
 void CcWindowsProcessThread::kill()

@@ -56,6 +56,7 @@ CcProcess::~CcProcess()
 
 CcStatus CcProcess::start()
 {
+  CCDEBUG("CcProcess::start");
   stop();
   return CcKernel::createProcess(*this);
 }
@@ -229,7 +230,7 @@ CcStatus CcProcess::exec(const CcString& sExecutable,
                          const CcString &sWorkingDir,
                          bool bDoWait,
                          const CcDateTime& oTimeout,
-                         CcString* pExecutable
+                         CcString* pOutput
 )
 {
   CcStatus oStatus;
@@ -240,9 +241,9 @@ CcStatus CcProcess::exec(const CcString& sExecutable,
   if(bDoWait)
   {
     oStatus = oProc.exec(oTimeout);
-    if(pExecutable)
+    if(pOutput)
     {
-      *pExecutable = oProc.pipe().readAll();
+      *pOutput = oProc.pipe().readAll();
     }
   }
   else

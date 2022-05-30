@@ -424,7 +424,7 @@
   #define CC_FORCE_INLINE inline
 #endif
 
-#if defined(DEBUG) && defined __cplusplus && !defined(NO_CCOS) && defined(FULL_OS_AVAILABLE)
+#if (defined(DEBUG) && defined __cplusplus && !defined(NO_CCOS) && defined(FULL_OS_AVAILABLE)) || (defined(DEBUG_OUTPUT) && defined __cplusplus)
   #include "CcDebug.h"
   #define CCDEBUG(MSG)    CcDebug::writeDebug(MSG)    //!< if DEBUG is defined, Write Debug message with debug tag to debug output
   #define CCDEBUGONFALSE(CONDITION,MSG) if(CONDITION==false)CCDEBUG(MSG)   //!< Write to CCDEBUG if condition is false

@@ -28,15 +28,16 @@
 #include "CcProcess.h"
 #include "CcFile.h"
 #include "CcKernel.h"
+#include "CcByteArray.h"
 
-#define SERVCE_APPLICATION_NAME "CcTestServiceInstallation"
+#define SERVCE_APPLICATION_NAME "CcTestServiceInstallation" CC_DEBUG_EXTENSION
 
 CTestRemoteDeviceService::CTestRemoteDeviceService() :
   CcTest<CTestRemoteDeviceService>("CTestRemoteDeviceService")
 {
   m_sApplicationDir = CcKernel::getCurrentExecutablePath().appendPath("..").normalizePath();
   m_sApplication = m_sApplicationDir;
-  m_sApplication.appendPath("CcRemoteDeviceServer");
+  m_sApplication.appendPath("CcRemoteDeviceServer" CC_DEBUG_EXTENSION);
   if (CcKernel::isAdmin())
   {
     appendTestMethod("Add service to system", &CTestRemoteDeviceService::createService);
@@ -68,12 +69,22 @@ bool CTestRemoteDeviceService::createService()
   oRemoteDeviceService.addArgument("-name");
   oRemoteDeviceService.addArgument(SERVCE_APPLICATION_NAME);
   bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(5));
-
+  if(bSuccess)
+    CcTestFramework::writeInfo("  Service removed");
+  else
+    CcTestFramework::writeInfo("  Service removing failed");
   oRemoteDeviceService.clearArguments();
   oRemoteDeviceService.addArgument("Create");
   oRemoteDeviceService.addArgument("-name");
   oRemoteDeviceService.addArgument(SERVCE_APPLICATION_NAME);
-  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(5)); 
+  bSuccess = oRemoteDeviceService.exec(CcDateTimeFromSeconds(5));
+  if(bSuccess)
+    CcTestFramework::writeInfo("  Service created");
+  else
+  {
+    CcTestFramework::writeInfo("  Service creation failed2");
+    CcTestFramework::writeInfo(oRemoteDeviceService.pipe().readAll());
+  }
   return bSuccess;
 }
 

@@ -146,7 +146,7 @@ void CcRemoteDeviceServer::run()
   setupWebserver();
   CCNEW(m_pDiscoveryServer, CDiscoveryServer, *this);
   CCNEW(m_pInterfaceServer, CInterfaceServer, *this);
-  CCDEBUG("CcRemoteDeviceServer stopped, code " + CcString::fromNumber(getExitCode().getErrorUint()));
+  CCDEBUG("CcRemoteDeviceServer stopped, code " + CcString::fromInt(getExitCode().getErrorInt()));
   
   // Keep watching services
   while (isRunning())

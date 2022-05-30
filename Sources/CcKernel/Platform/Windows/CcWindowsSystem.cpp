@@ -106,7 +106,61 @@ BOOL WINAPI DllMain
 }
 #endif
 
-class CcSystem::CPrivate
+class CStaticBarrier
+{
+#ifdef CC_STATIC
+  public:
+    CStaticBarrier()
+    {
+      DWORD uiProc = GetCurrentProcessId();
+      {
+        CcString sName = "CcOS_" + CcString::fromSize(static_cast<size_t>(uiProc));
+        CCNEW(pProcMemory, CcWindowsSharedMemory, sName, sizeof(IKernel));
+      }
+      if (pProcMemory->exists())
+      {
+        if (pProcMemory->claim(EOpenFlags::Read))
+        {
+          CcKernel::setInterface(static_cast<IKernel*>(pProcMemory->getBuffer()));
+        }
+      }
+      else
+      {
+        if (pProcMemory->open(EOpenFlags::ReadWrite))
+        {
+          bProcMemoryCreated = true;
+          CcStatic::memcpy(pProcMemory->getBuffer(), &CcKernel::getInterface(), sizeof(IKernel));
+        }
+      }
+    }
+
+    ~CStaticBarrier()
+    {
+      if (pProcMemory)
+      {
+        if (bProcMemoryCreated)
+        {
+        }
+        else
+        {
+          // Keep the order it is matching with initializing
+          CcKernel::setInterface(nullptr);
+        }
+        pProcMemory->close();
+        CCDELETE(pProcMemory);
+      }
+    }
+
+  private:
+    CcWindowsSharedMemory*  pProcMemory = nullptr;
+    bool                    bProcMemoryCreated = false;
+#else
+  CStaticBarrier() = default;
+  ~CStaticBarrier() = default;
+#endif
+};
+
+class CcSystem::CPrivate : CStaticBarrier
 {
 public:
   void initSystem();
@@ -175,12 +229,7 @@ public:
     return dwReturn;
   }
 
-  CcVector<IDevice*>      oIdleList;
-#ifdef CC_STATIC
-  CcWindowsSharedMemory*  pProcMemory = nullptr;
-  bool                    bProcMemoryCreated = false;
-#endif
-
+  CcVector<IDevice*>          oIdleList;
   CcVector<IDevice*>          oDeviceList;
   CcVector<CcWindowsModule*>  oModules;
 
@@ -203,28 +252,6 @@ CcStatus          CcSystem::CPrivate::s_oCurrentExitCode;
 CcSystem::CcSystem()
 {
   CCNEW(m_pPrivate, CPrivate);
-  #ifdef CC_STATIC
-    DWORD uiProc = GetCurrentProcessId();
-    {
-      CcString sName = "CcOS_" + CcString::fromSize(static_cast<size_t>(uiProc));
-      CCNEW(m_pPrivate->pProcMemory, CcWindowsSharedMemory, sName, sizeof(IKernel));
-    }
-    if (m_pPrivate->pProcMemory->exists())
-    {
-      if (m_pPrivate->pProcMemory->claim(EOpenFlags::Read))
-      {
-        CcKernel::setInterface(static_cast<IKernel*>(m_pPrivate->pProcMemory->getBuffer()));
-      }
-    }
-    else
-    {
-      if (m_pPrivate->pProcMemory->open(EOpenFlags::ReadWrite))
-      {
-        m_pPrivate->bProcMemoryCreated = true;
-        CcStatic::memcpy(m_pPrivate->pProcMemory->getBuffer(), &CcKernel::getInterface(), sizeof(IKernel));
-      }
-    }
-  #endif
   CcSystem::CPrivate::s_pThreadManager = &m_pPrivate->oThreadManager;
 }
 
@@ -232,21 +259,6 @@ CcSystem::~CcSystem()
 {
   CcSystem::CPrivate::s_pThreadManager = nullptr;
   m_pPrivate->oDeviceList.clear();
-  #ifdef CC_STATIC
-    if (m_pPrivate->pProcMemory)
-    {
-      if (m_pPrivate->bProcMemoryCreated)
-      {
-      }
-      else
-      {
-        // Keep the order it is matching with initializing
-        CcKernel::setInterface(nullptr);
-      }
-      m_pPrivate->pProcMemory->close();
-      CCDELETE(m_pPrivate->pProcMemory);
-    }
-  #endif
   CCDELETE(m_pPrivate);
 }
 
@@ -425,6 +437,7 @@ bool CcSystem::createThread(IThread &Thread)
 
 bool CcSystem::createProcess(CcProcess &processToStart)
 {
+  CCDEBUG("CcSystem::createProcess");
   CCNEWTYPE(pPipe, CcWindowsPipe);
   processToStart.setPipe(pPipe);
   CCNEWTYPE(pWorker, CcWindowsProcessThread, processToStart);
@@ -708,13 +721,11 @@ CcUserList CcSystem::getUserList()
   return UserList;
 }
 
-
 ISharedMemory* CcSystem::getSharedMemory(const CcString &sName, size_t uiSize)
 {
   CCNEWTYPE(pSharedMem, CcWindowsSharedMemory, sName, uiSize);
   return static_cast<ISharedMemory*>(pSharedMem);
 }
-
 
 CcGroupList CcSystem::getGroupList()
 {

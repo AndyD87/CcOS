@@ -328,6 +328,14 @@ bool CcWindowsServiceControl::create()
     {
       bRet = true;
     }
+    else
+    {
+      CCERROR("CcWindowsServiceControl::create with error: " + CcString::fromNumber(GetLastError()));
+    }
+  }
+  else
+  {
+    CCERROR("Access to management not granted: " + CcString::fromNumber(GetLastError()));
   }
   return bRet;
 }
@@ -434,7 +442,7 @@ bool CcWindowsServiceControl::open(bool bOpenReadOnly)
     }
     else
     {
-      wprintf(L"OpenServiceW failed w/err 0x%08lx\n", GetLastError());
+      CCDEBUG("OpenServiceW failed w/err 0x" + CcString::fromNumber(GetLastError(), 16));
     }
   }
   return bRet;

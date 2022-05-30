@@ -53,10 +53,6 @@ CcMemoryMonitor_Type CcMemoryMonitor::m_oContext;
 void CcMemoryMonitor::enable()
 {
   g_bMemoryEnabled = true;
-  if(g_pMemoryList == nullptr)
-  {
-    init();
-  }
 }
 
 void CcMemoryMonitor::disable()

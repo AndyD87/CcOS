@@ -48,5 +48,5 @@ public:
     pContext(pContex)
   { }
 
-  CcKernelPrivate*  pContext    = nullptr;  //!< Kernel private data
+  CcKernelPrivate* pContext = nullptr;  //!< Kernel private data
 };

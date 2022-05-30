@@ -17,9 +17,14 @@ macro( CcOSGetKnownBoard BoardName TargetDir )
     set(${TargetDir} "Boards/ST/STM32F103C8/Config.cmake")
   elseif(${BoardNameLower} STREQUAL "stm3220geval")
     set(${TargetDir} "Boards/ST/STM3220GEVAL/Config.cmake")
-    else()
-      set(${TargetDir} "")
-    endif()
+  elseif(${BoardNameLower} STREQUAL "esp8266")
+    set(${TargetDir} "Boards/espressif/ESP8266/Config.cmake")
+  elseif(${BoardNameLower} STREQUAL "mingw")
+    # MinGW Board is just used for automatic downloading toolchain
+    set(${TargetDir} "Boards/MinGW/Config.cmake")
+  else()
+    set(${TargetDir} "")
+  endif()
 endmacro()
 
 ################################################################################

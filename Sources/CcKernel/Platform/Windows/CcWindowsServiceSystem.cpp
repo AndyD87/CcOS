@@ -33,17 +33,15 @@ class CcServiceSystem::CPrivate
 {
 public:
   CcVector<CcWindowsService*> m_oServices;
-};
+} oInstance;
 
 CcServiceSystem::CcServiceSystem()
 {
-  CCNEW(m_pPrivate, CPrivate);
+  m_pPrivate = &oInstance;
 }
 
 CcServiceSystem::~CcServiceSystem()
 {
-  stop();
-  CCDELETE(m_pPrivate);
 }
 
 CcStatus CcServiceSystem::init(CcService& pService)

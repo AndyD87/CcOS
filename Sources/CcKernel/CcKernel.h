@@ -455,8 +455,10 @@ public: // Methods
   static void forceBreakpoint();
 
 private:
-  class CPrivate;
+  CcKernelPrivate* m_pPrivate;
+
   // always on last position!!!
+  static CcVersion        s_oKernelVersion;
+  static IKernel          s_oInterfaceModule;
   static bool             s_bShutdownInProgress;  //!< Prepare for shutting down before starting.
-  static CcKernel         s_oKernel;              //!< create a single instance of it self, for startup initializing
 };

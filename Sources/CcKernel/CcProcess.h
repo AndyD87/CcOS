@@ -194,7 +194,7 @@ public:
                        const CcString &sWorkingDir = CcGlobalStrings::Empty,
                        bool bDoWait = true,
                        const CcDateTime& oTimeout = 0,
-                       CcString* pExecutable = nullptr
+                       CcString* pOutput = nullptr
   );
 
 private: // Types
