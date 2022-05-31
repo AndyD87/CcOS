@@ -7,13 +7,13 @@ set(CCOS_CMAKE_CONFIG_LOADED TRUE)
 
 # setup project root dir
 set(CCOS_DIR ${CMAKE_CURRENT_LIST_DIR}/.. CACHE INTERNAL "")
-set(CONFIG_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE INTERNAL "")
+set(CCOS_CONFIG_DIR ${CMAKE_CURRENT_LIST_DIR} CACHE INTERNAL "")
 
 ################################################################################
 # Load Macros from CcOS
 ################################################################################
-include(${CONFIG_DIR}/CcMacros.cmake )
-include(${CONFIG_DIR}/ProjectMacros.cmake )
+include(${CCOS_CONFIG_DIR}/CcMacros.cmake )
+include(${CCOS_CONFIG_DIR}/ProjectMacros.cmake )
 
 ################################################################################
 # Setup Cache directory if not yet defined
@@ -45,11 +45,11 @@ message("- Cache directory: ${CC_CACHE_DIR}")
 if(DEFINED CCOS_BOARD)
   CcOSGetKnownBoard(${CCOS_BOARD} BoardDir)
   if(NOT ${BoardDir} STREQUAL "")
-    include(${CONFIG_DIR}/${BoardDir})
+    include(${CCOS_CONFIG_DIR}/${BoardDir})
   elseif(${CCOS_BOARD} MATCHES "/Config.cmake")
-    include(${CONFIG_DIR}/${CCOS_BOARD})
+    include(${CCOS_CONFIG_DIR}/${CCOS_BOARD})
   else()
-    include(${CONFIG_DIR}/${CCOS_BOARD}/Config.cmake)
+    include(${CCOS_CONFIG_DIR}/${CCOS_BOARD}/Config.cmake)
   endif()
   if(CCOS_BOARD_TYPE)
     add_definitions(-DCCOS_BOARD_TYPE=${CCOS_BOARD_TYPE})
@@ -59,8 +59,8 @@ endif()
 ################################################################################
 # Load Conan if available
 ################################################################################
-if(EXISTS ${CONFIG_DIR}/Conan/conan.cmake)
-  include(${CONFIG_DIR}/Conan/conan.cmake)
+if(EXISTS ${CCOS_CONFIG_DIR}/Conan/conan.cmake)
+  include(${CCOS_CONFIG_DIR}/Conan/conan.cmake)
 endif()
 
 macro(CcOSLoadBuildSettings)
@@ -81,13 +81,13 @@ macro(CcOSLoadBuildSettings)
     if("${CMAKE_SYSTEM_NAME}" STREQUAL "Generic" OR GENERIC)
       set(CMAKE_SYSTEM_NAME "Generic")
       message( "- Platform: Generic" )
-      include( ${CONFIG_DIR}/Configs/Config.Generic.cmake)
+      include( ${CCOS_CONFIG_DIR}/Configs/Config.Generic.cmake)
     elseif(DEFINED WIN32)
       message( "- Platform: Windows" )
-      include( ${CONFIG_DIR}/Configs/Config.Windows.cmake)
+      include( ${CCOS_CONFIG_DIR}/Configs/Config.Windows.cmake)
     else()
       message( "- Platform: Linux" )
-      include( ${CONFIG_DIR}/Configs/Config.Linux.cmake)
+      include( ${CCOS_CONFIG_DIR}/Configs/Config.Linux.cmake)
     endif()
   endif()
 
@@ -105,14 +105,14 @@ macro(CcOSLoadBuildSettings)
   # Load Compiler Settings depending on Compiler Type
   ################################################################################
   if( APPLE )
-    include( ${CONFIG_DIR}/Toolchains/Apple.cmake)
+    include( ${CCOS_CONFIG_DIR}/Toolchains/Apple.cmake)
   elseif( DEFINED MSVC )
-    include( ${CONFIG_DIR}/Toolchains/MSVC.cmake)
+    include( ${CCOS_CONFIG_DIR}/Toolchains/MSVC.cmake)
   elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    include( ${CONFIG_DIR}/Toolchains/Clang.cmake)
+    include( ${CCOS_CONFIG_DIR}/Toolchains/Clang.cmake)
   else( DEFINED GCC )
     set(GCC TRUE)
-    include( ${CONFIG_DIR}/Toolchains/GCC.cmake )
+    include( ${CCOS_CONFIG_DIR}/Toolchains/GCC.cmake )
   endif()
 
   ################################################################################
@@ -132,7 +132,7 @@ macro(CcOSLoadProjects)
   endif(NOT DEFINED CCOS_BUILDLEVEL)
 
   set(CC_CURRENT_CONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-  include( ${CONFIG_DIR}/CcOSBuildConfig.cmake )
+  include( ${CCOS_CONFIG_DIR}/CcOSBuildConfig.cmake )
 endmacro()
 
 endif()

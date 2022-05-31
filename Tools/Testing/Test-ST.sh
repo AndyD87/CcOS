@@ -41,12 +41,12 @@ runRelease()
   fi
 }
 
-#Board=STM32F103C8
-#runDebug
-#runRelease
-#Board=STM3220GEVAL
-#runDebug
-#runRelease
+Board=STM32F103C8
+runDebug
+runRelease
+Board=STM3220GEVAL
+runDebug
+runRelease
 Board=STM32F3Discovery
 runDebug
 runRelease
