@@ -266,7 +266,7 @@ Function Test-Stm()
 
     $CurrentDir  = (Get-Item .\).FullName
     $TestLog     = $CurrentDir+"\Test.log"
-    $CcOSRootDir = $PSScriptRoot+"\.."
+    $CcOSRootDir = $PSScriptRoot+"\..\Sources"
     $SolutionDir = $PSScriptRoot+"\Solution"
     $OutputDir   = $PSScriptRoot+"\Output"
 

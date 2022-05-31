@@ -31,8 +31,6 @@
  */
 class STM32F103Cpu : public ICpu
 {
-public: // types
-  class CPrivate;
 public: // methods
   STM32F103Cpu();
   virtual ~STM32F103Cpu();
@@ -48,8 +46,29 @@ public: // methods
   virtual void enterCriticalSection() override;
   virtual void leaveCriticalSection() override;
   virtual bool isInIsr() override;
+
+  inline static STM32F103Cpu* getCpu()
+  { return pCpu; }
+
 private:
   CcStatus startSysClock();
 private: // member
-  CPrivate* m_pPrivate;
+  class STM32F103CpuThread : public IThread
+  {
+  public:
+    STM32F103CpuThread() :
+      IThread(CcGlobalStrings::CcOS)
+      {enterState(EThreadState::Running);}
+    virtual void run() override
+      {}
+    virtual size_t getStackSize() override
+      { return 4; }
+  };
+  STM32F103CpuThread   oCpuThread;
+  CcThreadContext      oCpuThreadContext;
+  CcThreadData         oCpuThreadData;
+  static STM32F103Cpu* pCpu;
+  #ifdef THREADHELPER
+    static CcGenericThreadHelper oThreadHelper;
+  #endif
 };

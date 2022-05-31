@@ -53,6 +53,10 @@ public: // methods
   virtual void enterCriticalSection() override;
   virtual void leaveCriticalSection() override;
   virtual bool isInIsr() override;
+
+  inline static STM32F303VCT6Cpu* getCpu()
+  { return pCpu; }
+
 private:
   CcStatus startSysClock();
 private: // member

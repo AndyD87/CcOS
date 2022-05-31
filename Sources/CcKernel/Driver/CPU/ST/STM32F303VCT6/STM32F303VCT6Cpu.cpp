@@ -33,7 +33,7 @@ volatile CcThreadContext* pCurrentThreadContext     = nullptr;  //!< Cpu current
 volatile CcThreadData*    pCurrentThreadData        = nullptr;  //!< Cpu current running thread Data
 
 #ifdef THREADHELPER
-CcGenericThreadHelper STM32F303VCT6Cpu::CPrivate::oThreadHelper;
+CcGenericThreadHelper STM32F303VCT6Cpu::oThreadHelper;
 #endif
 
 /**
@@ -42,9 +42,9 @@ CcGenericThreadHelper STM32F303VCT6Cpu::CPrivate::oThreadHelper;
 CCEXTERNC void STM32F303VCT6Cpu_SysTick()
 {
   HAL_IncTick();
-  if(STM32F303VCT6Cpu::CPrivate::pCpu != nullptr)
+  if(STM32F303VCT6Cpu::getCpu() != nullptr)
   {
-    STM32F303VCT6Cpu::CPrivate::pCpu->tick();
+    STM32F303VCT6Cpu::getCpu()->tick();
   }
 }
 
@@ -54,9 +54,9 @@ CCEXTERNC void STM32F303VCT6Cpu_SysTick()
 CCEXTERNC void STM32F303VCT6Cpu_ThreadTick()
 {
   NVIC_ClearPendingIRQ(USART3_IRQn);
-  if(STM32F303VCT6Cpu::CPrivate::pCpu != nullptr)
+  if(STM32F303VCT6Cpu::getCpu() != nullptr)
   {
-    STM32F303VCT6Cpu::CPrivate::pCpu->changeThread();
+    STM32F303VCT6Cpu::getCpu()->changeThread();
   }
 }
 

@@ -36,43 +36,12 @@
 
 /*-----------------------------------------------------------*/
 
-class STM32F103Cpu::CPrivate
-{
-private:
-  class STM32F103CpuThread : public IThread
-  {
-  public:
-    STM32F103CpuThread() :
-      IThread(CcGlobalStrings::CcOS)
-      {enterState(EThreadState::Running);}
-    virtual void run() override
-      {}
-    virtual size_t getStackSize() override
-      { return 4; }
-  };
-public:
-  CPrivate() :
-    oCpuThreadContext(&oCpuThread, nullptr),
-    oCpuThreadData(&oCpuThreadContext)
-  {
-  }
-
-public:
-  STM32F103CpuThread   oCpuThread;
-  CcThreadContext      oCpuThreadContext;
-  CcThreadData         oCpuThreadData;
-  static STM32F103Cpu* pCpu;
-  #ifdef THREADHELPER
-  static CcGenericThreadHelper oThreadHelper;
-  #endif
-};
-
-STM32F103Cpu* STM32F103Cpu::CPrivate::pCpu      = nullptr;  //!< Cpu data initialized on cpu start
+STM32F103Cpu* STM32F103Cpu::pCpu      = nullptr;  //!< Cpu data initialized on cpu start
 volatile CcThreadContext* pCurrentThreadContext = nullptr;  //!< Cpu current running thread Context
 volatile CcThreadData* pCurrentThreadData       = nullptr;  //!< Cpu current running thread Data
 
 #ifdef THREADHELPER
-CcGenericThreadHelper STM32F103Cpu::CPrivate::oThreadHelper;
+CcGenericThreadHelper STM32F103Cpu::oThreadHelper;
 #endif
 
 /**
@@ -81,9 +50,9 @@ CcGenericThreadHelper STM32F103Cpu::CPrivate::oThreadHelper;
 CCEXTERNC void STM32F103Cpu_SysTick()
 {
   HAL_IncTick();
-  if(STM32F103Cpu::CPrivate::pCpu != nullptr)
+  if(STM32F103Cpu::getCpu() != nullptr)
   {
-    STM32F103Cpu::CPrivate::pCpu->tick();
+    STM32F103Cpu::getCpu()->tick();
   }
 }
 
@@ -93,9 +62,9 @@ CCEXTERNC void STM32F103Cpu_SysTick()
 CCEXTERNC void STM32F103Cpu_ThreadTick()
 {
   NVIC_ClearPendingIRQ(USART2_IRQn);
-  if(STM32F103Cpu::CPrivate::pCpu != nullptr)
+  if(STM32F103Cpu::getCpu() != nullptr)
   {
-    STM32F103Cpu::CPrivate::pCpu->changeThread();
+    STM32F103Cpu::getCpu()->changeThread();
   }
 }
 
@@ -169,13 +138,15 @@ CCEXTERNC void USART2_IRQHandler( void )
     __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadData  \n");
 }
 
-STM32F103Cpu::STM32F103Cpu()
+STM32F103Cpu::STM32F103Cpu() :
+  oCpuThreadContext(&oCpuThread, nullptr),
+  oCpuThreadData(&oCpuThreadContext)
 {
   CCNEW(m_pPrivate, CPrivate);
-  m_pPrivate->pCpu = this;
-  m_pPrivate->oCpuThreadContext.setData(&m_pPrivate->oCpuThreadData);
-  pCurrentThreadContext    = &m_pPrivate->oCpuThreadContext;
-  pCurrentThreadData       = &m_pPrivate->oCpuThreadData;
+  pCpu = this;
+  oCpuThreadContext.setData(&oCpuThreadData);
+  pCurrentThreadContext    = &oCpuThreadContext;
+  pCurrentThreadData       = &oCpuThreadData;
   enterCriticalSection();
   leaveCriticalSection();
   startSysClock();
@@ -194,7 +165,7 @@ size_t STM32F103Cpu::coreNumber()
 
 CcThreadContext* STM32F103Cpu::mainThread()
 {
-  return &m_pPrivate->oCpuThreadContext;
+  return &oCpuThreadContext;
 }
 
 CcThreadContext* STM32F103Cpu::createThread(IThread* pTargetThread)
