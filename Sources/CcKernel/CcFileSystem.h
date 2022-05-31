@@ -44,12 +44,12 @@ public:
   /**
    * @brief Initialize global filesystem managment
    */
-  static void init();
+  static void init(CcVector<CcFileSystemListItem>*& pItem);
 
   /**
    * @brief Deinitialize and cleanup global filesystem managment
    */
-  static void deinit();
+  static void deinit(CcVector<CcFileSystemListItem>*& pItem);
 
   /**
    * @brief Get File by Path

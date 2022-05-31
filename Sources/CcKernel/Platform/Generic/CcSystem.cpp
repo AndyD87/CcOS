@@ -60,7 +60,10 @@
 class CcSystem::CPrivate
 {
 public:
-  CPrivate() = default;
+  CPrivate(CcKernelPrivate* pKernelInstance, CcKernelPrivate** pTargetKernel)
+  {
+    *pTargetKernel = pKernelInstance;
+  }
   CcGenericThreadManager    oThreadManager;
   CcGenericFilesystem       oFileSystem;
   CcStringMap               oEnvVars;
@@ -69,9 +72,9 @@ public:
   #endif
 };
 
-CcSystem::CcSystem()
+CcSystem::CcSystem(CcKernelPrivate* pKernelInstance, CcKernelPrivate** pTargetKernel)
 {
-  CCNEW(m_pPrivate, CcSystem::CPrivate);
+  CCNEW(m_pPrivate, CcSystem::CPrivate, pKernelInstance, pTargetKernel);
 }
 
 CcSystem::~CcSystem()
@@ -304,7 +307,7 @@ CcGroupList CcSystem::getGroupList()
   return CcGroupList();
 }
 
-CcStatus CcSystem::loadModule(const CcString& sPath, IKernel& oKernel)
+CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
 {
   CCUNUSED(sPath);
   CCUNUSED(oKernel);

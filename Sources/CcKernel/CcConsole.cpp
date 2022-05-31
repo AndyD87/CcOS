@@ -38,10 +38,13 @@ CcStdOut*   CcConsole::s_pOutput(nullptr);
 
 void CcConsole::init()
 {
-  #ifndef GENERIC4
-    CCNEW(s_pInput, CcStdIn);
-    CCNEW(s_pOutput, CcStdOut);
+  #ifndef GENERIC
+  if(s_pLock == nullptr)
     CCNEW(s_pLock, CcMutex);
+  if (s_pOutput == nullptr)
+    CCNEW(s_pOutput, CcStdOut);
+  if (s_pInput == nullptr)
+    CCNEW(s_pInput, CcStdIn);
   #endif
 }
 

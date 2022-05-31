@@ -45,7 +45,7 @@ CcWindowsModule::~CcWindowsModule()
 
 }
 
-CcStatus CcWindowsModule::loadModule(const CcString& sName, IKernel& oKernel)
+CcStatus CcWindowsModule::loadModule(const CcString& sName, const IKernel& oKernel)
 {
   m_sName = sName;
   CcStatus oStatus(false);

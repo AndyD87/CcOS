@@ -33,15 +33,23 @@ class CcServiceSystem::CPrivate
 {
 public:
   CcVector<CcWindowsService*> m_oServices;
-} oInstance;
+} g_oInstance;
 
 CcServiceSystem::CcServiceSystem()
 {
-  m_pPrivate = &oInstance;
+  m_pPrivate = &g_oInstance;
+  CCDEBUG("Create CcServiceSystem");
 }
 
 CcServiceSystem::~CcServiceSystem()
 {
+  CCDEBUG("Remove CcServiceSystem");
+  for (CcWindowsService* pWinService : m_pPrivate->m_oServices)
+  {
+    pWinService->deinit();
+    CCDELETE(pWinService);
+  }
+  m_pPrivate->m_oServices.clear();
 }
 
 CcStatus CcServiceSystem::init(CcService& pService)
@@ -58,6 +66,7 @@ CcStatus CcServiceSystem::deinit(CcService& pService)
   {
     if (*pWinService == pService)
     {
+      CCDEBUG("Remove Service");
       m_pPrivate->m_oServices.removeItem(pWinService);
       pWinService->deinit();
       CCDELETE(pWinService);

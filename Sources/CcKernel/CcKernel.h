@@ -28,6 +28,7 @@
 #include "CcApp.h"
 #include "IDevice.h"
 #include "CcMapCommon.h"
+#include "CcVersion.h"
 
 // forward declarations
 class ISocket;
@@ -141,7 +142,6 @@ public: // Methods
    *        It will stop all all threads wich are currently running.
    */
   static void terminate();
-
 
   /**
    * @brief Set the global Debug Mode
@@ -296,13 +296,7 @@ public: // Methods
    * @brief Get Kernel interface for memory operations
    * @return Handle to Interface with kernel operators
    */
-  static IKernel& getInterface();
-
-  /**
-   * @brief Override kernel interface.
-   * @param pInterface: New interface to set
-   */
-  static void setInterface(IKernel* pInterface);
+  static IKernel getInterface();
 
   /**
    * @brief Get all Devices registered in Kernel
@@ -425,10 +419,12 @@ public: // Methods
   //! @param sPath: New path to set set Working dir. It can be relative or absolute
   static CcStatus setWorkingDir(const CcString& sPath);
 
-  //! @param oStatus: Set exit code on shutdown
-  //!                 This may be required for program interruptions.
-  static void setExitCode(CcStatus oStatus);
-
+  /**
+   * @brief Override Kernel methods from another kernel.
+   * @param oInterface: Handle to Interface with kernel operators
+   */
+  static void setInterface(const IKernel& oInterface);
+  
   /**
    * @brief Load module by path
    * @param sPath:  Path to file to load
@@ -459,6 +455,5 @@ private:
 
   // always on last position!!!
   static CcVersion        s_oKernelVersion;
-  static IKernel          s_oInterfaceModule;
   static bool             s_bShutdownInProgress;  //!< Prepare for shutting down before starting.
 };

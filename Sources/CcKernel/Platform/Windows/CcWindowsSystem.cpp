@@ -110,18 +110,20 @@ class CStaticBarrier
 {
 #ifdef CC_STATIC
   public:
-    CStaticBarrier()
+    CStaticBarrier(CcKernelPrivate* pKernelInstance, CcKernelPrivate** pTargetKernel) :
+      pKernelInstance(pKernelInstance),
+      pTargetKernel(pTargetKernel)
     {
       DWORD uiProc = GetCurrentProcessId();
       {
         CcString sName = "CcOS_" + CcString::fromSize(static_cast<size_t>(uiProc));
-        CCNEW(pProcMemory, CcWindowsSharedMemory, sName, sizeof(IKernel));
+        CCNEW(pProcMemory, CcWindowsSharedMemory, sName, sizeof(CcKernelPrivate*));
       }
       if (pProcMemory->exists())
       {
         if (pProcMemory->claim(EOpenFlags::Read))
         {
-          CcKernel::setInterface(static_cast<IKernel*>(pProcMemory->getBuffer()));
+          *pTargetKernel = *static_cast<CcKernelPrivate**>(pProcMemory->getBuffer());
         }
       }
       else
@@ -129,23 +131,17 @@ class CStaticBarrier
         if (pProcMemory->open(EOpenFlags::ReadWrite))
         {
           bProcMemoryCreated = true;
-          CcStatic::memcpy(pProcMemory->getBuffer(), &CcKernel::getInterface(), sizeof(IKernel));
+          *pTargetKernel = pKernelInstance;
+          CcStatic::memcpy(pProcMemory->getBuffer(), &pKernelInstance, sizeof(CcKernelPrivate*));
         }
       }
     }
 
     ~CStaticBarrier()
     {
+      *pTargetKernel = pKernelInstance;
       if (pProcMemory)
       {
-        if (bProcMemoryCreated)
-        {
-        }
-        else
-        {
-          // Keep the order it is matching with initializing
-          CcKernel::setInterface(nullptr);
-        }
         pProcMemory->close();
         CCDELETE(pProcMemory);
       }
@@ -155,14 +151,33 @@ class CStaticBarrier
     CcWindowsSharedMemory*  pProcMemory = nullptr;
     bool                    bProcMemoryCreated = false;
 #else
-  CStaticBarrier() = default;
-  ~CStaticBarrier() = default;
+  public:
+    CStaticBarrier(CcKernelPrivate* pKernelInstance, CcKernelPrivate** pTargetKernel) :
+      pKernelInstance(pKernelInstance),
+      pTargetKernel(pTargetKernel)
+    {
+      *pTargetKernel = pKernelInstance;
+    }
+    ~CStaticBarrier()
+    {
+      *pTargetKernel = pKernelInstance;
+    }
+
 #endif
+private:
+  CcKernelPrivate* pKernelInstance;
+  CcKernelPrivate** pTargetKernel;
 };
 
 class CcSystem::CPrivate : CStaticBarrier
 {
 public:
+  CPrivate(CcKernelPrivate* pKernelInstance, CcKernelPrivate** pTargetKernel) :
+    CStaticBarrier(pKernelInstance, pTargetKernel)
+  {
+
+  }
+
   void initSystem();
   void initFilesystem();
   void initNetworkStack();
@@ -249,9 +264,9 @@ CcThreadManager*  CcSystem::CPrivate::s_pThreadManager;
 CcStatus          CcSystem::CPrivate::s_oCurrentExitCode;
 
 
-CcSystem::CcSystem()
+CcSystem::CcSystem(CcKernelPrivate* pKernelInstance, CcKernelPrivate** pTargetKernel)
 {
-  CCNEW(m_pPrivate, CPrivate);
+  CCNEW(m_pPrivate, CPrivate, pKernelInstance, pTargetKernel);
   CcSystem::CPrivate::s_pThreadManager = &m_pPrivate->oThreadManager;
 }
 
@@ -863,7 +878,7 @@ CcString CcSystem::getUserDataDir() const
   return sRet;
 }
 
-CcStatus CcSystem::loadModule(const CcString& sPath, IKernel& oKernel)
+CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
 {
   CCNEWTYPE(pModule, CcWindowsModule);
   CcStatus oStatus(false);

@@ -72,6 +72,11 @@
 class CcSystem::CPrivate
 {
 public:
+  CPrivate(CcKernelPrivate* pKernelInstance, CcKernelPrivate** pTargetKernel)
+  {
+    *pTargetKernel = pKernelInstance;
+
+  }
   void initSystem();
   void initTimer();
   void initDisplay();
@@ -143,9 +148,9 @@ void CcSystemSignalHandler(int s)
   }
 }
 
-CcSystem::CcSystem()
+CcSystem::CcSystem(CcKernelPrivate* pKernelInstance, CcKernelPrivate** pTargetKernel)
 {
-  CCNEW(m_pPrivate, CPrivate);
+  CCNEW(m_pPrivate, CPrivate, pKernelInstance, pTargetKernel);
   CcSystem::CPrivate::s_pThreadManager = &m_pPrivate->oThreadManager;
 }
 
@@ -622,7 +627,7 @@ CcGroupList CcSystem::getGroupList()
   return oGroups;
 }
 
-CcStatus CcSystem::loadModule(const CcString& sPath, IKernel& oKernel)
+CcStatus CcSystem::loadModule(const CcString& sPath, const IKernel& oKernel)
 {
   CCNEWTYPE(pModule, CcLinuxModule);
   CcStatus oStatus(false);

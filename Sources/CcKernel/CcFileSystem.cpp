@@ -30,14 +30,22 @@
 // Will be initialized by CcKernel at startup
 CcVector<CcFileSystemListItem>* CcFileSystem::s_pFSList;
 
-void CcFileSystem::init()
+void CcFileSystem::init(CcVector<CcFileSystemListItem>*& pItem)
 {
-  CCNEW(s_pFSList, CcVector<CcFileSystemListItem>);
+  if (pItem == nullptr)
+  {
+    CCNEW(pItem, CcVector<CcFileSystemListItem>);
+  }
+  s_pFSList = pItem;
 }
 
-void CcFileSystem::deinit()
+void CcFileSystem::deinit(CcVector<CcFileSystemListItem>*& pItem)
 {
-  CCDELETE(s_pFSList);
+  if (pItem == s_pFSList)
+  {
+    CCDELETE(pItem);
+    s_pFSList = nullptr;
+  }
 }
 
 CcFilePointer CcFileSystem::getFile(const CcString& Path)

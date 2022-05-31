@@ -105,7 +105,7 @@ public:
    *        After that, init will be executed
    * @param oKernel: Kernel to import.
    */
-  virtual void setKernel(IKernel& oKernel) = 0;
+  virtual void setKernel(const IKernel& oKernel) = 0;
 
 protected:
   CcEventHandler  m_oUnloadEvent; //!< Event list if unload is requested.

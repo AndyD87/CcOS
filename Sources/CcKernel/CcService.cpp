@@ -60,6 +60,7 @@ void CcService::eventStop()
 CcStatus CcService::exec()
 {
   CcStatus oRunStatus = CcKernel::getServiceSystem().init(*this);
+  CcKernel::getServiceSystem().deinit(*this);
   return oRunStatus;
 }
 

@@ -43,6 +43,7 @@ class CcString;
 class INetworkStack;
 class IModuleBase;
 class IKernel;
+class CcKernelPrivate;
 class CcDevice;
 class CcService;
 
@@ -57,7 +58,7 @@ class CcKernelSHARED CcSystem
 {
 public:
   //! Create system and all required variables
-  CcSystem();
+  CcSystem(CcKernelPrivate* pKernelInstance, CcKernelPrivate** pTargetKernel);
   //! Cleanup system and all required variables
   ~CcSystem();
 
@@ -224,7 +225,7 @@ public:
    * @param oKernel:  Kernel interface for common memory rang
    * @return Status of operation
    */
-  CcStatus loadModule(const CcString& sPath, IKernel& oKernel);
+  CcStatus loadModule(const CcString& sPath, const IKernel& oKernel);
 
   /**
    * @brief Change working directory for current application

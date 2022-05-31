@@ -38,7 +38,6 @@
 #include "CcStringUtil.h"
 
 static CcMemoryMonitor::SInterface* g_pMemoryInterface = nullptr;
-static ICpu*                        g_pCpu = nullptr;
 static bool                         g_bMemoryEnabled = false;
 static std::map<const void*, CcMemoryMonitor::CItem>* g_pMemoryList = nullptr;
 
@@ -78,7 +77,6 @@ void CcMemoryMonitor::init()
   lock();
   g_bMemoryEnabled = false;
   CCNEW(g_pMemoryList, std::map<const void* CCCOMMA CcMemoryMonitor::CItem>);
-  g_pCpu = CcKernel::getDevice(EDeviceType::Cpu, 0).cast<ICpu>().ptr();
   unlock();
 }
 
