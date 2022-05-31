@@ -158,7 +158,7 @@ bool CTestTestUtility::testExitCodeTimed()
   }
   else
   {
-    CcTestFramework::writeError("Execute testExitCodeTimed failed");
+    CcTestFramework::writeError("Execute testExitCodeTimed failed: " + oState.getString());
   }
   return oState;
 }

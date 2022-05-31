@@ -44,9 +44,9 @@ CcGenericThreadHelper STM32F207IGCpu::oThreadHelper;
 CCEXTERNC void STM32F207IGCpu_SysTick()
 {
   HAL_IncTick();
-  if(STM32F207IGCpu::pCpu != nullptr)
+  if(STM32F207IGCpu::getCpu() != nullptr)
   {
-    STM32F207IGCpu::pCpu->tick();
+    STM32F207IGCpu::getCpu()->tick();
   }
 }
 
@@ -56,9 +56,9 @@ CCEXTERNC void STM32F207IGCpu_SysTick()
 CCEXTERNC void STM32F207IGCpu_ThreadTick()
 {
   NVIC_ClearPendingIRQ(USART3_IRQn);
-  if(STM32F207IGCpu::pCpu != nullptr)
+  if(STM32F207IGCpu::getCpu() != nullptr)
   {
-    STM32F207IGCpu::pCpu->changeThread();
+    STM32F207IGCpu::getCpu()->changeThread();
   }
 }
 

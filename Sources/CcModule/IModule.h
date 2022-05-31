@@ -58,7 +58,7 @@
 /**
  * @brief Default Class to create a Application
  */
-class IModule : public IModuleBase
+class                                                                                                                   IModule : public IModuleBase
 {
 public:
   IModule() = default;

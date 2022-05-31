@@ -78,12 +78,17 @@ CcStatus CcProcess::exec(const CcDateTime& oTimeout)
     oStatus = waitForExit(oTimeout);
     if(oStatus == EStatus::TimeoutReached)
     {
+      CCDEBUG("Process run timeout");
       stop();
     }
     else
     {
       oStatus = getExitCode();
     }
+  }
+  else
+  {
+    CCDEBUG("Process start timeout");
   }
   return oStatus;
 }

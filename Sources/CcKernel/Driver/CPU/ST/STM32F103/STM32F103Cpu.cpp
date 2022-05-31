@@ -142,7 +142,6 @@ STM32F103Cpu::STM32F103Cpu() :
   oCpuThreadContext(&oCpuThread, nullptr),
   oCpuThreadData(&oCpuThreadContext)
 {
-  CCNEW(m_pPrivate, CPrivate);
   pCpu = this;
   oCpuThreadContext.setData(&oCpuThreadData);
   pCurrentThreadContext    = &oCpuThreadContext;
@@ -155,7 +154,6 @@ STM32F103Cpu::STM32F103Cpu() :
 
 STM32F103Cpu::~STM32F103Cpu()
 {
-  CCDELETE(m_pPrivate);
 }
 
 size_t STM32F103Cpu::coreNumber()

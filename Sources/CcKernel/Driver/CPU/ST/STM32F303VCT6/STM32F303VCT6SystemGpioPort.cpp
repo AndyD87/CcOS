@@ -98,7 +98,7 @@ bool STM32F303VCT6SystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::E
   return bSuccess;
 }
 
-bool STM32F303VCT6SystemGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue)
+bool STM32F303VCT6SystemGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t CCUNUSED_PARAM(uiValue))
 {
   bool bRet = false;
   IGpioPin* pPin = getPin(uiPin);

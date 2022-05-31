@@ -110,7 +110,7 @@ bool STM32F207IGSystemGpioPort::setPinsDirection(size_t uiPinMask, IGpioPin::EDi
   return bSuccess;
 }
 
-bool STM32F207IGSystemGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t uiValue)
+bool STM32F207IGSystemGpioPort::setDirection(size_t uiPin, IGpioPin::EDirection eDirection, size_t CCUNUSED_PARAM(uiValue))
 {
   bool bRet = false;
   IGpioPin* pPin = getPin(uiPin);

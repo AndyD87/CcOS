@@ -23,6 +23,7 @@
  * @brief     Implemtation of class IFsDriver
  */
 #include "IFsDriver.h"
+#include "CcString.h"
 #include "IDevice.h"
 #include "CcRequest.h"
 #include "CcConnection.h"

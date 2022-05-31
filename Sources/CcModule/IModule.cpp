@@ -81,7 +81,7 @@ IModule::~IModule()
     s_pInstances->removeItem(this);
     if (s_pInstances->size() == 0)
     {
-#ifndef CC_STATIC
+#if !defined(CC_STATIC) && !defined(LINUX)
       // Remove if all remove
       CcKernel::setInterface(nullptr);
 #endif

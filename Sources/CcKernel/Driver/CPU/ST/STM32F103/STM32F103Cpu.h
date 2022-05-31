@@ -25,6 +25,10 @@
 
 #include "CcBase.h"
 #include "Devices/ICpu.h"
+#include "IThread.h"
+#include "CcGenericThreadHelper.h"
+#include "Driver/CPU/Common/CcThreadData.h"
+#include "CcGlobalStrings.h"
 
 /**
  * @brief CPU Interface for STM32F103 microcontroller

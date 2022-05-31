@@ -1,5 +1,5 @@
 SOLUTION_POSTFIX="Testing.Solution.ECL.Testing"
-TEST_DIR=$(pwd)/../../../Sources
+TEST_DIR=$(pwd)/../../Sources
 TEST_DIR_FIXED=$(pwd)/../../$SOLUTION_POSTFIX
 
 runDebug()
@@ -41,12 +41,12 @@ runRelease()
   fi
 }
 
-Board=STM32F103C8
-runDebug
-runRelease
-Board=STM3220GEVAL
-runDebug
-runRelease
+#Board=STM32F103C8
+#runDebug
+#runRelease
+#Board=STM3220GEVAL
+#runDebug
+#runRelease
 Board=STM32F3Discovery
 runDebug
 runRelease
