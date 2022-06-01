@@ -3,6 +3,9 @@
 ########
 set(CCOS_ESP8266_LINKER_SCRIPT "${CMAKE_CURRENT_LIST_DIR}/ESP8266_CcOS.ld")
 
+list (APPEND PROJECT_DEFINITIONS
+      -DCCOS_CCSYSTEM_CUSTOM_TIME_METHODS)
+
 ########
 # Add Source Files
 ########
@@ -45,7 +48,18 @@ add_to_driver_includes(
   ${ESP8266_RTOS_SDK_DIR}/components/esp8266/include
 )
 #add_to_driver_dependencies(__idf_freertos )
-add_to_driver_libraries(freertos heap lwip tcpip_adapter nvs_flash)
+add_to_driver_private_libraries(freertos heap lwip tcpip_adapter nvs_flash)
+CcTargetInstall(freertos)
+CcTargetInstall(heap)
+CcTargetInstall(lwip)
+CcTargetInstall(tcpip_adapter)
+CcTargetInstall(nvs_flash)
+CcTargetInstall(esp8266)
+CcTargetInstall(log)
+CcTargetInstall(newlib)
+CcTargetInstall(spi_flash)
+CcTargetInstall(util)
+CcTargetInstall(vfs)
 add_to_driver_definitions(${PROJECT_DEFINITIONS})
 
 # enable lwip network stack

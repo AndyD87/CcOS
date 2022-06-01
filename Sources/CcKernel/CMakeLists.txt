@@ -269,6 +269,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set ( CURRENT_PROJECT CcKernel)
 
   set ( KERNEL_LIBRARIES )
+  set ( KERNEL_PRIVATE_LIBRARIES )
   set ( KERNEL_DEFINITIONS -DCcKernel_Build)
   set ( KERNEL_DEPENDENCIES )
   set ( KERNEL_INCLUDES Types )
@@ -313,6 +314,13 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
       set (KERNEL_LIBRARIES ${KERNEL_LIBRARIES} PARENT_SCOPE)
   endmacro()
 
+  macro (add_to_kernel_private_libraries)
+      foreach (_src ${ARGN})
+          CcListAppendOnce(KERNEL_PRIVATE_LIBRARIES "${_src}")
+      endforeach()
+      set (KERNEL_PRIVATE_LIBRARIES ${KERNEL_PRIVATE_LIBRARIES} PARENT_SCOPE)
+  endmacro()
+
   macro (add_to_kernel_dependencies)
       foreach (_src ${ARGN})
           CcListAppendOnce(KERNEL_DEPENDENCIES "${_src}")
@@ -335,13 +343,14 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   endmacro()
 
   macro (push_up_kernel_vars)
-    add_to_kernel_sources     ( ${KERNEL_SOURCES} )
-    add_to_kernel_headers     ( ${KERNEL_HEADERS} )
-    add_to_kernel_definitions ( ${KERNEL_DEFINITIONS} )
-    add_to_kernel_includes    ( ${KERNEL_INCLUDES} )
-    add_to_kernel_libraries   ( ${KERNEL_LIBRARIES} )
-    add_to_kernel_dependencies( ${KERNEL_DEPENDENCIES} )
-    add_to_kernel_scripts     ( ${KERNEL_SCRIPTS} )
+    add_to_kernel_sources             ( ${KERNEL_SOURCES} )
+    add_to_kernel_headers             ( ${KERNEL_HEADERS} )
+    add_to_kernel_definitions         ( ${KERNEL_DEFINITIONS} )
+    add_to_kernel_includes            ( ${KERNEL_INCLUDES} )
+    add_to_kernel_libraries           ( ${KERNEL_LIBRARIES} )
+    add_to_kernel_private_libraries   ( ${KERNEL_PRIVATE_LIBRARIES} )
+    add_to_kernel_dependencies        ( ${KERNEL_DEPENDENCIES} )
+    add_to_kernel_scripts             ( ${KERNEL_SCRIPTS} )
   endmacro()
 
   ########
@@ -372,11 +381,14 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS")
   CcTargetHeaders( ${CURRENT_PROJECT} "${KERNEL_HEADER_FILES};${KERNEL_TYPE_HEADER};${KERNEL_TYPE_HASH_HEADER}")
 
-  target_link_libraries ( ${CURRENT_PROJECT} ${KERNEL_LIBRARIES} )
+  target_link_libraries ( ${CURRENT_PROJECT}
+                            PUBLIC ${KERNEL_LIBRARIES}
+                            PRIVATE ${KERNEL_PRIVATE_LIBRARIES}
+  )
 
   foreach(scriptfile ${KERNEL_SCRIPTS})
     if(NOT ${scriptfile} STREQUAL "")
-      target_link_libraries("${CURRENT_PROJECT}" "-T ${scriptfile}")
+      target_link_libraries("${CURRENT_PROJECT}" PUBLIC "-T ${scriptfile}")
     endif()
   endforeach()
 

@@ -159,6 +159,7 @@ CcDateTime CcSystem::getDateTime()
   return getUpTime();
 }
 
+#ifndef CCOS_CCSYSTEM_CUSTOM_TIME_METHODS
 CcDateTime CcSystem::getUpTime()
 {
   return CcDateTime(m_pPrivate->oThreadManager.uiUpTime);
@@ -174,6 +175,7 @@ void CcSystem::sleep(uint32 timeoutMs)
     m_pPrivate->oThreadManager.nextThread();
   } while(uiSystemTime > m_pPrivate->oThreadManager.uiUpTime);
 }
+#endif
 
 const CcDevice& CcSystem::getDevice(EDeviceType Type, const CcString& Name)
 {
@@ -346,4 +348,3 @@ CcStatus CcSystem::restart(const CcString& sMessage, bool bForce)
   CCUNUSED(bForce);
   return oOk;
 }
-
