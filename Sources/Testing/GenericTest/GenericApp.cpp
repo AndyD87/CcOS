@@ -63,6 +63,6 @@ void GenericApp::run()
     else
     {
       setExitCode(EStatus::InvalidHandle);
-    }
+    }                     
   }
 }

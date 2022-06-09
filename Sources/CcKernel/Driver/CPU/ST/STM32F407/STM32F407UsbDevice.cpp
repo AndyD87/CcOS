@@ -24,6 +24,11 @@
 #include <stm32f4xx_hal_hcd.h>
 #include <stm32f4xx_hal_pcd.h>
 
+void CallbackReceived(const char* pMessage)
+{
+  CcKernel::message(EMessage::Info, pMessage);
+}
+
 void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {};
@@ -137,6 +142,147 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef* pcdHandle)
   /* USER CODE END USB_OTG_HS_MspDeInit 1 */
   }
 }
+
+
+/**
+  * @brief  Data OUT stage callback.
+  * @param  hpcd PCD handle
+  * @param  epnum endpoint number
+  * @retval None
+  */
+void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hpcd);
+  UNUSED(epnum);
+  CallbackReceived("HAL_PCD_DataOutStageCallback");
+}
+
+/**
+  * @brief  Data IN stage callback
+  * @param  hpcd PCD handle
+  * @param  epnum endpoint number
+  * @retval None
+  */
+void HAL_PCD_DataInStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hpcd);
+  UNUSED(epnum);
+  CallbackReceived("HAL_PCD_DataInStageCallback");
+}
+/**
+  * @brief  Setup stage callback
+  * @param  hpcd PCD handle
+  * @retval None
+  */
+void HAL_PCD_SetupStageCallback(PCD_HandleTypeDef *hpcd)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hpcd);
+  CallbackReceived("HAL_PCD_SetupStageCallback");
+}
+
+/**
+  * @brief  USB Start Of Frame callback.
+  * @param  hpcd PCD handle
+  * @retval None
+  */
+void HAL_PCD_SOFCallback(PCD_HandleTypeDef *hpcd)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hpcd);
+  CallbackReceived("HAL_PCD_SOFCallback");
+}
+
+/**
+  * @brief  USB Reset callback.
+  * @param  hpcd PCD handle
+  * @retval None
+  */
+void HAL_PCD_ResetCallback(PCD_HandleTypeDef *hpcd)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hpcd);
+  CallbackReceived("HAL_PCD_ResetCallback");
+}
+
+/**
+  * @brief  Suspend event callback.
+  * @param  hpcd PCD handle
+  * @retval None
+  */
+void HAL_PCD_SuspendCallback(PCD_HandleTypeDef *hpcd)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hpcd);
+  CallbackReceived("HAL_PCD_SuspendCallback");
+}
+
+/**
+  * @brief  Resume event callback.
+  * @param  hpcd PCD handle
+  * @retval None
+  */
+void HAL_PCD_ResumeCallback(PCD_HandleTypeDef *hpcd)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hpcd);
+  CallbackReceived("HAL_PCD_ResumeCallback");
+}
+
+/**
+  * @brief  Incomplete ISO OUT callback.
+  * @param  hpcd PCD handle
+  * @param  epnum endpoint number
+  * @retval None
+  */
+void HAL_PCD_ISOOUTIncompleteCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hpcd);
+  UNUSED(epnum);
+  CallbackReceived("HAL_PCD_ResumeCallback");
+}
+
+/**
+  * @brief  Incomplete ISO IN callback.
+  * @param  hpcd PCD handle
+  * @param  epnum endpoint number
+  * @retval None
+  */
+void HAL_PCD_ISOINIncompleteCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hpcd);
+  UNUSED(epnum);
+  CallbackReceived("HAL_PCD_ISOINIncompleteCallback");
+}
+
+/**
+  * @brief  Connection event callback.
+  * @param  hpcd PCD handle
+  * @retval None
+  */
+void HAL_PCD_ConnectCallback(PCD_HandleTypeDef *hpcd)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hpcd);
+  CallbackReceived("HAL_PCD_ConnectCallback");
+}
+
+/**
+  * @brief  Disconnection event callback.
+  * @param  hpcd PCD handle
+  * @retval None
+  */
+void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hpcd);
+  CallbackReceived("HAL_PCD_DisconnectCallback");
+}
+
 
 STM32F407UsbDevice* s_pInstance = nullptr;
 
