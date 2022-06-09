@@ -98,7 +98,7 @@ void CcRawNdisNetwork::readFrame()
   size_t uiSize = m_pPrivate->oNdisAccess.read(oBuffer.getArray(), static_cast<uint16>(oBuffer.size()));
   if (uiSize <= oBuffer.size())
   {
-    CcNetworkPacket* pPacket = new CcNetworkPacket();
+    CcNetworkPacket* pPacket = CCNEW_INLINE(CcNetworkPacket);
     pPacket->pInterface = this;
     pPacket->write(oBuffer.getArray(), uiSize);
     if (m_oReceiver.isValid())

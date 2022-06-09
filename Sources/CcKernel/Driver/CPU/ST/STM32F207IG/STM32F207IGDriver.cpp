@@ -56,11 +56,11 @@ CcStatus STM32F207IGDriver::entry()
   // Setup Gpios
   for(uint8 uiPortNr = 0; uiPortNr <NUMBER_OF_PORTS; uiPortNr++)
   {
-    m_pPort[uiPortNr] = new STM32F207IGSystemGpioPort(uiPortNr);
+    m_pPort[uiPortNr] = CCNEW_INLINE(STM32F207IGSystemGpioPort, uiPortNr);
     CcKernel::addDevice(CcDevice(m_pPort[uiPortNr], EDeviceType::GpioPort));
   }
 #ifdef CCOS_GENERIC_NETWORK
-  IDevice* pNetworkDevice = new STM32F207IGNetwork();
+  IDevice* pNetworkDevice = CCNEW_INLINE(STM32F207IGNetwork);
   CcKernel::addDevice(CcDevice(pNetworkDevice,EDeviceType::Network));
 #endif
   return true;
@@ -89,7 +89,7 @@ IGpioPort* STM32F207IGDriver::getGpioPort(size_t uiNr)
 
 void STM32F207IGDriver::setupSystem()
 {
-  STM32F207IGCpu* pCpu = new STM32F207IGCpu();
+  STM32F207IGCpu* pCpu = CCNEW_INLINE(STM32F207IGCpu);
   CcKernel::addDevice(CcDevice(pCpu,EDeviceType::Cpu));
   m_oSystemDevices.append(pCpu);
 }

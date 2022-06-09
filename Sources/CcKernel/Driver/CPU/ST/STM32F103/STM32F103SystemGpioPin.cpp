@@ -38,7 +38,7 @@ public:
 };
 
 STM32F103SystemGpioPin::STM32F103SystemGpioPin(void* pPort, uint8 uiPinNr) :
-    m_pPrivate(new STM32F103SystemGpioPinPrivate(
+    m_pPrivate(CCNEW_INLINE(STM32F103SystemGpioPinPrivate,
         (static_cast<GPIO_TypeDef*>(pPort)),
         (static_cast<uint16>(1) << uiPinNr)))
 {

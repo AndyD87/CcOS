@@ -86,7 +86,7 @@ IGpioPin* STM32F207IGSystemGpioPort::getPin(uint8 uiNr)
 {
   if(aPins[uiNr] == nullptr)
   {
-    aPins[uiNr] = new STM32F207IGSystemGpioPin(pPort, uiNr);
+    aPins[uiNr] = CCNEW_INLINE(STM32F207IGSystemGpioPin, pPort, uiNr);
   }
   return aPins[uiNr];
 }

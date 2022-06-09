@@ -47,7 +47,7 @@ CcRawSocketDriver::~CcRawSocketDriver ()
 
 CcStatus CcRawSocketDriver::entry()
 {
-  m_pPrivate->pNetworkDevice = new CcRawSocketNetwork("Qualcomm Atheros QCA61x4 Wireless Network Adapter");
+  m_pPrivate->pNetworkDevice = CCNEW_INLINE(CcRawSocketNetwork, "Qualcomm Atheros QCA61x4 Wireless Network Adapter");
   m_pPrivate->pNetworkDevice->getAdapterCount();
   CcKernel::addDevice(CcDevice(m_pPrivate->pNetworkDevice, EDeviceType::Network));
   return true;

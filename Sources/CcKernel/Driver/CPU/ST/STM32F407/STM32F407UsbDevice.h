@@ -38,7 +38,9 @@ public: //methods
   virtual ~STM32F407UsbDevice();
 
   virtual CcStatus onState(EState eState) override;
+  virtual CcStatus loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor) override;
 
+public:
   void ISR();
 
 private:

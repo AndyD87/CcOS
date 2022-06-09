@@ -74,7 +74,7 @@ IGpioPin* STM32F303VCT6SystemGpioPort::getPin(uint8 uiNr)
 {
   if(aPins[uiNr] == nullptr)
   {
-    aPins[uiNr] = new STM32F303VCT6SystemGpioPin(pPort, uiNr);
+    aPins[uiNr] = CCNEW_INLINE(STM32F303VCT6SystemGpioPin, pPort, uiNr);
   }
   return aPins[uiNr];
 }

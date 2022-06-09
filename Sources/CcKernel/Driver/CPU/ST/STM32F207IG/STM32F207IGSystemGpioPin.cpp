@@ -40,7 +40,7 @@ public:
 };
 
 STM32F207IGSystemGpioPin::STM32F207IGSystemGpioPin(void* pPort, uint8 uiPinNr) :
-    m_pPrivate(new STM32F207IGSystemGpioPinPrivate(
+    m_pPrivate(CCNEW_INLINE(STM32F207IGSystemGpioPinPrivate, 
         (static_cast<GPIO_TypeDef*>(pPort)),
         (static_cast<uint32>(1) << uiPinNr)))
 {

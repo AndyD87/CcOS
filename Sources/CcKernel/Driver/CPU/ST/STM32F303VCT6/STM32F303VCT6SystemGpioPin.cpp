@@ -40,7 +40,7 @@ public:
 };
 
 STM32F303VCT6SystemGpioPin::STM32F303VCT6SystemGpioPin(void* pPort, uint8 uiPinNr) :
-    m_pPrivate(new STM32F303VCT6SystemGpioPinPrivate(
+    m_pPrivate(CCNEW_INLINE(STM32F303VCT6SystemGpioPinPrivate,
         (static_cast<GPIO_TypeDef*>(pPort)),
         (static_cast<uint32>(1) << uiPinNr)))
 {

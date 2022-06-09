@@ -28,6 +28,39 @@
 #include "Devices/CcBoardSupport.h"
 #include "Devices/CcDeviceI2C.h"
 #include "Driver/I2C/PortExpander/MCP23017.h"
+#include "Json/CcJsonDocument.h"
+#include "CcFile.h"
+
+int TestJsonRead()
+{
+  int iRet = 0;
+  CcJsonDocument oDoc;
+  CcFile oFile("C:/Temp/Test.json");
+  if (oFile.open(EOpenFlags::Read))
+  {
+    CcString sDocument = oFile.readAll();
+    if (oDoc.parseDocument(sDocument))
+    {
+      CcFile oFile2("C:/Temp/Test.out.json");
+      if (oFile2.open(EOpenFlags::Write))
+      {
+        oDoc.writeDocument(oFile2, false);
+      }
+      CcFile oFile3("C:/Temp/Test.out.compact.json");
+      if (oFile3.open(EOpenFlags::Write))
+      {
+        oDoc.writeDocument(oFile3, true);
+      }
+      iRet = 0;
+      iRet = 0;
+    }
+    else
+    {
+      iRet = -1;
+    }
+  }
+  return iRet;
+}
 
 /**
  * @brief Default application entry point
@@ -39,7 +72,8 @@ int main(int iArgc, char** ppArgv)
 {
   CCUNUSED(iArgc);
   CCUNUSED(ppArgv);
-  int iRet = 0;
+  int iRet = TestJsonRead();
+
   CcDeviceI2C oI2CDevice        = CcKernel::getDevice(EDeviceType::I2C);
   if(!oI2CDevice.isValid())
   {

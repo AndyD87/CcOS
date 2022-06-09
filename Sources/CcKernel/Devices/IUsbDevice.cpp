@@ -25,6 +25,57 @@
 
 #include "IUsbDevice.h"
 
+IUsbDevice::CDeviceDescriptor::CDeviceDescriptor(uint16 uiVid, uint16 uiPid)
+{
+   this->uiVendorId = uiVid;
+   this->uiProductId = uiPid;
+}
+
+IUsbDevice::CDeviceDescriptor::~CDeviceDescriptor()
+{
+
+}
+
+IUsbDevice::CDeviceDescriptor::CConfigDescriptor::CConfigDescriptor()
+{
+
+}
+
+IUsbDevice::CDeviceDescriptor::CConfigDescriptor::~CConfigDescriptor()
+{
+
+}
+
+IUsbDevice::CDeviceDescriptor::CStringDescriptor::CStringDescriptor()
+{
+
+}
+
+IUsbDevice::CDeviceDescriptor::CStringDescriptor::~CStringDescriptor()
+{
+
+}
+
+IUsbDevice::CDeviceDescriptor::CConfigDescriptor::CInterfaceDescriptor::CInterfaceDescriptor()
+{
+   
+}
+
+IUsbDevice::CDeviceDescriptor::CConfigDescriptor::CInterfaceDescriptor::~CInterfaceDescriptor()
+{
+
+}
+
+IUsbDevice::CDeviceDescriptor::CConfigDescriptor::CInterfaceDescriptor::CEndpointDescriptor::CEndpointDescriptor()
+{
+   
+}
+
+IUsbDevice::CDeviceDescriptor::CConfigDescriptor::CInterfaceDescriptor::CEndpointDescriptor::~CEndpointDescriptor()
+{
+   
+}
+
 IUsbDevice::IUsbDevice()
 {
 }

@@ -60,7 +60,7 @@ CcStatus STM32F407Driver::entry()
   // Setup Gpio
   for(uint8 uiPortNr = 0; uiPortNr < NUMBER_OF_PORTS; uiPortNr++)
   {
-    m_pPort[uiPortNr] = new STM32F407SystemGpioPort(uiPortNr);
+    m_pPort[uiPortNr] = CCNEW_INLINE(STM32F407SystemGpioPort, uiPortNr);
     CcKernel::addDevice(CcDevice(m_pPort[uiPortNr], EDeviceType::GpioPort));
   }
   // Setup Timersource for pll
@@ -78,18 +78,18 @@ CcStatus STM32F407Driver::entry()
   GPIOH->PUPDR   = 0x00000000;
 
 #ifdef CCOS_GENERIC_NETWORK
-  IDevice* pNetworkDevice = new STM32F407Network();
+  IDevice* pNetworkDevice = CCNEW_INLINE(STM32F407Network);
   CcKernel::addDevice(CcDevice(pNetworkDevice,EDeviceType::Network));
 #endif
 
   // Setup Timer2
-  IDevice* pTimerDevice = new STM32F407Timer();
+  IDevice* pTimerDevice = CCNEW_INLINE(STM32F407Timer);
   CcKernel::addDevice(CcDevice(pTimerDevice,EDeviceType::Timer));
   m_oSystemDevices.append(pTimerDevice);
 
   #ifdef CCOS_GENERIC_USB
     // Setup USB
-    IUsb* pUsbDevice = new STM32F407Usb();
+    IUsb* pUsbDevice = CCNEW_INLINE(STM32F407Usb);
     CcKernel::addDevice(CcDevice(pUsbDevice,EDeviceType::Usb));
   #endif
   

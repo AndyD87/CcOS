@@ -27,8 +27,7 @@
 #include "CcBase.h"
 #include "CcString.h"
 #include "IDevice.h"
-
-class IUsbDevice;
+#include "IUsbDevice.h"
 
 /**
  * @brief Class for communication with a USB-HIDevice
@@ -56,6 +55,6 @@ public:
   };
 
   //! @return Create USB device
-  virtual IUsbDevice* createDevice()
+  virtual IUsbDevice* createDevice(const IUsbDevice::CDeviceDescriptor& CCUNUSED_PARAM(oConfig))
   { return nullptr; }
 };

@@ -55,7 +55,7 @@ CcStatus STM32F407Usb::onState(EState eState)
   return bSuccess;
 }
 
-IUsbDevice* STM32F407Usb::createDevice()
+IUsbDevice* STM32F407Usb::createDevice(const IUsbDevice::CDeviceDescriptor& oConfig)
 {
   if(m_pType.pBasicDevice)
   {
@@ -63,6 +63,15 @@ IUsbDevice* STM32F407Usb::createDevice()
   }
   else
   {
-    return m_pType.pDevice = new STM32F407UsbDevice();
+    CCNEW(m_pType.pDevice, STM32F407UsbDevice);
+    if(m_pType.pDevice->loadDeviceDescriptor(oConfig))
+    {
+      return m_pType.pDevice;
+    }
+    else
+    {
+      CCDELETE(m_pType.pDevice);
+      return nullptr;
+    }
   }
 }

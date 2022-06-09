@@ -484,7 +484,7 @@ void CcWidget::initWidget(CcWidget* rParent)
   if (rParent != nullptr)
   {
     rParent->registerChild(this);
-    m_pPrivate->pWidget = new CcCWnd(this);
+    CCNEW(m_pPrivate->pWidget, CcCWnd, this);
     m_pPrivate->hSubSystemHandle = m_pPrivate->pWidget;
     m_pPrivate->pWidget->enablePainting();
   }

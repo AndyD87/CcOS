@@ -43,7 +43,19 @@ void GenericApp::run()
   CcDeviceUsb oUsbDevice = CcKernel::getDevice(EDeviceType::Usb);
   if(oUsbDevice.isValid())
   {
-    IUsbDevice* pUsbDevice = oUsbDevice.getDevice()->createDevice();
+    IUsbDevice::CDeviceDescriptor oDeviceDescriptor(0x1234, 0x1234);
+    oDeviceDescriptor.uiBcd = 0x0200;
+    oDeviceDescriptor.uiDeviceClass     = 0;
+    oDeviceDescriptor.uiDeviceSubClass  = 0;
+    oDeviceDescriptor.uiDeviceProtocol  = 0;
+    oDeviceDescriptor.uiMaxPacketSize   = 64;
+    oDeviceDescriptor.uiBcdDevice             = 0x0200;
+    oDeviceDescriptor.uiManufacturerStringIdx = 0;
+    oDeviceDescriptor.uiProductStringIdx      = 0;
+    oDeviceDescriptor.uiSerialNumberStringIdx = 0;
+    oDeviceDescriptor.uiNumConfigurations     = 0;
+
+    IUsbDevice* pUsbDevice = oUsbDevice.getDevice()->createDevice(oDeviceDescriptor);
     if(pUsbDevice)
     {
       pUsbDevice->start();

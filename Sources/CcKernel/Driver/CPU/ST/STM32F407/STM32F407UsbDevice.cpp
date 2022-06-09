@@ -26,7 +26,7 @@
 
 void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
 {
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  GPIO_InitTypeDef GPIO_InitStruct = {};
   if(pcdHandle->Instance==USB_OTG_FS)
   {
   /* USER CODE BEGIN USB_OTG_FS_MspInit 0 */
@@ -220,4 +220,11 @@ CcStatus STM32F407UsbDevice::onState(EState eState)
       bSuccess = EStatus::NotSupported;
   }
   return bSuccess;
+}
+
+CcStatus STM32F407UsbDevice::loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor)
+{
+  CcStatus oStatus = EStatus::CommandInvalidParameter;
+  
+  return oStatus;
 }

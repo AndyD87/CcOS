@@ -40,9 +40,9 @@ STM32F407VETBoardDriver::~STM32F407VETBoardDriver()
 CcStatus STM32F407VETBoardDriver::entry()
 {
   // Load all leds:
-  CcDevice hDevice(new STM32F407VETBoardLed(0), EDeviceType::Led);
+  CcDevice hDevice(CCNEW_INLINE(STM32F407VETBoardLed, 0), EDeviceType::Led);
   CcKernel::addDevice(hDevice);
-  CcDevice hDevice1(new STM32F407VETBoardLed(1), EDeviceType::Led);
+  CcDevice hDevice1(CCNEW_INLINE(STM32F407VETBoardLed, 1), EDeviceType::Led);
   CcKernel::addDevice(hDevice1);
   return true;
 }

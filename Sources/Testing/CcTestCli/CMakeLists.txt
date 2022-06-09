@@ -24,6 +24,7 @@ CcAddGuiExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} ${HEADER_FILES} )
 
 target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               CcKernel
+                              CcDocuments
 )
 
 set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "Testing")
