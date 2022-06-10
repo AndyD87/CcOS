@@ -66,6 +66,8 @@
 #define HAL_PCD_MODULE_ENABLED       //!< Enabled module for STM32F4xx
 #define HAL_HCD_MODULE_ENABLED       //!< Enabled module for STM32F4xx
 
+#define  USE_HAL_PCD_REGISTER_CALLBACKS         1U /**< PCD register callback disabled       */
+
 #ifdef CCOS_GENERIC_NETWORK
   #define HAL_ETH_MODULE_ENABLED
 #endif

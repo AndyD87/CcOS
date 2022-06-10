@@ -85,6 +85,7 @@ if(CCOS_GENERIC_USB)
         "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_usb.c"
         "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_hcd.c"
         "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd.c"
+        "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pcd_ex.c"
         ${USB_SOURCE_FILES}
   )
   list(APPEND PROJECT_DEFINITIONS "-DCCOS_GENERIC_USB")

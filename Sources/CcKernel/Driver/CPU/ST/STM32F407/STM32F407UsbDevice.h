@@ -34,17 +34,66 @@
 class STM32F407UsbDevice : public IUsbDevice
 {
 public: //methods
+  enum EUsbState
+  {
+    Default = 0,
+    Addressed,
+    Configured,
+    Suspended,
+    Resume
+  };
+
   STM32F407UsbDevice();
   virtual ~STM32F407UsbDevice();
 
   virtual CcStatus onState(EState eState) override;
   virtual CcStatus loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor) override;
 
+  inline PCD_HandleTypeDef* getPcdHandle()
+  { return &m_oPcdHandle; }
+
+  void setUsbState(EUsbState eNewState);
+  void doReset();
+  void doSetup();
+  void doSetupDevice();
+  void doSetupDeviceDescriptor();
+  void doSetupDeviceDescriptorString();
+  void doSetupInterface();
+  void doSetupEndPoint();
+  void doInputData(uint8 uiEndpoint);
+
+  void write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize);
+  bool writeContinue();
+
 public:
   void ISR();
 
 private:
+  #pragma pack(push, 1)
+  class CRequest
+  {
+  public:
+    uint8_t   bmRequest;
+    uint8_t   bRequest;
+    uint16_t  wValue;
+    uint16_t  wIndex;
+    uint16_t  wLength;
+  };
+  #pragma pack(pop)
+
   PCD_HandleTypeDef     m_oPcdHandle;
   USB_OTG_GlobalTypeDef m_oGlobalDef;
   USB_OTG_CfgTypeDef    m_oConfigDef;
+
+  CDeviceDescriptor     m_oDeviceDescriptor;
+
+  EUsbState m_eOldState = EUsbState::Default;
+  EUsbState m_eCurrentSate = EUsbState::Default;
+
+  uint8 m_uiUsbAddress = 0;
+
+  uint8* m_pWriteBuffer     = nullptr;
+  uint16 m_uiWriteEndpoint  = 0;
+  uint16 m_uiWriteSize      = 0;
+  uint16 m_uiWritten        = 0;
 };

@@ -50,7 +50,7 @@ CcStatus STM32F407Usb::onState(EState eState)
       }
       break;
     default:
-      bSuccess = EStatus::NotSupported;
+      break;
   }
   return bSuccess;
 }

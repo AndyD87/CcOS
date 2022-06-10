@@ -43,17 +43,19 @@ void GenericApp::run()
   CcDeviceUsb oUsbDevice = CcKernel::getDevice(EDeviceType::Usb);
   if(oUsbDevice.isValid())
   {
-    IUsbDevice::CDeviceDescriptor oDeviceDescriptor(0x1234, 0x1234);
-    oDeviceDescriptor.uiBcd = 0x0200;
-    oDeviceDescriptor.uiDeviceClass     = 0;
-    oDeviceDescriptor.uiDeviceSubClass  = 0;
-    oDeviceDescriptor.uiDeviceProtocol  = 0;
-    oDeviceDescriptor.uiMaxPacketSize   = 64;
+    IUsbDevice::CDeviceDescriptor oDeviceDescriptor;
+    oDeviceDescriptor.uiVendorId = 0x1234;
+    oDeviceDescriptor.uiProductId = 0x1234;
+    oDeviceDescriptor.uiBcd                   = 0x0200;
+    oDeviceDescriptor.uiDeviceClass           = 0;
+    oDeviceDescriptor.uiDeviceSubClass        = 0;
+    oDeviceDescriptor.uiDeviceProtocol        = 0;
+    oDeviceDescriptor.uiMaxPacketSize         = 64;
     oDeviceDescriptor.uiBcdDevice             = 0x0200;
-    oDeviceDescriptor.uiManufacturerStringIdx = 0;
-    oDeviceDescriptor.uiProductStringIdx      = 0;
-    oDeviceDescriptor.uiSerialNumberStringIdx = 0;
-    oDeviceDescriptor.uiNumConfigurations     = 0;
+    oDeviceDescriptor.uiManufacturerStringIdx = 1;
+    oDeviceDescriptor.uiProductStringIdx      = 2;
+    oDeviceDescriptor.uiSerialNumberStringIdx = 3;
+    oDeviceDescriptor.uiNumConfigurations     = 1;
 
     IUsbDevice* pUsbDevice = oUsbDevice.getDevice()->createDevice(oDeviceDescriptor);
     if(pUsbDevice)

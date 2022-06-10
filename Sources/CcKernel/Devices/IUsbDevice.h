@@ -168,8 +168,11 @@ public:
     };
 
 
-    CDeviceDescriptor(uint16 uiVid, uint16 uiPid);
+    CDeviceDescriptor();
     ~CDeviceDescriptor();
+
+    const CcVector<SStringDescriptor*>& getStrings() const
+    { return oStrings; }
 
   private:
     CcVector<CConfigDescriptor> oConfigs;

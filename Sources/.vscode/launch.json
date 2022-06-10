@@ -10,6 +10,7 @@
             "type": "cppdbg",
             "request": "launch",
             "preLaunchTask": "OpenOCD for STM32F407VET",
+            "postDebugTask": "Terminate All Tasks",
             "targetArchitecture": "arm",
             "cwd": "${workspaceRoot}",
             "program": "${workspaceRoot}/../Output/arm32_debug_STM32F407VET/bin/GenericTestd.elf",
