@@ -44,6 +44,47 @@
                     }
                 ]
             },
+        },
+        {
+            // Openocd was previously started with "d:/Cache/Toolchains/openocd/GNU MCU Eclipse/OpenOCD/0.10.0-10-20181020-0522/bin/openocd.exe" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -f d:/CcOS/Sources/ST/STM32F407VET/openocd-STM32F407VET.cfg -c "echo /"Started by GNU MCU Eclipse/""
+            "name": "STM3220GEVAL",
+            "type": "cppdbg",
+            "request": "launch",
+            "preLaunchTask": "OpenOCD for STM3220GEVAL",
+            "postDebugTask": "Terminate All Tasks",
+            "targetArchitecture": "arm",
+            "cwd": "${workspaceRoot}",
+            "program": "${workspaceRoot}/../Output/arm32_debug/bin/GenericTest.elf",
+            "stopAtEntry": false,
+            "windows": {
+                "MIMode": "gdb",
+                "miDebuggerPath": "${workspaceRoot}/../../Cache/Toolchains/gcc-arm-none-eabi/bin/arm-none-eabi-gdb.exe",
+                "customLaunchSetupCommands": [
+                    {
+                        "text": "cd ${workspaceRoot}"
+                    },
+                    {
+                        "text": "target remote localhost:3333",
+                        "description": "connect to remote target",
+                        "ignoreFailures": false
+                    },
+                    {
+                        "text": "monitor reset halt",
+                        "description": "halt",
+                        "ignoreFailures": false
+                    },
+                    {
+                        "text": "file ../Output/arm32_debug/bin/GenericTest.elf",
+                        "description": "load symbols",
+                        "ignoreFailures": false
+                    },
+                    {
+                        "text": "load",
+                        "description": "load to remote MCU",
+                        "ignoreFailures": false
+                    }
+                ]
+            },
         }
     ]
 }

@@ -9,6 +9,7 @@
         "ostream": "cpp",
         "sstream": "cpp",
         "streambuf": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "ios": "cpp"
     },
 }

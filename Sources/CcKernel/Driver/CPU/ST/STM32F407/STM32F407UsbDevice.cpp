@@ -154,9 +154,7 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef* pcdHandle)
 void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
 {
   /* Prevent unused argument(s) compilation warning */
-  UNUSED(hpcd);
-  UNUSED(epnum);
-  CallbackReceived("HAL_PCD_DataOutStageCallback");
+  static_cast<STM32F407UsbDevice*>(hpcd->pData)->doOutputData(epnum, hpcd->OUT_ep[epnum].xfer_buff);
 }
 
 /**
@@ -455,7 +453,8 @@ void STM32F407UsbDevice::doSetupDevice()
   {
     case USB_REQ_TYPE_CLASS:
     case USB_REQ_TYPE_VENDOR:
-      /* code */
+    default:
+      CallbackReceived("USB_REQ_TYPE_CLASS/USB_REQ_TYPE_VENDOR");
       break;
 
     case USB_REQ_TYPE_STANDARD:
@@ -470,10 +469,15 @@ void STM32F407UsbDevice::doSetupDevice()
             if(m_eCurrentSate == EUsbState::Configured)
             {
               // Write Error
+              CallbackReceived("Error already configured");
             }
             else
             {
               m_uiUsbAddress = (uint8_t)(pRequest->wValue) & 0x7FU;
+              HAL_PCD_SetAddress(getPcdHandle(), m_uiUsbAddress);
+              eEp0State = EEnpointState::In;
+              HAL_PCD_EP_Transmit(getPcdHandle(), 0, nullptr, 0);
+
               if (m_uiUsbAddress != 0U)
               {
                 setUsbState(EUsbState::Addressed);
@@ -489,35 +493,15 @@ void STM32F407UsbDevice::doSetupDevice()
             // Write Error
           }
           break;
-
         case USB_REQ_SET_CONFIGURATION:
-          //USBD_SetConfig(pdev, req);
-          break;
-
         case USB_REQ_GET_CONFIGURATION:
-          //USBD_GetConfig(pdev, req);
-          break;
-
         case USB_REQ_GET_STATUS:
-          //USBD_GetStatus(pdev, req);
-          break;
-
         case USB_REQ_SET_FEATURE:
-          //USBD_SetFeature(pdev, req);
-          break;
-
         case USB_REQ_CLEAR_FEATURE:
-          //USBD_ClrFeature(pdev, req);
-          break;
-
         default:
-          //USBD_CtlError(pdev, req);
+          CallbackReceived("USB_REQ_...");
           break;
       }
-      break;
-
-    default:
-      //USBD_CtlError(pdev, req);
       break;
   }
 }
@@ -536,6 +520,9 @@ void STM32F407UsbDevice::doSetupDeviceDescriptor()
   CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
   uint8* pBuffer = nullptr;
   uint16 uiSize = 0;
+
+  eEp0State = EEnpointState::Setup;
+
   switch(pRequest->wValue >> 8)
   {
     case USB_DESC_TYPE_DEVICE:
@@ -546,8 +533,12 @@ void STM32F407UsbDevice::doSetupDeviceDescriptor()
       doSetupDeviceDescriptorString();
       break;
     case USB_DESC_TYPE_CONFIGURATION:
+      pBuffer = reinterpret_cast<uint8*>(m_oDeviceDescriptor.getConfigs()[0].getConfig());
+      uiSize = m_oDeviceDescriptor.getConfigs()[0].getConfig()->uiTotalLength;
+      break;
     case USB_DESC_TYPE_DEVICE_QUALIFIER:
     case USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION:
+      CallbackReceived("Test");
       break;
   }
   if(pBuffer != nullptr && uiSize > 0)
@@ -583,15 +574,49 @@ void STM32F407UsbDevice::doInputData(uint8 uiEndpoint)
 {
   if(uiEndpoint == 0)
   {
-    // Check if more data is required
-    if(writeContinue())
+    if(eEp0State == EEnpointState::In)
     {
-
+      if(!writeContinue())
+      {
+        stallEp(0x80U);
+        // Prepare receive
+        eEp0State = EEnpointState::Out;
+        HAL_PCD_EP_Receive(getPcdHandle(), uiEndpoint, nullptr, 0);
+      }
     }
     else
     {
       // Perpare receive
       HAL_PCD_EP_Receive(getPcdHandle(), 0, nullptr, 0);
+    }
+  }
+  else
+  {
+    if(writeContinue())
+    {
+
+    }
+  }
+}
+
+void STM32F407UsbDevice::doOutputData(uint8 uiEndpoint, const uint8* pBuffer)
+{
+  if(uiEndpoint == 0)
+  {
+    // Check if more data is required
+    if(eEp0State == EEnpointState::Out)
+    {
+      if(0)
+        HAL_PCD_EP_Receive(getPcdHandle(), 0, nullptr, 0);
+      
+      eEp0State = EEnpointState::In;
+      HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, nullptr, 0);
+    }
+    else
+    {
+      eEp0State = EEnpointState::Idle;
+      // Perpare receive
+      stallEp(0U);
     }
   }
 }
@@ -624,6 +649,12 @@ bool STM32F407UsbDevice::writeContinue()
     m_pWriteBuffer = nullptr;
     m_uiWriteSize = 0;
     m_uiWritten = 0;
+    eEp0State = EEnpointState::In;
   }
   return bDataWritten;
+}
+
+void STM32F407UsbDevice::stallEp(uint8 uiEndpoint)
+{
+  HAL_PCD_EP_SetStall(getPcdHandle(), uiEndpoint);
 }

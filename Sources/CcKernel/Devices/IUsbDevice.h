@@ -28,6 +28,7 @@
 #include "CcString.h"
 #include "IDevice.h"
 #include "CcVector.h"
+#include "CcByteArray.h"
 
 /**
  * @brief Class for communication with a USB-HIDevice
@@ -45,7 +46,7 @@ public:
     struct CcKernelSHARED SDeviceDescriptor
     {
       public:
-      uint8   uiLength         = 0x12;    //< Size of descriptor 18 byte
+      uint8   uiLength         = sizeof(SDeviceDescriptor);    //< Size of descriptor 18 byte
       uint8   uiDescriptorType = 0x01;    //< Device Descriptor
       uint16  uiBcd            = 0;       //< USB Specification Number which device complies too
       uint8   uiDeviceClass    = 0xff;    //< Class Code
@@ -66,43 +67,60 @@ public:
     struct CcKernelSHARED SConfigDescriptor
     {
       public:
-      uint8   uiLength = 0;               //< Size of descriptor in bytes
-      uint8   uiDescriptorType = 0x02;    //< Config Descriptor
-      uint16  uiTotalLength    = 0;       //< Total length in bytes of data returned
-      uint8   uiNumInterfaces  = 0xff;    //< Number of Interfaces
-      uint8   uiConfigurationValue = 0;   //< Value to use as an argument to select this configuration
-      uint8   uiConfiguration = 0;        //< Index of String Descriptor describing this configuration
-      uint8   uiAttributes = 0;           //< D7 Reserved, set to 1. (USB 1.0 Bus Powered)
+      uint8   uiLength;               //< Size of descriptor in bytes
+      uint8   uiDescriptorType;       //< Config Descriptor
+      uint16  uiTotalLength;          //< Total length in bytes of data returned
+      uint8   uiNumInterfaces;        //< Number of Interfaces
+      uint8   uiConfigurationValue;   //< Value to use as an argument to select this configuration
+      uint8   uiConfiguration;        //< Index of String Descriptor describing this configuration
+      uint8   uiAttributes;           //< D7 Reserved, set to 1. (USB 1.0 Bus Powered)
                                           //< D6 Self Powered
                                           //< D5 Remote Wakeup
                                           //< D4..0 Reserved, set to 0.
-      uint8   uiMaxPower = 0;             //< Maximum Power Consumption in 2mA units
+      uint8   uiMaxPower;             //< Maximum Power Consumption in 2mA units
+      
+      SConfigDescriptor() = delete;
+      ~SConfigDescriptor() = delete;
+
+      void init()
+      {
+        uiLength = sizeof(SConfigDescriptor);
+        uiDescriptorType = 0x02;
+      }
     };
     
     struct CcKernelSHARED SInterfaceDescriptor
     {
       public:
-      uint8   uiLength         = 0x00;    //< Size of descriptor in bytes
-      uint8   uiDescriptorType = 0x04;    //< Interface Descriptor
-      uint8   uiInterfaceNumber = 0;      //< Number of Interface
-      uint8   uiAlternateSetting = 0;     //< Value used to select alternative setting
-      uint8   uiNumEndpoints = 0;         //< Number of Endpoints used for this interface
-      uint8   uiInterfaceClass = 0;       //< Class Code (Assigned by USB Org)
-      uint8   uiInterfaceSubClass = 0;    //< Subclass Code (Assigned by USB Org)
-      uint8   uiInterfaceProtocol = 0;    //< Protocol Code (Assigned by USB Org)
-      uint8   uiInterfaceIdx = 0;         //< Index of String Descriptor Describing this interface
+      uint8   uiLength;               //< Size of descriptor in bytes
+      uint8   uiDescriptorType;       //< Interface Descriptor
+      uint8   uiInterfaceNumber;      //< Number of Interface
+      uint8   uiAlternateSetting;     //< Value used to select alternative setting
+      uint8   uiNumEndpoints;         //< Number of Endpoints used for this interface
+      uint8   uiInterfaceClass;       //< Class Code (Assigned by USB Org)
+      uint8   uiInterfaceSubClass;    //< Subclass Code (Assigned by USB Org)
+      uint8   uiInterfaceProtocol;    //< Protocol Code (Assigned by USB Org)
+      uint8   uiInterfaceIdx;         //< Index of String Descriptor Describing this interface
+
+      SInterfaceDescriptor() = delete;
+      ~SInterfaceDescriptor() = delete;
+      void init()
+      {
+        uiLength = sizeof(SInterfaceDescriptor);
+        uiDescriptorType = 0x04;
+      }
     };
     
     struct CcKernelSHARED SEndpointDescriptor
     {
       public:
-      uint8   uiLength         = 0x00;    //< Size of descriptor in bytes
-      uint8   uiDescriptorType = 0x05;    //< Endpoint Descriptor
-      uint8   uiEndpointAddress = 0;      //< Endpoint Address
+      uint8   uiLength;                   //< Size of descriptor in bytes
+      uint8   uiDescriptorType;           //< Endpoint Descriptor
+      uint8   uiEndpointAddress;          //< Endpoint Address
                                           //< Bits 0..3b Endpoint Number.
                                           //< Bits 4..6b Reserved. Set to Zero
                                           //< Bits 7 Direction 0 = Out, 1 = In (Ignored for Control Endpoints)
-      uint8   uiAttributes = 0;           //< Bits 0..1 Transfer Type
+      uint8   uiAttributes;               //< Bits 0..1 Transfer Type
                                           //<   00 = Control
                                           //<   01 = Isochronous
                                           //<   10 = Bulk
@@ -118,12 +136,42 @@ public:
                                           //<   01 = Feedback Endpoint
                                           //<   10 = Explicit Feedback Data Endpoint
                                           //<   11 = Reserved
-      uint16  wMaxPacketSize = 0;         //< Maximum Packet Size this endpoint is capable of sending or receiving
-      uint8   uInterval = 0;              //< Interval for polling endpoint data transfers. Value in frame counts. 
+      uint16  wMaxPacketSize;             //< Maximum Packet Size this endpoint is capable of sending or receiving
+      uint8   uInterval;                  //< Interval for polling endpoint data transfers. Value in frame counts. 
                                           //< Ignored for Bulk & Control Endpoints. 
                                           //< Isochronous must equal 1 and field may range from 1 to 255 for interrupt endpoints.
+                                          
+      SEndpointDescriptor() = delete;
+      ~SEndpointDescriptor() = delete;
+      void init()
+      {
+        uiLength = sizeof(SEndpointDescriptor);
+        uiDescriptorType = 0x05;
+      }
     };
     
+    struct CcKernelSHARED SFunctionalDescriptor
+    {
+      public:
+      uint8   uiLength;         //< Size of descriptor in bytes
+      uint8   uiDescriptorType; //< Size of descriptor in bytes
+      union IUsbDevice
+      {
+        struct
+        {
+          uint8 uiRaw[1];
+        } Raw;
+      } Data;
+      
+      SFunctionalDescriptor() = delete;
+      ~SFunctionalDescriptor() = delete;
+      void init(uint8 uiSize)
+      {
+        uiLength         = uiSize;
+        uiDescriptorType = 0x24;
+      }
+    };
+
     struct CcKernelSHARED SStringDescriptor
     {
       public:
@@ -132,47 +180,76 @@ public:
       char    pString[3];                  //< String described
     };
   #pragma pack(pop)
-  class CcKernelSHARED CDeviceDescriptor : public SDeviceDescriptor
+  
+  enum class EEnpointState
+  {
+    Idle,
+    Setup,
+    In,
+    Out,
+  };
+  
+  class CcKernelSHARED CConfigDescriptor
   {
     public:
-    class CcKernelSHARED CConfigDescriptor : public SConfigDescriptor
-    {
-      public:
-      CConfigDescriptor();
-      ~CConfigDescriptor();
-      class CcKernelSHARED CInterfaceDescriptor : public SInterfaceDescriptor
-      {
-        public:
-        class CcKernelSHARED CEndpointDescriptor : public SEndpointDescriptor
-        {
-          public:
-          CEndpointDescriptor();
-          ~CEndpointDescriptor();
-        };
-        CInterfaceDescriptor();
-        ~CInterfaceDescriptor();
+    CConfigDescriptor();
+    ~CConfigDescriptor();
 
-        private:
-        CcVector<CEndpointDescriptor> oEndPoints;
-      };
-      
-      private:
-      CcVector<CInterfaceDescriptor> oInterfaces;
-    };
-    
-    class CcKernelSHARED CStringDescriptor : public SStringDescriptor
-    {
-      public:
-      CStringDescriptor();
-      ~CStringDescriptor();
-    };
+    void* generateConfiguration(uint16& uiSize);
 
+    SInterfaceDescriptor* createInterface();
+    SEndpointDescriptor* createEndpoint();
+    SFunctionalDescriptor* createFunctional(uint8 uiSize);
 
+    size_t getEndpointCount() const
+    { return m_oEndPoints.size(); }
+    SConfigDescriptor* getConfig();
+    SInterfaceDescriptor* getInterface(size_t uiIndex);
+    SEndpointDescriptor* getEndpoint(size_t uiIndex);
+    SFunctionalDescriptor* getFunction(size_t uiIndex);
+
+    private:
+    CcByteArray         m_oBuffer;
+    CcVector<uint32>    m_oEndPoints;
+    CcVector<uint32>    m_oFunctions;
+    CcVector<uint32>    m_oInterfaces;
+  };
+  
+  class CcKernelSHARED CStringDescriptor : public SStringDescriptor
+  {
+    public:
+    CStringDescriptor();
+    ~CStringDescriptor();
+  };
+
+  class CcKernelSHARED CDeviceDescriptor : public SDeviceDescriptor
+  {
+  public:
     CDeviceDescriptor();
     ~CDeviceDescriptor();
 
+    SEndpointDescriptor* getEndpoint(uint8 uiEndpoint)
+    { 
+      for(CConfigDescriptor& oConfig : oConfigs)  
+      {
+        for(size_t uiIdx=0; uiIdx<oConfig.getEndpointCount(); uiIdx++)  
+        {
+          if(oConfig.getEndpoint(uiIdx)->uiEndpointAddress == uiEndpoint) 
+          {
+            return oConfig.getEndpoint(uiIdx);
+          }
+        }
+      }
+      return nullptr;
+    }
+
+    CcVector<CConfigDescriptor>& getConfigs()
+    { return oConfigs; }
     const CcVector<SStringDescriptor*>& getStrings() const
     { return oStrings; }
+
+    CConfigDescriptor& createConfig();
+    IUsbDevice::CStringDescriptor& createString(const CcString& sValue);
 
   private:
     CcVector<CConfigDescriptor> oConfigs;
@@ -190,4 +267,6 @@ public:
   virtual ~IUsbDevice();
 
   virtual CcStatus loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor) = 0;
+
+  EEnpointState eEp0State = EEnpointState::Idle;
 };

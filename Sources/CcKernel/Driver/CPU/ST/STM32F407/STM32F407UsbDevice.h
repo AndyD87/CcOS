@@ -60,10 +60,14 @@ public: //methods
   void doSetupDeviceDescriptorString();
   void doSetupInterface();
   void doSetupEndPoint();
+
   void doInputData(uint8 uiEndpoint);
+  void doOutputData(uint8 uiEndpoint, const uint8* pBuffer);
 
   void write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize);
   bool writeContinue();
+
+  void stallEp(uint8 uiEndpoint);
 
 public:
   void ISR();

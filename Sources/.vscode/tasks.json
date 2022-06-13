@@ -9,6 +9,13 @@
             "isBackground": true
         },
         {
+            "label": "OpenOCD for STM3220GEVAL",
+            "type": "process",
+            "command": "${workspaceRoot}\\..\\..\\Cache\\Toolchains\\openocd\\GNU MCU Eclipse\\OpenOCD\\0.10.0-10-20181020-0522\\bin\\openocd.exe",
+            "args": ["-c","gdb_port 3333","-c","telnet_port 4444","-c","tcl_port 6666","-f","${workspaceRoot}\\CMakeConfig\\CPU\\ST\\STM32F2\\openocd-stm3220g_eval_stlink.cfg"],
+            "isBackground": true
+        },
+        {
           "label": "Terminate All Tasks",
           "command": "echo ${input:terminate}",
           "type": "shell",

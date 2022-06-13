@@ -4,5 +4,11 @@
         "cmakeSettings": {
             "CCOS_BOARD":"STM32F407VET"
         }
+    },
+    {
+        "name":"STM3220GEVAL",
+        "cmakeSettings": {
+            "CCOS_BOARD":"STM3220GEVAL"
+        }
     }
 ]

@@ -211,8 +211,8 @@ public:
 
   //! @return Get buffer of byte array already casted
   template<class T>
-  inline T* cast()
-  { return reinterpret_cast<T*>(getArray()); }
+  inline T* cast(size_t uiOffset = 0)
+  { return reinterpret_cast<T*>(getArray(uiOffset)); }
 
   static const CcByteArray& getEmpty()
   { return s_oEmpty; }

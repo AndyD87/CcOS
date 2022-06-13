@@ -24,6 +24,7 @@
  */
 
 #include "IUsbDevice.h"
+#include "CcStatic.h"
 
 IUsbDevice::CDeviceDescriptor::CDeviceDescriptor()
 {
@@ -34,44 +35,96 @@ IUsbDevice::CDeviceDescriptor::~CDeviceDescriptor()
 
 }
 
-IUsbDevice::CDeviceDescriptor::CConfigDescriptor::CConfigDescriptor()
+IUsbDevice::CConfigDescriptor& IUsbDevice::CDeviceDescriptor::createConfig()
+{
+  oConfigs.append(CConfigDescriptor());
+  return oConfigs.last();
+}
+
+IUsbDevice::CStringDescriptor& IUsbDevice::CDeviceDescriptor::createString(const CcString& sValue)
+{
+  uint8 uiLength = (sizeof(SStringDescriptor) - 3) + sValue.length();
+  CCNEWARRAYTYPE(pBuffer, uint8, uiLength);
+  CStringDescriptor* pCasted = reinterpret_cast<CStringDescriptor*>(pBuffer);
+  pCasted->uiDescriptorType = 0x03;
+  pCasted->uiLength = uiLength;
+  CcStatic::memcpy(&pCasted->pString, sValue.getCharString(), sValue.length());
+  oStrings.append(pCasted);
+  return *pCasted;
+}
+
+IUsbDevice::CConfigDescriptor::CConfigDescriptor()
+{
+  m_oBuffer.resize(sizeof(SConfigDescriptor));
+  getConfig()->init();
+}
+
+IUsbDevice::CConfigDescriptor::~CConfigDescriptor()
+{
+  m_oBuffer.clear();
+}
+
+IUsbDevice::SInterfaceDescriptor* IUsbDevice::CConfigDescriptor::createInterface()
+{
+  uint32 uiCurrentOffset = m_oBuffer.size();
+  m_oBuffer.resize(m_oBuffer.size() + sizeof(SInterfaceDescriptor));
+  IUsbDevice::SInterfaceDescriptor* pInterface = m_oBuffer.cast<IUsbDevice::SInterfaceDescriptor>(uiCurrentOffset);
+  pInterface->init();
+  m_oInterfaces.append(uiCurrentOffset);
+  getConfig()->uiTotalLength = m_oBuffer.size();
+  return pInterface;
+}
+
+IUsbDevice::SFunctionalDescriptor* IUsbDevice::CConfigDescriptor::createFunctional(uint8 uiSize)
+{
+  uint32 uiCurrentOffset = m_oBuffer.size();
+  m_oBuffer.resize(m_oBuffer.size() + uiSize);
+  IUsbDevice::SFunctionalDescriptor* pInterface = m_oBuffer.cast<IUsbDevice::SFunctionalDescriptor>(uiCurrentOffset);
+  pInterface->init(uiSize);
+  m_oFunctions.append(uiCurrentOffset);
+  getConfig()->uiTotalLength = m_oBuffer.size();
+  return pInterface;
+}
+
+IUsbDevice::SEndpointDescriptor* IUsbDevice::CConfigDescriptor::createEndpoint()
+{
+  uint32 uiCurrentOffset = m_oBuffer.size();
+  m_oBuffer.resize(m_oBuffer.size() + sizeof(SEndpointDescriptor));
+  IUsbDevice::SEndpointDescriptor* pInterface = m_oBuffer.cast<IUsbDevice::SEndpointDescriptor>(uiCurrentOffset);
+  pInterface->init();
+  m_oEndPoints.append(uiCurrentOffset);
+  getConfig()->uiTotalLength = m_oBuffer.size();
+  return pInterface;
+}
+
+IUsbDevice::SConfigDescriptor* IUsbDevice::CConfigDescriptor::getConfig()
+{
+  return m_oBuffer.cast<IUsbDevice::SConfigDescriptor>(0);
+}
+
+IUsbDevice::SInterfaceDescriptor* IUsbDevice::CConfigDescriptor::getInterface(size_t uiIndex)
+{
+  return m_oBuffer.cast<IUsbDevice::SInterfaceDescriptor>(m_oEndPoints[uiIndex]);
+}
+
+IUsbDevice::SEndpointDescriptor* IUsbDevice::CConfigDescriptor::getEndpoint(size_t uiIndex)
+{
+  return m_oBuffer.cast<IUsbDevice::SEndpointDescriptor>(m_oEndPoints[uiIndex]);
+}
+
+IUsbDevice::SFunctionalDescriptor* IUsbDevice::CConfigDescriptor::getFunction(size_t uiIndex)
+{
+  return m_oBuffer.cast<IUsbDevice::SFunctionalDescriptor>(m_oEndPoints[uiIndex]);
+}
+
+IUsbDevice::CStringDescriptor::CStringDescriptor()
 {
 
 }
 
-IUsbDevice::CDeviceDescriptor::CConfigDescriptor::~CConfigDescriptor()
+IUsbDevice::CStringDescriptor::~CStringDescriptor()
 {
 
-}
-
-IUsbDevice::CDeviceDescriptor::CStringDescriptor::CStringDescriptor()
-{
-
-}
-
-IUsbDevice::CDeviceDescriptor::CStringDescriptor::~CStringDescriptor()
-{
-
-}
-
-IUsbDevice::CDeviceDescriptor::CConfigDescriptor::CInterfaceDescriptor::CInterfaceDescriptor()
-{
-   
-}
-
-IUsbDevice::CDeviceDescriptor::CConfigDescriptor::CInterfaceDescriptor::~CInterfaceDescriptor()
-{
-
-}
-
-IUsbDevice::CDeviceDescriptor::CConfigDescriptor::CInterfaceDescriptor::CEndpointDescriptor::CEndpointDescriptor()
-{
-   
-}
-
-IUsbDevice::CDeviceDescriptor::CConfigDescriptor::CInterfaceDescriptor::CEndpointDescriptor::~CEndpointDescriptor()
-{
-   
 }
 
 IUsbDevice::IUsbDevice()
