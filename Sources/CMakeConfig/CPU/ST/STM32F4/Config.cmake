@@ -33,3 +33,5 @@ set(CMAKE_ASM_FLAGS         "${MCPU_FLAGS}")
 set(CC_EXECUTABLE_SUFFIX ".elf" )
 
 enable_language(CXX C ASM)
+
+set(CCOS_NO_APPS TRUE  )

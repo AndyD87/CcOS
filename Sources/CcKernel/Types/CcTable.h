@@ -83,7 +83,6 @@ public:
    * @param col: Column of value
    * @param row: Row of value
    * @return Target value or invalid variant if not available.
-   * @todo Work with references!
    */
   CcVariant getData(size_t col, size_t row) const;
 
@@ -92,7 +91,6 @@ public:
    * @param colName: Name of column to get value from
    * @param row: Row of value
    * @return Target value or invalid variant if not available.
-   * @todo Work with references!
    */
   CcVariant getData(const CcString& colName, size_t row) const;
 

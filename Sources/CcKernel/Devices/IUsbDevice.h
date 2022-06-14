@@ -185,8 +185,10 @@ public:
   {
     Idle,
     Setup,
-    In,
-    Out,
+    DataIn,
+    DataOut,
+    StateIn,
+    StateOut,
   };
   
   class CcKernelSHARED CConfigDescriptor
@@ -245,7 +247,7 @@ public:
 
     CcVector<CConfigDescriptor>& getConfigs()
     { return oConfigs; }
-    const CcVector<SStringDescriptor*>& getStrings() const
+    CcVector<SStringDescriptor*>& getStrings()
     { return oStrings; }
 
     CConfigDescriptor& createConfig();
@@ -268,5 +270,6 @@ public:
 
   virtual CcStatus loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor) = 0;
 
-  EEnpointState eEp0State = EEnpointState::Idle;
+  EEnpointState eEp0State    = EEnpointState::Idle;
+  uint16        uiEp0MaxSize = 64;
 };

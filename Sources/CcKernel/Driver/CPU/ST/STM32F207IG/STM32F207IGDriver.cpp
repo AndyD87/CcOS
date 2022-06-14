@@ -59,10 +59,16 @@ CcStatus STM32F207IGDriver::entry()
     m_pPort[uiPortNr] = CCNEW_INLINE(STM32F207IGSystemGpioPort, uiPortNr);
     CcKernel::addDevice(CcDevice(m_pPort[uiPortNr], EDeviceType::GpioPort));
   }
-#ifdef CCOS_GENERIC_NETWORK
-  IDevice* pNetworkDevice = CCNEW_INLINE(STM32F207IGNetwork);
-  CcKernel::addDevice(CcDevice(pNetworkDevice,EDeviceType::Network));
-#endif
+  #ifdef CCOS_GENERIC_NETWORK
+    IDevice* pNetworkDevice = CCNEW_INLINE(STM32F207IGNetwork);
+    CcKernel::addDevice(CcDevice(pNetworkDevice,EDeviceType::Network));
+  #endif
+
+  #ifdef CCOS_GENERIC_USB
+    // Setup USB
+    IUsb* pUsbDevice = CCNEW_INLINE(STM32F407Usb);
+    CcKernel::addDevice(CcDevice(pUsbDevice,EDeviceType::Usb));
+  #endif
   return true;
 }
 

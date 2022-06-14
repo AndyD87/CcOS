@@ -8,9 +8,8 @@ if(NOT CMAKE_TOOLCHAIN_FILE)
     include(${CMAKE_CURRENT_LIST_DIR}/../../../Toolchains/gcc-arm-none-eabi/Toolchain.cmake)
 endif()
 
+set(CCOS_BOARD_TYPE "STM3220GEVAL")
+set(CCOS_CPU_TYPE 	"STM32F207IG")
+
 # Setup CPU-Config
 include(${CMAKE_CURRENT_LIST_DIR}/../../../CPU/ST/STM32F2/Config.cmake)
-
-set(CCOS_DRIVER_BOARD                     TRUE )
-set(CCOS_DRIVER_BOARD_ST                  TRUE )
-set(CCOS_DRIVER_BOARD_ST_STM3220GEVAL     TRUE )

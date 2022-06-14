@@ -74,23 +74,23 @@ void GenericApp::run()
     oInterface0->uiInterfaceIdx = 0;
 
     IUsbDevice::SFunctionalDescriptor* pFuntional0 = oConfig.createFunctional(5);
-    pFuntional0->Data.Raw.uiRaw[1]= 0x00;
-    pFuntional0->Data.Raw.uiRaw[2]= 0x10;
-    pFuntional0->Data.Raw.uiRaw[3]= 0x01;
+    pFuntional0->Data.Raw.uiRaw[0]= 0x00;
+    pFuntional0->Data.Raw.uiRaw[1]= 0x10;
+    pFuntional0->Data.Raw.uiRaw[2]= 0x01;
     
     IUsbDevice::SFunctionalDescriptor* pFuntional1 = oConfig.createFunctional(5);
-    pFuntional1->Data.Raw.uiRaw[1]= 0x01;
-    pFuntional1->Data.Raw.uiRaw[2]= 0x00;
-    pFuntional1->Data.Raw.uiRaw[3]= 0x01;
+    pFuntional1->Data.Raw.uiRaw[0]= 0x01;
+    pFuntional1->Data.Raw.uiRaw[1]= 0x00;
+    pFuntional1->Data.Raw.uiRaw[2]= 0x01;
     
     IUsbDevice::SFunctionalDescriptor* pFuntional2 = oConfig.createFunctional(4);
+    pFuntional2->Data.Raw.uiRaw[0]= 0x02;
     pFuntional2->Data.Raw.uiRaw[1]= 0x02;
-    pFuntional2->Data.Raw.uiRaw[2]= 0x02;
 
     IUsbDevice::SFunctionalDescriptor* pFuntional3 = oConfig.createFunctional(5);
-    pFuntional3->Data.Raw.uiRaw[1]= 0x06;
-    pFuntional3->Data.Raw.uiRaw[2]= 0x00;
-    pFuntional3->Data.Raw.uiRaw[3]= 0x01;
+    pFuntional3->Data.Raw.uiRaw[0]= 0x06;
+    pFuntional3->Data.Raw.uiRaw[1]= 0x00;
+    pFuntional3->Data.Raw.uiRaw[2]= 0x01;
 
     IUsbDevice::SEndpointDescriptor* pEp82 = oConfig.createEndpoint();
     pEp82->uiEndpointAddress = 0x82;

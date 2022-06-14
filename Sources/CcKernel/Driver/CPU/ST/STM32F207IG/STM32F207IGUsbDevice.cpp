@@ -16,14 +16,14 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "STM32F407UsbDevice.h"
+#include "STM32F207IGUsbDevice.h"
 #include "CcKernel.h"
 #include "CcDevice.h"
 #include "CcStatic.h"
 #include "usbh_conf.h"
-#include <stm32f4xx_hal_hcd.h>
-#include <stm32f4xx_hal_pcd.h>
-#include <stm32f4xx_hal_pcd_ex.h>
+#include <stm32f2xx_hal_hcd.h>
+#include <stm32f2xx_hal_pcd.h>
+#include <stm32f2xx_hal_pcd_ex.h>
 
 void CallbackReceived(const char* pMessage)
 {
@@ -154,7 +154,7 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef* pcdHandle)
 void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
 {
   /* Prevent unused argument(s) compilation warning */
-  static_cast<STM32F407UsbDevice*>(hpcd->pData)->doOutputData(epnum, hpcd->OUT_ep[epnum].xfer_buff);
+  static_cast<STM32F207IGUsbDevice*>(hpcd->pData)->doOutputData(epnum, hpcd->OUT_ep[epnum].xfer_buff);
 }
 
 /**
@@ -166,7 +166,7 @@ void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
 void HAL_PCD_DataInStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
 {
   /* Prevent unused argument(s) compilation warning */
-  static_cast<STM32F407UsbDevice*>(hpcd->pData)->doInputData(epnum, hpcd->IN_ep[epnum].xfer_buff);
+  static_cast<STM32F207IGUsbDevice*>(hpcd->pData)->doInputData(epnum);
 }
 /**
   * @brief  Setup stage callback
@@ -175,7 +175,7 @@ void HAL_PCD_DataInStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
   */
 void HAL_PCD_SetupStageCallback(PCD_HandleTypeDef *hpcd)
 {
-  static_cast<STM32F407UsbDevice*>(hpcd->pData)->doSetup();
+  static_cast<STM32F207IGUsbDevice*>(hpcd->pData)->doSetup();
 }
 
 /**
@@ -197,7 +197,7 @@ void HAL_PCD_SOFCallback(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_ResetCallback(PCD_HandleTypeDef *hpcd)
 {
-  static_cast<STM32F407UsbDevice*>(hpcd->pData)->doReset();
+  static_cast<STM32F207IGUsbDevice*>(hpcd->pData)->doReset();
 }
 
 /**
@@ -207,7 +207,7 @@ void HAL_PCD_ResetCallback(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_SuspendCallback(PCD_HandleTypeDef *hpcd)
 {
-  static_cast<STM32F407UsbDevice*>(hpcd->pData)->setUsbState(STM32F407UsbDevice::EUsbState::Suspended);
+  static_cast<STM32F207IGUsbDevice*>(hpcd->pData)->setUsbState(STM32F207IGUsbDevice::EUsbState::Suspended);
 }
 
 /**
@@ -217,7 +217,7 @@ void HAL_PCD_SuspendCallback(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_ResumeCallback(PCD_HandleTypeDef *hpcd)
 {
-  static_cast<STM32F407UsbDevice*>(hpcd->pData)->setUsbState(STM32F407UsbDevice::EUsbState::Resume);
+  static_cast<STM32F207IGUsbDevice*>(hpcd->pData)->setUsbState(STM32F207IGUsbDevice::EUsbState::Resume);
 }
 
 /**
@@ -273,7 +273,7 @@ void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd)
 }
 
 
-STM32F407UsbDevice* s_pInstance = nullptr;
+STM32F207IGUsbDevice* s_pInstance = nullptr;
 
 /**
  * @brief  This function handles USB-On-The-Go FS/HS global interrupt request.
@@ -291,7 +291,12 @@ CCEXTERNC void OTG_FS_IRQHandler(void)
   HAL_PCD_IRQHandler(s_pInstance->getPcdHandle());
 }
 
-STM32F407UsbDevice::STM32F407UsbDevice()
+void STM32F207IGUsbDevice::ISR()
+{
+  CcStatic_memsetZeroObject(m_oGlobalDef);
+}
+
+STM32F207IGUsbDevice::STM32F207IGUsbDevice()
 {
   s_pInstance = this;
   CcStatic_memsetZeroObject(m_oGlobalDef);
@@ -299,11 +304,11 @@ STM32F407UsbDevice::STM32F407UsbDevice()
   CcStatic_memsetZeroObject(m_oPcdHandle);
 }
 
-STM32F407UsbDevice::~STM32F407UsbDevice()
+STM32F207IGUsbDevice::~STM32F207IGUsbDevice()
 {
 }
 
-CcStatus STM32F407UsbDevice::onState(EState eState)
+CcStatus STM32F207IGUsbDevice::onState(EState eState)
 {
   CcStatus bSuccess = true;
   switch(eState)
@@ -323,7 +328,7 @@ CcStatus STM32F407UsbDevice::onState(EState eState)
   return bSuccess;
 }
 
-CcStatus STM32F407UsbDevice::loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor)
+CcStatus STM32F207IGUsbDevice::loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor)
 {
   CcStatus oStatus = EStatus::CommandInvalidParameter;
   m_oDeviceDescriptor = oDescriptor;
@@ -352,17 +357,16 @@ CcStatus STM32F407UsbDevice::loadDeviceDescriptor(const CDeviceDescriptor& oDesc
   return oStatus;
 }
 
-void STM32F407UsbDevice::setUsbState(EUsbState eNewState)
+void STM32F207IGUsbDevice::setUsbState(EUsbState eNewState)
 {
   switch(eNewState) 
   {
     case EUsbState::Default:
-      CCFALLTHROUGH;
+    break;
     case EUsbState::Addressed:
-      CCFALLTHROUGH;
+    break;
     case EUsbState::Configured:
-      m_eCurrentSate = eNewState; 
-      break;
+    break;
     case EUsbState::Suspended:
       __HAL_PCD_GATE_PHYCLOCK(getPcdHandle());
       m_eOldState = m_eCurrentSate;
@@ -376,7 +380,7 @@ void STM32F407UsbDevice::setUsbState(EUsbState eNewState)
   }
 }
 
-void STM32F407UsbDevice::doReset()
+void STM32F207IGUsbDevice::doReset()
 {
   // EPTypes:
   //   EP_TYPE_CTRL                           0U
@@ -401,7 +405,7 @@ void STM32F407UsbDevice::doReset()
 #define  USB_REQ_RECIPIENT_ENDPOINT                     0x02U
 #define  USB_REQ_RECIPIENT_MASK                         0x03U
 
-void STM32F407UsbDevice::doSetup()
+void STM32F207IGUsbDevice::doSetup()
 {
   CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
 
@@ -420,8 +424,6 @@ void STM32F407UsbDevice::doSetup()
       break;
 
     default:
-      CallbackReceived("Unknown Request");
-      stallEp(0x80);
       break;
   }
 }
@@ -444,11 +446,17 @@ void STM32F407UsbDevice::doSetup()
 #define  USB_REQ_SET_INTERFACE                          0x0BU
 #define  USB_REQ_SYNCH_FRAME                            0x0CU
 
-void STM32F407UsbDevice::doSetupDevice()
+void STM32F207IGUsbDevice::doSetupDevice()
 {
   CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
   switch (pRequest->bmRequest & USB_REQ_TYPE_MASK)
   {
+    case USB_REQ_TYPE_CLASS:
+    case USB_REQ_TYPE_VENDOR:
+    default:
+      CallbackReceived("USB_REQ_TYPE_CLASS/USB_REQ_TYPE_VENDOR");
+      break;
+
     case USB_REQ_TYPE_STANDARD:
       switch (pRequest->bRequest)
       {
@@ -467,8 +475,8 @@ void STM32F407UsbDevice::doSetupDevice()
             {
               m_uiUsbAddress = (uint8_t)(pRequest->wValue) & 0x7FU;
               HAL_PCD_SetAddress(getPcdHandle(), m_uiUsbAddress);
-             
-              ctrlSendStatus();
+              eEp0State = EEnpointState::StateIn;
+              HAL_PCD_EP_Transmit(getPcdHandle(), 0, nullptr, 0);
 
               if (m_uiUsbAddress != 0U)
               {
@@ -486,8 +494,6 @@ void STM32F407UsbDevice::doSetupDevice()
           }
           break;
         case USB_REQ_SET_CONFIGURATION:
-          doSetConfiguration();
-          break;
         case USB_REQ_GET_CONFIGURATION:
         case USB_REQ_GET_STATUS:
         case USB_REQ_SET_FEATURE:
@@ -497,12 +503,6 @@ void STM32F407UsbDevice::doSetupDevice()
           break;
       }
       break;
-    case USB_REQ_TYPE_CLASS:
-    case USB_REQ_TYPE_VENDOR:
-    default:
-      CallbackReceived("USB_REQ_TYPE_CLASS/USB_REQ_TYPE_VENDOR");
-      break;
-
   }
 }
 
@@ -515,13 +515,13 @@ void STM32F407UsbDevice::doSetupDevice()
 #define  USB_DESC_TYPE_BOS                              0x0FU
 
 
-void STM32F407UsbDevice::doSetupDeviceDescriptor()
+void STM32F207IGUsbDevice::doSetupDeviceDescriptor()
 {
   CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
   uint8* pBuffer = nullptr;
   uint16 uiSize = 0;
 
-  //eEp0State = EEnpointState::Setup;
+  eEp0State = EEnpointState::Setup;
 
   switch(pRequest->wValue >> 8)
   {
@@ -537,21 +537,16 @@ void STM32F407UsbDevice::doSetupDeviceDescriptor()
       break;
     case USB_DESC_TYPE_DEVICE_QUALIFIER:
     case USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION:
-    default:
       CallbackReceived("Test");
       break;
   }
   if(pBuffer != nullptr && uiSize > 0)
   {
-    write(0, pBuffer, CCMIN(uiSize, pRequest->wLength));
-  }
-  else
-  {
-    ctrlSendStatus();
+    write(0, pBuffer, uiSize);
   }
 }
 
-void STM32F407UsbDevice::doSetupDeviceDescriptorString(uint8*& pBuffer, uint16& uiSize)
+void STM32F207IGUsbDevice::doSetupDeviceDescriptorString(uint8*& pBuffer, uint16& uiSize)
 {
   CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
   uint8 uiIndex = pRequest->wValue & 0xff;
@@ -562,76 +557,74 @@ void STM32F407UsbDevice::doSetupDeviceDescriptorString(uint8*& pBuffer, uint16& 
   }
 }
 
-void STM32F407UsbDevice::doSetupDeviceConfigDescriptor(uint8*& pBuffer, uint16& uiSize)
+void STM32F207IGUsbDevice::doSetupDeviceConfigDescriptor(uint8*& pBuffer, uint16& uiSize)
 {
   pBuffer = reinterpret_cast<uint8*>(m_oDeviceDescriptor.getConfigs()[0].getConfig());
   uiSize = m_oDeviceDescriptor.getConfigs()[0].getConfig()->uiTotalLength;
 }
 
-void STM32F407UsbDevice::doSetupInterface()
+void STM32F207IGUsbDevice::doSetupInterface()
 {
-  //CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
-  CallbackReceived("doSetupInterface");
+  CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
 }
 
-void STM32F407UsbDevice::doSetupEndPoint()
+void STM32F207IGUsbDevice::doSetupEndPoint()
 {
-  //CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
-  CallbackReceived("doSetupEndPoint");
+  CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
 }
 
-void STM32F407UsbDevice::doSetConfiguration()
+void STM32F207IGUsbDevice::doSetConfiguration()
 {
-  //CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
-  if(m_eCurrentSate == EUsbState::Addressed)
-  {
-    // @todo Configure and open endpoints. Enpoint interfaces are required
-  }
+  CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
 }
 
-void STM32F407UsbDevice::doInputData(uint8 uiEndpoint, uint8* pBuffer)
+
+void STM32F207IGUsbDevice::doInputData(uint8 uiEndpoint)
 {
   if(uiEndpoint == 0)
   {
     if(eEp0State == EEnpointState::DataIn)
     {
-      if(writeRequired())
-      {
-        m_uiWriteSize -= uiEp0MaxSize;
-        writeContinue(uiEndpoint, pBuffer, m_uiWriteSize);
-        
-        // Prepare for suprised transer end
-        HAL_PCD_EP_Receive(getPcdHandle(), 0, nullptr, 0);
-      }
-      else
+      if(!writeContinue())
       {
         stallEp(0x80U);
-
         // Prepare receive
-        ctrlReceiveStatus();
+        eEp0State = EEnpointState::StateOut;
+        HAL_PCD_EP_Receive(getPcdHandle(), uiEndpoint, nullptr, 0);
       }
+    }
+    if(eEp0State == EEnpointState::StateIn ||
+       eEp0State == EEnpointState::Idle)
+    {
+        stallEp(0x80U);
     }
     else
     {
+      // Perpare receive
+      HAL_PCD_EP_Receive(getPcdHandle(), 0, nullptr, 0);
     }
   }
   else
   {
-    CallbackReceived("Endpoint IN called");
+    if(writeContinue())
+    {
+
+    }
   }
 }
 
-void STM32F407UsbDevice::doOutputData(uint8 uiEndpoint, const uint8* pBuffer)
+void STM32F207IGUsbDevice::doOutputData(uint8 uiEndpoint, const uint8* pBuffer)
 {
   if(uiEndpoint == 0)
-  {                                                                                                                                    
+  {
     // Check if more data is required
     if(eEp0State == EEnpointState::DataOut)
     {
       if(0)
-        ctrlReceiveStatus();
+        HAL_PCD_EP_Receive(getPcdHandle(), 0, nullptr, 0);
       
-      ctrlSendStatus();
+      eEp0State = EEnpointState::StateIn;
+      HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, nullptr, 0);
     }
     // Check if more data is required
     else if(eEp0State == EEnpointState::StateOut)
@@ -639,48 +632,48 @@ void STM32F407UsbDevice::doOutputData(uint8 uiEndpoint, const uint8* pBuffer)
       eEp0State = EEnpointState::Idle;
       stallEp(0U);
     }
-  }
-  else
-  {
-    CallbackReceived("Endpoint OUT called");
+    else
+    {
+      eEp0State = EEnpointState::Idle;
+      // Perpare receive
+      stallEp(0U);
+    }
   }
 }
 
 
-void STM32F407UsbDevice::write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize)
+void STM32F207IGUsbDevice::write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize)
 {
+  m_uiWriteEndpoint = uiEndpoint;
+  m_pWriteBuffer = const_cast<uint8*>(pBuffer);
   m_uiWriteSize = uiSize;
-  eEp0State = EEnpointState::DataIn;
-  if(HAL_OK == HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, const_cast<uint8*>(pBuffer), uiSize))
-  {
-  }
+  m_uiWritten = 0;
+  writeContinue();
 }
 
-bool STM32F407UsbDevice::writeRequired()
+bool STM32F207IGUsbDevice::writeContinue()
 {
-  return m_uiWriteSize > uiEp0MaxSize;
-}
-
-void STM32F407UsbDevice::writeContinue(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize)
-{
-  if(HAL_OK == HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, pBuffer, uiSize))
+  bool bDataWritten = false;
+  if(m_uiWriteSize > m_uiWritten)
   {
+    uint16 uiTransferSize = CCMIN(m_uiWriteSize - m_uiWritten, 64);
+    if(HAL_OK == HAL_PCD_EP_Transmit(getPcdHandle(), m_uiWriteEndpoint, m_pWriteBuffer + m_uiWritten, uiTransferSize))
+    {
+      m_uiWritten += uiTransferSize;
+      bDataWritten = true;
+    }
   }
+  if(m_uiWriteSize >= m_uiWritten)
+  {
+    m_uiWriteEndpoint = 0;
+    m_pWriteBuffer = nullptr;
+    m_uiWriteSize = 0;
+    m_uiWritten = 0;
+  }
+  return bDataWritten;
 }
 
-void STM32F407UsbDevice::stallEp(uint8 uiEndpoint)
+void STM32F207IGUsbDevice::stallEp(uint8 uiEndpoint)
 {
   HAL_PCD_EP_SetStall(getPcdHandle(), uiEndpoint);
-}
-
-void STM32F407UsbDevice::ctrlSendStatus()
-{
-  eEp0State = EEnpointState::StateIn;
-  HAL_PCD_EP_Transmit(getPcdHandle(), 0, nullptr, 0);
-}
-
-void STM32F407UsbDevice::ctrlReceiveStatus()
-{
-  eEp0State = EEnpointState::StateOut;
-  HAL_PCD_EP_Receive(getPcdHandle(), 0, nullptr, 0);
 }

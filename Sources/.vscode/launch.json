@@ -54,7 +54,7 @@
             "postDebugTask": "Terminate All Tasks",
             "targetArchitecture": "arm",
             "cwd": "${workspaceRoot}",
-            "program": "${workspaceRoot}/../Output/arm32_debug/bin/GenericTest.elf",
+            "program": "${workspaceRoot}/../Output/arm32_debug/bin/GenericTestd.elf",
             "stopAtEntry": false,
             "windows": {
                 "MIMode": "gdb",
@@ -74,7 +74,7 @@
                         "ignoreFailures": false
                     },
                     {
-                        "text": "file ../Output/arm32_debug/bin/GenericTest.elf",
+                        "text": "file ../Output/arm32_debug/bin/GenericTestd.elf",
                         "description": "load symbols",
                         "ignoreFailures": false
                     },

@@ -2,13 +2,15 @@
     {
         "name":"STM32F407VET",
         "cmakeSettings": {
-            "CCOS_BOARD":"STM32F407VET"
+            "CCOS_BOARD":"STM32F407VET",
+            "CMAKE_GENERATOR":"Unix Makefiles"
         }
     },
     {
         "name":"STM3220GEVAL",
         "cmakeSettings": {
-            "CCOS_BOARD":"STM3220GEVAL"
+            "CCOS_BOARD":"STM3220GEVAL",
+            "CMAKE_GENERATOR":"Unix Makefiles"
         }
     }
 ]
