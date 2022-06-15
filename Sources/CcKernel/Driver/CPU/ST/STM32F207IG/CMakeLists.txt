@@ -1,4 +1,15 @@
 ########
+# Prepare environment
+########
+
+set(STM32F2_VERSION           "1.7.0" )
+set(STM32F2_DIR               ${CC_CACHE_DIR}/Sources/STM32F2Cube_Driver/${STM32F2_VERSION} )
+
+CcDownloadAndExtract( "STM32F2Cube_Driver"
+                      "${STM32F2_DIR}"
+                      "https://coolcow.de/projects/ThirdParty/STM32F2Cube/binaries/${STM32F2_VERSION}/Drivers.7z")
+
+########
 # Add Source Files
 ########
 list (APPEND SOURCE_FILES
@@ -9,33 +20,38 @@ list (APPEND SOURCE_FILES
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGDriver.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGSystemGpioPort.cpp"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGSystemGpioPin.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGUsbDevice.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGUsb.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32FX_IrqHandlers.cpp")
+      "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32FX_IrqHandlers.cpp"
+)
 
 ########
-# Add Source Files
+# Add Header Files
 ########
 list (APPEND HEADER_FILES
       "${CMAKE_CURRENT_LIST_DIR}/stm32f2xx_hal_conf.h"
-      "${CMAKE_CURRENT_LIST_DIR}/usbh_conf.h"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IG.h"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGCpu.h"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGDriver.h"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGSystemGpioPort.h"
       "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGSystemGpioPin.h"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGUsbDevice.h"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F207IGUsb.h"
 )
 
+########
+# Add Include Directories
+########
+list (APPEND PROJECT_INCLUDE_DIRS
+  "${CMAKE_CURRENT_LIST_DIR}/../Common"
+  "${STM32F2_DIR}/STM32F2xx_HAL_Driver/Inc"
+  "${STM32F2_DIR}/CMSIS/Include"
+  "${STM32F2_DIR}/CMSIS/Device/ST/STM32F2xx/Include"
+)
+
+########
+# Add Definitions
+########
 list (APPEND PROJECT_DEFINITIONS
-      -DSTM32F207xx -DHSE_VALUE=8000000)
-
-set(STM32F2_DIR  ${CC_CACHE_DIR}/Sources/STM32F2Cube_Driver )
-
-CcDownloadAndExtract( "STM32F2Cube_Driver"
-                      "${STM32F2_DIR}"
-                      "https://coolcow.de/projects/ThirdParty/STM32F2Cube/binaries/1.7.0/Drivers.7z")
+      -DSTM32F207xx 
+      -DHSE_VALUE=8000000
+)
 
 # List all required source files
 list (APPEND STM_SOURCE_FILES
@@ -58,12 +74,30 @@ if(CCOS_GENERIC_NETWORK)
   list(APPEND PROJECT_DEFINITIONS "-DCCOS_GENERIC_NETWORK")
 endif(CCOS_GENERIC_NETWORK)
 
+if(CCOS_GENERIC_USB)
+
+  list(APPEND SOURCE_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32Usb.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32Usb.h"
+        "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32UsbDevice.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32UsbDevice.h"
+        "${CMAKE_CURRENT_LIST_DIR}/usbh_conf.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/usbh_conf.h"
+  )
+  list(FILTER USB_SOURCE_FILES EXCLUDE REGEX "template")
+  list(APPEND STM_SOURCE_FILES
+        "${STM32F2_DIR}/STM32F2xx_HAL_Driver/Src/stm32f2xx_ll_usb.c"
+        "${STM32F2_DIR}/STM32F2xx_HAL_Driver/Src/stm32f2xx_hal_hcd.c"
+        "${STM32F2_DIR}/STM32F2xx_HAL_Driver/Src/stm32f2xx_hal_pcd.c"
+        "${STM32F2_DIR}/STM32F2xx_HAL_Driver/Src/stm32f2xx_hal_pcd_ex.c"
+        ${USB_SOURCE_FILES}
+  )
+  list(APPEND PROJECT_DEFINITIONS "-DCCOS_GENERIC_USB")
+endif()
+
 add_to_driver_headers("CPU/ST/STM32F207IG/STM32F207IGDriver.h")
 add_to_driver_names  (0 "STM32F207IGDriver")
 add_to_driver_sources(${STM_SOURCE_FILES} ${SOURCE_FILES} ${HEADER_FILES})
-add_to_driver_includes(${STM32F2_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
-                        "${STM32F2_DIR}/STM32F2xx_HAL_Driver/Inc"
-                        "${STM32F2_DIR}/CMSIS/Include"
-                        "${STM32F2_DIR}/CMSIS/Device/ST/STM32F2xx/Include")
+add_to_driver_includes(${STM32F2_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_INCLUDE_DIRS})
 
 add_to_driver_definitions(${PROJECT_DEFINITIONS})

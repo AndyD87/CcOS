@@ -30,7 +30,7 @@
 #include "Driver/CPU/ST/STM32F407/STM32F407Cpu.h"
 
 #ifdef CCOS_GENERIC_USB
-  #include "Driver/CPU/ST/STM32F407/STM32F407Usb.h"
+  #include "../Common/STM32Usb.h"
 #endif
 
 #ifdef CCOS_GENERIC_NETWORK
@@ -89,7 +89,7 @@ CcStatus STM32F407Driver::entry()
 
   #ifdef CCOS_GENERIC_USB
     // Setup USB
-    IUsb* pUsbDevice = CCNEW_INLINE(STM32F407Usb);
+    IUsb* pUsbDevice = CCNEW_INLINE(STM32Usb);
     CcKernel::addDevice(CcDevice(pUsbDevice,EDeviceType::Usb));
   #endif
   

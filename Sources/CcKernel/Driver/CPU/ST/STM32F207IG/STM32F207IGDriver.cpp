@@ -66,7 +66,7 @@ CcStatus STM32F207IGDriver::entry()
 
   #ifdef CCOS_GENERIC_USB
     // Setup USB
-    IUsb* pUsbDevice = CCNEW_INLINE(STM32F407Usb);
+    IUsb* pUsbDevice = CCNEW_INLINE(STM32Usb);
     CcKernel::addDevice(CcDevice(pUsbDevice,EDeviceType::Usb));
   #endif
   return true;

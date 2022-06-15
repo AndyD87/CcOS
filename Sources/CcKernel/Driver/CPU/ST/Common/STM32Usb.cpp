@@ -16,23 +16,21 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "STM32F407Usb.h"
+#include "STM32Usb.h"
 #include "CcKernel.h"
 #include "CcDevice.h"
 #include "CcStatic.h"
 #include "usbh_conf.h"
-#include <stm32f4xx_hal_hcd.h>
-#include <stm32f4xx_hal_pcd.h>
 
-STM32F407Usb::STM32F407Usb()
+STM32Usb::STM32Usb()
 {
 }
 
-STM32F407Usb::~STM32F407Usb()
+STM32Usb::~STM32Usb()
 {
 }
 
-CcStatus STM32F407Usb::onState(EState eState)
+CcStatus STM32Usb::onState(EState eState)
 {
   CcStatus bSuccess = false;
   switch(eState)
@@ -55,7 +53,7 @@ CcStatus STM32F407Usb::onState(EState eState)
   return bSuccess;
 }
 
-IUsbDevice* STM32F407Usb::createDevice(const IUsbDevice::CDeviceDescriptor& oConfig)
+IUsbDevice* STM32Usb::createDevice(const IUsbDevice::CDeviceDescriptor& oConfig)
 {
   if(m_pType.pBasicDevice)
   {
@@ -63,7 +61,7 @@ IUsbDevice* STM32F407Usb::createDevice(const IUsbDevice::CDeviceDescriptor& oCon
   }
   else
   {
-    CCNEW(m_pType.pDevice, STM32F407UsbDevice);
+    CCNEW(m_pType.pDevice, STM32UsbDevice);
     if(m_pType.pDevice->loadDeviceDescriptor(oConfig))
     {
       return m_pType.pDevice;

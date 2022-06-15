@@ -49,6 +49,9 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+#include <stm32f4xx_hal_hcd.h>
+#include <stm32f4xx_hal_pcd.h>
+#include <stm32f4xx_hal_pcd_ex.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

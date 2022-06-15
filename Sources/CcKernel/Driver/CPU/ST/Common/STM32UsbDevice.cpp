@@ -16,134 +16,16 @@
  * along with CcOS.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "STM32F407UsbDevice.h"
+#include "STM32UsbDevice.h"
 #include "CcKernel.h"
 #include "CcDevice.h"
 #include "CcStatic.h"
 #include "usbh_conf.h"
-#include <stm32f4xx_hal_hcd.h>
-#include <stm32f4xx_hal_pcd.h>
-#include <stm32f4xx_hal_pcd_ex.h>
 
 void CallbackReceived(const char* pMessage)
 {
   CcKernel::message(EMessage::Info, pMessage);
 }
-
-void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
-{
-  GPIO_InitTypeDef GPIO_InitStruct = {};
-  if(pcdHandle->Instance==USB_OTG_FS)
-  {
-  /* USER CODE BEGIN USB_OTG_FS_MspInit 0 */
-
-  /* USER CODE END USB_OTG_FS_MspInit 0 */
-
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    /**USB_OTG_FS GPIO Configuration
-    PA11     ------> USB_OTG_FS_DM
-    PA12     ------> USB_OTG_FS_DP
-    */
-    GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF10_OTG_FS;
-    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
-
-    /* Peripheral clock enable */
-    __HAL_RCC_USB_OTG_FS_CLK_ENABLE();
-
-    /* Peripheral interrupt init */
-    HAL_NVIC_SetPriority(OTG_FS_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(OTG_FS_IRQn);
-  /* USER CODE BEGIN USB_OTG_FS_MspInit 1 */
-
-  /* USER CODE END USB_OTG_FS_MspInit 1 */
-  }
-  else if(pcdHandle->Instance==USB_OTG_HS)
-  {
-  /* USER CODE BEGIN USB_OTG_HS_MspInit 0 */
-
-  /* USER CODE END USB_OTG_HS_MspInit 0 */
-
-    __HAL_RCC_GPIOB_CLK_ENABLE();
-    /**USB_OTG_HS GPIO Configuration
-    PB13     ------> USB_OTG_HS_VBUS
-    PB14     ------> USB_OTG_HS_DM
-    PB15     ------> USB_OTG_HS_DP
-    */
-    GPIO_InitStruct.Pin = GPIO_PIN_13;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-    GPIO_InitStruct.Pin = GPIO_PIN_14|GPIO_PIN_15;
-    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-    GPIO_InitStruct.Alternate = GPIO_AF12_OTG_HS_FS;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-    /* Peripheral clock enable */
-    __HAL_RCC_USB_OTG_HS_CLK_ENABLE();
-
-    /* Peripheral interrupt init */
-    HAL_NVIC_SetPriority(OTG_HS_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(OTG_HS_IRQn);
-  /* USER CODE BEGIN USB_OTG_HS_MspInit 1 */
-
-  /* USER CODE END USB_OTG_HS_MspInit 1 */
-  }
-}
-
-void HAL_PCD_MspDeInit(PCD_HandleTypeDef* pcdHandle)
-{
-  if(pcdHandle->Instance==USB_OTG_FS)
-  {
-  /* USER CODE BEGIN USB_OTG_FS_MspDeInit 0 */
-
-  /* USER CODE END USB_OTG_FS_MspDeInit 0 */
-    /* Peripheral clock disable */
-    __HAL_RCC_USB_OTG_FS_CLK_DISABLE();
-
-    /**USB_OTG_FS GPIO Configuration
-    PA11     ------> USB_OTG_FS_DM
-    PA12     ------> USB_OTG_FS_DP
-    */
-    HAL_GPIO_DeInit(GPIOA, GPIO_PIN_11|GPIO_PIN_12);
-
-    /* Peripheral interrupt Deinit*/
-    HAL_NVIC_DisableIRQ(OTG_FS_IRQn);
-
-  /* USER CODE BEGIN USB_OTG_FS_MspDeInit 1 */
-
-  /* USER CODE END USB_OTG_FS_MspDeInit 1 */
-  }
-  else if(pcdHandle->Instance==USB_OTG_HS)
-  {
-  /* USER CODE BEGIN USB_OTG_HS_MspDeInit 0 */
-
-  /* USER CODE END USB_OTG_HS_MspDeInit 0 */
-    /* Peripheral clock disable */
-    __HAL_RCC_USB_OTG_HS_CLK_DISABLE();
-
-    /**USB_OTG_HS GPIO Configuration
-    PB13     ------> USB_OTG_HS_VBUS
-    PB14     ------> USB_OTG_HS_DM
-    PB15     ------> USB_OTG_HS_DP
-    */
-    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_13|GPIO_PIN_14|GPIO_PIN_15);
-
-    /* Peripheral interrupt Deinit*/
-    HAL_NVIC_DisableIRQ(OTG_HS_IRQn);
-
-  /* USER CODE BEGIN USB_OTG_HS_MspDeInit 1 */
-
-  /* USER CODE END USB_OTG_HS_MspDeInit 1 */
-  }
-}
-
 
 /**
   * @brief  Data OUT stage callback.
@@ -154,7 +36,7 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef* pcdHandle)
 void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
 {
   /* Prevent unused argument(s) compilation warning */
-  static_cast<STM32F407UsbDevice*>(hpcd->pData)->doOutputData(epnum, hpcd->OUT_ep[epnum].xfer_buff);
+  static_cast<STM32UsbDevice*>(hpcd->pData)->doOutputData(epnum, hpcd->OUT_ep[epnum].xfer_buff);
 }
 
 /**
@@ -166,7 +48,7 @@ void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
 void HAL_PCD_DataInStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
 {
   /* Prevent unused argument(s) compilation warning */
-  static_cast<STM32F407UsbDevice*>(hpcd->pData)->doInputData(epnum, hpcd->IN_ep[epnum].xfer_buff);
+  static_cast<STM32UsbDevice*>(hpcd->pData)->doInputData(epnum, hpcd->IN_ep[epnum].xfer_buff);
 }
 /**
   * @brief  Setup stage callback
@@ -175,7 +57,7 @@ void HAL_PCD_DataInStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
   */
 void HAL_PCD_SetupStageCallback(PCD_HandleTypeDef *hpcd)
 {
-  static_cast<STM32F407UsbDevice*>(hpcd->pData)->doSetup();
+  static_cast<STM32UsbDevice*>(hpcd->pData)->doSetup();
 }
 
 /**
@@ -197,7 +79,7 @@ void HAL_PCD_SOFCallback(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_ResetCallback(PCD_HandleTypeDef *hpcd)
 {
-  static_cast<STM32F407UsbDevice*>(hpcd->pData)->doReset();
+  static_cast<STM32UsbDevice*>(hpcd->pData)->doReset();
 }
 
 /**
@@ -207,7 +89,7 @@ void HAL_PCD_ResetCallback(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_SuspendCallback(PCD_HandleTypeDef *hpcd)
 {
-  static_cast<STM32F407UsbDevice*>(hpcd->pData)->setUsbState(STM32F407UsbDevice::EUsbState::Suspended);
+  static_cast<STM32UsbDevice*>(hpcd->pData)->setUsbState(STM32UsbDevice::EUsbState::Suspended);
 }
 
 /**
@@ -217,7 +99,7 @@ void HAL_PCD_SuspendCallback(PCD_HandleTypeDef *hpcd)
   */
 void HAL_PCD_ResumeCallback(PCD_HandleTypeDef *hpcd)
 {
-  static_cast<STM32F407UsbDevice*>(hpcd->pData)->setUsbState(STM32F407UsbDevice::EUsbState::Resume);
+  static_cast<STM32UsbDevice*>(hpcd->pData)->setUsbState(STM32UsbDevice::EUsbState::Resume);
 }
 
 /**
@@ -273,7 +155,7 @@ void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd)
 }
 
 
-STM32F407UsbDevice* s_pInstance = nullptr;
+STM32UsbDevice* s_pInstance = nullptr;
 
 /**
  * @brief  This function handles USB-On-The-Go FS/HS global interrupt request.
@@ -291,7 +173,7 @@ CCEXTERNC void OTG_FS_IRQHandler(void)
   HAL_PCD_IRQHandler(s_pInstance->getPcdHandle());
 }
 
-STM32F407UsbDevice::STM32F407UsbDevice()
+STM32UsbDevice::STM32UsbDevice()
 {
   s_pInstance = this;
   CcStatic_memsetZeroObject(m_oGlobalDef);
@@ -299,11 +181,11 @@ STM32F407UsbDevice::STM32F407UsbDevice()
   CcStatic_memsetZeroObject(m_oPcdHandle);
 }
 
-STM32F407UsbDevice::~STM32F407UsbDevice()
+STM32UsbDevice::~STM32UsbDevice()
 {
 }
 
-CcStatus STM32F407UsbDevice::onState(EState eState)
+CcStatus STM32UsbDevice::onState(EState eState)
 {
   CcStatus bSuccess = true;
   switch(eState)
@@ -323,7 +205,7 @@ CcStatus STM32F407UsbDevice::onState(EState eState)
   return bSuccess;
 }
 
-CcStatus STM32F407UsbDevice::loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor)
+CcStatus STM32UsbDevice::loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor)
 {
   CcStatus oStatus = EStatus::CommandInvalidParameter;
   m_oDeviceDescriptor = oDescriptor;
@@ -352,7 +234,7 @@ CcStatus STM32F407UsbDevice::loadDeviceDescriptor(const CDeviceDescriptor& oDesc
   return oStatus;
 }
 
-void STM32F407UsbDevice::setUsbState(EUsbState eNewState)
+void STM32UsbDevice::setUsbState(EUsbState eNewState)
 {
   switch(eNewState) 
   {
@@ -376,7 +258,7 @@ void STM32F407UsbDevice::setUsbState(EUsbState eNewState)
   }
 }
 
-void STM32F407UsbDevice::doReset()
+void STM32UsbDevice::doReset()
 {
   // EPTypes:
   //   EP_TYPE_CTRL                           0U
@@ -401,7 +283,7 @@ void STM32F407UsbDevice::doReset()
 #define  USB_REQ_RECIPIENT_ENDPOINT                     0x02U
 #define  USB_REQ_RECIPIENT_MASK                         0x03U
 
-void STM32F407UsbDevice::doSetup()
+void STM32UsbDevice::doSetup()
 {
   CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
 
@@ -444,7 +326,7 @@ void STM32F407UsbDevice::doSetup()
 #define  USB_REQ_SET_INTERFACE                          0x0BU
 #define  USB_REQ_SYNCH_FRAME                            0x0CU
 
-void STM32F407UsbDevice::doSetupDevice()
+void STM32UsbDevice::doSetupDevice()
 {
   CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
   switch (pRequest->bmRequest & USB_REQ_TYPE_MASK)
@@ -515,7 +397,7 @@ void STM32F407UsbDevice::doSetupDevice()
 #define  USB_DESC_TYPE_BOS                              0x0FU
 
 
-void STM32F407UsbDevice::doSetupDeviceDescriptor()
+void STM32UsbDevice::doSetupDeviceDescriptor()
 {
   CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
   uint8* pBuffer = nullptr;
@@ -551,7 +433,7 @@ void STM32F407UsbDevice::doSetupDeviceDescriptor()
   }
 }
 
-void STM32F407UsbDevice::doSetupDeviceDescriptorString(uint8*& pBuffer, uint16& uiSize)
+void STM32UsbDevice::doSetupDeviceDescriptorString(uint8*& pBuffer, uint16& uiSize)
 {
   CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
   uint8 uiIndex = pRequest->wValue & 0xff;
@@ -562,25 +444,25 @@ void STM32F407UsbDevice::doSetupDeviceDescriptorString(uint8*& pBuffer, uint16& 
   }
 }
 
-void STM32F407UsbDevice::doSetupDeviceConfigDescriptor(uint8*& pBuffer, uint16& uiSize)
+void STM32UsbDevice::doSetupDeviceConfigDescriptor(uint8*& pBuffer, uint16& uiSize)
 {
   pBuffer = reinterpret_cast<uint8*>(m_oDeviceDescriptor.getConfigs()[0].getConfig());
   uiSize = m_oDeviceDescriptor.getConfigs()[0].getConfig()->uiTotalLength;
 }
 
-void STM32F407UsbDevice::doSetupInterface()
+void STM32UsbDevice::doSetupInterface()
 {
   //CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
   CallbackReceived("doSetupInterface");
 }
 
-void STM32F407UsbDevice::doSetupEndPoint()
+void STM32UsbDevice::doSetupEndPoint()
 {
   //CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
   CallbackReceived("doSetupEndPoint");
 }
 
-void STM32F407UsbDevice::doSetConfiguration()
+void STM32UsbDevice::doSetConfiguration()
 {
   //CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
   if(m_eCurrentSate == EUsbState::Addressed)
@@ -589,7 +471,7 @@ void STM32F407UsbDevice::doSetConfiguration()
   }
 }
 
-void STM32F407UsbDevice::doInputData(uint8 uiEndpoint, uint8* pBuffer)
+void STM32UsbDevice::doInputData(uint8 uiEndpoint, uint8* pBuffer)
 {
   if(uiEndpoint == 0)
   {
@@ -621,7 +503,7 @@ void STM32F407UsbDevice::doInputData(uint8 uiEndpoint, uint8* pBuffer)
   }
 }
 
-void STM32F407UsbDevice::doOutputData(uint8 uiEndpoint, const uint8* pBuffer)
+void STM32UsbDevice::doOutputData(uint8 uiEndpoint, const uint8* pBuffer)
 {
   if(uiEndpoint == 0)
   {                                                                                                                                    
@@ -647,7 +529,7 @@ void STM32F407UsbDevice::doOutputData(uint8 uiEndpoint, const uint8* pBuffer)
 }
 
 
-void STM32F407UsbDevice::write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize)
+void STM32UsbDevice::write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize)
 {
   m_uiWriteSize = uiSize;
   eEp0State = EEnpointState::DataIn;
@@ -656,30 +538,30 @@ void STM32F407UsbDevice::write(uint8 uiEndpoint, const uint8* pBuffer, uint16 ui
   }
 }
 
-bool STM32F407UsbDevice::writeRequired()
+bool STM32UsbDevice::writeRequired()
 {
   return m_uiWriteSize > uiEp0MaxSize;
 }
 
-void STM32F407UsbDevice::writeContinue(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize)
+void STM32UsbDevice::writeContinue(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize)
 {
   if(HAL_OK == HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, pBuffer, uiSize))
   {
   }
 }
 
-void STM32F407UsbDevice::stallEp(uint8 uiEndpoint)
+void STM32UsbDevice::stallEp(uint8 uiEndpoint)
 {
   HAL_PCD_EP_SetStall(getPcdHandle(), uiEndpoint);
 }
 
-void STM32F407UsbDevice::ctrlSendStatus()
+void STM32UsbDevice::ctrlSendStatus()
 {
   eEp0State = EEnpointState::StateIn;
   HAL_PCD_EP_Transmit(getPcdHandle(), 0, nullptr, 0);
 }
 
-void STM32F407UsbDevice::ctrlReceiveStatus()
+void STM32UsbDevice::ctrlReceiveStatus()
 {
   eEp0State = EEnpointState::StateOut;
   HAL_PCD_EP_Receive(getPcdHandle(), 0, nullptr, 0);

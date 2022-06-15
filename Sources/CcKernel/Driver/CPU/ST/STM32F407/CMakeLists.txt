@@ -1,4 +1,16 @@
 ########
+# Prepare environment
+########
+
+set(STM32F4_VERSION           "1.25.0" )
+set(STM32F4_DIR               ${CC_CACHE_DIR}/Sources/STM32F4Cube_Driver/${STM32F4_VERSION} )
+set(STM32F4_DRIVER_DIR        ${STM32F4_DIR}/Drivers )
+
+CcDownloadAndExtract( "STM32F4Cube_Driver"
+"${STM32F4_DIR}"
+"https://coolcow.de/projects/ThirdParty/STM32F4Cube/binaries/${STM32F4_VERSION}/Drivers.7z")
+
+########
 # Add Source Files
 ########
 list (APPEND SOURCE_FILES
@@ -14,7 +26,7 @@ list (APPEND SOURCE_FILES
 )
 
 ########
-# Add Source Files
+# Add Header Files
 ########
 list (APPEND HEADER_FILES
       "${CMAKE_CURRENT_LIST_DIR}/STM32F407.h"
@@ -26,10 +38,24 @@ list (APPEND HEADER_FILES
       "${CMAKE_CURRENT_LIST_DIR}/stm32f4xx_hal_conf.h"
 )
 
+########
+# Add Include Directories
+########
+list (APPEND PROJECT_INCLUDE_DIRS
+  "${CMAKE_CURRENT_LIST_DIR}/../Common"
+  "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Inc"
+  "${STM32F4_DRIVER_DIR}/CMSIS/Include"
+  "${STM32F4_DRIVER_DIR}/CMSIS/Device/ST/STM32F4xx/Include"
+)
+
+########
+# Add Definitions
+########
 list (APPEND PROJECT_DEFINITIONS
     -DARM_MATH_CM4
     -DSTM32F407xx
-    -DHSE_VALUE=8000000)
+    -DHSE_VALUE=8000000
+)
 
 if("${CCOS_CPU_TYPE}" STREQUAL "STM32F407VET")
   list(APPEND PROJECT_DEFINITIONS -DNUMBER_OF_PORTS=9 -DSTM32F407VET)
@@ -38,14 +64,6 @@ elseif("${CCOS_CPU_TYPE}" STREQUAL "STM32F407VGT")
 else()
   message(FATAL_ERROR "No driver for this CPU")
 endif()
-
-set(STM32F4_VERSION           "1.25.0" )
-set(STM32F4_DIR               ${CC_CACHE_DIR}/Sources/STM32F4Cube_Driver/${STM32F4_VERSION} )
-set(STM32F4_DRIVER_DIR        ${STM32F4_DIR}/Drivers )
-
-CcDownloadAndExtract( "STM32F4Cube_Driver"
-                      "${STM32F4_DIR}"
-                      "https://coolcow.de/projects/ThirdParty/STM32F4Cube/binaries/${STM32F4_VERSION}/Drivers.7z")
 
 # List all required source files
 list (APPEND STM_SOURCE_FILES
@@ -74,10 +92,11 @@ endif(CCOS_GENERIC_NETWORK)
 if(CCOS_GENERIC_USB)
 
   list(APPEND SOURCE_FILES
-        "${CMAKE_CURRENT_LIST_DIR}/STM32F407Usb.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/STM32F407Usb.h"
-        "${CMAKE_CURRENT_LIST_DIR}/STM32F407UsbDevice.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/STM32F407UsbDevice.h"
+        "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32Usb.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32Usb.h"
+        "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32UsbDevice.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32UsbDevice.h"
+        "${CMAKE_CURRENT_LIST_DIR}/usbh_conf.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/usbh_conf.h"
   )
   list(FILTER USB_SOURCE_FILES EXCLUDE REGEX "template")
@@ -94,8 +113,5 @@ endif()
 add_to_driver_headers("CPU/ST/STM32F407/STM32F407Driver.h")
 add_to_driver_names  (0 "STM32F407Driver")
 add_to_driver_sources(${STM_SOURCE_FILES} ${SOURCE_FILES} ${HEADER_FILES})
-add_to_driver_includes(${STM32F4_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}
-                        "${STM32F4_DRIVER_DIR}/STM32F4xx_HAL_Driver/Inc"
-                        "${STM32F4_DRIVER_DIR}/CMSIS/Include"
-                        "${STM32F4_DRIVER_DIR}/CMSIS/Device/ST/STM32F4xx/Include")
+add_to_driver_includes(${STM32F4_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_INCLUDE_DIRS})
 add_to_driver_definitions(${PROJECT_DEFINITIONS})

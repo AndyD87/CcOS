@@ -19,19 +19,19 @@
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2022
  * @par       Language: C++11
- * @brief     Class STM32F207IGUsbDevice
+ * @brief     Class STM32UsbDevice
  */
 #pragma once
 
 #include "CcBase.h"
 #include "Devices/IUsbDevice.h"
-#include <stm32f2xx_ll_usb.h>
-#include <stm32f2xx_hal_pcd.h>
+#include <stm32f4xx_ll_usb.h>
+#include <stm32f4xx_hal_pcd.h>
 
 /**
  * @brief First test of an USB Implementation on STM32F4
  */
-class STM32F207IGUsbDevice : public IUsbDevice
+class STM32UsbDevice : public IUsbDevice
 {
 public: //methods
   enum EUsbState
@@ -43,8 +43,8 @@ public: //methods
     Resume
   };
 
-  STM32F207IGUsbDevice();
-  virtual ~STM32F207IGUsbDevice();
+  STM32UsbDevice();
+  virtual ~STM32UsbDevice();
 
   virtual CcStatus onState(EState eState) override;
   virtual CcStatus loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor) override;
@@ -61,17 +61,20 @@ public: //methods
   void doSetupDeviceConfigDescriptor(uint8*& pBuffer, uint16& uiSize);
   void doSetupInterface();
   void doSetupEndPoint();
+  
+  void doSetConfiguration();
 
-  void doInputData(uint8 uiEndpoint);
+  void doInputData(uint8 uiEndpoint, uint8* pBuffer);
   void doOutputData(uint8 uiEndpoint, const uint8* pBuffer);
 
   void write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize);
-  bool writeContinue();
+  bool writeRequired();
+  void writeContinue(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize);
 
   void stallEp(uint8 uiEndpoint);
 
-public:
-  void ISR();
+  void ctrlSendStatus();
+  void ctrlReceiveStatus();
 
 private:
   #pragma pack(push, 1)
@@ -96,9 +99,5 @@ private:
   EUsbState m_eCurrentSate = EUsbState::Default;
 
   uint8 m_uiUsbAddress = 0;
-
-  uint8* m_pWriteBuffer     = nullptr;
-  uint16 m_uiWriteEndpoint  = 0;
   uint16 m_uiWriteSize      = 0;
-  uint16 m_uiWritten        = 0;
 };

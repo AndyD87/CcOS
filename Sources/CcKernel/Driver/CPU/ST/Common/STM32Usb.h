@@ -19,7 +19,7 @@
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2022
  * @par       Language: C++11
- * @brief     Class STM32F207IGUsb
+ * @brief     Class STM32Usb
  */
 #pragma once
 
@@ -27,16 +27,16 @@
 #include "Devices/IUsb.h"
 #include "Devices/IGpioPort.h"
 #include "CcDeviceList.h"
-#include "STM32F207IGUsbDevice.h"
+#include "STM32UsbDevice.h"
 
 /**
  * @brief First test of an USB Implementation on STM32F4
  */
-class STM32F207IGUsb : public IUsb
+class STM32Usb : public IUsb
 {
 public: //methods
-  STM32F207IGUsb();
-  virtual ~STM32F207IGUsb();
+  STM32Usb();
+  virtual ~STM32Usb();
 
   virtual CcStatus onState(EState eState) override;
 
@@ -47,6 +47,6 @@ private:
   union
   {
     IDevice*            pBasicDevice;
-    STM32F207IGUsbDevice* pDevice;
+    STM32UsbDevice* pDevice;
   } m_pType;
 };
