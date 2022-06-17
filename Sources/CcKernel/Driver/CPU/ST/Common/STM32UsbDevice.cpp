@@ -22,6 +22,19 @@
 #include "CcStatic.h"
 #include "usbh_conf.h"
 
+#define USBD_EP_TYPE_BULK                               0x02U
+
+void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
+{
+  HAL_Custom_MspInit(pcdHandle);
+}
+
+void HAL_PCD_MspDeInit(PCD_HandleTypeDef* pcdHandle)
+{
+  HAL_Custom_MspDeinit(pcdHandle);
+}
+
+
 void CallbackReceived(const char* pMessage)
 {
   CcKernel::message(EMessage::Info, pMessage);
@@ -364,11 +377,13 @@ void STM32UsbDevice::doSetupDevice()
           }
           else
           {
-            // Write Error
+            CallbackReceived("Invalid request");
           }
           break;
         case USB_REQ_SET_CONFIGURATION:
           doSetConfiguration();
+          setUsbState(EUsbState::Configured);
+          ctrlSendStatus();
           break;
         case USB_REQ_GET_CONFIGURATION:
         case USB_REQ_GET_STATUS:
@@ -468,6 +483,36 @@ void STM32UsbDevice::doSetConfiguration()
   if(m_eCurrentSate == EUsbState::Addressed)
   {
     // @todo Configure and open endpoints. Enpoint interfaces are required
+    for(IUsbDevice::CConfigDescriptor& oConfig : m_oDeviceDescriptor.getConfigs())
+    {
+      for(size_t uiIdx=0; uiIdx<oConfig.getEndpointCount(); uiIdx++)  
+      {
+        HAL_PCD_EP_Open(
+          getPcdHandle(), 
+          oConfig.getEndpoint(uiIdx)->uiEndpointAddress,
+          oConfig.getEndpoint(uiIdx)->wMaxPacketSize,
+          oConfig.getEndpoint(uiIdx)->uiAttributes
+        );
+        if(oConfig.getEndpoint(uiIdx)->uiEndpointAddress == 0 ||
+           oConfig.getEndpoint(uiIdx)->uiEndpointAddress == 0x80)
+        { 
+          // Nothing to do, it is our default config
+        }
+        else if(oConfig.getEndpoint(uiIdx)->uiEndpointAddress < 0x80)
+        {
+          // Setup receive buffer
+          oConfig.getEndpointInfo(uiIdx).oInBuffer.resize(oConfig.getEndpoint(uiIdx)->wMaxPacketSize);
+
+          // Prepare receive
+          HAL_PCD_EP_Receive(
+            getPcdHandle(), 
+            oConfig.getEndpoint(uiIdx)->uiEndpointAddress,
+            oConfig.getEndpointInfo(uiIdx).oInBuffer.cast<uint8>(), 
+            oConfig.getEndpoint(uiIdx)->wMaxPacketSize
+          );
+        } 
+      }
+    }
   }
 }
 
@@ -493,8 +538,13 @@ void STM32UsbDevice::doInputData(uint8 uiEndpoint, uint8* pBuffer)
         ctrlReceiveStatus();
       }
     }
+    else if(eEp0State == EEnpointState::StateIn)
+    {
+      stallEp(0x80U);
+    }
     else
     {
+      CallbackReceived("Invalid Endpoint IN called");
     }
   }
   else
@@ -520,6 +570,10 @@ void STM32UsbDevice::doOutputData(uint8 uiEndpoint, const uint8* pBuffer)
     {
       eEp0State = EEnpointState::Idle;
       stallEp(0U);
+    }
+    else
+    {
+      CallbackReceived("Invalid Endpoint OUT called");
     }
   }
   else

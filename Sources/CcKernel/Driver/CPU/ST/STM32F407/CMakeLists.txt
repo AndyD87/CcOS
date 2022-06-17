@@ -92,12 +92,12 @@ endif(CCOS_GENERIC_NETWORK)
 if(CCOS_GENERIC_USB)
 
   list(APPEND SOURCE_FILES
+        "${CMAKE_CURRENT_LIST_DIR}/usbh_conf.cpp"
+        "${CMAKE_CURRENT_LIST_DIR}/usbh_conf.h"
         "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32Usb.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32Usb.h"
         "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32UsbDevice.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32UsbDevice.h"
-        "${CMAKE_CURRENT_LIST_DIR}/usbh_conf.cpp"
-        "${CMAKE_CURRENT_LIST_DIR}/usbh_conf.h"
   )
   list(FILTER USB_SOURCE_FILES EXCLUDE REGEX "template")
   list(APPEND STM_SOURCE_FILES
@@ -112,6 +112,6 @@ endif()
 
 add_to_driver_headers("CPU/ST/STM32F407/STM32F407Driver.h")
 add_to_driver_names  (0 "STM32F407Driver")
-add_to_driver_sources(${STM_SOURCE_FILES} ${SOURCE_FILES} ${HEADER_FILES})
+add_to_driver_sources(${SOURCE_FILES} ${STM_SOURCE_FILES} ${HEADER_FILES})
 add_to_driver_includes(${STM32F4_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${PROJECT_INCLUDE_DIRS})
 add_to_driver_definitions(${PROJECT_DEFINITIONS})

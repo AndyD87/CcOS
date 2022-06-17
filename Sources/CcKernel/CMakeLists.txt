@@ -120,6 +120,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Devices/Simulations/CcGpioPortSimulation.h
     Devices/Simulations/CcI2CSimulation.h
     Devices/Simulations/CcSpiSimulation.h
+    Devices/USB/Client/CcUsbCdc.h
 
     Network/CcCommonIps.h
     Network/CcCommonPorts.h
@@ -201,12 +202,6 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     IWaitable.cpp
     IWorker.cpp
 
-    Devices/Simulations/CcBoardSupportSimulation.cpp
-    Devices/Simulations/CcClockSimulation.cpp
-    Devices/Simulations/CcEepromSimulation.cpp
-    Devices/Simulations/CcGpioPortSimulation.cpp
-    Devices/Simulations/CcI2CSimulation.cpp
-    Devices/Simulations/CcSpiSimulation.cpp
     Devices/CcDeviceEeprom.cpp
     Devices/CcDriverObjects.cpp
     Devices/CcGpioPortPin.cpp
@@ -233,6 +228,13 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Devices/IUsbDevice.cpp
     Devices/IUsbHid.cpp
     Devices/IWlan.cpp
+    Devices/Simulations/CcBoardSupportSimulation.cpp
+    Devices/Simulations/CcClockSimulation.cpp
+    Devices/Simulations/CcEepromSimulation.cpp
+    Devices/Simulations/CcGpioPortSimulation.cpp
+    Devices/Simulations/CcI2CSimulation.cpp
+    Devices/Simulations/CcSpiSimulation.cpp
+    Devices/USB/Client/CcUsbCdc.cpp
 
     Documents/CcIniFile.cpp
 

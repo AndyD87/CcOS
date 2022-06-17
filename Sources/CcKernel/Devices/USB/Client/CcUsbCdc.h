@@ -16,35 +16,39 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2017
- * @author    Andreas Dirmeier
- * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class GenericApp
- *
- *  Implementation of Main Application
+ * @brief     Class CcUsbCdc
  */
+#pragma once
 
-#include "GenericApp.h"
-#include "CcKernel.h"
+#include "CcBase.h"
 #include "Devices/CcDeviceUsb.h"
-#include "Devices/IUsbDevice.h"
-#include "Devices/USB/Client/CcUsbCdc.h"
+#include "IDevice.h"
+#include "IIo.h"
+#include "CcBinaryStream.h"
 
-GenericApp::GenericApp()
+/**
+ * @brief Control the Input and Outputports on device
+ */
+class CcKernelSHARED CcUsbCdc : public IDevice
 {
-}
+public:
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
+  CcUsbCdc(const CcDeviceUsb& oInterface);
+  virtual ~CcUsbCdc();
+  
+  virtual CcStatus onState(EState eState) override;
 
-GenericApp::~GenericApp()
-{
-}
+private:
+  CcStatus onStart();
 
-void GenericApp::run()
-{
-  CcDeviceUsb oUsbDevice = CcKernel::getDevice(EDeviceType::Usb);
-  if(oUsbDevice.isValid())
-  {            
-    CcUsbCdc oCdcDevice(oUsbDevice);   
-    setExitCode(oCdcDevice.start());
-  }
-}
+private:
+  CcDeviceUsb m_oInterface;
+  CcByteArray m_oCtrlInput;
+  CcByteArray m_oInOutput;
+  CcBinaryStream m_oCtrlStream;
+  CcBinaryStream m_oIoStream;
+};

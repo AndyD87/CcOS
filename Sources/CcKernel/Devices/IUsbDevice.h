@@ -27,6 +27,7 @@
 #include "CcBase.h"
 #include "CcString.h"
 #include "IDevice.h"
+#include "IIoDevice.h"
 #include "CcVector.h"
 #include "CcByteArray.h"
 
@@ -197,10 +198,18 @@ public:
     CConfigDescriptor();
     ~CConfigDescriptor();
 
+    class CEndpointInfo
+    {
+      public:
+      EEnpointState eState = EEnpointState::Idle;
+      CcByteArray   oInBuffer;
+      IIo*          pInterfaces;
+    };
+
     void* generateConfiguration(uint16& uiSize);
 
     SInterfaceDescriptor* createInterface();
-    SEndpointDescriptor* createEndpoint();
+    SEndpointDescriptor* createEndpoint(IIo* pIoStream);
     SFunctionalDescriptor* createFunctional(uint8 uiSize);
 
     size_t getEndpointCount() const
@@ -208,13 +217,15 @@ public:
     SConfigDescriptor* getConfig();
     SInterfaceDescriptor* getInterface(size_t uiIndex);
     SEndpointDescriptor* getEndpoint(size_t uiIndex);
+    CEndpointInfo& getEndpointInfo(size_t uiIndex);
     SFunctionalDescriptor* getFunction(size_t uiIndex);
 
     private:
-    CcByteArray         m_oBuffer;
-    CcVector<uint32>    m_oEndPoints;
-    CcVector<uint32>    m_oFunctions;
-    CcVector<uint32>    m_oInterfaces;
+    CcByteArray             m_oBuffer;
+    CcVector<uint32>        m_oEndPoints;
+    CcVector<CEndpointInfo> m_oEndPointConfigs;
+    CcVector<uint32>      m_oFunctions;
+    CcVector<uint32>      m_oInterfaces;
   };
   
   class CcKernelSHARED CStringDescriptor : public SStringDescriptor
@@ -230,20 +241,7 @@ public:
     CDeviceDescriptor();
     ~CDeviceDescriptor();
 
-    SEndpointDescriptor* getEndpoint(uint8 uiEndpoint)
-    { 
-      for(CConfigDescriptor& oConfig : oConfigs)  
-      {
-        for(size_t uiIdx=0; uiIdx<oConfig.getEndpointCount(); uiIdx++)  
-        {
-          if(oConfig.getEndpoint(uiIdx)->uiEndpointAddress == uiEndpoint) 
-          {
-            return oConfig.getEndpoint(uiIdx);
-          }
-        }
-      }
-      return nullptr;
-    }
+    SEndpointDescriptor* getEndpoint(uint8 uiEndpoint);
 
     CcVector<CConfigDescriptor>& getConfigs()
     { return oConfigs; }

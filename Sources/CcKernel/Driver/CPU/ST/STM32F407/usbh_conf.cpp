@@ -1,6 +1,7 @@
+#include "CcBase.h"
 #include "usbh_conf.h"
 
-void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
+void HAL_Custom_MspInit(PCD_HandleTypeDef* pcdHandle)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {};
   if(pcdHandle->Instance==USB_OTG_FS)
@@ -67,7 +68,7 @@ void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
   }
 }
 
-void HAL_PCD_MspDeInit(PCD_HandleTypeDef* pcdHandle)
+void HAL_Custom_MspDeinit(PCD_HandleTypeDef* pcdHandle)
 {
   if(pcdHandle->Instance==USB_OTG_FS)
   {

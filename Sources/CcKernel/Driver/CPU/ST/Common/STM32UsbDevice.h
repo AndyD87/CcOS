@@ -25,8 +25,7 @@
 
 #include "CcBase.h"
 #include "Devices/IUsbDevice.h"
-#include <stm32f4xx_ll_usb.h>
-#include <stm32f4xx_hal_pcd.h>
+#include "usbh_conf.h"
 
 /**
  * @brief First test of an USB Implementation on STM32F4

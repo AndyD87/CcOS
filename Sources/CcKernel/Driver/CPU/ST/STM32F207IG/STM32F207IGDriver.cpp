@@ -33,6 +33,10 @@
   #include "Driver/CPU/ST/STM32F207IG/STM32F207IGNetwork.h"
 #endif
 
+#ifdef CCOS_GENERIC_USB
+  #include "../Common/STM32Usb.h"
+#endif
+
 #include "CcKernel.h"
 #include "CcDevice.h"
 #include <stm32f2xx_hal.h>
