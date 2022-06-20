@@ -29,7 +29,6 @@
 #include "CcKernel.h"
 #include "Devices/CcDeviceUsb.h"
 #include "Devices/IUsbDevice.h"
-#include "Devices/USB/Client/CcUsbCdc.h"
 
 GenericApp::GenericApp()
 {
@@ -37,6 +36,7 @@ GenericApp::GenericApp()
 
 GenericApp::~GenericApp()
 {
+  CCDELETE(m_pCdcDevice);
 }
 
 void GenericApp::run()
@@ -44,7 +44,7 @@ void GenericApp::run()
   CcDeviceUsb oUsbDevice = CcKernel::getDevice(EDeviceType::Usb);
   if(oUsbDevice.isValid())
   {            
-    CcUsbCdc oCdcDevice(oUsbDevice);   
-    setExitCode(oCdcDevice.start());
+    CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);   
+    setExitCode(m_pCdcDevice->start());
   }
 }

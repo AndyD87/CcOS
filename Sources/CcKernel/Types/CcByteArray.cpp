@@ -288,3 +288,8 @@ size_t CcByteArray::write(const void* pBuffer, size_t uSize, size_t uiOffset)
   }
   return uSize;
 }
+
+void CcByteArray::memset(const char cToSet)
+{
+  CcStatic::memset(getArray(), cToSet, size());
+}

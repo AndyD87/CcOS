@@ -208,6 +208,8 @@ public:
    */
   size_t write(const void* pBuffer, size_t uSize, size_t uiOffset = 0);
 
+  void memset(const char cToSet);
+
 
   //! @return Get buffer of byte array already casted
   template<class T>

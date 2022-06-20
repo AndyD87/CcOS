@@ -27,6 +27,8 @@
 #include "IIo.h"
 #include "CcBinaryStream.h"
 
+#define UsbCdcDataSize      7
+
 /**
  * @brief Control the Input and Outputports on device
  */
@@ -42,6 +44,9 @@ public:
   
   virtual CcStatus onState(EState eState) override;
 
+  void onInterfaceRequest(IUsbDevice::SRequest* pRequest);
+  void onInterfaceReceive(IUsbDevice::SRequest* pRequest);
+
 private:
   CcStatus onStart();
 
@@ -51,4 +56,8 @@ private:
   CcByteArray m_oInOutput;
   CcBinaryStream m_oCtrlStream;
   CcBinaryStream m_oIoStream;
+
+  CcByteArray m_oClassData;
+  IUsbDevice* m_pUsbDevice;
+  uint8       m_uiCmd = UINT8_MAX;
 };

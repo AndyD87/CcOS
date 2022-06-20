@@ -30,6 +30,37 @@
 #include "IIoDevice.h"
 #include "CcVector.h"
 #include "CcByteArray.h"
+#include "CcEvent.h"
+
+#define  UsbRequestTarget_DEVICE                       0x00U
+#define  UsbRequestTarget_INTERFACE                    0x01U
+#define  UsbRequestTarget_ENDPOINT                     0x02U
+#define  UsbRequestTarget_MASK                         0x03U
+
+#define  UsbRequestType_STANDARD                          0x00U
+#define  UsbRequestType_CLASS                             0x20U
+#define  UsbRequestType_VENDOR                            0x40U
+#define  UsbRequestType_MASK                              0x60U
+
+#define  UsbRequest_GET_STATUS                             0x00U
+#define  UsbRequest_CLEAR_FEATURE                          0x01U
+#define  UsbRequest_SET_FEATURE                            0x03U
+#define  UsbRequest_SET_ADDRESS                            0x05U
+#define  UsbRequest_GET_DESCRIPTOR                         0x06U
+#define  UsbRequest_SET_DESCRIPTOR                         0x07U
+#define  UsbRequest_GET_CONFIGURATION                      0x08U
+#define  UsbRequest_SET_CONFIGURATION                      0x09U
+#define  UsbRequest_GET_INTERFACE                          0x0AU
+#define  UsbRequest_SET_INTERFACE                          0x0BU
+#define  UsbRequest_SYNCH_FRAME                            0x0CU
+
+#define  UsbDescriptorType_DEVICE                           0x01U
+#define  UsbDescriptorType_CONFIGURATION                    0x02U
+#define  UsbDescriptorType_STRING                           0x03U
+#define  UsbDescriptorType_ENDPOINT                         0x05U
+#define  UsbDescriptorType_DEVICE_QUALIFIER                 0x06U
+#define  UsbDescriptorType_OTHER_SPEED_CONFIGURATION        0x07U
+#define  UsbDescriptorType_BOS                              0x0FU
 
 /**
  * @brief Class for communication with a USB-HIDevice
@@ -180,6 +211,16 @@ public:
       uint8   uiDescriptorType = 0x03;    //< String Descriptor
       char    pString[3];                  //< String described
     };
+
+    struct CcKernelSHARED SRequest
+    {
+    public:
+      uint8_t   bmRequest;
+      uint8_t   bRequest;
+      uint16_t  wValue;
+      uint16_t  wIndex;
+      uint16_t  wLength;
+    };
   #pragma pack(pop)
   
   enum class EEnpointState
@@ -209,7 +250,7 @@ public:
     void* generateConfiguration(uint16& uiSize);
 
     SInterfaceDescriptor* createInterface();
-    SEndpointDescriptor* createEndpoint(IIo* pIoStream);
+    SEndpointDescriptor* createEndpoint(IIo* pIoStream, uint8 uiEndpointAddress, uint8 uiAttributes, uint16 wMaxPacketSize, uint8 uInterval);
     SFunctionalDescriptor* createFunctional(uint8 uiSize);
 
     size_t getEndpointCount() const
@@ -241,7 +282,7 @@ public:
     CDeviceDescriptor();
     ~CDeviceDescriptor();
 
-    SEndpointDescriptor* getEndpoint(uint8 uiEndpoint);
+    uint8 findEndpoint(uint8 uiEndpoint);
 
     CcVector<CConfigDescriptor>& getConfigs()
     { return oConfigs; }
@@ -267,7 +308,28 @@ public:
   virtual ~IUsbDevice();
 
   virtual CcStatus loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor) = 0;
+  virtual void read(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize) = 0;
+  virtual void write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize) = 0;
+  virtual void stallEp(uint8 uiEndpoint) = 0;
+  virtual void ctrlSendStatus() = 0;
+  virtual void ctrlReceiveStatus() = 0;
+
+  void sendError();
+  static void debugMessage(const char* pMessage);
+
+  void registerInterfaceRequestEvent(const CcEvent& oEvent)
+  { m_oInterfaceRequestEvent = oEvent; }
+  void registerInterfaceReceiveEvent(const CcEvent& oEvent)
+  { m_oInterfaceReceiveEvent = oEvent; }
+
+protected:
+  void callInterfaceRequest(SRequest* pRequest)
+  { m_oInterfaceRequestEvent.call(pRequest); }
+  void callInterfaceReceive(SRequest* pRequest)
+  { m_oInterfaceReceiveEvent.call(pRequest); }
 
   EEnpointState eEp0State    = EEnpointState::Idle;
   uint16        uiEp0MaxSize = 64;
+  CcEvent       m_oInterfaceRequestEvent;
+  CcEvent       m_oInterfaceReceiveEvent;
 };

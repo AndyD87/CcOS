@@ -29,6 +29,7 @@
 
 #include "CcBase.h"
 #include "CcService.h"
+#include "Devices/USB/Client/CcUsbCdc.h"
 
 class GenericApp: public CcApp
 {
@@ -39,4 +40,5 @@ public:
   virtual void run() override;
 
 private:
+  CcUsbCdc* m_pCdcDevice = nullptr;
 };

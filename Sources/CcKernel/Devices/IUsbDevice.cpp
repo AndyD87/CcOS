@@ -25,6 +25,7 @@
 
 #include "IUsbDevice.h"
 #include "CcStatic.h"
+#include "CcKernel.h"
 
 IUsbDevice::CDeviceDescriptor::CDeviceDescriptor()
 {
@@ -35,19 +36,20 @@ IUsbDevice::CDeviceDescriptor::~CDeviceDescriptor()
 
 }
 
-IUsbDevice::SEndpointDescriptor* IUsbDevice::CDeviceDescriptor::getEndpoint(uint8 uiEndpoint)
+uint8 IUsbDevice::CDeviceDescriptor::findEndpoint(uint8 uiEndpoint)
 { 
+  uint8 uiIndex = UINT8_MAX;
   for(CConfigDescriptor& oConfig : oConfigs)  
   {
     for(size_t uiIdx=0; uiIdx<oConfig.getEndpointCount(); uiIdx++)  
     {
       if(oConfig.getEndpoint(uiIdx)->uiEndpointAddress == uiEndpoint) 
       {
-        return oConfig.getEndpoint(uiIdx);
+        uiIndex = uiIdx;
       }
     }
   }
-  return nullptr;
+  return uiIndex;
 }
 
 IUsbDevice::CConfigDescriptor& IUsbDevice::CDeviceDescriptor::createConfig()
@@ -101,14 +103,28 @@ IUsbDevice::SFunctionalDescriptor* IUsbDevice::CConfigDescriptor::createFunction
   return pInterface;
 }
 
-IUsbDevice::SEndpointDescriptor* IUsbDevice::CConfigDescriptor::createEndpoint(IIo* pIoStream)
+IUsbDevice::SEndpointDescriptor* IUsbDevice::CConfigDescriptor::createEndpoint(
+          IIo* pIoStream, 
+          uint8 uiEndpointAddress, 
+          uint8 uiAttributes, 
+          uint16 wMaxPacketSize, 
+          uint8 uInterval
+)
 {
   uint32 uiCurrentOffset = m_oBuffer.size();
   m_oBuffer.resize(m_oBuffer.size() + sizeof(SEndpointDescriptor));
   IUsbDevice::SEndpointDescriptor* pInterface = m_oBuffer.cast<IUsbDevice::SEndpointDescriptor>(uiCurrentOffset);
   pInterface->init();
+  pInterface->uiEndpointAddress = uiEndpointAddress;
+  pInterface->uiAttributes      = uiAttributes; 
+  pInterface->wMaxPacketSize    = wMaxPacketSize;
+  pInterface->uInterval         = uInterval;
+
   m_oEndPoints.append(uiCurrentOffset);
   m_oEndPointConfigs.appendDefault();
+  m_oEndPointConfigs.last().oInBuffer.resize(wMaxPacketSize);
+  m_oEndPointConfigs.last().oInBuffer.memset(0);
+  m_oEndPointConfigs.last().pInterfaces = pIoStream;
   getConfig()->uiTotalLength = m_oBuffer.size();
   return pInterface;
 }
@@ -154,4 +170,15 @@ IUsbDevice::IUsbDevice()
 
 IUsbDevice::~IUsbDevice()
 {
+}
+
+void IUsbDevice::sendError()
+{
+  stallEp(0);
+  stallEp(0x80);
+}
+
+void IUsbDevice::debugMessage(const char* pMessage)
+{
+  CcKernel::message(EMessage::Info, pMessage);
 }

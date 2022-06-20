@@ -47,6 +47,17 @@ public: //methods
 
   virtual CcStatus onState(EState eState) override;
   virtual CcStatus loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor) override;
+  virtual void read(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize) override;
+  virtual void write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize) override;
+  virtual void stallEp(uint8 uiEndpoint) override;
+  virtual void ctrlSendStatus() override;
+  virtual void ctrlReceiveStatus() override;
+
+
+  bool readRequired();
+  void readContinue(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize);
+  bool writeRequired();
+  void writeContinue(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize);
 
   inline PCD_HandleTypeDef* getPcdHandle()
   { return &m_oPcdHandle; }
@@ -64,30 +75,9 @@ public: //methods
   void doSetConfiguration();
 
   void doInputData(uint8 uiEndpoint, uint8* pBuffer);
-  void doOutputData(uint8 uiEndpoint, const uint8* pBuffer);
-
-  void write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize);
-  bool writeRequired();
-  void writeContinue(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize);
-
-  void stallEp(uint8 uiEndpoint);
-
-  void ctrlSendStatus();
-  void ctrlReceiveStatus();
+  void doOutputData(uint8 uiEndpoint, uint8* pBuffer);
 
 private:
-  #pragma pack(push, 1)
-  class CRequest
-  {
-  public:
-    uint8_t   bmRequest;
-    uint8_t   bRequest;
-    uint16_t  wValue;
-    uint16_t  wIndex;
-    uint16_t  wLength;
-  };
-  #pragma pack(pop)
-
   PCD_HandleTypeDef     m_oPcdHandle;
   USB_OTG_GlobalTypeDef m_oGlobalDef;
   USB_OTG_CfgTypeDef    m_oConfigDef;
@@ -97,6 +87,7 @@ private:
   EUsbState m_eOldState = EUsbState::Default;
   EUsbState m_eCurrentSate = EUsbState::Default;
 
-  uint8 m_uiUsbAddress = 0;
-  uint16 m_uiWriteSize      = 0;
+  uint8 m_uiUsbAddress    = 0;
+  uint16 m_uiWriteSize    = 0;
+  uint16 m_uiReadSize     = 0;
 };

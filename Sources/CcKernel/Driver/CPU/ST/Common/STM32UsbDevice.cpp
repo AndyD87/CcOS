@@ -34,12 +34,6 @@ void HAL_PCD_MspDeInit(PCD_HandleTypeDef* pcdHandle)
   HAL_Custom_MspDeinit(pcdHandle);
 }
 
-
-void CallbackReceived(const char* pMessage)
-{
-  CcKernel::message(EMessage::Info, pMessage);
-}
-
 /**
   * @brief  Data OUT stage callback.
   * @param  hpcd PCD handle
@@ -82,7 +76,7 @@ void HAL_PCD_SOFCallback(PCD_HandleTypeDef *hpcd)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(hpcd);
-  CallbackReceived("HAL_PCD_SOFCallback");
+  IUsbDevice::debugMessage("HAL_PCD_SOFCallback");
 }
 
 /**
@@ -126,7 +120,7 @@ void HAL_PCD_ISOOUTIncompleteCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
   /* Prevent unused argument(s) compilation warning */
   UNUSED(hpcd);
   UNUSED(epnum);
-  CallbackReceived("HAL_PCD_ResumeCallback");
+  IUsbDevice::debugMessage("HAL_PCD_ResumeCallback");
 }
 
 /**
@@ -140,7 +134,7 @@ void HAL_PCD_ISOINIncompleteCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
   /* Prevent unused argument(s) compilation warning */
   UNUSED(hpcd);
   UNUSED(epnum);
-  CallbackReceived("HAL_PCD_ISOINIncompleteCallback");
+  IUsbDevice::debugMessage("HAL_PCD_ISOINIncompleteCallback");
 }
 
 /**
@@ -152,7 +146,7 @@ void HAL_PCD_ConnectCallback(PCD_HandleTypeDef *hpcd)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(hpcd);
-  CallbackReceived("HAL_PCD_ConnectCallback");
+  IUsbDevice::debugMessage("HAL_PCD_ConnectCallback");
 }
 
 /**
@@ -164,7 +158,7 @@ void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(hpcd);
-  CallbackReceived("HAL_PCD_DisconnectCallback");
+  IUsbDevice::debugMessage("HAL_PCD_DisconnectCallback");
 }
 
 
@@ -291,72 +285,51 @@ void STM32UsbDevice::doReset()
 
 #define  SWAPBYTE(addr)        (((uint16_t)(*((uint8_t *)(addr)))) + \
                                (((uint16_t)(*(((uint8_t *)(addr)) + 1U))) << 8U))
-#define  USB_REQ_RECIPIENT_DEVICE                       0x00U
-#define  USB_REQ_RECIPIENT_INTERFACE                    0x01U
-#define  USB_REQ_RECIPIENT_ENDPOINT                     0x02U
-#define  USB_REQ_RECIPIENT_MASK                         0x03U
 
 void STM32UsbDevice::doSetup()
 {
-  CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
+  SRequest* pRequest = reinterpret_cast<SRequest*>(m_oPcdHandle.Setup);
 
   switch (pRequest->bmRequest & 0x1FU)
   {
-    case USB_REQ_RECIPIENT_DEVICE:
+    case UsbRequestTarget_DEVICE:
       doSetupDevice();
       break;
 
-    case USB_REQ_RECIPIENT_INTERFACE:
+    case UsbRequestTarget_INTERFACE:
       doSetupInterface();
       break;
 
-    case USB_REQ_RECIPIENT_ENDPOINT:
+    case UsbRequestTarget_ENDPOINT:
       doSetupEndPoint();
       break;
 
     default:
-      CallbackReceived("Unknown Request");
+      IUsbDevice::debugMessage("Unknown Request");
       stallEp(0x80);
       break;
   }
 }
 
 
-#define  USB_REQ_TYPE_STANDARD                          0x00U
-#define  USB_REQ_TYPE_CLASS                             0x20U
-#define  USB_REQ_TYPE_VENDOR                            0x40U
-#define  USB_REQ_TYPE_MASK                              0x60U
-
-#define  USB_REQ_GET_STATUS                             0x00U
-#define  USB_REQ_CLEAR_FEATURE                          0x01U
-#define  USB_REQ_SET_FEATURE                            0x03U
-#define  USB_REQ_SET_ADDRESS                            0x05U
-#define  USB_REQ_GET_DESCRIPTOR                         0x06U
-#define  USB_REQ_SET_DESCRIPTOR                         0x07U
-#define  USB_REQ_GET_CONFIGURATION                      0x08U
-#define  USB_REQ_SET_CONFIGURATION                      0x09U
-#define  USB_REQ_GET_INTERFACE                          0x0AU
-#define  USB_REQ_SET_INTERFACE                          0x0BU
-#define  USB_REQ_SYNCH_FRAME                            0x0CU
-
 void STM32UsbDevice::doSetupDevice()
 {
-  CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
-  switch (pRequest->bmRequest & USB_REQ_TYPE_MASK)
+  SRequest* pRequest = reinterpret_cast<SRequest*>(m_oPcdHandle.Setup);
+  switch (pRequest->bmRequest & UsbRequestType_MASK)
   {
-    case USB_REQ_TYPE_STANDARD:
+    case UsbRequestType_STANDARD:
       switch (pRequest->bRequest)
       {
-        case USB_REQ_GET_DESCRIPTOR:
+        case UsbRequest_GET_DESCRIPTOR:
           doSetupDeviceDescriptor();
           break;
-        case USB_REQ_SET_ADDRESS:
+        case UsbRequest_SET_ADDRESS:
           if ((pRequest->wIndex == 0U) && (pRequest->wLength == 0U) && (pRequest->wValue < 128U))
           {
             if(m_eCurrentSate == EUsbState::Configured)
             {
               // Write Error
-              CallbackReceived("Error already configured");
+              IUsbDevice::debugMessage("Error already configured");
             }
             else
             {
@@ -377,44 +350,35 @@ void STM32UsbDevice::doSetupDevice()
           }
           else
           {
-            CallbackReceived("Invalid request");
+            IUsbDevice::debugMessage("Invalid request");
           }
           break;
-        case USB_REQ_SET_CONFIGURATION:
+        case UsbRequest_SET_CONFIGURATION:
           doSetConfiguration();
           setUsbState(EUsbState::Configured);
           ctrlSendStatus();
           break;
-        case USB_REQ_GET_CONFIGURATION:
-        case USB_REQ_GET_STATUS:
-        case USB_REQ_SET_FEATURE:
-        case USB_REQ_CLEAR_FEATURE:
+        case UsbRequest_GET_CONFIGURATION:
+        case UsbRequest_GET_STATUS:
+        case UsbRequest_SET_FEATURE:
+        case UsbRequest_CLEAR_FEATURE:
         default:
-          CallbackReceived("USB_REQ_...");
+          IUsbDevice::debugMessage("UsbRequest_...");
           break;
       }
       break;
-    case USB_REQ_TYPE_CLASS:
-    case USB_REQ_TYPE_VENDOR:
+    case UsbRequestType_CLASS:
+    case UsbRequestType_VENDOR:
     default:
-      CallbackReceived("USB_REQ_TYPE_CLASS/USB_REQ_TYPE_VENDOR");
+      IUsbDevice::debugMessage("UsbRequestType_CLASS/UsbRequestType_VENDOR");
       break;
 
   }
 }
 
-#define  USB_DESC_TYPE_DEVICE                           0x01U
-#define  USB_DESC_TYPE_CONFIGURATION                    0x02U
-#define  USB_DESC_TYPE_STRING                           0x03U
-#define  USB_DESC_TYPE_ENDPOINT                         0x05U
-#define  USB_DESC_TYPE_DEVICE_QUALIFIER                 0x06U
-#define  USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION        0x07U
-#define  USB_DESC_TYPE_BOS                              0x0FU
-
-
 void STM32UsbDevice::doSetupDeviceDescriptor()
 {
-  CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
+  SRequest* pRequest = reinterpret_cast<SRequest*>(m_oPcdHandle.Setup);
   uint8* pBuffer = nullptr;
   uint16 uiSize = 0;
 
@@ -422,20 +386,20 @@ void STM32UsbDevice::doSetupDeviceDescriptor()
 
   switch(pRequest->wValue >> 8)
   {
-    case USB_DESC_TYPE_DEVICE:
+    case UsbDescriptorType_DEVICE:
       pBuffer = reinterpret_cast<uint8*>(&m_oDeviceDescriptor);
       uiSize = m_oDeviceDescriptor.uiLength;
       break;
-    case USB_DESC_TYPE_STRING:
+    case UsbDescriptorType_STRING:
       doSetupDeviceDescriptorString(pBuffer, uiSize);
       break;
-    case USB_DESC_TYPE_CONFIGURATION:
+    case UsbDescriptorType_CONFIGURATION:
       doSetupDeviceConfigDescriptor(pBuffer, uiSize);
       break;
-    case USB_DESC_TYPE_DEVICE_QUALIFIER:
-    case USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION:
+    case UsbDescriptorType_DEVICE_QUALIFIER:
+    case UsbDescriptorType_OTHER_SPEED_CONFIGURATION:
     default:
-      CallbackReceived("Test");
+      IUsbDevice::debugMessage("Test");
       break;
   }
   if(pBuffer != nullptr && uiSize > 0)
@@ -450,7 +414,7 @@ void STM32UsbDevice::doSetupDeviceDescriptor()
 
 void STM32UsbDevice::doSetupDeviceDescriptorString(uint8*& pBuffer, uint16& uiSize)
 {
-  CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
+  SRequest* pRequest = reinterpret_cast<SRequest*>(m_oPcdHandle.Setup);
   uint8 uiIndex = pRequest->wValue & 0xff;
   if(uiIndex < m_oDeviceDescriptor.getStrings().size())
   {
@@ -467,19 +431,19 @@ void STM32UsbDevice::doSetupDeviceConfigDescriptor(uint8*& pBuffer, uint16& uiSi
 
 void STM32UsbDevice::doSetupInterface()
 {
-  //CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
-  CallbackReceived("doSetupInterface");
+  SRequest* pRequest = reinterpret_cast<SRequest*>(m_oPcdHandle.Setup);
+  callInterfaceRequest(pRequest);
 }
 
 void STM32UsbDevice::doSetupEndPoint()
 {
-  //CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
-  CallbackReceived("doSetupEndPoint");
+  //SRequest* pRequest = reinterpret_cast<SRequest*>(m_oPcdHandle.Setup);
+  IUsbDevice::debugMessage("doSetupEndPoint");
 }
 
 void STM32UsbDevice::doSetConfiguration()
 {
-  //CRequest* pRequest = reinterpret_cast<CRequest*>(m_oPcdHandle.Setup);
+  //SRequest* pRequest = reinterpret_cast<SRequest*>(m_oPcdHandle.Setup);
   if(m_eCurrentSate == EUsbState::Addressed)
   {
     // @todo Configure and open endpoints. Enpoint interfaces are required
@@ -544,26 +508,46 @@ void STM32UsbDevice::doInputData(uint8 uiEndpoint, uint8* pBuffer)
     }
     else
     {
-      CallbackReceived("Invalid Endpoint IN called");
+      IUsbDevice::debugMessage("Invalid Endpoint IN called");
     }
   }
   else
   {
-    CallbackReceived("Endpoint IN called");
+    IUsbDevice::debugMessage("Endpoint IN called");
   }
 }
 
-void STM32UsbDevice::doOutputData(uint8 uiEndpoint, const uint8* pBuffer)
+void STM32UsbDevice::doOutputData(uint8 uiEndpoint, uint8* pBuffer)
 {
   if(uiEndpoint == 0)
   {                                                                                                                                    
     // Check if more data is required
     if(eEp0State == EEnpointState::DataOut)
     {
-      if(0)
-        ctrlReceiveStatus();
-      
-      ctrlSendStatus();
+      if(readRequired())
+      {
+        m_uiReadSize -= uiEp0MaxSize;
+        readContinue(uiEndpoint, pBuffer, m_uiReadSize);
+      }
+      else
+      {
+        SRequest* pRequest = reinterpret_cast<SRequest*>(m_oPcdHandle.Setup);
+        
+        /* Find the class ID relative to the current request */
+        switch (pRequest->bmRequest & 0x1FU)
+        {
+          case UsbRequestTarget_INTERFACE:
+            m_oInterfaceReceiveEvent.call(pRequest);
+            break;
+          case UsbRequestTarget_ENDPOINT:
+            IUsbDevice::debugMessage("STM32UsbDevice::doOutputData Endpoint request");
+            break;
+          default:
+            break;
+        }
+
+        ctrlSendStatus();
+      }
     }
     // Check if more data is required
     else if(eEp0State == EEnpointState::StateOut)
@@ -573,15 +557,42 @@ void STM32UsbDevice::doOutputData(uint8 uiEndpoint, const uint8* pBuffer)
     }
     else
     {
-      CallbackReceived("Invalid Endpoint OUT called");
+      IUsbDevice::debugMessage("Invalid Endpoint OUT called");
     }
   }
   else
   {
-    CallbackReceived("Endpoint OUT called");
+    uint8 uiIdx = m_oDeviceDescriptor.findEndpoint(uiEndpoint);
+    if(uiIdx < m_oDeviceDescriptor.getConfigs()[0].getEndpointCount())
+    {
+      CcByteArray& oBuffer=m_oDeviceDescriptor.getConfigs()[0].getEndpointInfo(uiIdx).oInBuffer;
+      
+      uint8 uiIdxOut = m_oDeviceDescriptor.findEndpoint(0x81);
+      if(uiIdxOut < m_oDeviceDescriptor.getConfigs()[0].getEndpointCount())
+      {
+        CcByteArray& oBufferOut = m_oDeviceDescriptor.getConfigs()[0].getEndpointInfo(uiIdxOut).oInBuffer;
+        oBufferOut.write(oBuffer.getArray(), CCMIN(oBuffer.size(), oBufferOut.size()));
+        write(0x81, oBufferOut.cast<uint8>(), oBufferOut.size());
+      }
+
+      read(uiEndpoint, oBuffer.cast<uint8>(), oBuffer.size());
+    }
   }
 }
 
+void STM32UsbDevice::read(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize)
+{
+  m_uiReadSize = uiSize;
+  eEp0State = EEnpointState::DataOut;
+  if(HAL_OK == HAL_PCD_EP_Receive(getPcdHandle(), uiEndpoint, pBuffer, uiSize))
+  {
+  }
+}
+
+bool STM32UsbDevice::readRequired()
+{
+  return m_uiReadSize > uiEp0MaxSize;
+}
 
 void STM32UsbDevice::write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize)
 {
@@ -600,6 +611,13 @@ bool STM32UsbDevice::writeRequired()
 void STM32UsbDevice::writeContinue(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize)
 {
   if(HAL_OK == HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, pBuffer, uiSize))
+  {
+  }
+}
+
+void STM32UsbDevice::readContinue(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize)
+{
+  if(HAL_OK == HAL_PCD_EP_Receive(getPcdHandle(), uiEndpoint, pBuffer, uiSize))
   {
   }
 }

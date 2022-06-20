@@ -31,7 +31,8 @@ CcUsbCdc::CcUsbCdc(const CcDeviceUsb& oInterface) :
   m_oCtrlStream(m_oCtrlInput),
   m_oIoStream(m_oInOutput)
 {
-
+  m_oClassData.resize(UsbCdcDataSize);
+  m_oClassData.memset(0);
 }
 
 CcUsbCdc::~CcUsbCdc()
@@ -105,12 +106,7 @@ CcStatus CcUsbCdc::onStart()
   pFuntional3->Data.Raw.uiRaw[1]= 0x00;
   pFuntional3->Data.Raw.uiRaw[2]= 0x01;
 
-  IUsbDevice::SEndpointDescriptor* pEp82 = oConfig.createEndpoint(&m_oCtrlStream);
-  pEp82->uiEndpointAddress = 0x82;
-  pEp82->uiAttributes = 0x03;
-  pEp82->wMaxPacketSize = 0x08;
-  pEp82->uInterval = 0x10;
-
+  oConfig.createEndpoint(&m_oCtrlStream, 0x82, 0x03, 0x08, 0x10);
   IUsbDevice::SInterfaceDescriptor* pInterface1 = oConfig.createInterface();
   pInterface1->uiInterfaceNumber = 1;
   pInterface1->uiAlternateSetting = 0;
@@ -120,17 +116,8 @@ CcStatus CcUsbCdc::onStart()
   pInterface1->uiInterfaceProtocol = 0x00;
   pInterface1->uiInterfaceIdx = 0;
 
-  IUsbDevice::SEndpointDescriptor* pEp01 = oConfig.createEndpoint(&m_oIoStream);
-  pEp01->uiEndpointAddress = 0x01;
-  pEp01->uiAttributes      = 0x02;
-  pEp01->wMaxPacketSize    = 64;
-  pEp01->uInterval         = 0x00;
-
-  IUsbDevice::SEndpointDescriptor* pEp81 = oConfig.createEndpoint(&m_oIoStream);
-  pEp81->uiEndpointAddress = 0x81;
-  pEp81->uiAttributes      = 0x02; 
-  pEp81->wMaxPacketSize    = 64;
-  pEp81->uInterval         = 0x00;
+  oConfig.createEndpoint(&m_oIoStream, 0x01, 0x02, 64, 0x00);
+  oConfig.createEndpoint(&m_oIoStream, 0x81, 0x02, 64, 0x00);
 
   oDeviceDescriptor.createString("GER");
   oDeviceDescriptor.createString("CcOS Manu");
@@ -138,14 +125,60 @@ CcStatus CcUsbCdc::onStart()
   oDeviceDescriptor.createString("CcOS Seri");
   oDeviceDescriptor.createString("CcOS Numm");
 
-  IUsbDevice* pUsbDevice = m_oInterface.getDevice()->createDevice(oDeviceDescriptor);
-  if(pUsbDevice)
+  m_pUsbDevice = m_oInterface.getDevice()->createDevice(oDeviceDescriptor);
+  if(m_pUsbDevice)
   {
-    pUsbDevice->start();
+    m_pUsbDevice->registerInterfaceRequestEvent(NewCcEvent(this, CcUsbCdc::onInterfaceRequest));
+    m_pUsbDevice->registerInterfaceReceiveEvent(NewCcEvent(this, CcUsbCdc::onInterfaceReceive));
+    m_pUsbDevice->start();
   }
   else
   {
     oState = EStatus::InvalidHandle;
   }   
   return oState;
+}
+
+void CcUsbCdc::onInterfaceRequest(IUsbDevice::SRequest* pRequest)
+{
+  switch (pRequest->bmRequest & UsbRequestType_MASK)
+  {
+    case UsbRequestType_CLASS:
+    case UsbRequestType_VENDOR:
+    case UsbRequestType_STANDARD:
+      if (pRequest->wLength != 0U)
+      {
+        if ((pRequest->bmRequest & 0x80U) != 0U)
+        {
+          uint32 uiLen = CCMIN(UsbCdcDataSize, m_oClassData.size());
+          m_pUsbDevice->write(0, m_oClassData.cast<uint8>(), uiLen);
+        }
+        else
+        {
+          m_uiCmd = pRequest->bRequest;
+
+          uint32 uiLen = CCMIN(UsbCdcDataSize, m_oClassData.size());
+          m_pUsbDevice->read(0, m_oClassData.cast<uint8>(), uiLen);
+        }
+        break;
+      }
+      else
+      {
+        m_pUsbDevice->ctrlSendStatus();
+      }
+  }
+}
+
+void CcUsbCdc::onInterfaceReceive(IUsbDevice::SRequest* pRequest)
+{
+  CCUNUSED(pRequest);
+  if(m_uiCmd != UINT8_MAX)
+  {
+    switch(m_uiCmd)
+    {
+      default:
+      break;
+    }
+  }
+  m_uiCmd = UINT8_MAX;
 }
