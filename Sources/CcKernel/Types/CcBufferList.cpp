@@ -323,3 +323,89 @@ uint32 CcBufferList::getCrc32()
   }
   return oCrc.getValueUint32();
 }
+
+void CcBufferList::remove(size_t uiSize)
+{
+  while(uiSize > 0)
+  {
+    if(at(0).size() > uiSize)
+    {
+      at(0).remove(0, uiSize);
+      m_uiSize -= uiSize;
+      uiSize = 0;
+    }
+    else
+    {
+      m_uiSize -= at(0).size();
+      uiSize -= at(0).size();
+      CcList<CcByteArray>::remove(0);
+    }
+  }
+}
+
+void CcBufferList::remove(size_t uiPos, size_t uiSize)
+{
+  size_t uiOffset = 0;
+  for(size_t uiIndex = 0; uiIndex < CcList<CcByteArray>::size() && uiSize; uiIndex++)
+  {
+    if(uiOffset + at(uiIndex).size() > uiPos)
+    {
+      if(uiOffset == uiPos)
+      {
+        if(at(uiIndex).size() > uiSize)
+        {
+          at(uiIndex).remove(0, uiSize);
+          m_uiSize -= uiSize;
+          uiSize = 0;
+          break;
+        }
+        else
+        {
+          m_uiSize -= at(uiIndex).size();
+          uiSize -= at(uiIndex).size();
+          CcList<CcByteArray>::remove(uiIndex);
+          uiIndex--;
+        }
+      }
+      else
+      {
+        size_t uiSizeToRemove = at(uiIndex).size() - (uiPos - uiOffset);
+        if(uiSizeToRemove < uiSize)
+        {
+          at(uiIndex).remove(uiPos - uiOffset, uiSizeToRemove);
+          uiSize -= uiSizeToRemove;
+          m_uiSize -= uiSizeToRemove;
+          uiOffset += at(uiIndex).size();
+        }
+        else
+        {
+          at(uiIndex).remove(uiPos - uiOffset, uiSize);
+          m_uiSize -= uiSize;
+          break;
+        }
+      }
+    }
+    else
+    {
+      uiOffset += at(uiIndex).size();
+    }
+  }
+}
+
+void CcBufferList::removeChunk(size_t uiPos)
+{
+  if(uiPos < CcList<CcByteArray>::size())
+  {
+    m_uiSize -= at(uiPos).size();
+    CcList<CcByteArray>::remove(uiPos);
+  }
+}
+
+void CcBufferList::removeChunk(size_t uiPos, size_t uiSize)
+{
+  while(uiSize)
+  {
+    removeChunk(uiPos);
+    uiSize--;
+  }
+}

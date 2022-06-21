@@ -55,14 +55,14 @@ public:
    * @param pInDev: Target device to get input data from
    * @return void
    */
-  static void setInputDevice(CcStdIn* pInDev);
+  static void setInputDevice(IIo* pInDev);
 
   /**
    * @brief Redirect console output to an other IO-Device.
    * @param pOutDev: Target device to write output to
    * @return void
    */
-  static void setOutputDevice(CcStdOut* pOutDev);
+  static void setOutputDevice(IIo* pOutDev);
 
   /**
    * @brief Read to a fixed buffer from commandline.
@@ -172,6 +172,6 @@ private:
 
 private:
   static CcMutex*    s_pLock;
-  static CcStdIn*    s_pInput;
-  static CcStdOut*   s_pOutput;
+  static IIo*        s_pInput;
+  static IIo*        s_pOutput;
 };

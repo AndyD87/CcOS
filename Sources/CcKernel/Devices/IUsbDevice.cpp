@@ -26,6 +26,7 @@
 #include "IUsbDevice.h"
 #include "CcStatic.h"
 #include "CcKernel.h"
+#include "CcConsole.h"
 
 IUsbDevice::CDeviceDescriptor::CDeviceDescriptor()
 {
@@ -36,7 +37,7 @@ IUsbDevice::CDeviceDescriptor::~CDeviceDescriptor()
 
 }
 
-uint8 IUsbDevice::CDeviceDescriptor::findEndpoint(uint8 uiEndpoint)
+uint8 IUsbDevice::CDeviceDescriptor::findEndpoint(uint8 uiEndpoint, CConfigDescriptor** pConfig)
 { 
   uint8 uiIndex = UINT8_MAX;
   for(CConfigDescriptor& oConfig : oConfigs)  
@@ -46,6 +47,10 @@ uint8 IUsbDevice::CDeviceDescriptor::findEndpoint(uint8 uiEndpoint)
       if(oConfig.getEndpoint(uiIdx)->uiEndpointAddress == uiEndpoint) 
       {
         uiIndex = uiIdx;
+        if(pConfig != nullptr)
+        {
+          *pConfig = &oConfig;
+        }
       }
     }
   }
@@ -104,11 +109,11 @@ IUsbDevice::SFunctionalDescriptor* IUsbDevice::CConfigDescriptor::createFunction
 }
 
 IUsbDevice::SEndpointDescriptor* IUsbDevice::CConfigDescriptor::createEndpoint(
-          IIo* pIoStream, 
           uint8 uiEndpointAddress, 
           uint8 uiAttributes, 
           uint16 wMaxPacketSize, 
-          uint8 uInterval
+          uint8 uInterval,
+          CcEvent oOnChange
 )
 {
   uint32 uiCurrentOffset = m_oBuffer.size();
@@ -124,7 +129,8 @@ IUsbDevice::SEndpointDescriptor* IUsbDevice::CConfigDescriptor::createEndpoint(
   m_oEndPointConfigs.appendDefault();
   m_oEndPointConfigs.last().oInBuffer.resize(wMaxPacketSize);
   m_oEndPointConfigs.last().oInBuffer.memset(0);
-  m_oEndPointConfigs.last().pInterfaces = pIoStream;
+  m_oEndPointConfigs.last().oOnChange = oOnChange;
+  m_oEndPointConfigs.last().pDescriptor = pInterface;
   getConfig()->uiTotalLength = m_oBuffer.size();
   return pInterface;
 }
@@ -180,5 +186,5 @@ void IUsbDevice::sendError()
 
 void IUsbDevice::debugMessage(const char* pMessage)
 {
-  CcKernel::message(EMessage::Info, pMessage);
+  CcConsole::writeLine(pMessage);
 }

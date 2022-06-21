@@ -23,7 +23,7 @@
 
 #include "CcBase.h"
 #include "Devices/CcDeviceUsb.h"
-#include "IDevice.h"
+#include "Devices/IIoDevice.h"
 #include "IIo.h"
 #include "CcBinaryStream.h"
 
@@ -32,7 +32,7 @@
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED CcUsbCdc : public IDevice
+class CcKernelSHARED CcUsbCdc : public IIoDevice
 {
 public:
   /**
@@ -43,21 +43,30 @@ public:
   virtual ~CcUsbCdc();
   
   virtual CcStatus onState(EState eState) override;
+  
+  virtual size_t read(void* pBuffer, size_t uSize) override;
+  virtual size_t write(const void* pBuffer, size_t uSize) override;
+  virtual CcStatus open(EOpenFlags) override;
+  virtual CcStatus close() override;
+  virtual CcStatus cancel() override;
+
 
   void onInterfaceRequest(IUsbDevice::SRequest* pRequest);
   void onInterfaceReceive(IUsbDevice::SRequest* pRequest);
+  
+  void onDataIn(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest);
+  void onDataOut(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest);
+  void onControl(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest);
 
 private:
   CcStatus onStart();
+  CcStatus onStop();
 
 private:
   CcDeviceUsb m_oInterface;
-  CcByteArray m_oCtrlInput;
-  CcByteArray m_oInOutput;
-  CcBinaryStream m_oCtrlStream;
-  CcBinaryStream m_oIoStream;
-
   CcByteArray m_oClassData;
+  CcByteArray m_oInputBuffer;
+
   IUsbDevice* m_pUsbDevice;
   uint8       m_uiCmd = UINT8_MAX;
 };

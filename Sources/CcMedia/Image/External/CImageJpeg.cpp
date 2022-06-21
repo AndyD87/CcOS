@@ -433,7 +433,7 @@ CImageJpeg::CImageJpeg()
 
 CImageJpeg::~CImageJpeg()
 {
-  unregisterConverter();
+  deregisterConverter();
 }
 
 bool CImageJpeg::checkType(EImageType eType)

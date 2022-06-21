@@ -59,7 +59,7 @@ struct __attribute__((packed)) _ContextStateFrame
 //! @brief method to call from unimplemented irq handler
 void Crashed(){
   g_uiCrashRunning  = 0x01;
-  while(g_uiCrashRunning);
+  //while(g_uiCrashRunning);
 }
 
 #pragma GCC push_options

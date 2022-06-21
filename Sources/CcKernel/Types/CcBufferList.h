@@ -249,6 +249,11 @@ public:
   CcBufferList& operator+=(CcByteArray&& oByteArray)
   { return append(CCMOVE(oByteArray)); }
 
+  void remove(size_t uiSize);
+  void remove(size_t uiPos, size_t uiSize);
+  void removeChunk(size_t uiSize);
+  void removeChunk(size_t uiPos, size_t uiSize);
+
 private:
   size_t              m_uiPosition = 0;
   size_t              m_uiSize = 0;

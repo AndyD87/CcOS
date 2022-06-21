@@ -202,14 +202,52 @@ CcStatus STM32UsbDevice::onState(EState eState)
       {
         bSuccess = false;
       }
+      else
+      {
+        registerIdle();
+      }
       break;
     case EState::Stop:
-      HAL_PCD_Stop(&m_oPcdHandle);
+      deregisterIdle();
+      HAL_PCD_Stop(getPcdHandle());
+      HAL_PCD_DeInit(getPcdHandle());
       break;
     default:
       break;
   }
   return bSuccess;
+}
+
+void STM32UsbDevice::idle()
+{
+  if(m_eCurrentSate == EUsbState::Configured)
+  {
+    // @todo Configure and open endpoints. Enpoint interfaces are required
+    for(IUsbDevice::CConfigDescriptor& oConfig : m_oDeviceDescriptor.getConfigs())
+    {
+      for(CConfigDescriptor::CEndpointInfo& oInfo : oConfig.getEndpointInfos())
+      {
+        // Check for pending reads
+        if(oInfo.pDescriptor->uiEndpointAddress < 80)
+        {
+          if(oInfo.oBufferList.getChunkCount())
+          {
+            oInfo.oOnChange.call(&oInfo);
+          }
+        }
+        // Check for pending writes
+        else
+        {
+          // Check if write is already active
+          if(oInfo.eState == EEnpointState::DataIn &&
+             oInfo.oBufferList.getChunkCount())
+          {
+            //HAL_PCD_EP_Transmit(getPcdHandle(), oInfo.pDescriptor->uiEndpointAddress, oInfo.oBufferList[0].cast<uint8>(), oInfo.oBufferList[0].size());
+          }
+        }
+      }
+    }
+  }
 }
 
 CcStatus STM32UsbDevice::loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor)
@@ -245,7 +283,7 @@ void STM32UsbDevice::setUsbState(EUsbState eNewState)
 {
   switch(eNewState) 
   {
-    case EUsbState::Default:
+    case EUsbState::Connected:
       CCFALLTHROUGH;
     case EUsbState::Addressed:
       CCFALLTHROUGH;
@@ -275,6 +313,8 @@ void STM32UsbDevice::doReset()
   //   EP_TYPE_MSK                            3U
   // configure endpoints!
   /* Open EP0 OUT */
+  setUsbState(Connected);
+
   HAL_StatusTypeDef status = HAL_PCD_EP_Open(getPcdHandle(), 0x00, uiEp0MaxSize, EP_TYPE_CTRL);
   /* Open EP0 IN */
   if(status == HAL_OK)
@@ -344,7 +384,7 @@ void STM32UsbDevice::doSetupDevice()
               }
               else
               {
-                setUsbState(EUsbState::Default);
+                setUsbState(EUsbState::Connected);
               }
             }
           }
@@ -486,10 +526,10 @@ void STM32UsbDevice::doInputData(uint8 uiEndpoint, uint8* pBuffer)
   {
     if(eEp0State == EEnpointState::DataIn)
     {
-      if(writeRequired())
+      if(m_uiWriteSize > uiEp0MaxSize)
       {
         m_uiWriteSize -= uiEp0MaxSize;
-        writeContinue(uiEndpoint, pBuffer, m_uiWriteSize);
+        write(uiEndpoint, pBuffer, m_uiWriteSize);
         
         // Prepare for suprised transer end
         HAL_PCD_EP_Receive(getPcdHandle(), 0, nullptr, 0);
@@ -502,18 +542,51 @@ void STM32UsbDevice::doInputData(uint8 uiEndpoint, uint8* pBuffer)
         ctrlReceiveStatus();
       }
     }
-    else if(eEp0State == EEnpointState::StateIn)
+    else if(eEp0State == EEnpointState::StateIn ||
+            eEp0State == EEnpointState::Idle)
     {
       stallEp(0x80U);
     }
     else
     {
-      IUsbDevice::debugMessage("Invalid Endpoint IN called");
+      IUsbDevice::debugMessage("Invalid Ctrl IN called");
     }
   }
   else
   {
-    IUsbDevice::debugMessage("Endpoint IN called");
+    uiEndpoint |= 0x80;
+    CConfigDescriptor* pConfig = nullptr;
+    uint8 uiIdx = m_oDeviceDescriptor.findEndpoint(uiEndpoint, &pConfig);
+    if(pConfig)
+    {
+      CConfigDescriptor::CEndpointInfo& oEndpointInfo = pConfig->getEndpointInfo(uiIdx);
+      if(oEndpointInfo.oBufferList.getChunkCount() > 0)
+      {
+        if(oEndpointInfo.oBufferList[0].size() > oEndpointInfo.pDescriptor->wMaxPacketSize)
+        {
+          oEndpointInfo.oBufferList[0].remove(0, oEndpointInfo.pDescriptor->wMaxPacketSize);
+        }
+        else
+        {
+          oEndpointInfo.oBufferList.removeChunk(0);
+        }
+        if(oEndpointInfo.oBufferList.getChunkCount() > 0)
+        {
+          // Send next packet
+          HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, oEndpointInfo.oBufferList[0].cast<uint8>(), oEndpointInfo.oBufferList[0].size());
+        }
+        else
+        {
+          // Idle state, wait for new input
+          oEndpointInfo.eState = EEnpointState::Idle;
+          //HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, nullptr, 0);
+        }
+      }
+    }
+    else
+    {
+      IUsbDevice::debugMessage("Invalid Endpoint IN called");
+    }
   }
 }
 
@@ -524,10 +597,10 @@ void STM32UsbDevice::doOutputData(uint8 uiEndpoint, uint8* pBuffer)
     // Check if more data is required
     if(eEp0State == EEnpointState::DataOut)
     {
-      if(readRequired())
+      if(m_uiReadSize > uiEp0MaxSize)
       {
         m_uiReadSize -= uiEp0MaxSize;
-        readContinue(uiEndpoint, pBuffer, m_uiReadSize);
+        read(uiEndpoint, pBuffer, m_uiReadSize);
       }
       else
       {
@@ -550,75 +623,87 @@ void STM32UsbDevice::doOutputData(uint8 uiEndpoint, uint8* pBuffer)
       }
     }
     // Check if more data is required
-    else if(eEp0State == EEnpointState::StateOut)
+    else if(eEp0State == EEnpointState::StateOut ||
+            eEp0State == EEnpointState::Idle)
     {
       eEp0State = EEnpointState::Idle;
       stallEp(0U);
     }
     else
     {
-      IUsbDevice::debugMessage("Invalid Endpoint OUT called");
+      IUsbDevice::debugMessage("Invalid Ctrl OUT called");
     }
   }
   else
   {
-    uint8 uiIdx = m_oDeviceDescriptor.findEndpoint(uiEndpoint);
-    if(uiIdx < m_oDeviceDescriptor.getConfigs()[0].getEndpointCount())
+    CConfigDescriptor* pConfig = nullptr;
+    uint8 uiIdx = m_oDeviceDescriptor.findEndpoint(uiEndpoint, &pConfig);
+    if(pConfig)
     {
-      CcByteArray& oBuffer=m_oDeviceDescriptor.getConfigs()[0].getEndpointInfo(uiIdx).oInBuffer;
-      
-      uint8 uiIdxOut = m_oDeviceDescriptor.findEndpoint(0x81);
-      if(uiIdxOut < m_oDeviceDescriptor.getConfigs()[0].getEndpointCount())
+      // Write data to buffer list
+      CConfigDescriptor::CEndpointInfo& oEndpointInfo = pConfig->getEndpointInfo(uiIdx);
+      if(oEndpointInfo.oBufferList.getChunkCount() < oEndpointInfo.uiMaxBufferList)
       {
-        CcByteArray& oBufferOut = m_oDeviceDescriptor.getConfigs()[0].getEndpointInfo(uiIdxOut).oInBuffer;
-        oBufferOut.write(oBuffer.getArray(), CCMIN(oBuffer.size(), oBufferOut.size()));
-        write(0x81, oBufferOut.cast<uint8>(), oBufferOut.size());
+        oEndpointInfo.oBufferList.append(oEndpointInfo.oInBuffer.getArray(), getPcdHandle()->OUT_ep[uiEndpoint].xfer_count);
       }
 
-      read(uiEndpoint, oBuffer.cast<uint8>(), oBuffer.size());
+      // Reset Input buffer
+      read(uiEndpoint, oEndpointInfo.oInBuffer.cast<uint8>(), oEndpointInfo.oInBuffer.size());
+    }
+    else
+    {
+      IUsbDevice::debugMessage("Invalid Endpoint OUT called");
+    }
+  }
+}
+
+void STM32UsbDevice::write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize)
+{
+  CConfigDescriptor* pConfig = nullptr;
+  if(uiEndpoint != 0)
+  {
+    uint8 uiIdx = m_oDeviceDescriptor.findEndpoint(uiEndpoint, &pConfig);
+    if(pConfig)
+    {
+      CConfigDescriptor::CEndpointInfo& oEndpointInfo = pConfig->getEndpointInfo(uiIdx);
+      
+      if(oEndpointInfo.oBufferList.size() < oEndpointInfo.uiMaxBufferList)
+        oEndpointInfo.oBufferList.append(pBuffer, uiSize);
+
+      // Check if write is already active
+      if( m_eCurrentSate == EUsbState::Configured && 
+          oEndpointInfo.eState == EEnpointState::Idle)
+      {
+        oEndpointInfo.eState = EEnpointState::DataIn;
+        HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, oEndpointInfo.oBufferList[0].cast<uint8>(), oEndpointInfo.oBufferList[0].size());
+      }
+    }
+  }
+  else
+  {
+    m_uiWriteSize = uiSize;
+    eEp0State = EEnpointState::DataIn;
+    if(HAL_OK == HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, const_cast<uint8*>(pBuffer), uiSize))
+    {
     }
   }
 }
 
 void STM32UsbDevice::read(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize)
 {
-  m_uiReadSize = uiSize;
-  eEp0State = EEnpointState::DataOut;
-  if(HAL_OK == HAL_PCD_EP_Receive(getPcdHandle(), uiEndpoint, pBuffer, uiSize))
+  if(uiEndpoint != 0)
   {
+    if(HAL_OK == HAL_PCD_EP_Receive(getPcdHandle(), uiEndpoint, pBuffer, uiSize))
+    {
+    }
   }
-}
-
-bool STM32UsbDevice::readRequired()
-{
-  return m_uiReadSize > uiEp0MaxSize;
-}
-
-void STM32UsbDevice::write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize)
-{
-  m_uiWriteSize = uiSize;
-  eEp0State = EEnpointState::DataIn;
-  if(HAL_OK == HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, const_cast<uint8*>(pBuffer), uiSize))
+  else
   {
-  }
-}
-
-bool STM32UsbDevice::writeRequired()
-{
-  return m_uiWriteSize > uiEp0MaxSize;
-}
-
-void STM32UsbDevice::writeContinue(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize)
-{
-  if(HAL_OK == HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, pBuffer, uiSize))
-  {
-  }
-}
-
-void STM32UsbDevice::readContinue(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize)
-{
-  if(HAL_OK == HAL_PCD_EP_Receive(getPcdHandle(), uiEndpoint, pBuffer, uiSize))
-  {
+    m_uiReadSize = uiSize;
+    eEp0State = EEnpointState::DataOut;
+    if(HAL_OK == HAL_PCD_EP_Receive(getPcdHandle(), uiEndpoint, pBuffer, uiSize))
+    {
+    }
   }
 }
 

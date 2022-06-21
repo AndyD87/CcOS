@@ -48,4 +48,6 @@ private:
   bool testCollapsing();
   bool testBufferCollapsing();
   bool testBufferTransfering();
+  bool testBufferRemove();
+  bool testBufferRemoveChunks();
 };

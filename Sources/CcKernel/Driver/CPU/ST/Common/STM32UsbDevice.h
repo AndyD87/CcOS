@@ -35,29 +35,25 @@ class STM32UsbDevice : public IUsbDevice
 public: //methods
   enum EUsbState
   {
-    Default = 0,
+    Suspended = 0,
+    Connected,
     Addressed,
     Configured,
-    Suspended,
     Resume
   };
 
   STM32UsbDevice();
   virtual ~STM32UsbDevice();
 
-  virtual CcStatus onState(EState eState) override;
+  virtual CcStatus  onState(EState eState) override;
+  virtual void      idle();
+
   virtual CcStatus loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor) override;
   virtual void read(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize) override;
   virtual void write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize) override;
   virtual void stallEp(uint8 uiEndpoint) override;
   virtual void ctrlSendStatus() override;
   virtual void ctrlReceiveStatus() override;
-
-
-  bool readRequired();
-  void readContinue(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize);
-  bool writeRequired();
-  void writeContinue(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize);
 
   inline PCD_HandleTypeDef* getPcdHandle()
   { return &m_oPcdHandle; }
@@ -84,8 +80,8 @@ private:
 
   CDeviceDescriptor     m_oDeviceDescriptor;
 
-  EUsbState m_eOldState = EUsbState::Default;
-  EUsbState m_eCurrentSate = EUsbState::Default;
+  EUsbState m_eOldState = EUsbState::Suspended;
+  EUsbState m_eCurrentSate = EUsbState::Suspended;
 
   uint8 m_uiUsbAddress    = 0;
   uint16 m_uiWriteSize    = 0;

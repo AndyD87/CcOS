@@ -29,6 +29,7 @@
 #include "CcKernel.h"
 #include "Devices/CcDeviceUsb.h"
 #include "Devices/IUsbDevice.h"
+#include "CcConsole.h"
 
 GenericApp::GenericApp()
 {
@@ -45,6 +46,17 @@ void GenericApp::run()
   if(oUsbDevice.isValid())
   {            
     CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);   
-    setExitCode(m_pCdcDevice->start());
+    CcStatus oStatus = m_pCdcDevice->start();
+
+    CcConsole::setInputDevice(m_pCdcDevice);
+    CcConsole::setOutputDevice(m_pCdcDevice);
+
+    while(1)
+    {
+      CcKernel::sleep(1000);
+      CcConsole::writeString("Test\r\n");
+    }
+
+    setExitCode(oStatus);
   }
 }

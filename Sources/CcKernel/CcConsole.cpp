@@ -33,40 +33,42 @@
 #include "CcMutex.h"
 
 CcMutex*    CcConsole::s_pLock(nullptr);
-CcStdIn*    CcConsole::s_pInput(nullptr);
-CcStdOut*   CcConsole::s_pOutput(nullptr);
+IIo*        CcConsole::s_pInput(nullptr);
+IIo*        CcConsole::s_pOutput(nullptr);
 
 void CcConsole::init()
 {
   #ifndef GENERIC
-  if(s_pLock == nullptr)
-    CCNEW(s_pLock, CcMutex);
-  if (s_pOutput == nullptr)
-    CCNEW(s_pOutput, CcStdOut);
-  if (s_pInput == nullptr)
-    CCNEW(s_pInput, CcStdIn);
+    if(s_pLock == nullptr)
+      CCNEW(s_pLock, CcMutex);
+    if (s_pOutput == nullptr)
+      CCNEW(s_pOutput, CcStdOut);
+    if (s_pInput == nullptr)
+      CCNEW(s_pInput, CcStdIn);
   #endif
 }
 
 void CcConsole::deinit()
 {
-  // Try to lock, some is possibly accessing it
-  if(s_pLock)
-  {
-    s_pLock->lock();
-    CCDELETE(s_pInput);
-    CCDELETE(s_pOutput);
-    s_pLock->unlock();
-    CCDELETE(s_pLock);
-  }
+  #ifndef GENERIC
+    // Try to lock, some is possibly accessing it
+    if(s_pLock)
+    {
+      s_pLock->lock();
+      CCDELETE(s_pInput);
+      CCDELETE(s_pOutput);
+      s_pLock->unlock();
+      CCDELETE(s_pLock);
+    }
+  #endif
 }
 
-void CcConsole::setInputDevice(CcStdIn* pInDev)
+void CcConsole::setInputDevice(IIo* pInDev)
 {
   s_pInput = pInDev;
 }
 
-void CcConsole::setOutputDevice(CcStdOut* pOutDev)
+void CcConsole::setOutputDevice(IIo* pOutDev)
 {
   s_pOutput = pOutDev;
 }

@@ -66,7 +66,7 @@ public:
    * @param uSize: Maximum size of buffer to write
    * @return Number of written byten.
    */
-  size_t readHidden(void* pBuffer, size_t uSize);
+  virtual size_t readHidden(void* pBuffer, size_t uSize) override;
 
   /**
    * @brief Connect to std in

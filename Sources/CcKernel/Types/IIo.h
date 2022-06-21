@@ -121,6 +121,9 @@ public:
    * @return Number of Bytes read from stream.
    */
   virtual size_t read(void* pBuffer, size_t uSize) = 0;
+  
+  virtual size_t readHidden(void* pBuffer, size_t uSize)
+  { return read(pBuffer, uSize); }
 
   /**
    * @brief Write an amount of Data to inheriting stream.

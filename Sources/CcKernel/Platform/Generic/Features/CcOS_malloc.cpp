@@ -34,7 +34,7 @@
  */
 CCEXTERNC void* malloc(size_t uiSize)
 {
-  __malloc_lock(nullptr);
+   __malloc_lock(nullptr);
   void* pBuffer = nullptr;
   pBuffer = CcMemoryManager::malloc(uiSize);
   __malloc_unlock(nullptr);

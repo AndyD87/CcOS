@@ -31,6 +31,7 @@
 #include "CcVector.h"
 #include "CcByteArray.h"
 #include "CcEvent.h"
+#include "CcBufferList.h"
 
 #define  UsbRequestTarget_DEVICE                       0x00U
 #define  UsbRequestTarget_INTERFACE                    0x01U
@@ -242,24 +243,29 @@ public:
     class CEndpointInfo
     {
       public:
-      EEnpointState eState = EEnpointState::Idle;
-      CcByteArray   oInBuffer;
-      IIo*          pInterfaces;
+      EEnpointState         eState = EEnpointState::Idle;
+      CcByteArray           oInBuffer;
+      CcBufferList          oBufferList;
+      uint32                uiMaxBufferList=16;
+      CcEvent               oOnChange;
+      SEndpointDescriptor*  pDescriptor;
     };
 
     void* generateConfiguration(uint16& uiSize);
 
     SInterfaceDescriptor* createInterface();
-    SEndpointDescriptor* createEndpoint(IIo* pIoStream, uint8 uiEndpointAddress, uint8 uiAttributes, uint16 wMaxPacketSize, uint8 uInterval);
+    SEndpointDescriptor* createEndpoint(uint8 uiEndpointAddress, uint8 uiAttributes, uint16 wMaxPacketSize, uint8 uInterval, CcEvent oOnChange);
     SFunctionalDescriptor* createFunctional(uint8 uiSize);
 
     size_t getEndpointCount() const
     { return m_oEndPoints.size(); }
-    SConfigDescriptor* getConfig();
-    SInterfaceDescriptor* getInterface(size_t uiIndex);
-    SEndpointDescriptor* getEndpoint(size_t uiIndex);
-    CEndpointInfo& getEndpointInfo(size_t uiIndex);
-    SFunctionalDescriptor* getFunction(size_t uiIndex);
+    SConfigDescriptor*        getConfig();
+    SInterfaceDescriptor*     getInterface(size_t uiIndex);
+    SEndpointDescriptor*      getEndpoint(size_t uiIndex);
+    CEndpointInfo&            getEndpointInfo(size_t uiIndex);
+    CcVector<CEndpointInfo>&  getEndpointInfos()
+    { return m_oEndPointConfigs; }
+    SFunctionalDescriptor*    getFunction(size_t uiIndex);
 
     private:
     CcByteArray             m_oBuffer;
@@ -282,7 +288,7 @@ public:
     CDeviceDescriptor();
     ~CDeviceDescriptor();
 
-    uint8 findEndpoint(uint8 uiEndpoint);
+    uint8 findEndpoint(uint8 uiEndpoint, CConfigDescriptor** pConfig = nullptr);
 
     CcVector<CConfigDescriptor>& getConfigs()
     { return oConfigs; }

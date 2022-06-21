@@ -10,6 +10,12 @@
         "sstream": "cpp",
         "streambuf": "cpp",
         "xstring": "cpp",
-        "ios": "cpp"
+        "ios": "cpp",
+        "random": "cpp",
+        "*.tcc": "cpp",
+        "exception": "cpp",
+        "fstream": "cpp",
+        "iosfwd": "cpp",
+        "new": "cpp"
     },
 }

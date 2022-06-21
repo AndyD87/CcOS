@@ -36,6 +36,8 @@ CBufferTest::CBufferTest() :
   appendTestMethod("Test collapsing", &CBufferTest::testCollapsing);
   appendTestMethod("Test collapsing to array", &CBufferTest::testBufferCollapsing);
   appendTestMethod("Test transfering buffer", &CBufferTest::testBufferTransfering);
+  appendTestMethod("Test removing buffer", &CBufferTest::testBufferRemove);
+  appendTestMethod("Test removing chunks", &CBufferTest::testBufferRemoveChunks);
 }
 
 CBufferTest::~CBufferTest()
@@ -177,5 +179,79 @@ bool CBufferTest::testBufferTransfering()
     CCDELETEARR(pBuffer2);
   }
   CCDELETEARR(pBuffer);
+  return bRet;
+}
+
+bool CBufferTest::testBufferRemove()
+{
+  bool bRet = false;
+  CcBufferList oBuffer;
+  oBuffer.append("Test", sizeof("Test") - 1);
+  oBuffer.append("Test", sizeof("Test") - 1);
+  oBuffer.append("Test", sizeof("Test") - 1);
+  oBuffer.append("Test", sizeof("Test") - 1);
+  oBuffer.append("Test", sizeof("Test") - 1);
+  if (oBuffer.size() == 20 &&
+      oBuffer.getChunkCount() == 5)
+  {
+    oBuffer.remove(4);
+    if (oBuffer.size() == 16 &&
+        oBuffer.getChunkCount() == 4 &&
+        oBuffer.at(0).size() == 4)
+    {
+      oBuffer.remove(2, 4);
+      if (oBuffer.size() == 12 &&
+          oBuffer.getChunkCount() == 4 &&
+          oBuffer.at(0).size() == 2 &&
+          oBuffer.at(1).size() == 2)
+      {
+        oBuffer.remove(1, 4);
+        if (oBuffer.size() == 8 &&
+            oBuffer.getChunkCount() == 3 &&
+            oBuffer.at(0).size() == 1 &&
+            oBuffer.at(1).size() == 3)
+        {
+          oBuffer.remove(1, 3);
+          if (oBuffer.size() == 5 &&
+              oBuffer.getChunkCount() == 2 &&
+              oBuffer.at(0).size() == 1 &&
+              oBuffer.at(1).size() == 4)
+          {
+            bRet = true;
+          }
+        }
+      }
+    }
+  }
+  return bRet;
+}
+
+bool CBufferTest::testBufferRemoveChunks()
+{
+  bool bRet = false;
+  CcBufferList oBuffer;
+  oBuffer.append("Test", sizeof("Test") - 1);
+  oBuffer.append("Test0", sizeof("Test0") - 1);
+  oBuffer.append("Test01", sizeof("Test01") - 1);
+  oBuffer.append("Test012", sizeof("Test012") - 1);
+  oBuffer.append("Test0123", sizeof("Test0123") - 1);
+  if (oBuffer.size() == 30 &&
+      oBuffer.getChunkCount() == 5)
+  {
+    oBuffer.removeChunk(0);
+    if (oBuffer.size() == 26 &&
+        oBuffer.getChunkCount() == 4 &&
+        oBuffer.at(0).size() == 5)
+    {
+      oBuffer.removeChunk(1,2);
+      if (oBuffer.size() == 13 &&
+          oBuffer.getChunkCount() == 2 &&
+          oBuffer.at(0).size() == 5 &&
+          oBuffer.at(1).size() == 8)
+      {
+        bRet = true;
+      }
+    }
+  }
   return bRet;
 }

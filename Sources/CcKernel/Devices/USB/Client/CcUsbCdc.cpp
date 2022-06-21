@@ -27,9 +27,7 @@
 #include "Devices/IUsbDevice.h"
 
 CcUsbCdc::CcUsbCdc(const CcDeviceUsb& oInterface) :
-  m_oInterface(oInterface),
-  m_oCtrlStream(m_oCtrlInput),
-  m_oIoStream(m_oInOutput)
+  m_oInterface(oInterface)
 {
   m_oClassData.resize(UsbCdcDataSize);
   m_oClassData.memset(0);
@@ -45,13 +43,59 @@ CcStatus CcUsbCdc::onState(EState eState)
   CcStatus oState;
   switch (eState)
   {
-  case EState::Start:
-    oState = onStart();
-    break;
-  default:
-    break;
+    case EState::Start:
+      oState = onStart();
+      break;
+    case EState::Stop:
+      oState = onStop();
+      break;
+    default:
+      break;
   }
   return oState;
+}
+
+size_t CcUsbCdc::read(void* pBuffer, size_t uSize)
+{
+  size_t uiRead = SIZE_MAX;
+  if( m_pUsbDevice &&
+      m_pUsbDevice->isStarted())
+  {
+    uiRead = m_oInputBuffer.read(pBuffer, uSize);
+  }
+  return uiRead;
+}
+
+size_t CcUsbCdc::write(const void* pBuffer, size_t uSize)
+{
+  size_t uiWritten = SIZE_MAX;
+  if( m_pUsbDevice &&
+      m_pUsbDevice->isStarted())
+  {
+    uiWritten = 0;
+    while(uSize > 0)
+    {
+      m_pUsbDevice->write(0x81, static_cast<const uint8*>(pBuffer), CCMIN(UINT16_MAX, uSize));
+      uiWritten += CCMIN(UINT16_MAX, uSize);
+      uSize -= CCMIN(UINT16_MAX, uSize);
+    }
+  }
+  return uiWritten;
+}
+
+CcStatus CcUsbCdc::open(EOpenFlags)
+{
+  return start();
+}
+
+CcStatus CcUsbCdc::close()
+{
+  return stop();
+}
+
+CcStatus CcUsbCdc::cancel()
+{
+  return EStatus::NotSupported;
 }
 
 CcStatus CcUsbCdc::onStart()
@@ -106,7 +150,7 @@ CcStatus CcUsbCdc::onStart()
   pFuntional3->Data.Raw.uiRaw[1]= 0x00;
   pFuntional3->Data.Raw.uiRaw[2]= 0x01;
 
-  oConfig.createEndpoint(&m_oCtrlStream, 0x82, 0x03, 0x08, 0x10);
+  oConfig.createEndpoint(0x82, 0x03, 0x08, 0x10, NewCcEvent(this, CcUsbCdc::onControl));
   IUsbDevice::SInterfaceDescriptor* pInterface1 = oConfig.createInterface();
   pInterface1->uiInterfaceNumber = 1;
   pInterface1->uiAlternateSetting = 0;
@@ -116,8 +160,8 @@ CcStatus CcUsbCdc::onStart()
   pInterface1->uiInterfaceProtocol = 0x00;
   pInterface1->uiInterfaceIdx = 0;
 
-  oConfig.createEndpoint(&m_oIoStream, 0x01, 0x02, 64, 0x00);
-  oConfig.createEndpoint(&m_oIoStream, 0x81, 0x02, 64, 0x00);
+  oConfig.createEndpoint(0x01, 0x02, 64, 0x00, NewCcEvent(this, CcUsbCdc::onDataIn));
+  oConfig.createEndpoint(0x81, 0x02, 64, 0x00, NewCcEvent(this, CcUsbCdc::onDataOut));
 
   oDeviceDescriptor.createString("GER");
   oDeviceDescriptor.createString("CcOS Manu");
@@ -131,6 +175,20 @@ CcStatus CcUsbCdc::onStart()
     m_pUsbDevice->registerInterfaceRequestEvent(NewCcEvent(this, CcUsbCdc::onInterfaceRequest));
     m_pUsbDevice->registerInterfaceReceiveEvent(NewCcEvent(this, CcUsbCdc::onInterfaceReceive));
     m_pUsbDevice->start();
+  }
+  else
+  {
+    oState = EStatus::InvalidHandle;
+  }   
+  return oState;
+}
+
+CcStatus CcUsbCdc::onStop()
+{   
+  CcStatus oState;
+  if(m_pUsbDevice)
+  {
+    m_pUsbDevice->stop();
   }
   else
   {
@@ -182,3 +240,28 @@ void CcUsbCdc::onInterfaceReceive(IUsbDevice::SRequest* pRequest)
   }
   m_uiCmd = UINT8_MAX;
 }
+
+void CcUsbCdc::onControl(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest)
+{
+  CCUNUSED(pRequest);
+}
+
+void CcUsbCdc::onDataIn(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest)
+{
+  while(pRequest->oBufferList.getChunkCount())
+  {
+    m_oInputBuffer.append(pRequest->oBufferList[0]);
+    pRequest->oBufferList.removeChunk(0);
+  }
+  if(m_oInputBuffer == "stop")
+  {
+    stop();
+  }
+}
+
+void CcUsbCdc::onDataOut(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest)
+{
+  CCUNUSED(pRequest);
+  IUsbDevice::debugMessage("CcUsbCdc::onDataOut");
+}
+
