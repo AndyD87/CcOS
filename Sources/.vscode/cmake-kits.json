@@ -12,5 +12,12 @@
             "CCOS_BOARD":"STM3220GEVAL",
             "CMAKE_GENERATOR":"Unix Makefiles"
         }
+    },
+    {
+        "name":"STM32F4Discovery",
+        "cmakeSettings": {
+            "CCOS_BOARD":"STM32F4Discovery",
+            "CMAKE_GENERATOR":"Unix Makefiles"
+        }
     }
 ]

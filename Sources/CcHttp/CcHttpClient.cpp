@@ -247,7 +247,7 @@ bool CcHttpClient::execPost()
     do
     {
       uiReadData = m_Socket.readArray(oBuffer, false);
-      uiPos = oBuffer.find(CcHttpGlobalStrings::EOLSeperator);
+      uiPos = oBuffer.findString(CcHttpGlobalStrings::EOLSeperator);
       if (uiPos != SIZE_MAX)
       {
         oHeaderData.append(oBuffer.getArray(), uiPos);
@@ -476,7 +476,7 @@ bool CcHttpClient::readHeader()
     uiReadSize = m_Socket.readArray(oData, false);
     if (uiReadSize && uiReadSize != SIZE_MAX)
     {
-      size_t uiPos = oData.find(CcHttpGlobalStrings::EOLSeperator);
+      size_t uiPos = oData.findString(CcHttpGlobalStrings::EOLSeperator);
       if (uiPos < uiReadSize)
       {
         // append all data to header up to found seperator
@@ -530,7 +530,7 @@ bool CcHttpClient::receiveChunked()
   {
     if (uiLeftLine == 0)
     {
-      size_t uiPos = oBuffer.find(CcHttpGlobalStrings::EOL, 0, uiLastReadSize);
+      size_t uiPos = oBuffer.findString(CcHttpGlobalStrings::EOL, 0, uiLastReadSize);
       if (uiPos < uiLastReadSize)
       {
         CcString sLength(oBuffer.getArray(), uiPos);
@@ -596,7 +596,7 @@ bool CcHttpClient::receiveChunked()
 
         uiLastReadSize -= uiLeftLine;
         uiLeftLine = 0;
-        if (oBuffer.find(CcHttpGlobalStrings::EOL) == 0)
+        if (oBuffer.findString(CcHttpGlobalStrings::EOL) == 0)
         {
           uiLastReadSize -= CcHttpGlobalStrings::EOL.length();
           oBuffer.move(0, CcHttpGlobalStrings::EOL.length(), uiLastReadSize);

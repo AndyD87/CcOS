@@ -5,7 +5,7 @@
             "label": "OpenOCD for STM32F407VET",
             "type": "process",
             "command": "${workspaceRoot}\\..\\..\\Cache\\Toolchains\\openocd\\GNU MCU Eclipse\\OpenOCD\\0.10.0-10-20181020-0522\\bin\\openocd.exe",
-            "args": ["-c","gdb_port 3333","-c","telnet_port 4444","-c","tcl_port 6666","-f","${workspaceRoot}\\CMakeConfig\\Boards\\ST\\STM32F407VET\\openocd-STM32F407VET.cfg"],
+            "args": ["-c","gdb_port 3333","-c","telnet_port 4444","-c","tcl_port 6666","-f","${workspaceRoot}\\CMakeConfig\\CPU\\ST\\STM32F4\\openocd-STM32F407VET.cfg"],
             "isBackground": true
         },
         {
@@ -13,6 +13,13 @@
             "type": "process",
             "command": "${workspaceRoot}\\..\\..\\Cache\\Toolchains\\openocd\\GNU MCU Eclipse\\OpenOCD\\0.10.0-10-20181020-0522\\bin\\openocd.exe",
             "args": ["-c","gdb_port 3333","-c","telnet_port 4444","-c","tcl_port 6666","-f","${workspaceRoot}\\CMakeConfig\\CPU\\ST\\STM32F2\\openocd-stm3220g_eval_stlink.cfg"],
+            "isBackground": true
+        },
+        {
+            "label": "OpenOCD for STM32F407VGT",
+            "type": "process",
+            "command": "${workspaceRoot}\\..\\..\\Cache\\Toolchains\\openocd\\GNU MCU Eclipse\\OpenOCD\\0.10.0-10-20181020-0522\\bin\\openocd.exe",
+            "args": ["-c","gdb_port 3333","-c","telnet_port 4444","-c","tcl_port 6666","-f","${workspaceRoot}\\CMakeConfig\\CPU\\ST\\STM32F4\\openocd-STM32F4Discovery.cfg"],
             "isBackground": true
         },
         {

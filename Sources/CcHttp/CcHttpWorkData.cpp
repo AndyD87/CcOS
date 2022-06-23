@@ -65,7 +65,7 @@ size_t CcHttpWorkData::readAllContent()
       // Check if next read will 
       if (uiLeftLine == 0 && uiLastReadSize > 0)
       {
-        size_t uiPos = oBuffer.find(CcHttpGlobalStrings::EOL);
+        size_t uiPos = oBuffer.findString(CcHttpGlobalStrings::EOL);
         if (uiPos <= oBuffer.size())
         {
           // Get Hex value as string from data

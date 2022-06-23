@@ -25,6 +25,7 @@
 
 #include "Devices/USB/Client/CcUsbCdc.h"
 #include "Devices/IUsbDevice.h"
+#include "CcKernel.h"
 
 CcUsbCdc::CcUsbCdc(const CcDeviceUsb& oInterface) :
   m_oInterface(oInterface)
@@ -61,7 +62,17 @@ size_t CcUsbCdc::read(void* pBuffer, size_t uSize)
   if( m_pUsbDevice &&
       m_pUsbDevice->isStarted())
   {
-    uiRead = m_oInputBuffer.read(pBuffer, uSize);
+    if(m_oInputBuffer.size() > 0)
+    {
+      // store in buffer
+      uiRead = m_oInputBuffer.read(pBuffer, uSize);
+      if(uiRead <= m_oInputBuffer.size())
+        m_oInputBuffer.remove(0, uiRead);
+    }
+    else
+    {
+      uiRead = 0;
+    }
   }
   return uiRead;
 }
@@ -75,7 +86,7 @@ size_t CcUsbCdc::write(const void* pBuffer, size_t uSize)
     uiWritten = 0;
     while(uSize > 0)
     {
-      m_pUsbDevice->write(0x81, static_cast<const uint8*>(pBuffer), CCMIN(UINT16_MAX, uSize));
+      m_pUsbDevice->write(0x81, static_cast<const uint8*>(pBuffer), CCMIN(UINT16_MAX, static_cast<uint16>(uSize)));
       uiWritten += CCMIN(UINT16_MAX, uSize);
       uSize -= CCMIN(UINT16_MAX, uSize);
     }
@@ -189,6 +200,10 @@ CcStatus CcUsbCdc::onStop()
   if(m_pUsbDevice)
   {
     m_pUsbDevice->stop();
+    m_pUsbDevice = nullptr;
+    m_oInterface.getDevice()->removeDevice();
+    m_oClassData.clear();
+    m_oInputBuffer.clear();
   }
   else
   {
@@ -208,14 +223,14 @@ void CcUsbCdc::onInterfaceRequest(IUsbDevice::SRequest* pRequest)
       {
         if ((pRequest->bmRequest & 0x80U) != 0U)
         {
-          uint32 uiLen = CCMIN(UsbCdcDataSize, m_oClassData.size());
+          uint16 uiLen = CCMIN(UsbCdcDataSize, m_oClassData.size());
           m_pUsbDevice->write(0, m_oClassData.cast<uint8>(), uiLen);
         }
         else
         {
           m_uiCmd = pRequest->bRequest;
 
-          uint32 uiLen = CCMIN(UsbCdcDataSize, m_oClassData.size());
+          uint16 uiLen = CCMIN(UsbCdcDataSize, m_oClassData.size());
           m_pUsbDevice->read(0, m_oClassData.cast<uint8>(), uiLen);
         }
         break;
@@ -250,18 +265,16 @@ void CcUsbCdc::onDataIn(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest)
 {
   while(pRequest->oBufferList.getChunkCount())
   {
+    // echo written data
+    writeArray(pRequest->oBufferList[0]);
+
     m_oInputBuffer.append(pRequest->oBufferList[0]);
     pRequest->oBufferList.removeChunk(0);
-  }
-  if(m_oInputBuffer == "stop")
-  {
-    stop();
   }
 }
 
 void CcUsbCdc::onDataOut(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest)
 {
   CCUNUSED(pRequest);
-  IUsbDevice::debugMessage("CcUsbCdc::onDataOut");
 }
 

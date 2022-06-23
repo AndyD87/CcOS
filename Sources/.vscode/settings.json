@@ -16,6 +16,13 @@
         "exception": "cpp",
         "fstream": "cpp",
         "iosfwd": "cpp",
-        "new": "cpp"
+        "new": "cpp",
+        "string": "cpp",
+        "unordered_map": "cpp",
+        "functional": "cpp",
+        "string_view": "cpp",
+        "ratio": "cpp",
+        "limits": "cpp",
+        "tuple": "cpp"
     },
 }

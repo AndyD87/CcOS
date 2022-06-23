@@ -76,10 +76,10 @@ bool CRemoteDeviceConfigTest::testUserSettings()
   if (sData.contains(sDataToContain))
   {
     oConfig.writeData(NRemoteDevice::Server::CConfig::ESource::FileBinary, oData);
-    if (oData.find("TestUser") < oData.size() &&
-        oData.find("TestPassword") < oData.size() &&
-        oData.find("TestUser2") < oData.size() &&
-        oData.find("TestPassword2") < oData.size()
+    if (oData.findString("TestUser") < oData.size() &&
+        oData.findString("TestPassword") < oData.size() &&
+        oData.findString("TestUser2") < oData.size() &&
+        oData.findString("TestPassword2") < oData.size()
         )
     {
       bSuccess = true;

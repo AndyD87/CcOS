@@ -169,7 +169,8 @@ STM32UsbDevice* s_pInstance = nullptr;
  */
 CCEXTERNC void OTG_HS_IRQHandler(void)
 {
-  HAL_PCD_IRQHandler(s_pInstance->getPcdHandle());
+  if(s_pInstance)
+    HAL_PCD_IRQHandler(s_pInstance->getPcdHandle());
 }
 
 /**
@@ -177,7 +178,8 @@ CCEXTERNC void OTG_HS_IRQHandler(void)
  */
 CCEXTERNC void OTG_FS_IRQHandler(void)
 {
-  HAL_PCD_IRQHandler(s_pInstance->getPcdHandle());
+  if(s_pInstance)
+    HAL_PCD_IRQHandler(s_pInstance->getPcdHandle());
 }
 
 STM32UsbDevice::STM32UsbDevice()
@@ -190,6 +192,7 @@ STM32UsbDevice::STM32UsbDevice()
 
 STM32UsbDevice::~STM32UsbDevice()
 {
+  s_pInstance = nullptr;
 }
 
 CcStatus STM32UsbDevice::onState(EState eState)
@@ -254,6 +257,11 @@ CcStatus STM32UsbDevice::loadDeviceDescriptor(const CDeviceDescriptor& oDescript
 {
   CcStatus oStatus = EStatus::CommandInvalidParameter;
   m_oDeviceDescriptor = oDescriptor;
+  for(IUsbDevice::CConfigDescriptor& oConfig : m_oDeviceDescriptor.getConfigs())
+  {
+    oConfig.setupInterfaces();
+  }
+  
   /*Set LL Driver parameters */
   m_oPcdHandle.Instance                 = USB_OTG_FS;
   m_oPcdHandle.Init.dev_endpoints       = 4;

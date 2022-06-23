@@ -47,7 +47,6 @@ list (APPEND PROJECT_INCLUDE_DIRS
   "${STM32F4_DRIVER_DIR}/CMSIS/Include"
   "${STM32F4_DRIVER_DIR}/CMSIS/Device/ST/STM32F4xx/Include"
 )
-
 ########
 # Add Definitions
 ########

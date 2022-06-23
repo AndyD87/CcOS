@@ -26,12 +26,13 @@
 
 #include "CcBase.h"
 #include "IIo.h"
+#include "CcString.h"
 
 class CcString;
 class CcStdIn;
 class CcStdOut;
-class CcByteArray;
 class CcMutex;
+class CcByteArray;
 
 /**
  * @brief Static class for Console in- and output.
@@ -174,4 +175,5 @@ private:
   static CcMutex*    s_pLock;
   static IIo*        s_pInput;
   static IIo*        s_pOutput;
+  static CcString    s_ReadLineBuffer;
 };

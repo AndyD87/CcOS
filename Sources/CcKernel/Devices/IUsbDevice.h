@@ -256,6 +256,7 @@ public:
     SInterfaceDescriptor* createInterface();
     SEndpointDescriptor* createEndpoint(uint8 uiEndpointAddress, uint8 uiAttributes, uint16 wMaxPacketSize, uint8 uInterval, CcEvent oOnChange);
     SFunctionalDescriptor* createFunctional(uint8 uiSize);
+    void setupInterfaces();
 
     size_t getEndpointCount() const
     { return m_oEndPoints.size(); }
@@ -275,13 +276,6 @@ public:
     CcVector<uint32>      m_oInterfaces;
   };
   
-  class CcKernelSHARED CStringDescriptor : public SStringDescriptor
-  {
-    public:
-    CStringDescriptor();
-    ~CStringDescriptor();
-  };
-
   class CcKernelSHARED CDeviceDescriptor : public SDeviceDescriptor
   {
   public:
@@ -296,7 +290,7 @@ public:
     { return oStrings; }
 
     CConfigDescriptor& createConfig();
-    IUsbDevice::CStringDescriptor& createString(const CcString& sValue);
+    IUsbDevice::SStringDescriptor& createString(const CcString& sValue);
 
   private:
     CcVector<CConfigDescriptor> oConfigs;

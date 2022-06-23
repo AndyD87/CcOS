@@ -97,7 +97,7 @@ public:
    * @brief check if item is allready added to List
    * @return true if list contains item, otherwise false
    */
-  size_t find(const CcString& toFind, size_t uiBegin = 0, size_t uiDistance = SIZE_MAX) const;
+  size_t findString(const CcString& toFind, size_t uiBegin = 0, size_t uiDistance = SIZE_MAX) const;
 
   /**
    * @brief Write a part of stored chars to buffer
@@ -207,6 +207,24 @@ public:
    * @return Number fo bytes written from buffer to byte array
    */
   size_t write(const void* pBuffer, size_t uSize, size_t uiOffset = 0);
+  
+  /**
+   * @brief Find the position of a occurrencing String
+   * @param pcString: 0 terminated string to search for
+   * @param uiLength: Size of pcString
+   * @param uiOffset: Position where search has to be started at.
+   * @return position of First occurrence or SIZE_MAX if not found
+   */
+  size_t find(const char* pcString, size_t uiStrLength, size_t uiOffset = 0, size_t uiLength = SIZE_MAX) const;
+
+  /**
+   * @brief Find the position of a occurrencing String
+   * @param sToFind: String to search for
+   * @param offset: Position where search has to be started at.
+   * @return position of First occurrence or SIZE_MAX if not found
+   */
+  bool contains(const char* pcString, size_t uiStrLength, size_t uiOffset = 0, size_t uiLength = SIZE_MAX) const
+  { return (find(pcString, uiStrLength, uiOffset, uiLength) < size()); }
 
   void memset(const char cToSet);
 

@@ -53,8 +53,16 @@ void GenericApp::run()
 
     while(1)
     {
-      CcKernel::sleep(1000);
-      CcConsole::writeString("Test\r\n");
+      CcString oData;
+      CcConsole::readLine(oData);
+      if(oData == "stop")
+      {
+        CcConsole::writeLine(oData);
+        m_pCdcDevice->stop();
+        CcKernel::sleep(10000);
+        m_pCdcDevice->start();
+      }
+      CcKernel::sleep(100);
     }
 
     setExitCode(oStatus);

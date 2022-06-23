@@ -23,9 +23,9 @@
  * @brief     Implementation of Class CcConsole
  */
 #include "CcConsole.h"
+#include "CcKernel.h"
 #include "CcStdIn.h"
 #include "CcStdOut.h"
-#include "CcString.h"
 #include "CcArray.h"
 #include "CcByteArray.h"
 #include "IIo.h"
@@ -35,6 +35,7 @@
 CcMutex*    CcConsole::s_pLock(nullptr);
 IIo*        CcConsole::s_pInput(nullptr);
 IIo*        CcConsole::s_pOutput(nullptr);
+CcString    CcConsole::s_ReadLineBuffer;
 
 void CcConsole::init()
 {
@@ -129,31 +130,42 @@ size_t CcConsole::readAll(CcByteArray& oReturn, size_t uiBufSize)
 
 size_t CcConsole::readLine(CcString& sReturn)
 {
-  sReturn.clear();
-  CcArray<char> oBuffer(256);
+  CcByteArray oBuffer(256);
+  sReturn = std::move(s_ReadLineBuffer);
+
   size_t uiReceived = 0;
-  size_t uiReceivedAll = SIZE_MAX;
-  uiReceived = read(oBuffer.getArray(), 256);
-  if(uiReceived < 256 ) uiReceivedAll = 0;
-  while (uiReceived > 0 && uiReceived != SIZE_MAX)
+  uiReceived = read(oBuffer.getArray(), oBuffer.size());                                                                                   
+  while( uiReceived <= SIZE_MAX)
   {
-    uiReceivedAll += uiReceived;
-    sReturn.append(oBuffer.getArray(), uiReceived);
-    if (sReturn.contains(CcGlobalStrings::EolShort))
+    size_t uiPosCr = oBuffer.findString(CcGlobalStrings::EolShort, 0, uiReceived);
+    size_t uiPosNl = oBuffer.findString(CcGlobalStrings::EolCr, 0, uiReceived);
+    size_t uiPos = CCMIN(uiPosCr, uiPosNl);
+    if (uiPos <= oBuffer.size())
     {
-      size_t uiPos = sReturn.find(CcGlobalStrings::EolShort);
-      if (uiPos < sReturn.length())
+      sReturn.append(oBuffer.getArray(), uiPos);
+      while(uiPos < uiReceived && 
+            ( oBuffer[uiPos] == CcGlobalStrings::EolShort[0] ||
+              oBuffer[uiPos] == CcGlobalStrings::EolCr[0] ))
       {
-        if (uiPos > 0 && sReturn[uiPos - 1] == CcGlobalStrings::EolLong[0])
-          uiPos--;
-        sReturn.remove(uiPos, sReturn.length());
+        uiPos++;
+      }
+      if(uiPos < uiReceived)
+      {
+        s_ReadLineBuffer.append(oBuffer.getArray(uiPos), uiReceived - uiPos);
       }
       break;
     }
     else
-      uiReceived = read(oBuffer.getArray(), 256);
+    {
+      if(uiReceived > 0)
+      {
+        sReturn.append(oBuffer.getArray(), uiReceived);
+      }
+      CcKernel::sleep(10);
+      uiReceived = read(oBuffer.getArray(), oBuffer.size());
+    }
   }
-  return uiReceivedAll;
+  return sReturn.length();
 }
 
 size_t CcConsole::readLineHidden(CcString& sReturn)

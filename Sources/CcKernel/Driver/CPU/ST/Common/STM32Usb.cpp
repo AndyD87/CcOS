@@ -73,3 +73,8 @@ IUsbDevice* STM32Usb::createDevice(const IUsbDevice::CDeviceDescriptor& oConfig)
     }
   }
 }
+
+void STM32Usb::removeDevice()
+{
+  CCDELETE(m_pType.pDevice);
+}

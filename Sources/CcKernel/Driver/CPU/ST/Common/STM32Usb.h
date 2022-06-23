@@ -41,6 +41,7 @@ public: //methods
   virtual CcStatus onState(EState eState) override;
 
   virtual IUsbDevice* createDevice(const IUsbDevice::CDeviceDescriptor& oConfig) override;
+  virtual void removeDevice() override;
 
 private:
   EType m_eType;

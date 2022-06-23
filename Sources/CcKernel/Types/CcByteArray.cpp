@@ -75,7 +75,7 @@ CcByteArray::CcByteArray(size_t uiReserved):
   }
 }
 
-size_t CcByteArray::find(const CcString& toFind, size_t uiBegin, size_t uiDistance) const
+size_t CcByteArray::findString(const CcString& toFind, size_t uiBegin, size_t uiDistance) const
 {
   CcByteArray oArray = toFind.getByteArray();
   return CcVector<char>::find(oArray, uiBegin, uiDistance);
@@ -287,6 +287,25 @@ size_t CcByteArray::write(const void* pBuffer, size_t uSize, size_t uiOffset)
     uSize = SIZE_MAX;
   }
   return uSize;
+}
+
+size_t CcByteArray::find(const char* pcString, size_t uiStrLength, size_t uiOffset, size_t uiLength) const
+{
+  size_t uiRet = SIZE_MAX;
+  size_t uiLastLength = CCMIN(size(), uiLength + uiOffset);
+  for (; uiOffset < uiLastLength &&
+         uiRet == SIZE_MAX; uiOffset++)
+  {
+    size_t uiCntInput = 0;
+    for (; uiCntInput < uiStrLength && uiOffset + uiCntInput < uiLastLength; uiCntInput++)
+    {
+      if (at(uiOffset + uiCntInput) != pcString[uiCntInput])
+        break;
+    }
+    if (uiCntInput == uiStrLength)
+      uiRet = uiOffset;
+  }
+  return uiRet;
 }
 
 void CcByteArray::memset(const char cToSet)

@@ -231,9 +231,9 @@ public:
     { return compare(sToCompare, ESensitivity::CaseInsensitiv); }
 
   /**
-   * @brief Find the position of the last occurrence of a String
+   * @brief Find the position of the last occurrency of a String
    * @param sToFind: String to search for
-   * @return position of Last occurrence or SIZE_MAX if not found
+   * @return position of Last occurrency or SIZE_MAX if not found
    */
   size_t findLast(const CcString& sToFind) const;
 
@@ -242,7 +242,7 @@ public:
    * @param pcString: 0 terminated string to search for
    * @param uiLength: Size of pcString
    * @param uiOffset: Position where search has to be started at.
-   * @return position of First occurrence or SIZE_MAX if not found
+   * @return position of First occurrency or SIZE_MAX if not found
    */
   size_t find(const char* pcString, size_t uiOffset = 0, size_t uiLength = SIZE_MAX) const;
   size_t find(const CcString& sToFind, size_t uiOffset = 0, size_t uiLength = SIZE_MAX) const
@@ -252,7 +252,7 @@ public:
    * @brief Find the position of a occurrencing String
    * @param sToFind: String to search for
    * @param offset: Position where search has to be started at.
-   * @return position of First occurrence or SIZE_MAX if not found
+   * @return position of First occurrency or SIZE_MAX if not found
    */
   bool contains(const CcString& sToFind, size_t offset=0) const
   { return (find(sToFind, offset) < length()); }

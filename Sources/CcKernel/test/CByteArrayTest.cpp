@@ -32,6 +32,7 @@ CByteArrayTest::CByteArrayTest() :
   CcTest("CByteArrayTest")
 {
   appendTestMethod("Test converting of Hex strings to binary array", &CByteArrayTest::testStringConversions);
+  appendTestMethod("Test find methods", &CByteArrayTest::testFind);
 }
 
 CByteArrayTest::~CByteArrayTest()
@@ -48,6 +49,34 @@ bool CByteArrayTest::testStringConversions()
   if (oTestArray == oTestHexString)
   {
     bRet = true;
+  }
+  return bRet;
+}
+
+bool CByteArrayTest::testFind()
+{
+  bool bRet = false;
+  const char pcTestArray1[] = ("Hallo Welt");
+  CcByteArray oTestArray(pcTestArray1, sizeof(pcTestArray1)-1);
+  if (oTestArray.find("all", 3) == 1)
+  {
+    if (oTestArray.find("alle", 4) == SIZE_MAX)
+    {
+      if (oTestArray.find("Hallo Welt2", 11) == SIZE_MAX)
+      {
+        if (oTestArray.find("all", 3, 2) == SIZE_MAX)
+        {
+          if (oTestArray.find("alle", 3, 0) == 1)
+          {
+            if (oTestArray.find("Welt", 4, 0) == 6 &&
+                oTestArray.find("Welt", 4, 0, 9) == SIZE_MAX)
+            {
+              bRet = true;
+            }
+          }
+        }
+      }
+    }
   }
   return bRet;
 }
