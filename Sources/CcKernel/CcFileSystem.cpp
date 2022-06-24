@@ -211,7 +211,7 @@ CcFileSystemHandle CcFileSystem::getFileSystemByPath(const CcString& sPath)
 
   if(!pFileSystem.isValid() && s_pFSList->size() > 0)
   {
-    // Take root file system if nothing es found
+    // Take root file system if nothing was found
     pFileSystem = s_pFSList->at(0).getFileSystem();
   }
   return pFileSystem;

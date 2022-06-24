@@ -34,6 +34,7 @@
 #include "CcFileInfoList.h"
 #include "CcFileSystem.h"
 #include "CcGlobalStrings.h"
+#include "CcStringUtil.h"
 
 CcFile::CcFile(const CcString& sPath)
 {
@@ -42,42 +43,66 @@ CcFile::CcFile(const CcString& sPath)
 
 size_t CcFile::size()
 {
-  return m_SystemFile->size();
+  if(m_SystemFile.isValid())
+    return m_SystemFile->size();
+  else
+    return 0;
 }
 
 uint64 CcFile::size64()
 {
-  return m_SystemFile->size64();
+  if(m_SystemFile.isValid())
+    return m_SystemFile->size64();
+  else
+    return 0;
 }
 
 size_t CcFile::read(void* pBuffer, size_t uSize)
 {
-  return m_SystemFile->read(pBuffer, uSize);
+  if(m_SystemFile.isValid())
+    return m_SystemFile->read(pBuffer, uSize);
+  else
+    return SIZE_MAX;
 }
 
 size_t CcFile::write(const void* pBuffer, size_t uSize)
 {
-  return m_SystemFile->write(pBuffer, uSize);
+  if(m_SystemFile.isValid())
+    return m_SystemFile->write(pBuffer, uSize);
+  else
+    return SIZE_MAX;
 }
 
 CcStatus CcFile::flush()
 {
-  return m_SystemFile->flush();
+  if(m_SystemFile.isValid())
+    return m_SystemFile->flush();
+  else
+    return EStatus::FSFileNotFound;
 }
 
 CcStatus CcFile::open(EOpenFlags flags)
 {
-  return m_SystemFile->open(flags);
+  if(m_SystemFile.isValid())
+    return m_SystemFile->open(flags);
+  else
+    return EStatus::FSFileNotFound;
 }
 
 CcStatus CcFile::close()
 {
-  return m_SystemFile->close();
+  if(m_SystemFile.isValid())
+    return m_SystemFile->close();
+  else
+    return EStatus::FSFileNotFound;
 }
 
 CcStatus CcFile::setFilePointer(uint64 pos)
 {
-  return m_SystemFile->setFilePointer(pos);
+  if(m_SystemFile.isValid())
+    return m_SystemFile->setFilePointer(pos);
+  else
+    return EStatus::FSFileNotFound;
 }
 
 void CcFile::setFilePath(const CcString& sPath)
@@ -91,7 +116,10 @@ void CcFile::setFilePath(const CcString& sPath)
 
 bool CcFile::isFile() const
 {
-  return m_SystemFile->isFile();
+  if(m_SystemFile.isValid())
+    return m_SystemFile->isFile();
+  else
+    return false;
 }
 
 bool CcFile::isFile(const CcString& sPath)
@@ -102,7 +130,10 @@ bool CcFile::isFile(const CcString& sPath)
 
 bool CcFile::isDir() const
 {
-  return m_SystemFile->isDir();
+  if(m_SystemFile.isValid())
+    return m_SystemFile->isDir();
+  else
+    return false;
 }
 
 bool CcFile::isDir(const CcString& sPath)
@@ -113,7 +144,10 @@ bool CcFile::isDir(const CcString& sPath)
 
 CcStatus CcFile::move(const CcString& sPath)
 {
-  return m_SystemFile->move(getAbsolutePath(sPath));
+  if(m_SystemFile.isValid())
+    return m_SystemFile->move(getAbsolutePath(sPath));
+  else
+    return EStatus::FSFileNotFound;
 }
 
 CcStatus CcFile::move(const CcString& sFrom, const CcString& sTo)
@@ -124,7 +158,10 @@ CcStatus CcFile::move(const CcString& sFrom, const CcString& sTo)
 
 CcStatus CcFile::copy(const CcString& sPath)
 {
-  return m_SystemFile->copy(getAbsolutePath(sPath));
+  if(m_SystemFile.isValid())
+    return m_SystemFile->copy(getAbsolutePath(sPath));
+  else
+    return EStatus::FSFileNotFound;
 }
 
 CcStatus CcFile::copy(const CcString& sFrom, const CcString& sTo)
@@ -179,12 +216,18 @@ bool CcFile::compare(const CcString& sFile1, const CcString& sFile2, bool bDoCrc
 
 CcFileInfo CcFile::getInfo() const
 {
-  return m_SystemFile->getInfo();
+  if(m_SystemFile.isValid())
+    return m_SystemFile->getInfo();
+  else
+    return CcFileInfo();
 }
 
 CcDateTime CcFile::getModified() const
 {
-  return m_SystemFile->getModified();
+  if(m_SystemFile.isValid())
+    return m_SystemFile->getModified();
+  else
+    return CcDateTime();
 }
 
 CcFileInfo CcFile::getInfo(const CcString& sFilePath)
@@ -219,42 +262,66 @@ CcDateTime CcFile::getModified(const CcString& sFilePath)
 
 CcFileInfoList CcFile::getFileList() const
 {
-  return m_SystemFile->getFileList();
+  if(m_SystemFile.isValid())
+    return m_SystemFile->getFileList();
+  else
+    return CcFileInfoList();
 }
 
 uint64 CcFile::getFilePointer() const
 {
-  return m_SystemFile->getFilePointer();
+  if(m_SystemFile.isValid())
+    return m_SystemFile->getFilePointer();
+  else
+    return UINT64_MAX;
 }
 
 CcDateTime CcFile::getCreated() const
 {
-  return m_SystemFile->getCreated();
+  if(m_SystemFile.isValid())
+    return m_SystemFile->getCreated();
+  else
+    return CcDateTime();
 }
 
 CcStatus CcFile::setCreated(const CcDateTime& oDateTime)
 {
-  return m_SystemFile->setCreated(oDateTime);
+  if(m_SystemFile.isValid())
+    return m_SystemFile->setCreated(oDateTime);
+  else
+    return EStatus::FSFileNotFound;
 }
 
 CcStatus CcFile::setModified(const CcDateTime& oDateTime)
 {
-  return m_SystemFile->setModified(oDateTime);
+  if(m_SystemFile.isValid())
+    return m_SystemFile->setModified(oDateTime);
+  else
+    return EStatus::FSFileNotFound;
 }
 
 CcStatus CcFile::setUserId(uint32 uiUserId)
 {
-  return m_SystemFile->setUserId(uiUserId);
+  if(m_SystemFile.isValid())
+    return m_SystemFile->setUserId(uiUserId);
+  else
+    return EStatus::FSFileNotFound;
 }
 
 CcStatus CcFile::setGroupId(uint32 uiGroupId)
 {
-  return m_SystemFile->setGroupId(uiGroupId);
+  if(m_SystemFile.isValid())
+    return m_SystemFile->setGroupId(uiGroupId);
+  else
+    return EStatus::FSFileNotFound;
 }
 
 CcStatus CcFile::setAttributes(EFileAttributes uiAttributes)
 {
-  return m_SystemFile->setAttributes(uiAttributes);
+  if(m_SystemFile.isValid())
+    return m_SystemFile->setAttributes(uiAttributes);
+  else
+    return EStatus::FSFileNotFound;
 }
 
 CcStatus CcFile::setCreated(const CcString& sFilePath, const CcDateTime& oDateTime)
@@ -353,13 +420,7 @@ CcStatus CcFile::remove(const CcString& sPathToFile)
 CcString CcFile::getAbsolutePath(const CcString& sPathToFile)
 {
   CcString sPath;
-  if (
-    sPathToFile.startsWith(CcGlobalStrings::Seperators::Slash)
-#ifdef WINDOWS
-     || sPathToFile.startsWith(CcGlobalStrings::Seperators::BackSlash)
-     || (sPathToFile.length() > 1 && sPathToFile.at(1) == CcGlobalStrings::Seperators::Colon[0])
-#endif
-  )
+  if (CcStringUtil::isPathAbsolute(sPathToFile))
   {
     sPath = sPathToFile;
   }

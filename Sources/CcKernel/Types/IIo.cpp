@@ -141,11 +141,27 @@ CcStatus IIo::writeString(const CcString& oString)
   return bRet;
 }
 
-CcStatus IIo::writeLine(const CcString& oString)
+CcStatus IIo::writeLine(const CcString& oString, ELineEnding eLineEndingProperty)
 {
   bool bRet = true;
   bRet &= writeString(oString);
-  bRet &= writeString(CcGlobalStrings::EolOs);
+  switch(eLineEndingProperty)
+  {
+    case ELineEnding::CR:
+      bRet &= writeString(CcGlobalStrings::Cr);
+      break;
+    case ELineEnding::NL:
+      bRet &= writeString(CcGlobalStrings::EolShort);
+      break;
+    case ELineEnding::CRNL:
+      bRet &= writeString(CcGlobalStrings::EolLong);
+      break;
+    case ELineEnding::Default:
+      CCFALLTHROUGH;
+    default:
+      bRet &= writeString(CcGlobalStrings::EolOs);
+      break;
+  }
   flush();
   return bRet;
 }

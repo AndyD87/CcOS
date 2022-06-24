@@ -20,41 +20,49 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class GenericApp
- *
- *  Implementation of Main Application
+ * @brief     Class IShell
  */
+#pragma once
 
-#include "GenericApp.h"
-#include "CcKernel.h"
-#include "Devices/CcDeviceUsb.h"
-#include "Devices/IUsbDevice.h"
-#include "IShell.h"
+#include "CcBase.h"
+#include "IThread.h"
+#include "CcString.h"
+#include "CcByteArray.h"
 
-GenericApp::GenericApp()
+class IIo;
+
+/**
+ * @brief Basic shell application.
+ */
+class CcKernelSHARED IShell : public IThread
 {
-}
+public:
+  /**
+   * @brief Create thread instantce with name.
+   * @param sName: Target name of thread
+   */
+  IShell();
 
-GenericApp::~GenericApp()
-{
-  CCDELETE(m_pCdcDevice);
-}
+  /**
+   * @brief Destroy Object and waiting until @ref getThreadState is set to EThreadState::Stopped
+   */
+  virtual ~IShell();
 
-void GenericApp::run()
-{
-  CcDeviceUsb oUsbDevice = CcKernel::getDevice(EDeviceType::Usb);
-  if(oUsbDevice.isValid())
-  {            
-    CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);   
-    CcStatus oStatus = m_pCdcDevice->start();
+  virtual void run() override;
+  
+  void init(IIo* pIoStream);
+  CcStatus changeDirectory(const CcString& sPath);
 
-    if(oStatus)
-    {
-      CCNEW(m_pShell, IShell);   
-      m_pShell->init(m_pCdcDevice);
-      m_pShell->start();
-    }
+private:
+  void readLine();
+  void updatePrefix();
 
-    setExitCode(oStatus);
-  }
-}
+private:
+  IIo*          m_pIoStream;
+  CcByteArray   m_oTransferBuffer;
+  CcByteArray   m_oReadLineBuffer;
+
+  CcString  m_sRead;
+  CcString  m_sWorkingDir;
+  CcString  m_sPrefix;
+};

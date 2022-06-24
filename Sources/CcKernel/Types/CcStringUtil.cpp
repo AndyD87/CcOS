@@ -1494,6 +1494,30 @@ CcStringList CcStringUtil::getArguments(const CcString& sLine)
   return oArgs;
 }
 
+const CcString& CcStringUtil::setPath(CcString& sOld, const CcString& sNew)
+{
+  if(CcStringUtil::isPathAbsolute(sNew))
+  {
+    sOld = sNew;
+  }
+  else
+  {
+    sOld.appendPath(sNew);
+    sOld.normalizePath();
+  }
+  return sOld;
+}
+
+bool CcStringUtil::isPathAbsolute(const CcString& sPath)
+{
+#ifdef WINDOWS
+  return sPath.startsWith(CcGlobalStrings::Seperators::Slash) ||
+    (sPath.size() > 1 && sPath[1] == CcGlobalStrings::Seperators::Colon[0]);
+#else
+  return sPath.startsWith(CcGlobalStrings::Seperators::Slash);
+#endif
+}
+
 //https://github.com/gghez/meteor-base58/blob/master/basex.js
 CcByteArray CcStringUtil::decodeBaseX(const CcString& toDecode, const char* pcAlphabet, uint8 uiBaseSize)
 {

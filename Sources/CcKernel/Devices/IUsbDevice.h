@@ -234,39 +234,39 @@ public:
     StateOut,
   };
   
-  class CcKernelSHARED CConfigDescriptor
+  class CConfigDescriptor
   {
     public:
-    CConfigDescriptor();
-    ~CConfigDescriptor();
+    CcKernelSHARED CConfigDescriptor();
+    CcKernelSHARED ~CConfigDescriptor();
 
-    class CEndpointInfo
+    class CcKernelSHARED CEndpointInfo
     {
       public:
       EEnpointState         eState = EEnpointState::Idle;
       CcByteArray           oInBuffer;
       CcBufferList          oBufferList;
-      uint32                uiMaxBufferList=16;
+      uint32                uiMaxBufferList=64;
       CcEvent               oOnChange;
       SEndpointDescriptor*  pDescriptor;
     };
 
-    void* generateConfiguration(uint16& uiSize);
+    CcKernelSHARED void* generateConfiguration(uint16& uiSize);
 
-    SInterfaceDescriptor* createInterface();
-    SEndpointDescriptor* createEndpoint(uint8 uiEndpointAddress, uint8 uiAttributes, uint16 wMaxPacketSize, uint8 uInterval, CcEvent oOnChange);
-    SFunctionalDescriptor* createFunctional(uint8 uiSize);
-    void setupInterfaces();
+    CcKernelSHARED SInterfaceDescriptor* createInterface();
+    CcKernelSHARED SEndpointDescriptor* createEndpoint(uint8 uiEndpointAddress, uint8 uiAttributes, uint16 wMaxPacketSize, uint8 uInterval, CcEvent oOnChange);
+    CcKernelSHARED SFunctionalDescriptor* createFunctional(uint8 uiSize);
+    CcKernelSHARED void setupInterfaces();
 
-    size_t getEndpointCount() const
+    CcKernelSHARED size_t getEndpointCount() const
     { return m_oEndPoints.size(); }
-    SConfigDescriptor*        getConfig();
-    SInterfaceDescriptor*     getInterface(size_t uiIndex);
-    SEndpointDescriptor*      getEndpoint(size_t uiIndex);
-    CEndpointInfo&            getEndpointInfo(size_t uiIndex);
-    CcVector<CEndpointInfo>&  getEndpointInfos()
+    CcKernelSHARED SConfigDescriptor*        getConfig();
+    CcKernelSHARED SInterfaceDescriptor*     getInterface(size_t uiIndex);
+    CcKernelSHARED SEndpointDescriptor*      getEndpoint(size_t uiIndex);
+    CcKernelSHARED CEndpointInfo&            getEndpointInfo(size_t uiIndex);
+    CcKernelSHARED CcVector<CEndpointInfo>&  getEndpointInfos()
     { return m_oEndPointConfigs; }
-    SFunctionalDescriptor*    getFunction(size_t uiIndex);
+    CcKernelSHARED SFunctionalDescriptor*    getFunction(size_t uiIndex);
 
     private:
     CcByteArray             m_oBuffer;
@@ -276,21 +276,21 @@ public:
     CcVector<uint32>      m_oInterfaces;
   };
   
-  class CcKernelSHARED CDeviceDescriptor : public SDeviceDescriptor
+  class CDeviceDescriptor : public SDeviceDescriptor
   {
   public:
-    CDeviceDescriptor();
-    ~CDeviceDescriptor();
+    CcKernelSHARED CDeviceDescriptor();
+    CcKernelSHARED ~CDeviceDescriptor();
 
-    uint8 findEndpoint(uint8 uiEndpoint, CConfigDescriptor** pConfig = nullptr);
+    CcKernelSHARED uint8 findEndpoint(uint8 uiEndpoint, CConfigDescriptor** pConfig = nullptr);
 
-    CcVector<CConfigDescriptor>& getConfigs()
+    CcKernelSHARED CcVector<CConfigDescriptor>& getConfigs()
     { return oConfigs; }
-    CcVector<SStringDescriptor*>& getStrings()
+    CcKernelSHARED CcVector<SStringDescriptor*>& getStrings()
     { return oStrings; }
 
-    CConfigDescriptor& createConfig();
-    IUsbDevice::SStringDescriptor& createString(const CcString& sValue);
+    CcKernelSHARED CConfigDescriptor& createConfig();
+    CcKernelSHARED IUsbDevice::SStringDescriptor& createString(const CcString& sValue);
 
   private:
     CcVector<CConfigDescriptor> oConfigs;

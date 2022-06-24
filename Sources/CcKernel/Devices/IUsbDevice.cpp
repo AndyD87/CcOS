@@ -68,11 +68,11 @@ IUsbDevice::CConfigDescriptor& IUsbDevice::CDeviceDescriptor::createConfig()
 
 IUsbDevice::SStringDescriptor& IUsbDevice::CDeviceDescriptor::createString(const CcString& sValue)
 {
-  uint8 uiLength = (sizeof(SStringDescriptor) - 3) + sValue.length();
-  CCNEWARRAYTYPE(pBuffer, uint8, uiLength);
+  uint8 uiStringLength = static_cast<uint8>((sizeof(SStringDescriptor) - 3) + sValue.length());
+  CCNEWARRAYTYPE(pBuffer, uint8, uiStringLength);
   SStringDescriptor* pCasted = reinterpret_cast<SStringDescriptor*>(pBuffer);
   pCasted->uiDescriptorType = 0x03;
-  pCasted->uiLength = uiLength;
+  pCasted->uiLength = uiStringLength;
   CcStatic::memcpy(&pCasted->pString, sValue.getCharString(), sValue.length());
   oStrings.append(pCasted);
   return *pCasted;
@@ -91,7 +91,7 @@ IUsbDevice::CConfigDescriptor::~CConfigDescriptor()
 
 IUsbDevice::SInterfaceDescriptor* IUsbDevice::CConfigDescriptor::createInterface()
 {
-  uint32 uiCurrentOffset = m_oBuffer.size();
+  uint32 uiCurrentOffset = static_cast<uint32>(m_oBuffer.size());
   m_oBuffer.resize(m_oBuffer.size() + sizeof(SInterfaceDescriptor));
   IUsbDevice::SInterfaceDescriptor* pInterface = m_oBuffer.cast<IUsbDevice::SInterfaceDescriptor>(uiCurrentOffset);
   pInterface->init();
@@ -102,7 +102,7 @@ IUsbDevice::SInterfaceDescriptor* IUsbDevice::CConfigDescriptor::createInterface
 
 IUsbDevice::SFunctionalDescriptor* IUsbDevice::CConfigDescriptor::createFunctional(uint8 uiSize)
 {
-  uint32 uiCurrentOffset = m_oBuffer.size();
+  uint32 uiCurrentOffset = static_cast<uint32>(m_oBuffer.size());
   m_oBuffer.resize(m_oBuffer.size() + uiSize);
   IUsbDevice::SFunctionalDescriptor* pInterface = m_oBuffer.cast<IUsbDevice::SFunctionalDescriptor>(uiCurrentOffset);
   pInterface->init(uiSize);
@@ -127,7 +127,7 @@ IUsbDevice::SEndpointDescriptor* IUsbDevice::CConfigDescriptor::createEndpoint(
           CcEvent oOnChange
 )
 {
-  uint32 uiCurrentOffset = m_oBuffer.size();
+  uint32 uiCurrentOffset = static_cast<uint32>(m_oBuffer.size());
   m_oBuffer.resize(m_oBuffer.size() + sizeof(SEndpointDescriptor));
   IUsbDevice::SEndpointDescriptor* pInterface = m_oBuffer.cast<IUsbDevice::SEndpointDescriptor>(uiCurrentOffset);
   pInterface->init();

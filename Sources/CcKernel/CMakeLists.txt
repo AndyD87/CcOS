@@ -57,6 +57,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     IModuleBase.h
     IProgressReceiver.h
     ISharedMemory.h
+    IShell.h
     IThread.h
     IWaitable.h
     IWorker.h
@@ -121,6 +122,9 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Devices/Simulations/CcI2CSimulation.h
     Devices/Simulations/CcSpiSimulation.h
     Devices/USB/Client/CcUsbCdc.h
+
+    Filesystem/CcFilesystemDevice.h
+    Filesystem/CcFilesystemSystem.h
 
     Network/CcCommonIps.h
     Network/CcCommonPorts.h
@@ -198,6 +202,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     IDevice.cpp
     IDriver.cpp
     IModuleBase.cpp
+    IShell.cpp
     IThread.cpp
     IWaitable.cpp
     IWorker.cpp
@@ -240,6 +245,9 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
     Events/CcKeyboardEventHandler.cpp
     Events/CcMouseEventHandler.cpp
+
+    Filesystem/CcFilesystemDevice.cpp
+    Filesystem/CcFilesystemSystem.cpp
 
     Network/CcCommonIps.cpp
     Network/CcIpInterface.cpp

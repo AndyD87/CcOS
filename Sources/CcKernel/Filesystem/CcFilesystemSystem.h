@@ -17,31 +17,34 @@
 /**
  * @file
  *
- * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
- * @par       Web:
+ * @copyright  Andreas Dirmeier (C) 2022
  * @par       Language: C++11
- * @brief     Class GenericApp
- *
- *  Example GUI-Application with Menue Structure and Application Loader
+ * @brief     Class CcFilesystemSystem
  */
 #pragma once
 
 #include "CcBase.h"
-#include "CcService.h"
-#include "Devices/USB/Client/CcUsbCdc.h"
+#include "IFileSystem.h"
+#include "CcFile.h"
 
-class IShell;
-
-class GenericApp: public CcApp
+/**
+ * @brief Button for GUI Applications
+ */
+class CcFilesystemSystem : public IFileSystem
 {
 public:
-  GenericApp();
-  virtual ~GenericApp();
+  /**
+   * @brief Constructor
+   */
+  CcFilesystemSystem();
 
-  virtual void run() override;
+  /**
+   * @brief Destructor
+   */
+  virtual ~CcFilesystemSystem();
 
-private:
-  CcUsbCdc* m_pCdcDevice = nullptr;
-  IShell*   m_pShell     = nullptr;
+  CcFilePointer getFile(const CcString& path) const override;
+  CcStatus mkdir(const CcString& Path) const override;
+  CcStatus remove(const CcString& Path) const override;
 };

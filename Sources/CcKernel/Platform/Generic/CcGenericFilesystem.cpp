@@ -39,7 +39,7 @@ CcGenericFilesystem::~CcGenericFilesystem()
 CcFilePointer CcGenericFilesystem::getFile(const CcString& ) const
 {
   CcFilePointer file;
-  CCNEW(file, CcGenericDirectory);
+  //CCNEW(file, CcGenericDirectory);
   return file;
 }
 

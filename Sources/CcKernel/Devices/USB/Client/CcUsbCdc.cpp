@@ -223,14 +223,14 @@ void CcUsbCdc::onInterfaceRequest(IUsbDevice::SRequest* pRequest)
       {
         if ((pRequest->bmRequest & 0x80U) != 0U)
         {
-          uint16 uiLen = CCMIN(UsbCdcDataSize, m_oClassData.size());
+          uint16 uiLen = static_cast<uint16>(CCMIN(UsbCdcDataSize, m_oClassData.size()));
           m_pUsbDevice->write(0, m_oClassData.cast<uint8>(), uiLen);
         }
         else
         {
           m_uiCmd = pRequest->bRequest;
 
-          uint16 uiLen = CCMIN(UsbCdcDataSize, m_oClassData.size());
+          uint16 uiLen = static_cast<uint16>(CCMIN(UsbCdcDataSize, m_oClassData.size()));
           m_pUsbDevice->read(0, m_oClassData.cast<uint8>(), uiLen);
         }
         break;
@@ -245,15 +245,15 @@ void CcUsbCdc::onInterfaceRequest(IUsbDevice::SRequest* pRequest)
 void CcUsbCdc::onInterfaceReceive(IUsbDevice::SRequest* pRequest)
 {
   CCUNUSED(pRequest);
-  if(m_uiCmd != UINT8_MAX)
-  {
-    switch(m_uiCmd)
-    {
-      default:
-      break;
-    }
-  }
-  m_uiCmd = UINT8_MAX;
+  //if(m_uiCmd != UINT8_MAX)
+  //{
+  //  switch(m_uiCmd)
+  //  {
+  //    default:
+  //    break;
+  //  }
+  //}
+  //m_uiCmd = UINT8_MAX;
 }
 
 void CcUsbCdc::onControl(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest)
@@ -265,9 +265,6 @@ void CcUsbCdc::onDataIn(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest)
 {
   while(pRequest->oBufferList.getChunkCount())
   {
-    // echo written data
-    writeArray(pRequest->oBufferList[0]);
-
     m_oInputBuffer.append(pRequest->oBufferList[0]);
     pRequest->oBufferList.removeChunk(0);
   }

@@ -677,6 +677,10 @@ void STM32UsbDevice::write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize
       
       if(oEndpointInfo.oBufferList.size() < oEndpointInfo.uiMaxBufferList)
         oEndpointInfo.oBufferList.append(pBuffer, uiSize);
+      else
+      {
+        IUsbDevice::debugMessage("Buffer exceeded");
+      }
 
       // Check if write is already active
       if( m_eCurrentSate == EUsbState::Configured && 

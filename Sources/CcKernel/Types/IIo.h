@@ -78,6 +78,13 @@ inline EOpenFlags operator&(EOpenFlags leftOp, EOpenFlags rightOp)
 class CcKernelSHARED IIo
 {
 public:
+  enum class ELineEnding
+  {
+    Default, //!< OS specific setting
+    NL,
+    CR,
+    CRNL
+  };
   /**
    * @brief Define common control requests as enum
    */
@@ -227,9 +234,10 @@ public:
   /**
    * @brief Write a string to stream and append new line signs
    * @param oString: String to write out
+   * @param eLineEndingProperty: Type of lineending used, default is OS Specific settings
    * @return Status of operation
    */
-  CcStatus writeLine(const CcString& oString);
+  CcStatus writeLine(const CcString& oString, ELineEnding eLineEndingProperty = ELineEnding::Default);
 
   /**
    * @brief Write a buffer list out to stream

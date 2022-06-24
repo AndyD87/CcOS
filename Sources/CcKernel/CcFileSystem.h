@@ -124,6 +124,7 @@ public:
    * @return Filesystem handle of path, or invalid handle if path not found
    */
   static CcFileSystemHandle getFileSystemByPath(const CcString& sPath);
+  
 private:
   static CcVector<CcFileSystemListItem> *s_pFSList; //!< List of Mounted FileSystems
 };

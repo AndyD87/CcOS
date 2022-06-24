@@ -1,4 +1,6 @@
-/*
+/**
+ * @copyright  Andreas Dirmeier (C) 2022
+ *
  * This file is part of CcOS.
  *
  * CcOS is free software: you can redistribute it and/or modify
@@ -20,41 +22,35 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class GenericApp
- *
- *  Implementation of Main Application
+ * @brief     Implementation of Class CcFilesystemSystem
  */
+#include "CcFilesystemSystem.h"
 
-#include "GenericApp.h"
-#include "CcKernel.h"
-#include "Devices/CcDeviceUsb.h"
-#include "Devices/IUsbDevice.h"
-#include "IShell.h"
-
-GenericApp::GenericApp()
+CcFilesystemSystem::CcFilesystemSystem()
 {
 }
 
-GenericApp::~GenericApp()
+CcFilesystemSystem::~CcFilesystemSystem()
 {
-  CCDELETE(m_pCdcDevice);
 }
 
-void GenericApp::run()
+CcFilePointer CcFilesystemSystem::getFile(const CcString& ) const
 {
-  CcDeviceUsb oUsbDevice = CcKernel::getDevice(EDeviceType::Usb);
-  if(oUsbDevice.isValid())
-  {            
-    CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);   
-    CcStatus oStatus = m_pCdcDevice->start();
+  CcFilePointer file;
+  //CCNEW(file, CcGenericDirectory);
+  return file;
+}
 
-    if(oStatus)
-    {
-      CCNEW(m_pShell, IShell);   
-      m_pShell->init(m_pCdcDevice);
-      m_pShell->start();
-    }
+CcStatus CcFilesystemSystem::mkdir(const CcString &Path) const
+{
+  CcStatus oResult(false);
+  CCUNUSED(Path);
+  return oResult;
+}
 
-    setExitCode(oStatus);
-  }
+CcStatus CcFilesystemSystem::remove(const CcString &Path) const
+{
+  CcStatus oResult(false);
+  CCUNUSED(Path);
+  return oResult;
 }

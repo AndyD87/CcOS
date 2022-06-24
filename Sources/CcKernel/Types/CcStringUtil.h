@@ -512,6 +512,22 @@ public:
    * @return
    */
   static CcStringList getArguments(const CcString& sLine);
+  
+  /**
+   * @brief overwrite old path with new path, depending on if sNew is absolute or relative
+   * @param sOld: Old path to be replaced
+   * @param sNew: New path to assign to sOld
+   * @return Reference to sOld
+   */
+  static const CcString& setPath(CcString& sOld, const CcString& sNew);
+
+  /**
+   * @brief Check if a path is a absolute
+   *        On all systems, except Windows, Abosulte paths are starting with /
+   * @param sPath: Path to check
+   * @return true if path was recognized as absoute
+   */
+  static bool isPathAbsolute(const CcString& sPath);
 private:
   CcStringUtil() = delete;
 
