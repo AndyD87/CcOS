@@ -148,8 +148,15 @@ void IShell::readLine()
           m_pIoStream->writeString(CcGlobalStrings::EolLong);
           break;
         default:
-          m_sRead.append(m_oTransferBuffer[uiPos]);
-          m_pIoStream->write(&m_oTransferBuffer[uiPos], 1);
+          if(static_cast<uint8>(m_oTransferBuffer[uiPos]) < 32)
+          {
+            // Instruction signs, do not display or save
+          }
+          else
+          {
+            m_sRead.append(m_oTransferBuffer[uiPos]);
+            m_pIoStream->write(&m_oTransferBuffer[uiPos], 1);
+          }
           break;
       }
     }
