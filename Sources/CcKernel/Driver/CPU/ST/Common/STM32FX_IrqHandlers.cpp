@@ -51,11 +51,11 @@ struct __attribute__((packed)) _ContextStateFrame
   uint32_t r2;
   uint32_t r3;
   uint32_t r12;
-  uint32_t lr;
-  uint32_t return_address;
+  void*    lr;
+  void*    return_address;
   uint32_t xpsr;
 } *puiStack;
-
+                 
 //! @brief method to call from unimplemented irq handler
 void Crashed(){
   g_uiCrashRunning  = 0x01;
@@ -213,6 +213,10 @@ CCEXTERNC void TIM1_TRG_COM_TIM11_IRQHandler(){g_uiFailedHandler = 0x35;Crashed(
 #ifndef TIM1_CC_IRQHandler_Handled
 //! Forward not implemented Handler and set crashed code
 CCEXTERNC void TIM1_CC_IRQHandler           (){g_uiFailedHandler = 0x36;Crashed();}
+#endif
+#ifndef TIM2_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void TIM2_IRQHandler           (){g_uiFailedHandler = 0x89;Crashed();}
 #endif
 #ifndef TIM3_IRQHandler_Handled
 //! Forward not implemented Handler and set crashed code
@@ -418,6 +422,12 @@ CCEXTERNC void HASH_RNG_IRQHandler          (){g_uiFailedHandler = 0x87;Crashed(
 //! Forward not implemented Handler and set crashed code
 CCEXTERNC void FPU_IRQHandler               (){g_uiFailedHandler = 0x88;Crashed();}
 #endif
+
+#ifndef ETH_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void ETH_IRQHandler               (){g_uiFailedHandler = 0x90;Crashed();}
+#endif
+
 #ifndef CCOS_DEFAULT_IRQHandler_Handled
 //! Forward not implemented Handler and set crashed code
 CCEXTERNC void CCOS_DEFAULT_IRQHandler      (){g_uiFailedHandler = 0xff;Crashed();}

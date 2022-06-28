@@ -1,3 +1,4 @@
+#include "CcBase.h"
 #include "usbh_conf.h"
 
 void HAL_Custom_MspInit(PCD_HandleTypeDef* pcdHandle)

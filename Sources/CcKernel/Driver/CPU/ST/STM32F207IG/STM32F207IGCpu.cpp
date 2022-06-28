@@ -146,6 +146,7 @@ STM32F207IGCpu::STM32F207IGCpu() :
   oCpuThreadContext.setData(&oCpuThreadData);
   pCurrentThreadContext    = &oCpuThreadContext;
   pCurrentThreadData       = &oCpuThreadData;
+  CcGenericThreadManager::getInstance()->oThreadsRunning.append(&oCpuThreadContext);
   enterCriticalSection();
   leaveCriticalSection();
   startSysClock();

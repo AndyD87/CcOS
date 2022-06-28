@@ -34,7 +34,6 @@
 STM32F407Cpu* STM32F407Cpu::pCpu      = nullptr;  //!< Cpu data initialized on cpu start
 volatile CcThreadContext* pCurrentThreadContext = nullptr;  //!< Cpu current running thread Context
 volatile CcThreadData*    pCurrentThreadData    = nullptr;  //!< Cpu current running thread Data
-volatile CcThreadData**   pCurrentThreadDataLocation    = nullptr;  //!< Cpu current running thread Data
 
 #ifdef THREADHELPER
 CcGenericThreadHelper STM32F407Cpu::oThreadHelper;
@@ -120,7 +119,7 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
   __asm volatile("  isb                            \n");
   __asm volatile("                                 \n");
-  __asm volatile("  ldr  r3, pCurrentThreadContextConst2\n"); // Load current thread context
+  __asm volatile("  ldr  r3, pCurrentThreadDataConst2\n"); // Load current thread context
   __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
   __asm volatile("                                 \n");
   __asm volatile("  tst r14, #0x10                 \n"); //******************
@@ -154,7 +153,7 @@ CCEXTERNC void USART3_IRQHandler( void )
   __asm volatile("  bx r14                         \n"); // continue execution.
   __asm volatile("                                 \n");
   __asm volatile("  .align 4                       \n");
-  __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadData  \n");
+  __asm volatile("pCurrentThreadDataConst2: .word pCurrentThreadData  \n");
 }
 
 STM32F407Cpu::STM32F407Cpu():
@@ -165,7 +164,6 @@ STM32F407Cpu::STM32F407Cpu():
   oCpuThreadContext.setData(&oCpuThreadData);
   pCurrentThreadContext    = &oCpuThreadContext;
   pCurrentThreadData       = &oCpuThreadData;
-  pCurrentThreadDataLocation = &pCurrentThreadData;
   CcGenericThreadManager::getInstance()->oThreadsRunning.append(&oCpuThreadContext);
   enterCriticalSection();
   leaveCriticalSection();

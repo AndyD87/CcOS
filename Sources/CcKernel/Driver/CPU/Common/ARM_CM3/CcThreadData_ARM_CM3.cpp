@@ -81,15 +81,25 @@ void CcThreadData::initStack(CcThreadContext* pThread)
 {
   /* Simulate the stack frame as it would be created by a context switch
   interrupt. */
+
   /* Offset added to account for the way the MCU uses the stack on entry/exit
   of interrupts, and to ensure alignment. */
   puiTopStack--;
+
   *puiTopStack = 0x01000000; /* xPSR */
   puiTopStack--;
   *puiTopStack = (reinterpret_cast<uintptr>(ICpu::CreateThreadMethod)) & 0xfffffffe;  /* PC */
   puiTopStack--;
   *puiTopStack = (reinterpret_cast<uintptr>(ICpu::CreateThreadMethod));  /* LR */
-  puiTopStack -= 5;
+
+  /* Save code space by skipping register initialisation. */
+  puiTopStack -= 5;  /* R12, R3, R2 and R1. */
   *puiTopStack = reinterpret_cast<uintptr>( pThread); /* R0 */
+
+  /* A save method is being used that requires each task to maintain its
+  own exec return value. */
+  puiTopStack--;
+  *puiTopStack =  0xfffffffd;
+
   puiTopStack -= 8;  /* R11, R10, R9, R8, R7, R6, R5 and R4. */
 }
