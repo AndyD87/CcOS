@@ -20,42 +20,37 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class GenericApp
- *
- *  Implementation of Main Application
+ * @brief     Class IShell
  */
+#pragma once
 
-#include "GenericApp.h"
-#include "CcKernel.h"
-#include "Devices/CcDeviceUsb.h"
-#include "Devices/IUsbDevice.h"
-#include "IShell.h"
+#include "CcBase.h"
+#include "CcStringList.h"
 
-GenericApp::GenericApp()
+class IShell;
+
+/**
+ * @brief Basic shell application.
+ */
+class CcKernelSHARED IShellCommand
 {
-}
+public:
+  /**
+   * @brief Create thread instantce with name.
+   * @param sName: Target name of thread
+   */
+  IShellCommand(const CcString& sCommand);
 
-GenericApp::~GenericApp()
-{
-  CCDELETE(m_pCdcDevice);
-}
+  /**
+   * @brief Destroy Object and waiting until @ref getThreadState is set to EThreadState::Stopped
+   */
+  virtual ~IShellCommand();
 
-void GenericApp::run()
-{
-  CcDeviceUsb oUsbDevice = CcKernel::getDevice(EDeviceType::Usb);
-  if(oUsbDevice.isValid())
-  {            
-    CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);   
-    CcStatus oStatus = m_pCdcDevice->start();
+  virtual CcStatus exec(IShell& oBasicShell, const CcStringList& oArguments) = 0;
 
-    if(oStatus)
-    {
-      CCNEW(m_pShell, IShell);   
-      m_pShell->init(m_pCdcDevice);
-      m_pShell->initDefaultCommands();
-      m_pShell->start();
-    }
+  const CcString& getCommand()
+  { return m_sCommand; }
 
-    setExitCode(oStatus);
-  }
-}
+private:
+  CcString m_sCommand;
+};

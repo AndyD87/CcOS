@@ -16,46 +16,36 @@
  **/
 /**
  * @file
+ *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class GenericApp
- *
- *  Implementation of Main Application
+ * @brief     Class CMapTest
+ **/
+#pragma once
+
+#include "CcBase.h"
+#include "CcTest.h"
+#include "CcList.h"
+#include "CcString.h"
+
+/**
+ * @brief Class implementation
  */
-
-#include "GenericApp.h"
-#include "CcKernel.h"
-#include "Devices/CcDeviceUsb.h"
-#include "Devices/IUsbDevice.h"
-#include "IShell.h"
-
-GenericApp::GenericApp()
+class CMapTest : public CcTest<CMapTest>
 {
-}
+public:
+  /**
+   * @brief Constructor
+   */
+  CMapTest(void );
 
-GenericApp::~GenericApp()
-{
-  CCDELETE(m_pCdcDevice);
-}
+  /**
+   * @brief Destructor
+   */
+  virtual ~CMapTest(void );
 
-void GenericApp::run()
-{
-  CcDeviceUsb oUsbDevice = CcKernel::getDevice(EDeviceType::Usb);
-  if(oUsbDevice.isValid())
-  {            
-    CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);   
-    CcStatus oStatus = m_pCdcDevice->start();
-
-    if(oStatus)
-    {
-      CCNEW(m_pShell, IShell);   
-      m_pShell->init(m_pCdcDevice);
-      m_pShell->initDefaultCommands();
-      m_pShell->start();
-    }
-
-    setExitCode(oStatus);
-  }
-}
+private:
+  bool testSet();
+};

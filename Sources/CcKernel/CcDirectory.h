@@ -186,6 +186,10 @@ public:
    */
   CcFileInfoList getFileList();
 
+  const CcString& getFilePath()
+  { return m_sPath; }
+  void setFilePath(const CcString& sPath);
+
   /**
    * @brief Get file list from a Directory
    * @param sPathToDirectory: Patht to file for list

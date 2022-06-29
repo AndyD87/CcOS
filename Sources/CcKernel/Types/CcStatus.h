@@ -66,10 +66,7 @@ enum class EStatus : uint32
   FSFileRemoveFailed,
   FSFileCrcFailed,
   FSDirError          = 0x00032000,
-  FSDirNotFound,
   FSDirNotEmpty,
-  FSDirAlreadyExists,
-  FSDirCreateFailed,
 
   NetworkError        = 0x00040000, //!< Unspecified Network error occured
   FileTransferFailed,

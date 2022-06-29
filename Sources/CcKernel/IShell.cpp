@@ -23,6 +23,7 @@
  * @brief     Class IShell
  */
 #include "IShell.h"
+#include "Shell/IShellCommand.h"
 #include "CcKernel.h"
 #include "IIo.h"
 #include "CcGlobalStrings.h"
@@ -37,6 +38,11 @@ IShell::IShell() :
 
 IShell::~IShell()
 {
+  for(IShellCommand* pCommand : m_oCreatedCommands)
+  {
+    CCDELETE(pCommand);
+  }
+  m_oCreatedCommands.clear();
 }
 
 void IShell::run()
@@ -50,27 +56,19 @@ void IShell::run()
       CcStringList oArguments = CcStringUtil::getArguments(m_sRead);
       if(oArguments.size() > 0)
       {
-        if(oArguments[0] == "cd")
+        bool bCommandFound = false;
+        for(IShellCommand* pCommand : m_oCommands)
         {
-          if(oArguments.size() > 1)
+          if(pCommand->getCommand() == oArguments[0])
           {
-            if(changeDirectory(oArguments[1]))
-            {
-              m_pIoStream->writeLine("Path successfully changed", IIo::ELineEnding::CRNL);
-            }
-            else
-            {
-              m_pIoStream->writeLine("Path not found", IIo::ELineEnding::CRNL);
-            }
-          }
-          else
-          {
-            m_pIoStream->writeLine("Additional parameter required", IIo::ELineEnding::CRNL);
+            bCommandFound = true;
+            oArguments.remove(0);
+            pCommand->exec(*this, oArguments);
           }
         }
-        else
+        if(bCommandFound == false)
         {
-          m_pIoStream->writeLine("Unknown command: " + oArguments[0], IIo::ELineEnding::CRNL);
+          writeLine("Unknown command: " + oArguments[0]);
         }
       }
       
@@ -85,6 +83,24 @@ void IShell::run()
 void IShell::init(IIo* pIoStream)
 {
   m_pIoStream = pIoStream;
+  m_oEnvironmentVariables = CcKernel::getEnvironmentVariables();
+}
+
+#include "Shell/CcShellCd.h"
+#include "Shell/CcShellLs.h"
+#include "Shell/CcShellGetEnv.h"
+#include "Shell/CcShellExport.h"
+
+#define CREATE_AND_APPEND(COMMAND)                    \
+  m_oCreatedCommands.append(CCNEW_INLINE(COMMAND)); \
+  m_oCommands.append(m_oCreatedCommands.last());      
+
+void IShell::initDefaultCommands()
+{
+  CREATE_AND_APPEND(CcShellCd);
+  CREATE_AND_APPEND(CcShellLs);
+  CREATE_AND_APPEND(CcShellGetEnv);
+  CREATE_AND_APPEND(CcShellExport);
 }
 
 CcStatus IShell::changeDirectory(const CcString& sPath)
@@ -101,6 +117,14 @@ CcStatus IShell::changeDirectory(const CcString& sPath)
     oStatus = EStatus::FSFileNotFound;
   }
   return oStatus;
+}
+
+void IShell::writeLine(const CcString& sLine)
+{
+  if(m_pIoStream)
+  {
+    m_pIoStream->writeLine(sLine, IIo::ELineEnding::CRNL);
+  }
 }
 
 void IShell::readLine()

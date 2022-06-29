@@ -60,7 +60,7 @@ CcStatus CcWindowsFilesystem::mkdir(const CcString& Path) const
       // Check twice C: would return Access Denied
       if (GetFileAttributesW(sUnicode.getWcharString()) & FILE_ATTRIBUTE_DIRECTORY)
       {
-        oStatus = EStatus::FSDirAlreadyExists;
+        oStatus = EStatus::FSFileAlreadyExisting;
       }
       else
       {
@@ -70,7 +70,7 @@ CcStatus CcWindowsFilesystem::mkdir(const CcString& Path) const
     }
     else
     {
-      oStatus = EStatus::FSDirAlreadyExists;
+      oStatus = EStatus::FSFileAlreadyExisting;
     }
   }
   return oStatus;

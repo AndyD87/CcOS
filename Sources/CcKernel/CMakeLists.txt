@@ -157,6 +157,12 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
     Events/CcKeyboardEventHandler.h
     Events/CcMouseEventHandler.h
+    
+    Shell/CcShellCd.h
+    Shell/CcShellGetEnv.h
+    Shell/CcShellExport.h
+    Shell/CcShellLs.h
+    Shell/IShellCommand.h
   )
 
   ########
@@ -274,6 +280,12 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Network/Stack/CcUdpProtocol.cpp
     Network/Stack/INetworkProtocol.cpp
     Network/Stack/INetworkSocket.cpp
+    
+    Shell/CcShellCd.cpp
+    Shell/CcShellExport.cpp
+    Shell/CcShellGetEnv.cpp
+    Shell/CcShellLs.cpp
+    Shell/IShellCommand.cpp
 )
 
   set ( CURRENT_PROJECT CcKernel)

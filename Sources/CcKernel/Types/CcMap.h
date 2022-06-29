@@ -200,6 +200,42 @@ public:
   }
 
   /**
+   * @brief Check if key exists in map
+   * @param rKey: Key to search for
+   * @return Position of found Key or SIZE_MAX if not found.
+   */
+  size_t findKey(const KEY& rKey) const
+  {
+    size_t uiIndex = 0;
+    for(const CcPair<KEY, VALUE>&rPair : *this)
+    {
+      if(rPair.getKey() == rKey)
+        return uiIndex;
+      uiIndex++;
+    }
+    return SIZE_MAX;
+  }
+
+  /**
+   * @brief Set key and value pair.
+   *        If key not existing creat one
+   * @param oKey:   Key to set
+   * @param oValue: Value to set
+   */
+  void set(const KEY& oKey, const VALUE& oValue)
+  {
+    size_t uiOffset = findKey(oKey);
+    if(uiOffset < CcList<CcPair<KEY, VALUE>>::size())
+    {
+      CcList<CcPair<KEY, VALUE>>::at(uiOffset).setValue(oValue);
+    }
+    else
+    {
+      CcList<CcPair<KEY, VALUE>>::append(CcPair<KEY, VALUE>(oKey, oValue));
+    }
+  }
+
+  /**
    * @brief Compare another map with this if their contents are same
    * @param oToCompare: Map to compare with
    * @return True if contents are same

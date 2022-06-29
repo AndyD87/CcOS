@@ -28,30 +28,42 @@
 #include "IThread.h"
 #include "CcString.h"
 #include "CcByteArray.h"
+#include "CcVector.h"
+#include "CcMapCommon.h"
 
 class IIo;
+class IShellCommand;
 
 /**
  * @brief Basic shell application.
  */
-class CcKernelSHARED IShell : public IThread
+class IShell : public IThread
 {
 public:
   /**
    * @brief Create thread instantce with name.
    * @param sName: Target name of thread
    */
-  IShell();
+  CcKernelSHARED IShell();
 
   /**
    * @brief Destroy Object and waiting until @ref getThreadState is set to EThreadState::Stopped
    */
-  virtual ~IShell();
+  CcKernelSHARED virtual ~IShell();
 
-  virtual void run() override;
+  CcKernelSHARED virtual void run() override;
   
-  void init(IIo* pIoStream);
-  CcStatus changeDirectory(const CcString& sPath);
+  CcKernelSHARED void init(IIo* pIoStream);
+  CcKernelSHARED void initDefaultCommands();
+  CcKernelSHARED CcStatus changeDirectory(const CcString& sPath);
+  CcKernelSHARED const CcString& getWorkingDirectory()
+  { return m_sWorkingDir; }
+  const CcStringMap& getEnvironmentVariables()
+  { return m_oEnvironmentVariables; }
+  void setEnvironmentVariable(const CcString& sName, const CcString& sValue)
+  { m_oEnvironmentVariables.set(sName, sValue); }
+
+  CcKernelSHARED void writeLine(const CcString& sLine);
 
 private:
   void readLine();
@@ -65,4 +77,8 @@ private:
   CcString  m_sRead;
   CcString  m_sWorkingDir;
   CcString  m_sPrefix;
+  CcStringMap m_oEnvironmentVariables;
+
+  CcVector<IShellCommand*> m_oCommands;
+  CcVector<IShellCommand*> m_oCreatedCommands;
 };

@@ -33,6 +33,8 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
           ${CMAKE_CURRENT_LIST_DIR}/CKernelTest.h
           ${CMAKE_CURRENT_LIST_DIR}/CListTest.cpp
           ${CMAKE_CURRENT_LIST_DIR}/CListTest.h
+          ${CMAKE_CURRENT_LIST_DIR}/CMapTest.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/CMapTest.h
           ${CMAKE_CURRENT_LIST_DIR}/CMutexTest.cpp
           ${CMAKE_CURRENT_LIST_DIR}/CMutexTest.h
           ${CMAKE_CURRENT_LIST_DIR}/CNetworkTest.cpp

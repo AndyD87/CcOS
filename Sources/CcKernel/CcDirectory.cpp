@@ -80,7 +80,7 @@ bool CcDirectory::create(const CcString& sPathToFile, bool bRecursive, bool bFai
   {
     CcStatus oStatus = CcFileSystem::mkdir(sPathToFile);
     if(oStatus != EStatus::AllOk &&
-       (bFailOnExists == true || oStatus != EStatus::FSDirAlreadyExists))
+       (bFailOnExists == true || oStatus != EStatus::FSFileAlreadyExisting))
     {
       bSuccess = false;
     }
@@ -270,4 +270,9 @@ CcFileInfoList CcDirectory::getFileList(const CcString& sPathToDirectory)
 {
   CcFile cFile(sPathToDirectory);
   return cFile.getFileList();
+}
+
+void CcDirectory::setFilePath(const CcString& sPath)
+{
+  m_sPath = CcFile::getAbsolutePath(sPath, m_sPath);
 }

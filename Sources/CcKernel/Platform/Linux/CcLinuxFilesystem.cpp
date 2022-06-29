@@ -56,7 +56,7 @@ CcStatus CcLinuxFilesystem::mkdir(const CcString& sPath) const
     switch(errno)
     {
       case EEXIST:
-        oResult = EStatus::FSDirAlreadyExists;
+        oResult = EStatus::FSFileAlreadyExisting;
         break;
       default:
         oResult.setSystemError(errno);

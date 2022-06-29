@@ -426,8 +426,22 @@ CcString CcFile::getAbsolutePath(const CcString& sPathToFile)
   }
   else
   {
+    sPath = getAbsolutePath(sPathToFile, CcKernel::getWorkingDir());
+  }
+  return sPath.normalizePath();
+}
+
+CcString CcFile::getAbsolutePath(const CcString& sPathToFile, const CcString& sWorkingDir)
+{
+  CcString sPath;
+  if (CcStringUtil::isPathAbsolute(sPathToFile))
+  {
+    sPath = sPathToFile;
+  }
+  else
+  {
     // append relative path to working dir
-    CcString sAbsolutePath = CcKernel::getWorkingDir();
+    CcString sAbsolutePath = sWorkingDir;
     sAbsolutePath.appendPath(sPathToFile);
     sPath = sAbsolutePath;
   }

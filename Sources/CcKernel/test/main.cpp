@@ -46,6 +46,7 @@
 #include "CVersionTest.h"
 #include "CPasswordTest.h"
 #include "CListTest.h"
+#include "CMapTest.h"
 #include "CVectorTest.h"
 #include "CEventTest.h"
 #include "CBufferTest.h"
@@ -86,6 +87,7 @@ int main(int iArgc, char** ppArgv)
   CcTestFramework_addTest(CSystemServiceTest);
   CcTestFramework_addTest(CVectorTest);
   CcTestFramework_addTest(CListTest);
+  CcTestFramework_addTest(CMapTest);
   CcTestFramework_addTest(CIniFileTest);
   CcTestFramework_addTest(CBoardSupportTest);
   CcTestFramework_addTest(CThreadTest);

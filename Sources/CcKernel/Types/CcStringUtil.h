@@ -141,7 +141,6 @@ public:
   static size_t findNextWhiteSpace(const CcString& pcString, size_t uiOffset = 0, size_t uiLength = SIZE_MAX)
   { return findNextWhiteSpace(pcString.getCharString(), uiOffset, CCMIN(uiLength, pcString.length() - uiOffset)); }
 
-
   /**
    * @brief Find next not whitespace in string
    * @param pcString: String to search in
@@ -152,6 +151,13 @@ public:
   static size_t findNextNotWhiteSpace(const CcString& pcString, size_t uiOffset = 0, size_t uiLength = SIZE_MAX)
   { return findNextNotWhiteSpace(pcString.getCharString(), uiOffset, CCMIN(uiLength, pcString.length() - uiOffset)); }
 
+  /**
+   * @brief Find next not whitespace in string
+   * @param pcString: String to search in
+   * @param uiLength: Maximum length of string
+   * @return Position of next not whitespace or uiLength if not found
+   */
+  static bool extractKeyValue(const CcString& sString, CcString& sName, CcString& sValue, char cSeperator = '=', char cEscapeChar = '\\');
 
   /**
    * @brief Check if character is a whitespace

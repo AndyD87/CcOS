@@ -282,6 +282,14 @@ public:
    * @return Clean absolute path to file
    */
   static CcString getAbsolutePath(const CcString& sPathToFile);
+  
+  /**
+   * @brief Resolve path, cleanup and get it's final absolute path to file.
+   * @param sPathToFile: Path to cleanup
+   * @param sWorkingDir: Path to prefix if sPathToFile is relative
+   * @return Clean absolute path to file
+   */
+  static CcString getAbsolutePath(const CcString& sPathToFile, const CcString& sWorkingDir);
 
   /**
    * @brief Get Crc32 value of current file

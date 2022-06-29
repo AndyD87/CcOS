@@ -214,6 +214,66 @@ size_t CcStringUtil::findNextNotWhiteSpace(const char* pcString, size_t uiOffset
   return SIZE_MAX;
 }
 
+bool CcStringUtil::extractKeyValue(const CcString& sString, CcString& sName, CcString& sValue, char cSeperator, char cEscapeChar)
+{
+  bool bSuccess = false;
+  size_t uiOffset = sString.posNextNotWhitespace();
+  if(uiOffset < sString.length())
+  {
+    size_t uiPosEqual = sString.find(cSeperator, uiOffset);
+    if(uiPosEqual < sString.length())
+    {
+      bSuccess = true;
+      sName = sString.substr(uiOffset, uiPosEqual-uiOffset).trim();
+      // Start next search behind equal sign
+      uiPosEqual++;
+
+      size_t uiVarBegin = sString.posNextNotWhitespace(uiPosEqual);
+      if(uiVarBegin < sString.length())
+      {
+        size_t uiVarEnd = SIZE_MAX;
+        if (sString[uiVarBegin] == '"')
+        {
+          uiVarBegin++;
+          uiVarEnd = CcStringUtil::findCharEscaped(sString, '"', cEscapeChar, uiVarBegin);
+        }
+        else if (sString[uiVarBegin] == '\'')
+        {
+          uiVarBegin++;
+          uiVarEnd = CcStringUtil::findCharEscaped(sString, '\'', cEscapeChar, uiVarBegin);
+        }
+        // @todo implement failed html code with opening tag <
+        else
+        {
+          size_t uiPosEnd = uiVarBegin;
+          do
+          {
+            uiPosEnd = sString.posNextNotWhitespace(uiPosEnd);
+            if(uiPosEnd < sString.length())
+            {
+              uiPosEnd++;
+              uiVarEnd = uiPosEnd;
+            }
+          } while(uiPosEnd < sString.length());
+        }
+        if(uiVarEnd <= sString.length())
+        {
+          sValue = sString.substr(uiVarBegin, uiVarEnd-uiVarBegin).trim();
+        }
+        else
+        {
+          sValue = CcGlobalStrings::Empty;
+        }
+      }
+      else
+      {
+        sValue = CcGlobalStrings::Empty;
+      }
+    }
+  }
+  return bSuccess;
+}
+
 bool CcStringUtil::isWhiteSpace(const char toTest)
 {
   bool bRet = false;

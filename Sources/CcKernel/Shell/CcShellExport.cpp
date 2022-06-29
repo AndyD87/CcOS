@@ -20,42 +20,44 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class GenericApp
- *
- *  Implementation of Main Application
+ * @brief     Class IShell
  */
-
-#include "GenericApp.h"
-#include "CcKernel.h"
-#include "Devices/CcDeviceUsb.h"
-#include "Devices/IUsbDevice.h"
+#include "CcShellExport.h"
 #include "IShell.h"
+#include "CcStringUtil.h"
+#include "CcGlobalStrings.h"
+#include "CcStringUtil.h"
 
-GenericApp::GenericApp()
+CcShellExport::CcShellExport() :
+  IShellCommand("export")
 {
 }
 
-GenericApp::~GenericApp()
+CcShellExport::~CcShellExport()
 {
-  CCDELETE(m_pCdcDevice);
 }
 
-void GenericApp::run()
+CcStatus CcShellExport::exec(IShell& oBasicShell, const CcStringList& oArguments)
 {
-  CcDeviceUsb oUsbDevice = CcKernel::getDevice(EDeviceType::Usb);
-  if(oUsbDevice.isValid())
-  {            
-    CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);   
-    CcStatus oStatus = m_pCdcDevice->start();
-
-    if(oStatus)
-    {
-      CCNEW(m_pShell, IShell);   
-      m_pShell->init(m_pCdcDevice);
-      m_pShell->initDefaultCommands();
-      m_pShell->start();
-    }
-
-    setExitCode(oStatus);
+  CcStatus oSuccess;
+  if(oArguments.size() == 0)
+  {
+      oBasicShell.writeLine("Additional Parameter required");
+      oSuccess = EStatus::CommandInvalidParameter;
   }
+  else
+  {
+    CcString sName;
+    CcString sValue;
+    if(CcStringUtil::extractKeyValue(oArguments[0], sName, sValue))
+    {
+      oBasicShell.setEnvironmentVariable(sName, sValue);
+    }
+    else
+    {
+      oBasicShell.writeLine("Additional Parameter required");
+      oSuccess = EStatus::CommandInvalidParameter;
+    }
+  }
+  return oSuccess;
 }

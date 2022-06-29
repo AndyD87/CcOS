@@ -20,42 +20,40 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class GenericApp
- *
- *  Implementation of Main Application
+ * @brief     Class IShell
  */
-
-#include "GenericApp.h"
-#include "CcKernel.h"
-#include "Devices/CcDeviceUsb.h"
-#include "Devices/IUsbDevice.h"
+#include "CcShellCd.h"
 #include "IShell.h"
+#include "CcStringList.h"
 
-GenericApp::GenericApp()
+CcShellCd::CcShellCd() :
+  IShellCommand("cd")
 {
 }
 
-GenericApp::~GenericApp()
+CcShellCd::~CcShellCd()
 {
-  CCDELETE(m_pCdcDevice);
 }
 
-void GenericApp::run()
+CcStatus CcShellCd::exec(IShell& oBasicShell, const CcStringList& oArguments)
 {
-  CcDeviceUsb oUsbDevice = CcKernel::getDevice(EDeviceType::Usb);
-  if(oUsbDevice.isValid())
-  {            
-    CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);   
-    CcStatus oStatus = m_pCdcDevice->start();
-
-    if(oStatus)
+  CcStatus oSuccess;
+  if(oArguments.size() > 0)
+  {
+    if(oBasicShell.changeDirectory(oArguments[0]))
     {
-      CCNEW(m_pShell, IShell);   
-      m_pShell->init(m_pCdcDevice);
-      m_pShell->initDefaultCommands();
-      m_pShell->start();
+      oBasicShell.writeLine("Path successfully changed");
     }
-
-    setExitCode(oStatus);
+    else
+    {
+      oBasicShell.writeLine("Path not found");
+      oSuccess = EStatus::FSFileNotFound;
+    }
   }
+  else
+  {
+    oBasicShell.writeLine("Additional parameter required");
+    oSuccess = EStatus::CommandInvalidParameter;
+  }
+  return oSuccess;
 }

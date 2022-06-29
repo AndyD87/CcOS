@@ -20,42 +20,34 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class GenericApp
- *
- *  Implementation of Main Application
+ * @brief     Implemtation of class CMapTest
  */
+#include "CMapTest.h"
+#include "CcMapCommon.h"
 
-#include "GenericApp.h"
-#include "CcKernel.h"
-#include "Devices/CcDeviceUsb.h"
-#include "Devices/IUsbDevice.h"
-#include "IShell.h"
+CMapTest::CMapTest() : 
+  CcTest("CMapTest")
+{
+  appendTestMethod("Test Set existing value", &CMapTest::testSet);
+}
 
-GenericApp::GenericApp()
+CMapTest::~CMapTest()
 {
 }
 
-GenericApp::~GenericApp()
+bool CMapTest::testSet()
 {
-  CCDELETE(m_pCdcDevice);
-}
-
-void GenericApp::run()
-{
-  CcDeviceUsb oUsbDevice = CcKernel::getDevice(EDeviceType::Usb);
-  if(oUsbDevice.isValid())
-  {            
-    CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);   
-    CcStatus oStatus = m_pCdcDevice->start();
-
-    if(oStatus)
+  bool bRet = false;
+  CcStringMap oMap;
+  oMap.set("test", "1");
+  if (oMap.size() == 1)
+  {
+    oMap.set("test", "2");
+    if (oMap.size() == 1 &&
+        oMap.getValue("test") == "2")
     {
-      CCNEW(m_pShell, IShell);   
-      m_pShell->init(m_pCdcDevice);
-      m_pShell->initDefaultCommands();
-      m_pShell->start();
+      bRet = true;
     }
-
-    setExitCode(oStatus);
   }
+  return bRet;
 }

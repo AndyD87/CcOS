@@ -23,6 +23,7 @@
         "string_view": "cpp",
         "ratio": "cpp",
         "limits": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "array": "cpp"
     },
 }
