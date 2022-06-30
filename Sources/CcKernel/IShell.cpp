@@ -30,10 +30,11 @@
 #include "CcStringUtil.h"
 #include "CcDirectory.h"
 
-IShell::IShell() :
-  m_sWorkingDir(CcGlobalStrings::Seperators::Slash)
+IShell::IShell()
 {
+  m_sWorkingDir = CcKernel::getWorkingDir();
   m_oTransferBuffer.resize(256);
+  CcKernel::registerShutdownHandler(NewCcEvent(this, IShell::onKernelShutdown));
 }
 
 IShell::~IShell()
@@ -43,15 +44,23 @@ IShell::~IShell()
     CCDELETE(pCommand);
   }
   m_oCreatedCommands.clear();
+  onStop();
 }
 
 void IShell::run()
 {
+  size_t uiReceived = 0;
   while(isRunning())
   {
     if(m_pIoStream)
     {
-      readLine();
+      // Start with next line
+      updatePrefix();
+      m_sRead.clear();
+      if(uiReceived != SIZE_MAX)
+      m_pIoStream->writeString(m_sPrefix);
+
+      uiReceived = readLine();
       // Handle the line
       CcStringList oArguments = CcStringUtil::getArguments(m_sRead);
       if(oArguments.size() > 0)
@@ -63,7 +72,16 @@ void IShell::run()
           {
             bCommandFound = true;
             oArguments.remove(0);
-            pCommand->exec(*this, oArguments);
+
+            m_oActiveCommandLock.lock();
+            m_pActiveCommand = pCommand;
+            m_oActiveCommandLock.unlock();
+            setExitCode(m_pActiveCommand->exec(*this, oArguments));
+            m_oActiveCommandLock.lock();
+            m_pActiveCommand = nullptr;
+            m_oActiveCommandLock.unlock();
+
+            break;
           }
         }
         if(bCommandFound == false)
@@ -71,11 +89,6 @@ void IShell::run()
           writeLine("Unknown command: " + oArguments[0]);
         }
       }
-      
-      // Start with next line
-      updatePrefix();
-      m_sRead.clear();
-      m_pIoStream->writeString(m_sPrefix);
     }
   }
 }
@@ -89,6 +102,7 @@ void IShell::init(IIo* pIoStream)
 #include "Shell/CcShellCd.h"
 #include "Shell/CcShellLs.h"
 #include "Shell/CcShellGetEnv.h"
+#include "Shell/CcShellExit.h"
 #include "Shell/CcShellExport.h"
 
 #define CREATE_AND_APPEND(COMMAND)                    \
@@ -100,6 +114,7 @@ void IShell::initDefaultCommands()
   CREATE_AND_APPEND(CcShellCd);
   CREATE_AND_APPEND(CcShellLs);
   CREATE_AND_APPEND(CcShellGetEnv);
+  CREATE_AND_APPEND(CcShellExit);
   CREATE_AND_APPEND(CcShellExport);
 }
 
@@ -127,7 +142,7 @@ void IShell::writeLine(const CcString& sLine)
   }
 }
 
-void IShell::readLine()
+size_t IShell::readLine()
 {
   size_t uiReceived = 0;
   if(m_oReadLineBuffer.size())
@@ -140,12 +155,13 @@ void IShell::readLine()
   {
     uiReceived = m_pIoStream->read(m_oTransferBuffer.getArray(), m_oTransferBuffer.size());
   }
-  while( uiReceived < SIZE_MAX)
+  bool bEndOfLine = false;
+  while(bEndOfLine == false && uiReceived != SIZE_MAX)
   {
     // echo read data
 
     // Interpret read data
-    for(size_t uiPos =0 ; uiPos < uiReceived && uiReceived < SIZE_MAX; uiPos++)
+    for(size_t uiPos =0 ; uiPos < uiReceived && bEndOfLine == false; uiPos++)
     {
       switch (static_cast<uint8>(m_oTransferBuffer[uiPos]))
       {
@@ -153,7 +169,7 @@ void IShell::readLine()
           if(m_sRead.size() > 0)
           {
             m_sRead.remove(m_sRead.size()-1);
-            m_pIoStream->write(&m_oTransferBuffer[uiPos], 1);
+            if(m_bEchoInput) m_pIoStream->write(&m_oTransferBuffer[uiPos], 1);
           }
           break;
         case '\r':
@@ -167,9 +183,9 @@ void IShell::readLine()
           }
           else
           {
-            uiReceived  = SIZE_MAX;
+            bEndOfLine = true;
           }
-          m_pIoStream->writeString(CcGlobalStrings::EolLong);
+          if (m_bEchoInput) m_pIoStream->writeString(CcGlobalStrings::EolLong);
           break;
         default:
           if(static_cast<uint8>(m_oTransferBuffer[uiPos]) < 32)
@@ -179,21 +195,55 @@ void IShell::readLine()
           else
           {
             m_sRead.append(m_oTransferBuffer[uiPos]);
-            m_pIoStream->write(&m_oTransferBuffer[uiPos], 1);
+            if (m_bEchoInput) m_pIoStream->write(&m_oTransferBuffer[uiPos], 1);
           }
           break;
       }
     }
-    if(uiReceived != SIZE_MAX)
+    if(bEndOfLine == false)
     {
       uiReceived = m_pIoStream->read(m_oTransferBuffer.getArray(), m_oTransferBuffer.size());
       CcKernel::sleep(10);
     }
   }
+  return uiReceived;
 }
 
 void IShell::updatePrefix()
 {
   m_sPrefix = m_sWorkingDir;
   m_sPrefix << CcGlobalStrings::Seperators::Colon << CcGlobalStrings::Seperators::Space;
+}
+
+void IShell::onStop()
+{
+  if (m_pIoStream)
+  {
+    m_pIoStream->cancel();
+  }
+}
+
+void IShell::onKernelShutdown(CcKernelShutdownEvent* pEvent)
+{
+  switch (pEvent->eReason)
+  {
+    case CcKernelShutdownEvent::EReason::UserRequest:
+      m_oActiveCommandLock.lock();
+      if (m_pActiveCommand)
+      {
+        pEvent->bContinueShutdown = false;
+        if (m_pActiveCommand->stop())
+        {
+        }
+      }
+      else
+      {
+        stop();
+      }
+      m_oActiveCommandLock.unlock();
+      break;
+    default:
+      stop();
+      waitForState(EThreadState::Stopped, CcDateTimeFromMSeconds(1000));
+  }
 }

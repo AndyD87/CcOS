@@ -27,6 +27,7 @@
 
 #include "CcBase.h"
 #include "CcShell.h"
+#include "CcApp.h"
 #include "Network/CcSocket.h"
 #include "Network/CcCommonPorts.h"
 

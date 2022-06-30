@@ -188,19 +188,23 @@ public:
 
   static BOOL CtrlHandler(DWORD fdwCtrlType)
   {
+    BOOL bStopShutdown = FALSE;
     switch (fdwCtrlType)
     {
       case CTRL_C_EVENT:
+        bStopShutdown = CcKernel::shutdown(CcKernelShutdownEvent::EReason::UserRequest)? FALSE : TRUE;
+        if(!bStopShutdown) exit(CcSystem::CPrivate::s_oCurrentExitCode);
+        break;
       case CTRL_CLOSE_EVENT:
       case CTRL_BREAK_EVENT:
       case CTRL_SHUTDOWN_EVENT:
-        CcKernel::shutdown();
-        exit(CcSystem::CPrivate::s_oCurrentExitCode);
+        bStopShutdown = CcKernel::shutdown(CcKernelShutdownEvent::EReason::SystemShutdown) ? FALSE : TRUE;
+        if (!bStopShutdown) exit(CcSystem::CPrivate::s_oCurrentExitCode);
       case CTRL_LOGOFF_EVENT:
-        return FALSE;
       default:
-        return FALSE;
+        break;
     }
+    return bStopShutdown;
   }
 
   static void SetThreadName(const char* threadName)
@@ -268,6 +272,10 @@ CcSystem::CcSystem(CcKernelPrivate* pKernelInstance, CcKernelPrivate** pTargetKe
 {
   CCNEW(m_pPrivate, CPrivate, pKernelInstance, pTargetKernel);
   CcSystem::CPrivate::s_pThreadManager = &m_pPrivate->oThreadManager;
+
+  if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CcSystem::CPrivate::CtrlHandler, TRUE))
+  {
+  }
 }
 
 CcSystem::~CcSystem()
@@ -351,9 +359,6 @@ bool CcSystem::initCLI()
       #endif
     }
     bRet = true;
-    if (SetConsoleCtrlHandler((PHANDLER_ROUTINE) CcSystem::CPrivate::CtrlHandler, TRUE))
-    {
-    }
   }
 #endif
   return bRet;

@@ -20,62 +20,25 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcApp
+ * @brief     Class CcShellExit
  */
-#include "CcApp.h"
+#include "CcShellExit.h"
+#include "IShell.h"
+#include "CcStringList.h"
 #include "CcKernel.h"
-#include "CcEvent.h"
-#include "CcEventHandler.h"
-#include "CcVersion.h"
-#include "CcConsole.h"
 
-CcApp::CcApp() 
+CcShellExit::CcShellExit() :
+  IShellCommand("exit")
 {
-  initApp();
 }
 
-/**
- * @brief Constructor
- */
-CcApp::CcApp(const CcString& sAppName) :
-  IThread(sAppName)
+CcShellExit::~CcShellExit()
 {
-  initApp();
 }
 
-/**
- * @brief Constructor
- */
-CcApp::CcApp(const CcString& sAppName, const CcUuid& oUuid) :
-  IThread(sAppName),
-  m_oId(oUuid)
+CcStatus CcShellExit::exec(IShell& oBasicShell, const CcStringList& CCUNUSED_PARAM(oArguments))
 {
-  initApp();
-}
-
-CcApp::~CcApp()
-{
-  CcKernel::deregisterShutdownHandler(this);
-}
-
-CcStatus CcApp::exec()
-{
-  return startOnCurrent();
-}
-
-CcVersion CcApp::getVersion() const
-{
-  // return default version
-  return CcVersion();
-}
-
-void CcApp::initApp()
-{
-// GENERIC OS will not shutdown at the moment, so save ressources!
-#ifndef GENERIC
-  if(CcKernel::getEnvironmentVariableExists(CcGlobalStrings::EnvVars::AppNoIoBuffering))
-  {
-    CcConsole::disableBuffering();
-  }
-#endif
+  CcStatus oSuccess;
+  oBasicShell.stop();
+  return oSuccess;
 }

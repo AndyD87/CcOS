@@ -491,6 +491,22 @@
       </Dependencies>
     </Project>
     <Project>
+      <Name>CcShellApp</Name>
+      <Version></Version>
+      <Active>1</Active>
+      <Prebuild>false</Prebuild>
+      <Static>false</Static>
+      <StaticRuntime>false</StaticRuntime>
+      <Platforms>
+        <Platform>Windows</Platform>
+        <Platform>Linux</Platform>
+      </Platforms>
+      <Dependencies>
+        <Dependency>CcKernel</Dependency>
+        <Dependency>CcShell</Dependency>
+      </Dependencies>
+    </Project>
+    <Project>
       <Name>CcFs</Name>
       <Version></Version>
       <Active>1</Active>

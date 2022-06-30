@@ -78,8 +78,7 @@ public:
   /**
    * @brief Nothing to cancel on std in
    */
-  virtual CcStatus cancel() override
-    {return true;}
+  virtual CcStatus cancel() override;
 
   /**
    * @brief Close connection to std in.
@@ -94,6 +93,19 @@ public:
 
 private:
 #ifdef WINDOWS
+  typedef struct
+  {
+    wchar_t*  pData;
+    size_t    uiSize;
+    size_t    uiReadSize=0;
+  } SBufferInfo;
+  static uint32 ReadAsyncThread(void*);
+  size_t ReadAsync(wchar_t* pBuffer, size_t uSize);
+#endif
+
+private:
+#ifdef WINDOWS
+  void*    m_hReadThread;
   CcString m_sTemporaryBackup; //!< Temporary String for oversized unicode strings.
 #endif
 };

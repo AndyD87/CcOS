@@ -236,45 +236,59 @@ bool CcKernel::isAdmin()
 
 void CcKernel::stop()
 {
-  CcKernelPrivate::m_pInterface->m_oShutdownHandler.call(nullptr);
+  CcKernelShutdownEvent oEvent;
+  oEvent.eReason = CcKernelShutdownEvent::EReason::Force;
+  CcKernelPrivate::m_pInterface->m_oShutdownHandler.call(&oEvent);
   CcKernelPrivate::m_pInterface->oServiceSystem.stop();
 }
 
-void CcKernel::shutdown()
+bool CcKernel::shutdown(CcKernelShutdownEvent::EReason eReason)
 {
+  bool bContinueShutdown = false;
   if (s_bShutdownInProgress == false)
   {
     s_bShutdownInProgress = true;
-    if (CcKernelPrivate::m_pInterface->m_bInitialized)
+    CcKernelShutdownEvent oEvent;
+    oEvent.eReason = eReason;
+    if (CcKernelPrivate::m_pInterface)
     {
-      CcKernelPrivate::m_pInterface->m_bInitialized = false;
-
-      // Stop all applications
-      stop();
-
-      CcKernelPrivate::m_pInterface->m_oDriverList.deinit();
-      CcKernelPrivate::m_pInterface->m_oDeviceEventHandler.clear();
-      CcKernelPrivate::m_pInterface->m_DeviceList.clear();
-
-      while (CcKernelPrivate::m_pInterface->m_oExitFunctions.size() > 0)
-      {
-        void(*fExitFunction)(void) = CcKernelPrivate::m_pInterface->m_oExitFunctions[0];
-        CcKernelPrivate::m_pInterface->m_oExitFunctions.remove(0);
-        fExitFunction();
-      }
-
-      CcKernelPrivate::m_pInterface->oSystem.deinit();
-      if(CcKernelPrivate::m_pInterface)
-        CcFileSystem::deinit(CcKernelPrivate::m_pInterface->s_pFSList);
-
-      CCDEBUG("Kernel shutdown complete\r\n");
+        CcKernelPrivate::m_pInterface->m_oShutdownHandler.call(&oEvent);
     }
-    CcKernelPrivate::m_pInterface = nullptr;
+    if (oEvent.bContinueShutdown)
+    {
+      if (CcKernelPrivate::m_pInterface->m_bInitialized)
+      {
+        CcKernelPrivate::m_pInterface->m_bInitialized = false;
+
+        // Stop all applications
+        stop();
+
+        CcKernelPrivate::m_pInterface->m_oDriverList.deinit();
+        CcKernelPrivate::m_pInterface->m_oDeviceEventHandler.clear();
+        CcKernelPrivate::m_pInterface->m_DeviceList.clear();
+
+        while (CcKernelPrivate::m_pInterface->m_oExitFunctions.size() > 0)
+        {
+          void(*fExitFunction)(void) = CcKernelPrivate::m_pInterface->m_oExitFunctions[0];
+          CcKernelPrivate::m_pInterface->m_oExitFunctions.remove(0);
+          fExitFunction();
+        }
+
+        CcKernelPrivate::m_pInterface->oSystem.deinit();
+        if (CcKernelPrivate::m_pInterface)
+          CcFileSystem::deinit(CcKernelPrivate::m_pInterface->s_pFSList);
+
+        CCVERBOSE("Kernel shutdown complete\r\n");
+      }
+      CcKernelPrivate::m_pInterface = nullptr;
+    }
+    else
+    {
+      bContinueShutdown = oEvent.bContinueShutdown;
+      s_bShutdownInProgress = false;
+    }
   }
-  else
-  {
-    CCDEBUG("CcKernel::shutdown called twice");
-  }
+  return bContinueShutdown;
 }
 
 void CcKernel::terminate()
@@ -521,13 +535,13 @@ EPlatform CcKernel::getPlatform()
 #endif
 }
 
-void CcKernel::addShutdownHandler(const CcEvent& oEvent)
+void CcKernel::registerShutdownHandler(const CcEvent& oEvent)
 {
   if(CcKernelPrivate::m_pInterface)
     CcKernelPrivate::m_pInterface->m_oShutdownHandler.append(oEvent);
 }
 
-void CcKernel::removeShutdownHandler(CcObject* pObject)
+void CcKernel::deregisterShutdownHandler(CcObject* pObject)
 {
   if(CcKernelPrivate::m_pInterface)
     CcKernelPrivate::m_pInterface->m_oShutdownHandler.removeObject(pObject);

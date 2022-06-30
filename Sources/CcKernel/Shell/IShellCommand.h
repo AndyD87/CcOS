@@ -47,6 +47,8 @@ public:
   virtual ~IShellCommand();
 
   virtual CcStatus exec(IShell& oBasicShell, const CcStringList& oArguments) = 0;
+  virtual CcStatus stop()
+  { return CcStatus(); }
 
   const CcString& getCommand()
   { return m_sCommand; }

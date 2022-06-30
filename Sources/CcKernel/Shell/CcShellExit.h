@@ -20,25 +20,31 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcShell
+ * @brief     Class CcShellExit
  */
+#pragma once
 
-#include "CcShell.h"
-#include "CcConsole.h"
+#include "CcBase.h"
+#include "Shell/IShellCommand.h"
 
-CcShell::CcShell() :
-  IShell()
+class IShell;
+
+/**
+ * @brief Basic shell application.
+ */
+class CcKernelSHARED CcShellExit : public IShellCommand
 {
-  m_oIoStream.setReadStream(&CcConsole::getInStream());
-  m_oIoStream.setWriteStream(&CcConsole::getOutStream());
-#ifndef GENERIC
-  setEcho(false);
-#endif // !GENERIC
+public:
+  /**
+   * @brief Create thread instantce with name.
+   * @param sName: Target name of thread
+   */
+  CcShellExit();
 
-  init(&m_oIoStream);
-  initDefaultCommands();
-}
+  /**
+   * @brief Destroy Object and waiting until @ref getThreadState is set to EThreadState::Stopped
+   */
+  virtual ~CcShellExit();
 
-CcShell::~CcShell() {
-
-}
+  virtual CcStatus exec(IShell& oBasicShell, const CcStringList& oArguments) override;
+};

@@ -56,6 +56,10 @@ CcStatus CcShellLs::exec(IShell& oBasicShell, const CcStringList& oArguments)
     else
     {
       oList = oDir.getFileList();
+      for (CcFileInfo& oInfo : oList)
+      {
+        oBasicShell.writeLine(oInfo.getName());
+      }
     }
   }
   return oSuccess;

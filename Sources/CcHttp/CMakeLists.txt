@@ -129,7 +129,7 @@ elseif(${CCOS_CCHTTP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         "${CMAKE_CURRENT_LIST_DIR}/Resources/*"
   )
 
-  if(CcOSResource_FOUND)
+  if(CcOSResource_FOUND AND NOT ${CcOSResource_FOUND} STREQUAL "CcOSResource-NOTFOUND")
       CcAddResourceString(${CMAKE_CURRENT_LIST_DIR}/Resources CcOSWebframework.js CcOSWebframework_Js CURRENT_PROJECT_RESOURCE_FILES)
       CcAddResourceString(${CMAKE_CURRENT_LIST_DIR}/Resources CcOSWebframework.css CcOSWebframework_Css CURRENT_PROJECT_RESOURCE_FILES)
 

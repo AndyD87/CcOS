@@ -20,25 +20,25 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcShell
+ * @brief     Class CcKernel
  */
+#pragma once
 
-#include "CcShell.h"
-#include "CcConsole.h"
-
-CcShell::CcShell() :
-  IShell()
+#include "CcBase.h"
+/**
+ * @brief The Global Kernel, alle methods and variables are static because only
+ *        one Kernel can run at the same time
+ */
+class CcKernelSHARED CcKernelShutdownEvent
 {
-  m_oIoStream.setReadStream(&CcConsole::getInStream());
-  m_oIoStream.setWriteStream(&CcConsole::getOutStream());
-#ifndef GENERIC
-  setEcho(false);
-#endif // !GENERIC
-
-  init(&m_oIoStream);
-  initDefaultCommands();
-}
-
-CcShell::~CcShell() {
-
-}
+public: // Methods
+  typedef enum
+  {
+    Force,
+    UserRequest,
+    SystemShutdown
+  } EReason;
+  
+  EReason eReason;
+  bool    bContinueShutdown = true;
+};

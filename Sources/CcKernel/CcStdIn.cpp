@@ -27,10 +27,13 @@
 #include "CcWString.h"
 #include "CcStringUtil.h"
 #include "CcStatic.h"
+#include "CcKernel.h"
 #include <stdio.h>
 
 #ifdef WINDOWS
 #include <windows.h>
+#include <iostream>
+#include <istream>
 #elif defined(LINUX)
 #include <termios.h>
 #include <unistd.h>
@@ -41,25 +44,21 @@ size_t CcStdIn::read(void* pBuffer, size_t uSize)
   size_t iRet = SIZE_MAX;
 #ifdef WINDOWS
   CCNEWARRAYTYPE(pwcBuffer, wchar_t, uSize);
-  wchar_t* pOutput;
-  if ((pOutput = fgetws(pwcBuffer, (int)uSize, stdin)) != nullptr)
+  size_t uiRead;
+  if ((uiRead=ReadAsync(pwcBuffer, uSize)) <= uSize)
   {
-    size_t uiRead = CcStringUtil::findChar(pwcBuffer, L'\0', 0, uSize);
-    if (uiRead <= uSize)
+    m_sTemporaryBackup.appendWchar(pwcBuffer, uiRead);
+    if (m_sTemporaryBackup.length() > uSize)
     {
-      m_sTemporaryBackup.appendWchar(pwcBuffer, uiRead);
-      if (m_sTemporaryBackup.length() > uSize)
-      {
-        memcpy(pBuffer, m_sTemporaryBackup.getCharString(), uSize);
-        iRet = uSize;
-        m_sTemporaryBackup.remove(0, uSize);
-      }
-      else
-      {
-        memcpy(pBuffer, m_sTemporaryBackup.getCharString(), m_sTemporaryBackup.length());
-        iRet = m_sTemporaryBackup.length();
-        m_sTemporaryBackup.clear();
-      }
+      memcpy(pBuffer, m_sTemporaryBackup.getCharString(), uSize);
+      iRet = uSize;
+      m_sTemporaryBackup.remove(0, uSize);
+    }
+    else
+    {
+      memcpy(pBuffer, m_sTemporaryBackup.getCharString(), m_sTemporaryBackup.length());
+      iRet = m_sTemporaryBackup.length();
+      m_sTemporaryBackup.clear();
     }
   }
   else
@@ -135,9 +134,57 @@ CcStatus CcStdIn::close()
   return false;
 }
 
+CcStatus CcStdIn::cancel()
+{
+#ifdef WINDOWS
+  if (m_hReadThread != NULL)
+  {
+    TerminateThread(m_hReadThread, 0);
+  }
+#endif
+  return true;
+}
+
 void CcStdIn::disableBuffer()
 {
 #if !defined(GENERIC)
   setvbuf(stdin, NULL, _IONBF, 0);
 #endif
 }
+
+#ifdef WINDOWS
+
+
+uint32 CcStdIn::ReadAsyncThread(void* pBuffer)
+{
+  SBufferInfo* pBufferInfo = static_cast<SBufferInfo*>(pBuffer);
+  if (nullptr != fgetws(pBufferInfo->pData, pBufferInfo->uiSize, stdin))
+  {
+    pBufferInfo->uiReadSize = CcStringUtil::strlen(pBufferInfo->pData, pBufferInfo->uiSize);
+  }
+  else
+  {
+    pBufferInfo->uiReadSize = SIZE_MAX;
+  }
+  return 0;
+}
+
+size_t CcStdIn::ReadAsync(wchar_t* pBuffer, size_t uSize)
+{
+  SBufferInfo oBufferInfo;
+  oBufferInfo.pData = pBuffer;
+  oBufferInfo.uiSize = uSize;
+
+  DWORD dwThreadId = 0;
+  if((m_hReadThread = CreateThread(NULL, 0, CcStdIn::ReadAsyncThread, &oBufferInfo, 0, &dwThreadId)) != NULL)
+  {
+    while (oBufferInfo.uiReadSize == 0)
+    {
+      CcKernel::sleep(10);
+    }
+  }
+
+  return oBufferInfo.uiReadSize;
+}
+
+#endif

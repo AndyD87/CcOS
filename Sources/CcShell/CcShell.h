@@ -27,8 +27,9 @@
 
 #include "CcBase.h"
 #include "CcString.h"
-#include "CcApp.h"
+#include "IShell.h"
 #include "CcFile.h"
+#include "CcIoSwitch.h"
 
 #ifdef _MSC_VER
 # ifndef CcShellSHARED
@@ -50,7 +51,7 @@
 /**
  * @brief Shell application to be started with own script interpreter.
  */
-class CcShellSHARED CcShell : public CcApp
+class CcShellSHARED CcShell : public IShell
 {
 public:
   /**
@@ -59,45 +60,9 @@ public:
   CcShell();
 
   /**
-   * @brief Custom shell with individual IO-Stream for in- and output.
-   * @param pIn:   Input stream to get commands from.
-   * @param pOut:  Output stream to write output to.
-   */
-  CcShell(IIo* pIn, IIo *pOut);
-
-  /**
    * @brief Destructor
    */
   virtual ~CcShell();
-
-  /**
-   * @brief Run implementation to execute shell
-   */
-  void run();
-
-  /**
-   * @brief Parse incoming line and extract all arguments
-   * @param sLine: Line to parse and execute
-   */
-  void parseLine(const CcString& sLine);
-
-  /**
-   * @brief Create a common application by name which can be executed without
-   *        the need of existance in Filesystem.
-   * @param pApp: Interface of Application
-   * @param sName: Name of Application for shell command.
-   */
-  void addApp(CcApp* pApp, const CcString& sName);
-
-  //! @param sPath: New working directory to set
-  void setWorkingDir(const CcString& sPath);
-  //! @param pInput: Overwrite input stream
-  void setInput(IIo *pInput);
-  //! @param pOutput: Overwrite output stream
-  void setOutput(IIo *pOutput);
-
 private:
-  IIo*     m_pInput  = nullptr; //!< Input stream to receive commands.
-  IIo*     m_pOutput = nullptr; //!< Output stream to write output to.
-  CcString m_sWorkingDirectory; //!< Curren working directory of shell.
+  CcIoSwitch m_oIoStream;
 };

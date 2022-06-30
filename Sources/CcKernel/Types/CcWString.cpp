@@ -121,9 +121,7 @@ bool CcWString::operator!=(const CcWString& oToCompare) const
 
 void CcWString::clear()
 {
-  allocateBuffer(0);
-  m_uiLength = 0;
-  m_pBuffer[m_uiLength] = 0;
+  deleteBuffer();
 }
 
 CcWString& CcWString::remove(size_t uiPos, size_t uiLength)
@@ -137,7 +135,8 @@ CcWString& CcWString::remove(size_t uiPos, size_t uiLength)
     for (size_t i = 0; i < uiLengthLast; i++)
       m_pBuffer[uiPos + i] = m_pBuffer[uiBeginLast + i];
     m_uiLength -= uiLength;
-    m_pBuffer[m_uiLength] = 0;
+    if (m_uiLength < m_uiReserved)
+      m_pBuffer[m_uiLength] = 0;
   }
   return *this;
 }
@@ -152,7 +151,8 @@ CcWString& CcWString::append(wchar_t wcSingle)
   allocateBuffer(m_uiLength + 1);
   m_pBuffer[m_uiLength] = wcSingle;
   m_uiLength++;
-  m_pBuffer[m_uiLength] = 0;
+  if (m_uiLength < m_uiReserved)
+    m_pBuffer[m_uiLength] = 0;
   return *this;
 }
 
@@ -171,7 +171,8 @@ CcWString& CcWString::append(const wchar_t* wcString, size_t uiLength)
     m_pBuffer[m_uiLength] = wcString[i];
     m_uiLength++;
   }
-  m_pBuffer[m_uiLength] = 0;
+  if (m_uiLength < m_uiReserved)
+    m_pBuffer[m_uiLength] = 0;
   return *this;
 }
 
@@ -551,7 +552,8 @@ void CcWString::reserve(size_t uiLength, const wchar_t cDefaultChar)
   {
     CcStatic::memset(m_pBuffer + uiLastLength, cDefaultChar, m_uiLength - uiLastLength);
   }
-  m_pBuffer[m_uiLength] = 0;
+  if (m_uiLength < m_uiReserved)
+    m_pBuffer[m_uiLength] = 0;
 }
 
 void CcWString::allocateBuffer(size_t uiSize)
@@ -559,10 +561,6 @@ void CcWString::allocateBuffer(size_t uiSize)
   if (uiSize == 0)
   {
     deleteBuffer();
-    CCNEWARRAY(m_pBuffer, wchar_t, c_uiDefaultMultiplier);
-    m_pBuffer[0] = 0;
-    m_uiLength = 0;
-    m_uiReserved = c_uiDefaultMultiplier;
   }
   else if (uiSize + 1 > m_uiReserved)
   {
@@ -584,7 +582,8 @@ void CcWString::allocateBuffer(size_t uiSize)
 
     m_uiLength = uiOldLen;
     m_uiReserved = uiNewLen;
-    m_pBuffer[m_uiLength] = 0;
+    if (m_uiLength < m_uiReserved)
+      m_pBuffer[m_uiLength] = 0;
   }
   else
   {

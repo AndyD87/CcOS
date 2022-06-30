@@ -38,12 +38,10 @@ public:
 CcServiceSystem::CcServiceSystem()
 {
   m_pPrivate = &g_oInstance;
-  CCDEBUG("Create CcServiceSystem");
 }
 
 CcServiceSystem::~CcServiceSystem()
 {
-  CCDEBUG("Remove CcServiceSystem");
   for (CcWindowsService* pWinService : m_pPrivate->m_oServices)
   {
     pWinService->deinit();
@@ -66,7 +64,6 @@ CcStatus CcServiceSystem::deinit(CcService& pService)
   {
     if (*pWinService == pService)
     {
-      CCDEBUG("Remove Service");
       m_pPrivate->m_oServices.removeItem(pWinService);
       pWinService->deinit();
       CCDELETE(pWinService);

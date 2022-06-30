@@ -42,9 +42,9 @@ void CcTelnetServerWorker::run()
   {
     if (m_Socket != nullptr)
     {
-      m_Shell.setInput(&m_Socket);
-      m_Shell.setOutput(&m_Socket);
-      m_Shell.exec();
+      //m_Shell.setInput(&m_Socket);
+      //m_Shell.setOutput(&m_Socket);
+      //m_Shell.exec();
     }
   }
 }

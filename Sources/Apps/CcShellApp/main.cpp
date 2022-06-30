@@ -20,25 +20,24 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of Class CcShell
+ * @brief    Entry point for Application
  */
 
+#include "CcBase.h"
+#include "CcKernel.h"
 #include "CcShell.h"
-#include "CcConsole.h"
 
-CcShell::CcShell() :
-  IShell()
+/**
+ * @brief Default application entry point
+ * @param iArgc:  Argument count in ppArgv
+ * @param ppArgv: Passed arguments from callup
+ * @return Exitcode, default 0 if no error occured
+ */
+int main(int iArgc, char** ppArgv)
 {
-  m_oIoStream.setReadStream(&CcConsole::getInStream());
-  m_oIoStream.setWriteStream(&CcConsole::getOutStream());
-#ifndef GENERIC
-  setEcho(false);
-#endif // !GENERIC
+  CCUNUSED(iArgc);
+  CCUNUSED(ppArgv);
 
-  init(&m_oIoStream);
-  initDefaultCommands();
-}
-
-CcShell::~CcShell() {
-
+  CcShell oShell;
+  return oShell.exec().getErrorInt();
 }

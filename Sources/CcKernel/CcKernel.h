@@ -29,6 +29,7 @@
 #include "IDevice.h"
 #include "CcMapCommon.h"
 #include "CcVersion.h"
+#include "CcKernelShutdownEvent.h"
 
 // forward declarations
 class ISocket;
@@ -135,7 +136,7 @@ public: // Methods
    * @brief Shutdown kernel and system.
    *        It will stop all all threads wich are currently running.
    */
-  static void shutdown();
+  static bool shutdown(CcKernelShutdownEvent::EReason eReason = CcKernelShutdownEvent::SystemShutdown);
 
   /**
    * @brief Shutdown kernel and system.
@@ -390,8 +391,8 @@ public: // Methods
    */
   static EPlatform getPlatform();
 
-  static void addShutdownHandler(const CcEvent& oEvent);
-  static void removeShutdownHandler(CcObject* pObject);
+  static void registerShutdownHandler(const CcEvent& oEvent);
+  static void deregisterShutdownHandler(CcObject* pObject);
 
   /**
    * Get CcOS Kernel Version

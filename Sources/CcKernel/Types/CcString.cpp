@@ -118,7 +118,8 @@ void CcString::reserve(size_t uiLength, const char cDefaultChar)
   {
     CcStatic::memset(m_pBuffer + uiLastLength, cDefaultChar, m_uiLength - uiLastLength);
   }
-  m_pBuffer[m_uiLength] = 0;
+  if(m_uiLength < m_uiReserved)
+    m_pBuffer[m_uiLength] = 0;
 }
 
 CcString& CcString::format(const char* sFormat, ...)
@@ -155,7 +156,8 @@ CcString& CcString::remove(size_t uiPos, size_t uiLength)
     for(size_t i=0; i< uiLengthLast; i++)
       m_pBuffer[uiPos+i] = m_pBuffer[uiBeginLast+i];
     m_uiLength -= uiLength;
-    m_pBuffer[m_uiLength] = 0;
+    if (m_uiLength < m_uiReserved)
+      m_pBuffer[m_uiLength] = 0;
   }
   return *this;
 }
@@ -666,9 +668,11 @@ CcString& CcString::append(const char toAppend)
 CcString& CcString::append(const char *toAppend, size_t length)
 {
   allocateBuffer(m_uiLength + length);
-  CcStatic::memcpy(m_pBuffer + m_uiLength, toAppend, length);
-  m_uiLength += length;
-  m_pBuffer[m_uiLength] = 0;
+  if (m_uiLength < m_uiReserved)
+  {
+    CcStatic::memcpy(m_pBuffer + m_uiLength, toAppend, length);
+    m_uiLength += length;
+  }
   return *this;
 }
 
@@ -1611,17 +1615,13 @@ void CcString::munlock()
 
 void CcString::clear()
 {
-  allocateBuffer(0);
-  m_uiLength = 0;
-  m_pBuffer[m_uiLength] = 0;
+  deleteBuffer();
 }
 
 void CcString::clearSave()
 {
   CcStatic::memset(m_pBuffer, 0, m_uiReserved);
-  allocateBuffer(0);
-  m_uiLength = 0;
-  m_pBuffer[m_uiLength] = 0;
+  deleteBuffer();
 }
 
 CcString &CcString::erase(size_t pos, size_t len)
@@ -1701,10 +1701,6 @@ void CcString::allocateBuffer(size_t uiSize)
   if(uiSize == 0)
   {
     deleteBuffer();
-    CCNEWARRAY(m_pBuffer, char, c_uiDefaultMultiplier);
-    m_pBuffer[0] = 0;
-    m_uiLength = 0;
-    m_uiReserved = c_uiDefaultMultiplier;
   }
   else if (uiSize + 1 > m_uiReserved)
   {
@@ -1726,7 +1722,8 @@ void CcString::allocateBuffer(size_t uiSize)
 
     m_uiLength            = uiOldLen;
     m_uiReserved          = uiNewLen;
-    m_pBuffer[m_uiLength] = 0;
+    if (m_uiLength < m_uiReserved)
+      m_pBuffer[m_uiLength] = 0;
   }
   else
   {
@@ -1736,6 +1733,8 @@ void CcString::allocateBuffer(size_t uiSize)
 
 void CcString::deleteBuffer()
 {
+  // Do just delete reserved buffers not buffers from const values.
+  // Cons buffers are initialized with m_uiReserved == 0
   if(m_uiReserved)
   {
     CCDELETEARR(m_pBuffer);

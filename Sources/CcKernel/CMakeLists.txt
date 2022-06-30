@@ -28,7 +28,9 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcFileSystemListItem.h
     CcInputEvent.h
     CcIoAsync.h
+    CcIoSwitch.h
     CcKernel.h
+    CcKernelShutdownEvent.h
     CcLog.h
     CcMacros.h
     CcMemoryMonitor.h
@@ -160,6 +162,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     
     Shell/CcShellCd.h
     Shell/CcShellGetEnv.h
+    Shell/CcShellExit.h
     Shell/CcShellExport.h
     Shell/CcShellLs.h
     Shell/IShellCommand.h
@@ -191,6 +194,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcFileSystemListItem.cpp
     CcInputEvent.cpp
     CcIoAsync.cpp
+    CcIoSwitch.cpp
     CcKernel.cpp
     CcLog.cpp
     CcMemoryManager.cpp
@@ -282,6 +286,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Network/Stack/INetworkSocket.cpp
     
     Shell/CcShellCd.cpp
+    Shell/CcShellExit.cpp
     Shell/CcShellExport.cpp
     Shell/CcShellGetEnv.cpp
     Shell/CcShellLs.cpp

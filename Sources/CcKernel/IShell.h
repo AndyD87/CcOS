@@ -25,54 +25,67 @@
 #pragma once
 
 #include "CcBase.h"
-#include "IThread.h"
+#include "CcApp.h"
 #include "CcString.h"
 #include "CcByteArray.h"
 #include "CcVector.h"
 #include "CcMapCommon.h"
+#include "CcMutex.h"
 
 class IIo;
 class IShellCommand;
+class CcKernelShutdownEvent;
+
+#ifdef _MSC_VER
+template class CcKernelSHARED CcVector<IShellCommand*>;
+#endif
 
 /**
  * @brief Basic shell application.
  */
-class IShell : public IThread
+class CcKernelSHARED IShell : public CcApp
 {
 public:
   /**
    * @brief Create thread instantce with name.
    * @param sName: Target name of thread
    */
-  CcKernelSHARED IShell();
+  IShell();
 
   /**
    * @brief Destroy Object and waiting until @ref getThreadState is set to EThreadState::Stopped
    */
-  CcKernelSHARED virtual ~IShell();
+  virtual ~IShell();
 
-  CcKernelSHARED virtual void run() override;
+  virtual void run() override;
   
-  CcKernelSHARED void init(IIo* pIoStream);
-  CcKernelSHARED void initDefaultCommands();
-  CcKernelSHARED CcStatus changeDirectory(const CcString& sPath);
-  CcKernelSHARED const CcString& getWorkingDirectory()
+  void init(IIo* pIoStream);
+  void initDefaultCommands();
+  CcStatus changeDirectory(const CcString& sPath);
+  const CcString& getWorkingDirectory()
   { return m_sWorkingDir; }
   const CcStringMap& getEnvironmentVariables()
   { return m_oEnvironmentVariables; }
   void setEnvironmentVariable(const CcString& sName, const CcString& sValue)
   { m_oEnvironmentVariables.set(sName, sValue); }
 
-  CcKernelSHARED void writeLine(const CcString& sLine);
+  void writeLine(const CcString& sLine);
+  void setEcho(bool bOnOff)
+  { m_bEchoInput = bOnOff; }
 
 private:
-  void readLine();
+  size_t readLine();
   void updatePrefix();
+  virtual void onStop() override;
+  void onKernelShutdown(CcKernelShutdownEvent* pEvent);
 
 private:
-  IIo*          m_pIoStream;
-  CcByteArray   m_oTransferBuffer;
-  CcByteArray   m_oReadLineBuffer;
+  IIo*            m_pIoStream;
+  CcByteArray     m_oTransferBuffer;
+  CcByteArray     m_oReadLineBuffer;
+  bool            m_bEchoInput = true;
+  CcMutex         m_oActiveCommandLock;
+  IShellCommand*  m_pActiveCommand = nullptr;
 
   CcString  m_sRead;
   CcString  m_sWorkingDir;

@@ -29,12 +29,12 @@
 
 ISqlDatabase::ISqlDatabase()
 {
-  CcKernel::addShutdownHandler(NewCcEventType(ISqlDatabase, void, this, ISqlDatabase::shutdownEvent));
+  CcKernel::registerShutdownHandler(NewCcEventType(ISqlDatabase, void, this, ISqlDatabase::shutdownEvent));
 }
 
 ISqlDatabase::~ISqlDatabase()
 {
-  CcKernel::removeShutdownHandler(this);
+  CcKernel::deregisterShutdownHandler(this);
 }
 
 void ISqlDatabase::setConnection(const CcString& connection)
