@@ -99,13 +99,14 @@ CcByteArray IIo::readAll(size_t uiBufSize)
   return oReturn;
 }
 
-CcStatus IIo::writeArray(const CcByteArray& oArray)
+CcStatus IIo::writeArray(const CcByteArray& oArray, size_t uiMaxSize)
 {
   bool bRet = true;
   size_t uiDataSend = 0;
-  while (uiDataSend < oArray.size())
+  size_t uiDataToSend = CCMIN(oArray.size(), uiMaxSize);
+  while (uiDataSend < uiDataToSend)
   {
-    size_t uiDataLeft = oArray.size() - uiDataSend;
+    size_t uiDataLeft = uiDataToSend - uiDataSend;
     size_t uiLastSend = write(oArray.getArray(uiDataSend), uiDataLeft);
     if (uiLastSend == SIZE_MAX)
     {

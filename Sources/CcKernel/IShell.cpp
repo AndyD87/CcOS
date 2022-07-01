@@ -29,6 +29,43 @@
 #include "CcGlobalStrings.h"
 #include "CcStringUtil.h"
 #include "CcDirectory.h"
+#include "CcFileSystem.h"
+#include "CcProcess.h"
+
+class IShellPassthroughThread : public IThread
+{
+public:
+  IShellPassthroughThread(CcProcess* pProcess, IIo* pStream) :
+    m_pProcess(pProcess),
+    m_pStream(pStream)
+  { }
+
+  virtual void run() override
+  {
+    CcByteArray oReadBuffer;
+    oReadBuffer.resize(1024);
+    while (m_pStream && m_pProcess &&
+            m_pProcess->getCurrentState() != EThreadState::Stopped)
+    {
+      size_t uiRead = m_pStream->readArray(oReadBuffer, false);
+      if (uiRead && uiRead < oReadBuffer.size() && m_pStream)
+        m_pProcess->pipe().writeArray(oReadBuffer, uiRead);
+    }
+    m_pStream = nullptr;
+    m_pProcess = nullptr;
+  }
+
+  virtual void onStop() override
+  {
+    m_pStream->cancel();
+    m_pStream = nullptr;
+    m_pProcess = nullptr;
+  }
+
+  CcProcess*  m_pProcess;
+  IIo*        m_pStream;
+};
+
 
 IShell::IShell()
 {
@@ -63,32 +100,7 @@ void IShell::run()
       uiReceived = readLine();
       // Handle the line
       CcStringList oArguments = CcStringUtil::getArguments(m_sRead);
-      if(oArguments.size() > 0)
-      {
-        bool bCommandFound = false;
-        for(IShellCommand* pCommand : m_oCommands)
-        {
-          if(pCommand->getCommand() == oArguments[0])
-          {
-            bCommandFound = true;
-            oArguments.remove(0);
-
-            m_oActiveCommandLock.lock();
-            m_pActiveCommand = pCommand;
-            m_oActiveCommandLock.unlock();
-            setExitCode(m_pActiveCommand->exec(*this, oArguments));
-            m_oActiveCommandLock.lock();
-            m_pActiveCommand = nullptr;
-            m_oActiveCommandLock.unlock();
-
-            break;
-          }
-        }
-        if(bCommandFound == false)
-        {
-          writeLine("Unknown command: " + oArguments[0]);
-        }
-      }
+      setExitCode(execLine(oArguments));
     }
   }
 }
@@ -209,6 +221,70 @@ size_t IShell::readLine()
   return uiReceived;
 }
 
+CcStatus IShell::execLine(CcStringList& oArguments)
+{
+  CcStatus oStatus;
+  bool bCommandFound = false;
+  if (oArguments.size() > 0)
+  {
+    CcString sCommand = oArguments[0];
+    oArguments.remove(0);
+    for (IShellCommand* pCommand : m_oCommands)
+    {
+      if (pCommand->getCommand() == sCommand)
+      {
+        bCommandFound = true;
+        oArguments.remove(0);
+
+        m_oActiveCommandLock.lock();
+        m_pActiveCommand = pCommand;
+        m_oActiveCommandLock.unlock();
+        oStatus = m_pActiveCommand->exec(*this, oArguments);
+        m_oActiveCommandLock.lock();
+        m_pActiveCommand = nullptr;
+        m_oActiveCommandLock.unlock();
+
+        break;
+      }
+    }
+    if (bCommandFound == false)
+    {
+      // Search for Executable
+      CcString sPath = CcFileSystem::findExecutable(sCommand);
+      if (sPath.length())
+      {
+        bCommandFound = true;
+
+        CCNEW(m_pActiveProcess, CcProcess, sPath);
+        IShellPassthroughThread oPassThroughThread(m_pActiveProcess, m_pIoStream);
+
+        m_pActiveProcess->setArguments(oArguments);
+        m_pActiveProcess->setWorkingDirectory(getWorkingDirectory());
+
+        m_pActiveProcess->start();
+        oPassThroughThread.start();
+
+        CcByteArray oReadBuffer;
+        oReadBuffer.resize(1024);
+        while (m_pActiveProcess->getCurrentState() != EThreadState::Stopped)
+        {
+          size_t uiRead = m_pActiveProcess->pipe().readArray(oReadBuffer, false);
+          if (uiRead && m_pIoStream)
+            m_pIoStream->writeArray(oReadBuffer, uiRead);
+        }
+        oPassThroughThread.stop();
+        CCDELETE(m_pActiveProcess);
+      }
+    }
+    if (bCommandFound == false)
+    {
+      writeLine("Unknown command: " + sCommand);
+      oStatus = EStatus::CommandUnknown;
+    }
+  }
+  return oStatus;
+}
+
 void IShell::updatePrefix()
 {
   m_sPrefix = m_sWorkingDir;
@@ -235,6 +311,11 @@ void IShell::onKernelShutdown(CcKernelShutdownEvent* pEvent)
         if (m_pActiveCommand->stop())
         {
         }
+      }
+      else if (m_pActiveProcess)
+      {
+        m_pActiveProcess->stop();
+        pEvent->bContinueShutdown = false;
       }
       else
       {

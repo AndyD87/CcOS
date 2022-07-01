@@ -122,6 +122,10 @@ CcStringList CcFileSystem::findExecutables(const CcString& sName, size_t uiNr)
     CcString sPaths = CcKernel::getEnvironmentVariable("PATH");
 #ifdef WINDOWS
     CcStringList oPaths = sPaths.split(CcGlobalStrings::Seperators::Semicolon, false);
+    for (CcString& sPath : oPaths)
+    {
+      sPath.normalizePath();
+    }
 #else
     CcStringList oPaths = sPaths.split(CcGlobalStrings::Seperators::Colon, false);
 #endif

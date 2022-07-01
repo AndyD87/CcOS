@@ -132,7 +132,7 @@ CcStatus CcWindowsPipe::close()
   CancelIo(m_HandleOut);
   if (m_HandleOut != INVALID_HANDLE_VALUE)
   {
-    CloseHandle(m_HandleOut);
+    //CloseHandle(m_HandleOut);
     m_HandleOut = INVALID_HANDLE_VALUE;
   }
 
@@ -186,7 +186,6 @@ void CcWindowsPipe::readCache()
     {
 
     }
-    CCDEBUG("CcWindowsPipe::ReadCache: " + m_oReadBuffer);
   }
   unlock();
 }

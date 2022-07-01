@@ -254,14 +254,6 @@ CcFileInfoList CcWindowsFile::getFileList() const
       } while (FindNextFileW(hDir, &FileData));
       FindClose(hDir);
     }
-    else
-    {
-      CCDEBUG("File move failed: " + CcString::fromNumber(GetLastError()));
-    }
-  }
-  else
-  {
-    CCDEBUG("File move failed: " + CcString::fromNumber(GetLastError()));
   }
   return oRet;
 }

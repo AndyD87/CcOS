@@ -36,9 +36,27 @@ CcShellExit::~CcShellExit()
 {
 }
 
-CcStatus CcShellExit::exec(IShell& oBasicShell, const CcStringList& CCUNUSED_PARAM(oArguments))
+CcStatus CcShellExit::exec(IShell& oBasicShell, const CcStringList& oArguments)
 {
   CcStatus oSuccess;
-  oBasicShell.stop();
+  if (oArguments.size())
+  {
+    bool bOk = false;
+    oSuccess.setError(oArguments[0].toUint32(&bOk));
+    if(!bOk)
+    {
+      oSuccess = EStatus::CommandInvalidParameter;
+    }
+    else
+    {
+      oBasicShell.stop();
+    }
+  }
+  else
+  {
+    // Use last error code
+    oSuccess = oBasicShell.getExitCode();
+    oBasicShell.stop();
+  }
   return oSuccess;
 }

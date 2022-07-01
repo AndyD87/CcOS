@@ -33,8 +33,10 @@
 #include "CcMutex.h"
 
 class IIo;
+class IShellPassthroughThread;
 class IShellCommand;
 class CcKernelShutdownEvent;
+class CcProcess;
 
 #ifdef _MSC_VER
 template class CcKernelSHARED CcVector<IShellCommand*>;
@@ -73,6 +75,9 @@ public:
   void setEcho(bool bOnOff)
   { m_bEchoInput = bOnOff; }
 
+protected:
+  CcStatus execLine(CcStringList& oArguments);
+
 private:
   size_t readLine();
   void updatePrefix();
@@ -80,12 +85,14 @@ private:
   void onKernelShutdown(CcKernelShutdownEvent* pEvent);
 
 private:
-  IIo*            m_pIoStream;
-  CcByteArray     m_oTransferBuffer;
-  CcByteArray     m_oReadLineBuffer;
-  bool            m_bEchoInput = true;
-  CcMutex         m_oActiveCommandLock;
-  IShellCommand*  m_pActiveCommand = nullptr;
+  IIo*                      m_pIoStream;
+  CcByteArray               m_oTransferBuffer;
+  CcByteArray               m_oReadLineBuffer;
+  bool                      m_bEchoInput = true;
+  CcMutex                   m_oActiveCommandLock;
+  IShellCommand*            m_pActiveCommand = nullptr;
+  CcProcess*                m_pActiveProcess = nullptr;
+  IShellPassthroughThread*  m_pPassthroughThread = nullptr;
 
   CcString  m_sRead;
   CcString  m_sWorkingDir;

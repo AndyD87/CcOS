@@ -62,6 +62,8 @@ int TestJsonRead()
   return iRet;
 }
 
+#include "CcProcess.h"
+
 /**
  * @brief Default application entry point
  * @param iArgc:  Argument count in ppArgv
@@ -73,6 +75,14 @@ int main(int iArgc, char** ppArgv)
   CCUNUSED(iArgc);
   CCUNUSED(ppArgv);
   int iRet = TestJsonRead();
+
+  CcProcess oProc("cmd.exe");
+  oProc.start();
+  oProc.waitForStarted();
+  CcKernel::sleep(3000);
+  oProc.pipe().write("exit\n", sizeof("exit\n"));
+  oProc.waitForExit();
+  printf("%s", oProc.pipe().readAll().getArray());
 
   CcDeviceI2C oI2CDevice        = CcKernel::getDevice(EDeviceType::I2C);
   if(!oI2CDevice.isValid())

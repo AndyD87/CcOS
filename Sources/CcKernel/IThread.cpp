@@ -37,7 +37,7 @@ IThread::~IThread()
 {
   // Wait a litte bit and try again until thread is stopped.
   enterState(EThreadState::Stopping);
-  waitForState(EThreadState::Stopped);
+  waitForExit();
 }
 
 CcStatus IThread::start()
@@ -68,6 +68,8 @@ CcStatus IThread::startOnThread()
     oStatus = enterState(EThreadState::Running);
   if(oStatus || oStatus == EStatus::AlreadyStopped)
     oStatus = enterState(EThreadState::Stopped);
+  if (oStatus)
+    oStatus = getExitCode();
   return oStatus;
 }
 
@@ -120,7 +122,7 @@ CcStatus IThread::enterState(EThreadState State)
     case EThreadState::Running:
       if (EThreadState::Starting == m_State)
       {
-        setState(State);
+        m_State = State;
         m_oStateLock.unlock();
         bDoUnlock = false;
         run();
@@ -132,19 +134,12 @@ CcStatus IThread::enterState(EThreadState State)
         oSuccess = EStatus::AlreadyStopped;
       break;
     case EThreadState::Stopping:
-      if (m_State < EThreadState::Running)
-      {
-        setState(EThreadState::Stopping);
-        onStop();
-      }
       if (m_State < EThreadState::Stopping)
       {
-        setState(State);
-        oSuccess = true;
+        m_State = State;
         onStop();
       }
-      else
-        oSuccess = true;
+      oSuccess = true;
       break;
     case EThreadState::Stopped:
       // Start onStop Methods if not already set
@@ -155,7 +150,7 @@ CcStatus IThread::enterState(EThreadState State)
       }
       if (m_State != EThreadState::Stopped)
       {
-        setState(State);
+        m_State = State;
         bDoUnlock = false;
         m_oStateLock.unlock();
         // Be aware here! Worker will delete itself here

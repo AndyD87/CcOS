@@ -30,6 +30,7 @@
 #include "CcDateTime.h"
 #include "IThread.h"
 #include "CcGlobalStrings.h"
+#include "CcSharedPointer.h"
 
 class IIo;
 
@@ -55,6 +56,9 @@ public:
 protected:
   bool m_bProcessStarted = false; //!< Internal process start flag to change on run from system
 };
+
+template class CcKernelSHARED CcSharedPointer<CcProcessThread>;
+template class CcKernelSHARED CcSharedPointer<IIo>;
 
 /**
  * @brief Process-Connection to an external Process
@@ -205,4 +209,7 @@ private: // Member
   CcStringList m_Arguments;
   CcString m_sWorkingDir;
   CcStatus m_oExitCode = 0;
+
+  CcSharedPointer<IIo>              m_pPipe = nullptr;
+  CcSharedPointer<CcProcessThread>  m_pThreadHandle = nullptr;
 };

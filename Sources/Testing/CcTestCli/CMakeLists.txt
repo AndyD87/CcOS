@@ -20,7 +20,7 @@ if(WINDOWS)
   CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
 endif()
 
-CcAddGuiExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} ${HEADER_FILES} )
+CcAddExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} ${HEADER_FILES} )
 
 target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                               CcKernel

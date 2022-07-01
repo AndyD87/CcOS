@@ -220,9 +220,10 @@ public:
   /**
    * @brief Write a byte array to stream
    * @param oArray: ByteArray to write out
+   * @param uiMaxSize: Number of bytes from bytearray to write
    * @return Status of operation
    */
-  CcStatus writeArray(const CcByteArray& oArray);
+  CcStatus writeArray(const CcByteArray& oArray, size_t uiMaxSize = SIZE_MAX);
 
   /**
    * @brief Write a string to stream

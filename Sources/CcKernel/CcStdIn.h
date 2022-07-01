@@ -91,7 +91,6 @@ public:
    */
   static void disableBuffer();
 
-private:
 #ifdef WINDOWS
   typedef struct
   {
@@ -99,13 +98,12 @@ private:
     size_t    uiSize;
     size_t    uiReadSize=0;
   } SBufferInfo;
-  static uint32 ReadAsyncThread(void*);
-  size_t ReadAsync(wchar_t* pBuffer, size_t uSize);
+  size_t readAsync(wchar_t* pBuffer, size_t uSize);
 #endif
 
 private:
 #ifdef WINDOWS
-  void*    m_hReadThread;
+  bool     m_bCancleCalled = false;
   CcString m_sTemporaryBackup; //!< Temporary String for oversized unicode strings.
 #endif
 };

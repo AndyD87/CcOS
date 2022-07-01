@@ -29,29 +29,18 @@
 #include "IThread.h"
 #include  "CcByteArray.h"
 
-class CcProcess::CPrivate
-{
-public:
-  CcSharedPointer<IIo> m_pPipe = nullptr;
-  CcSharedPointer<CcProcessThread> m_pThreadHandle = nullptr;
-};
-
 CcProcess::CcProcess()
 {
-  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcProcess::CcProcess( const CcString& sApplication) :
   m_sApplication(sApplication)
 {
-  CCNEW(m_pPrivate, CPrivate);
 }
 
 CcProcess::~CcProcess()
 {
   stop();
-  m_pPrivate->m_pPipe = nullptr;
-  CCDELETE(m_pPrivate);
 }
 
 CcStatus CcProcess::start()
@@ -63,10 +52,10 @@ CcStatus CcProcess::start()
 
 void CcProcess::stop()
 {
-  if(m_pPrivate->m_pThreadHandle != nullptr)
+  if(m_pThreadHandle != nullptr)
   {
-    m_pPrivate->m_pThreadHandle->stop();
-    m_pPrivate->m_pThreadHandle.deleteCurrent();
+    m_pThreadHandle->stop();
+    m_pThreadHandle.deleteCurrent();
   }
 }
 
@@ -100,20 +89,20 @@ CcStatus CcProcess::waitForState(EThreadState eState, const CcDateTime& oTimeout
   {
     case EThreadState::Starting:
     case EThreadState::Stopping:
-      if (m_pPrivate->m_pThreadHandle != nullptr)
-        oRet = m_pPrivate->m_pThreadHandle->waitForState(eState, oTimeout);
+      if (m_pThreadHandle != nullptr)
+        oRet = m_pThreadHandle->waitForState(eState, oTimeout);
       break;
     case EThreadState::Stopped:
       oRet = waitForExit(oTimeout);
       break;
     case EThreadState::Running:
-      if (m_pPrivate->m_pThreadHandle != nullptr)
+      if (m_pThreadHandle != nullptr)
       {
-        oRet = m_pPrivate->m_pThreadHandle->waitForState(eState, oTimeout);
+        oRet = m_pThreadHandle->waitForState(eState, oTimeout);
         if(oRet)
         {
           CcDateTime oTimeWaiting;
-          while (!m_pPrivate->m_pThreadHandle->isProcessStarted() &&
+          while (!m_pThreadHandle->isProcessStarted() &&
                  oRet)
           {
             if (oTimeout.getTimestampUs() != 0 && oTimeout < oTimeWaiting)
@@ -130,9 +119,9 @@ CcStatus CcProcess::waitForState(EThreadState eState, const CcDateTime& oTimeout
       }
       break;
     default:
-      if (m_pPrivate->m_pThreadHandle != nullptr)
+      if (m_pThreadHandle != nullptr)
       {
-        oRet = m_pPrivate->m_pThreadHandle->waitForState(eState, oTimeout);
+        oRet = m_pThreadHandle->waitForState(eState, oTimeout);
       }
   }
   return oRet;
@@ -142,7 +131,7 @@ CcStatus CcProcess::waitForStarted(const CcDateTime& oTimeout)
 {
   CcStatus oRet(EStatus::AllOk);
   CcDateTime oTimeWaiting;
-  while (m_pPrivate->m_pThreadHandle->getThreadState() == EThreadState::Starting &&
+  while (m_pThreadHandle->getThreadState() == EThreadState::Starting &&
          oRet)
   {
     if (oTimeout.getTimestampUs() != 0 && oTimeout < oTimeWaiting)
@@ -161,9 +150,9 @@ CcStatus CcProcess::waitForStarted(const CcDateTime& oTimeout)
 CcStatus CcProcess::waitForExit(const CcDateTime& oTimeout)
 {
   CcStatus oStatus(EStatus::InvalidHandle);
-  if(m_pPrivate->m_pThreadHandle != nullptr)
+  if(m_pThreadHandle != nullptr)
   {
-    oStatus = m_pPrivate->m_pThreadHandle->waitForState(EThreadState::Stopped, oTimeout);
+    oStatus = m_pThreadHandle->waitForState(EThreadState::Stopped, oTimeout);
     if (oStatus) oStatus = getExitCode();
   }
   else
@@ -206,9 +195,9 @@ CcStringList& CcProcess::getArguments()
 
 EThreadState CcProcess::getCurrentState()
 {
-  if(m_pPrivate->m_pThreadHandle != nullptr)
+  if(m_pThreadHandle != nullptr)
   {
-    return m_pPrivate->m_pThreadHandle->getThreadState();
+    return m_pThreadHandle->getThreadState();
   }
   else
   {
@@ -218,14 +207,14 @@ EThreadState CcProcess::getCurrentState()
 
 IIo& CcProcess::pipe()
 {
-  return *m_pPrivate->m_pPipe;
+  return *m_pPipe;
 }
 
 bool CcProcess::hasExited()
 {
-  if (m_pPrivate->m_pThreadHandle != nullptr)
+  if (m_pThreadHandle != nullptr)
   {
-    return m_pPrivate->m_pThreadHandle->getThreadState() == EThreadState::Stopped;
+    return m_pThreadHandle->getThreadState() == EThreadState::Stopped;
   }
   return false;
 }
@@ -274,10 +263,10 @@ void CcProcess::clearArguments()
 
 void CcProcess::setThreadHandle(CcProcessThread* pThreadHandle)
 {
-  m_pPrivate->m_pThreadHandle = pThreadHandle;
+  m_pThreadHandle = pThreadHandle;
 }
 
 void CcProcess::setPipe(IIo* pInput)
 {
-  m_pPrivate->m_pPipe = pInput;
+  m_pPipe = pInput;
 }
