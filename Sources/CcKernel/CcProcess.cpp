@@ -70,7 +70,7 @@ CcStatus CcProcess::exec(const CcDateTime& oTimeout)
       CCDEBUG("Process run timeout");
       stop();
     }
-    else
+    else if(oStatus)
     {
       oStatus = getExitCode();
     }

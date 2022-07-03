@@ -34,6 +34,5 @@ script:
   # due to certificate errors
   - git config --global http.sslVerify false
   # Start Tet-All script
-  - cd Sources
   - cd Tools
   - sh Test-All.sh

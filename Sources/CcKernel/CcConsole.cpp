@@ -47,14 +47,14 @@ void CcConsole::init()
     if (s_pInput == nullptr)
       CCNEW(s_pInput, CcStdIn);
   #endif
-    DWORD dw;
-    HANDLE inh = GetStdHandle(STD_INPUT_HANDLE);
-    BOOL pipe = !GetConsoleMode(inh, &dw);
-    if (!pipe)
-    {
-      SetConsoleMode(inh, dw & ~(ENABLE_MOUSE_INPUT | ENABLE_WINDOW_INPUT));
-      FlushConsoleInputBuffer(inh);
-    }
+  //DWORD dw;
+  //HANDLE inh = GetStdHandle(STD_INPUT_HANDLE);
+  //BOOL pipe = !GetConsoleMode(inh, &dw);
+  //if (!pipe)
+  //{
+  //  SetConsoleMode(inh, dw & ~(ENABLE_MOUSE_INPUT | ENABLE_WINDOW_INPUT));
+  //  FlushConsoleInputBuffer(inh);
+  //}
 }
 
 void CcConsole::deinit()

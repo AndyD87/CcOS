@@ -90,7 +90,7 @@ void CcWindowsProcessThread::run()
     // Wait until child process exits.
     while (WAIT_TIMEOUT == WaitForSingleObject(m_pPrivate->pi.hProcess, 100))
     {
-      //static_cast<CcWindowsPipe&>(m_hProcess->pipe()).readCache();
+      static_cast<CcWindowsPipe&>(m_hProcess->pipe()).readCache();
     }
     DWORD uiExitCode;
     GetExitCodeProcess(m_pPrivate->pi.hProcess, &uiExitCode);

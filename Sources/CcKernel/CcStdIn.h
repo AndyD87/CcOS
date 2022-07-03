@@ -92,12 +92,6 @@ public:
   static void disableBuffer();
 
 #ifdef WINDOWS
-  typedef struct
-  {
-    wchar_t*  pData;
-    size_t    uiSize;
-    size_t    uiReadSize=0;
-  } SBufferInfo;
   size_t readAsync(wchar_t* pBuffer, size_t uSize);
 #endif
 
