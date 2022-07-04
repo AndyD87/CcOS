@@ -52,19 +52,17 @@ CcLinuxPipe::~CcLinuxPipe()
   CCLINUXPIPE_CLOSE(m_iPipes[0][1]);
   CCLINUXPIPE_CLOSE(m_iPipes[1][0]);
   CCLINUXPIPE_CLOSE(m_iPipes[1][1]);
+  CCLINUXPIPE_CLOSE(m_iPipes[2][0]);
+  CCLINUXPIPE_CLOSE(m_iPipes[2][1]);
 }
 
 #include <sys/ioctl.h>
 
 size_t CcLinuxPipe::read(void *pBuffer, size_t uSize)
 {
-  size_t uiRead = 0;
-  int count = 0;
-  int iSuccess = ioctl(m_iPipes[1][0], FIONREAD, &count);
-  if(iSuccess == 0 && count > 0)
-  {
+  size_t uiRead = SIZE_MAX;
+  if(m_iPipes[1][0] >= 0)
     uiRead = ::read(m_iPipes[1][0], pBuffer, uSize);
-  }
   return uiRead;
 }
 
@@ -88,6 +86,7 @@ CcStatus CcLinuxPipe::close()
 
 CcStatus CcLinuxPipe::cancel()
 {
+  CCLINUXPIPE_CLOSE(m_iPipes[1][0]);
   return true;
 }
 
@@ -106,4 +105,5 @@ void CcLinuxPipe::closeParent()
 {
   CCLINUXPIPE_CLOSE(m_iPipes[0][0]);
   CCLINUXPIPE_CLOSE(m_iPipes[1][1]);
+  CCLINUXPIPE_CLOSE(m_iPipes[2][1]);
 }

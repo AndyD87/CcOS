@@ -115,33 +115,27 @@ CcStringMap       CcSystem::CPrivate::m_oEnvValues;
 
 CcSharedPointer<CcService>  m_pService;
 
-static void *FailbackExit(void *Param)
-{
-  CcKernel::stop();
-  usleep(1000);
-  CcKernel::shutdown();
-  // 1 second for application to finish main, otherwise kill
-  sleep(1);
-  exit(1);
-  return Param;
-}
-
 /**
  * @brief Signal handler for os transmitted signals
  * @param s: signal to handle
  */
 void CcSystemSignalHandler(int s)
 {
-  CCDEBUG("Signal received: " + CcString::fromInt(s));
+  CCVERBOSE("Signal received: " + CcString::fromInt(s));
+  bool bStopShutdown = true;
   switch(s)
   {
     case SIGINT:
-      CCFALLTHROUGH;
+      bStopShutdown = CcKernel::shutdown(CcKernelShutdownEvent::EReason::UserRequest)? false : true;
+      if(!bStopShutdown) exit(1);
+      break;
     case SIGABRT:
       CCFALLTHROUGH;
+    case SIGSTOP:
+      CCFALLTHROUGH;
     case SIGTERM:
-      pthread_t threadId;
-      pthread_create(&threadId, nullptr, FailbackExit, nullptr);
+      bStopShutdown = CcKernel::shutdown(CcKernelShutdownEvent::EReason::SystemShutdown) ? false : true;
+      if (!bStopShutdown) exit(1);
       break;
     default:
       exit(1);

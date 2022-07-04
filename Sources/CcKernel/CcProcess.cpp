@@ -45,7 +45,7 @@ CcProcess::~CcProcess()
 
 CcStatus CcProcess::start()
 {
-  CCDEBUG("CcProcess::start");
+  CCVERBOSE("CcProcess::start");
   stop();
   return CcKernel::createProcess(*this);
 }

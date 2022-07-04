@@ -32,6 +32,11 @@
 #include "CcGlobalStrings.h"
 #include "CcMutex.h"
 
+#ifdef LINUX
+  #include <unistd.h>
+  #include <fcntl.h>
+#endif
+
 CcMutex*    CcConsole::s_pLock(nullptr);
 IIo*        CcConsole::s_pInput(nullptr);
 IIo*        CcConsole::s_pOutput(nullptr);
@@ -39,6 +44,11 @@ CcString    CcConsole::s_ReadLineBuffer;
 
 void CcConsole::init()
 {
+  #if defined(LINUX)
+    //int opts;
+    //opts = fcntl(STDIN_FILENO, F_GETFL);
+    //fcntl(STDIN_FILENO, F_SETFL, opts | O_NONBLOCK);
+  #endif
   #ifndef GENERIC
     if(s_pLock == nullptr)
       CCNEW(s_pLock, CcMutex);

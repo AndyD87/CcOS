@@ -42,7 +42,7 @@ size_t CcStdOut::write(const void* pBuffer, size_t uSize)
 #elif defined(GENERIC)
   CCUNUSED(pBuffer);
 #else
-  printf("%.*s", (int)uSize, static_cast<const char*>(pBuffer));
+  fprintf(stderr, "%.*s", (int)uSize, static_cast<const char*>(pBuffer));
 #endif
   return uSize;
 }

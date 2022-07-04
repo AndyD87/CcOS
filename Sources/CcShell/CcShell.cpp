@@ -39,6 +39,7 @@ CcShell::CcShell() :
   initDefaultCommands();
 }
 
-CcShell::~CcShell() {
-
+CcShell::~CcShell()
+{
+  setStream(nullptr);
 }

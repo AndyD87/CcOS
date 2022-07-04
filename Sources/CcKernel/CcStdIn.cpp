@@ -37,6 +37,7 @@
 #elif defined(LINUX)
 #include <termios.h>
 #include <unistd.h>
+#include <sys/select.h>
 #endif
 
 size_t CcStdIn::read(void* pBuffer, size_t uiSize)
@@ -70,11 +71,30 @@ size_t CcStdIn::read(void* pBuffer, size_t uiSize)
   CCUNUSED(pBuffer);
   CCUNUSED(uiSize);
 #else
+  m_bCancleCalled = false;
   // For debugging save to pointer
-  char* pTarget = fgets(static_cast<char*>(pBuffer), static_cast<int>(uiSize), stdin);
-  if (pTarget != nullptr)
+  while(iRet > uiSize && m_bCancleCalled == false)
   {
-    iRet = CcStringUtil::strlen(static_cast<char*>(pBuffer));
+    fd_set fds;
+    timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = 0;
+    FD_ZERO(&fds);
+    FD_SET(STDIN_FILENO, &fds);
+
+    select(STDIN_FILENO+1, &fds, NULL, NULL, &tv);
+    if (FD_ISSET(STDIN_FILENO, &fds))
+    {
+      char* pTarget = fgets(static_cast<char*>(pBuffer), static_cast<int>(uiSize), stdin);
+      if (pTarget != nullptr)
+      {
+        iRet = CcStringUtil::strlen(static_cast<char*>(pBuffer));
+      }
+    }
+    else
+    {
+      CcKernel::sleep(10);
+    }
   }
 #endif
   return iRet;
@@ -153,6 +173,7 @@ CcStatus CcStdIn::cancel()
   DWORD dw; 
   WriteConsoleInput(GetStdHandle(STD_INPUT_HANDLE), ir, 2, &dw);
 #endif
+  m_bCancleCalled = true;
   return true;
 }
 

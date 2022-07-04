@@ -74,6 +74,8 @@ public:
   void writeLine(const CcString& sLine);
   void setEcho(bool bOnOff)
   { m_bEchoInput = bOnOff; }
+  void setStream(IIo* pIoStream)
+  { m_pIoStream =  pIoStream; }
 
 protected:
   CcStatus execLine(CcStringList& oArguments);

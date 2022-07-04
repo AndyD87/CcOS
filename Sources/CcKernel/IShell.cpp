@@ -57,8 +57,11 @@ public:
 
   virtual void onStop() override
   {
-    m_pStream->cancel();
-    m_pStream = nullptr;
+    if(m_pStream)
+    {
+      m_pStream->cancel();
+      m_pStream = nullptr;
+    }
     m_pProcess = nullptr;
   }
 
@@ -166,6 +169,8 @@ size_t IShell::readLine()
   else
   {
     uiReceived = m_pIoStream->read(m_oTransferBuffer.getArray(), m_oTransferBuffer.size());
+    if(uiReceived > m_oTransferBuffer.size())
+      CcKernel::sleep(10);
   }
   bool bEndOfLine = false;
   while(bEndOfLine == false && uiReceived != SIZE_MAX)

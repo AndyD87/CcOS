@@ -50,11 +50,12 @@ void CcLinuxProcessThread::run()
   m_iChildId = fork();
   if(m_iChildId == 0)
   {
-    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closeChild();
     dup2(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipe(0,0), STDIN_FILENO);
     dup2(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipe(1,1), STDOUT_FILENO);
-    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closePipe(0,0);
-    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closePipe(1,1);
+    dup2(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipe(2,1), STDERR_FILENO);
+    //static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closePipe(0,1);
+    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closePipe(1,0);
+    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closePipe(2,0);
 
     CcKernel::setEnvironmentVariable(CcGlobalStrings::EnvVars::AppNoIoBuffering, CcGlobalStrings::True);
 
@@ -83,10 +84,9 @@ void CcLinuxProcessThread::run()
   else if(m_iChildId > 0)
   {
     m_bProcessStarted = true;
-    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closeParent();
     int iStatus;
     waitpid(m_iChildId, &iStatus, 0);
-    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closePipe(0,1);
+    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closeParent();
     m_iChildId = -1;
     iStatus = WEXITSTATUS(iStatus);
     setExitCode(iStatus);

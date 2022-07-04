@@ -31,8 +31,7 @@
 #include "IThread.h"
 #include "CcGlobalStrings.h"
 #include "CcSharedPointer.h"
-
-class IIo;
+#include "IIo.h"
 
 /**
  * @brief Processes object with seperate thread for start and stop.

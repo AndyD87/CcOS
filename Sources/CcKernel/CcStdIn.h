@@ -96,8 +96,8 @@ public:
 #endif
 
 private:
+  volatile bool m_bCancleCalled = false;
 #ifdef WINDOWS
-  bool     m_bCancleCalled = false;
   CcString m_sTemporaryBackup; //!< Temporary String for oversized unicode strings.
 #endif
 };

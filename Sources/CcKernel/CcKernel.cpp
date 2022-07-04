@@ -314,7 +314,7 @@ bool CcKernel::createThread(IThread &Thread)
 
 bool CcKernel::createProcess(CcProcess &processToStart)
 {
-  CCDEBUG("CcKernel::createProcess");
+  CCVERBOSE("CcKernel::createProcess");
   bool bKernelAppFound = false;
   for (size_t i = 0; i < CcKernelPrivate::m_pInterface->m_AppList.size(); i++)
   {

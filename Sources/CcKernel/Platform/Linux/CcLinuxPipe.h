@@ -75,5 +75,5 @@ public:
    */
   void closeParent();
 private:
-  int m_iPipes[2][2] = {{-1, -1},{-1,-1}};
+  int m_iPipes[3][2] = {{-1, -1},{-1,-1},{-1,-1}};
 };
