@@ -42,18 +42,41 @@ GenericApp::~GenericApp()
 
 void GenericApp::run()
 {
-  CcDeviceUsb oUsbDevice = CcKernel::getDevice(EDeviceType::Usb);
-  if(oUsbDevice.isValid())
-  {            
-    CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);   
-    CcStatus oStatus = m_pCdcDevice->start();
-
-    if(oStatus)
+  CcStatus oStatus(false);
+  CcDeviceUsb oUsb = CcKernel::getDevice(EDeviceType::Usb);
+  if(oUsb.isValid())
+  {
+    CcDeviceUsbDevice oUsbDevice = oUsb->createDevice();
+    if(oUsbDevice.isValid())
     {
-      CCNEW(m_pShell, IShell);   
-      m_pShell->init(m_pCdcDevice);
-      m_pShell->initDefaultCommands();
-      m_pShell->start();
+      IUsbDevice::CDeviceDescriptor& oDeviceDescriptor = oUsbDevice.getDevice()->getDeviceDescriptor();
+      oDeviceDescriptor.uiBcd                   = 0x0200;
+      oDeviceDescriptor.uiMaxPacketSize         = 64;
+      oDeviceDescriptor.uiVendorId  	          = 0x1234;
+      oDeviceDescriptor.uiProductId             = 0x1234;
+      oDeviceDescriptor.uiBcdDevice             = 0x0200;
+      oDeviceDescriptor.uiManufacturerStringIdx = 1;
+      oDeviceDescriptor.uiProductStringIdx      = 2;
+      oDeviceDescriptor.uiSerialNumberStringIdx = 3;
+      oDeviceDescriptor.createString("GER");
+      oDeviceDescriptor.createString("CcOS Manu");
+      oDeviceDescriptor.createString("CcOS Prod");
+      oDeviceDescriptor.createString("CcOS Seri");
+
+      CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);   
+      oStatus = m_pCdcDevice->open(EOpenFlags::ReadWrite);
+
+      if(oStatus)
+      {
+        oStatus = oUsbDevice->start();
+        if(oStatus)
+        {
+          CCNEW(m_pShell, IShell);   
+          m_pShell->init(m_pCdcDevice);
+          m_pShell->initDefaultCommands();
+          m_pShell->start();
+        }
+      }
     }
 
     setExitCode(oStatus);

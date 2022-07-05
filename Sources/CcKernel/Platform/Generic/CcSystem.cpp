@@ -217,7 +217,10 @@ CcStringMap CcSystem::getEnvironmentVariables() const
 
 CcString CcSystem::getEnvironmentVariable(const CcString& sName) const
 {
-  return m_pPrivate->oEnvVars[sName];
+  if(getEnvironmentVariableExists(sName))
+    return m_pPrivate->oEnvVars[sName];
+  else
+    return CcGlobalStrings::Empty;
 }
 
 bool CcSystem::getEnvironmentVariableExists(const CcString& sName) const

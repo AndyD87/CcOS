@@ -133,7 +133,7 @@ public:
       uint8   uiInterfaceClass;       //< Class Code (Assigned by USB Org)
       uint8   uiInterfaceSubClass;    //< Subclass Code (Assigned by USB Org)
       uint8   uiInterfaceProtocol;    //< Protocol Code (Assigned by USB Org)
-      uint8   uiInterfaceIdx;         //< Index of String Descriptor Describing this interface
+      uint8   uiInterfaceStringIdx;         //< Index of String Descriptor Describing this interface
 
       SInterfaceDescriptor() = delete;
       ~SInterfaceDescriptor() = delete;
@@ -251,29 +251,48 @@ public:
       SEndpointDescriptor*  pDescriptor;
     };
 
+    class CcKernelSHARED CInterfaceInfo
+    {
+      public:
+      CcEvent                oOnRequest;
+      SInterfaceDescriptor*  pDescriptor;
+    };
+
     CcKernelSHARED void* generateConfiguration(uint16& uiSize);
 
-    CcKernelSHARED SInterfaceDescriptor* createInterface();
-    CcKernelSHARED SEndpointDescriptor* createEndpoint(uint8 uiEndpointAddress, uint8 uiAttributes, uint16 wMaxPacketSize, uint8 uInterval, CcEvent oOnChange);
+    CcKernelSHARED SInterfaceDescriptor* createInterface(const CcEvent& oOnRequest);
+    CcKernelSHARED SEndpointDescriptor* createEndpoint(bool bInOut, uint8 uiAttributes, uint16 wMaxPacketSize, uint8 uInterval, const CcEvent& oOnChange);
     CcKernelSHARED SFunctionalDescriptor* createFunctional(uint8 uiSize);
     CcKernelSHARED void setupInterfaces();
 
-    CcKernelSHARED size_t getEndpointCount() const
-    { return m_oEndPoints.size(); }
-    CcKernelSHARED SConfigDescriptor*        getConfig();
-    CcKernelSHARED SInterfaceDescriptor*     getInterface(size_t uiIndex);
-    CcKernelSHARED SEndpointDescriptor*      getEndpoint(size_t uiIndex);
-    CcKernelSHARED CEndpointInfo&            getEndpointInfo(size_t uiIndex);
+    CcKernelSHARED uint16                    getNextInterfaceId();
+    CcKernelSHARED uint16                    getNextEndpointId(bool bInOut);
+    CcKernelSHARED SConfigDescriptor*        getConfig()
+    { return m_oBuffer.cast<IUsbDevice::SConfigDescriptor>(0);}
+    CcKernelSHARED SInterfaceDescriptor*     getInterface(size_t uiIndex)
+    { return m_oBuffer.cast<IUsbDevice::SInterfaceDescriptor>(m_oInterfaces[uiIndex]); }
+    CcKernelSHARED CInterfaceInfo&           getInterfaceInfo(size_t uiIndex)
+    { return m_oInterfaceConfigs[uiIndex]; }
+    CcKernelSHARED size_t                    getInterfaceCount() const
+    { return m_oInterfaces.size(); }
+    CcKernelSHARED SEndpointDescriptor*      getEndpoint(size_t uiIndex)
+    { return m_oBuffer.cast<IUsbDevice::SEndpointDescriptor>(m_oEndPoints[uiIndex]); }
+    CcKernelSHARED CEndpointInfo&            getEndpointInfo(size_t uiIndex)
+    { return m_oEndPointConfigs[uiIndex]; }
     CcKernelSHARED CcVector<CEndpointInfo>&  getEndpointInfos()
     { return m_oEndPointConfigs; }
-    CcKernelSHARED SFunctionalDescriptor*    getFunction(size_t uiIndex);
+    CcKernelSHARED size_t                    getEndpointCount() const
+    { return m_oEndPoints.size(); }
+    CcKernelSHARED SFunctionalDescriptor*    getFunction(size_t uiIndex)
+    { return m_oBuffer.cast<IUsbDevice::SFunctionalDescriptor>(m_oEndPoints[uiIndex]); }
 
     private:
-    CcByteArray             m_oBuffer;
-    CcVector<uint32>        m_oEndPoints;
-    CcVector<CEndpointInfo> m_oEndPointConfigs;
-    CcVector<uint32>      m_oFunctions;
-    CcVector<uint32>      m_oInterfaces;
+    CcByteArray               m_oBuffer;
+    CcVector<uint32>          m_oEndPoints;
+    CcVector<CEndpointInfo>   m_oEndPointConfigs;
+    CcVector<uint32>          m_oInterfaces;
+    CcVector<CInterfaceInfo>  m_oInterfaceConfigs;
+    CcVector<uint32>          m_oFunctions;
   };
   
   class CDeviceDescriptor : public SDeviceDescriptor
@@ -284,6 +303,8 @@ public:
 
     CcKernelSHARED uint8 findEndpoint(uint8 uiEndpoint, CConfigDescriptor** pConfig = nullptr);
 
+    CConfigDescriptor& getActiveConfig()
+    { return oConfigs[uiActiveConfig]; }
     CcKernelSHARED CcVector<CConfigDescriptor>& getConfigs()
     { return oConfigs; }
     CcKernelSHARED CcVector<SStringDescriptor*>& getStrings()
@@ -295,6 +316,7 @@ public:
   private:
     CcVector<CConfigDescriptor> oConfigs;
     CcVector<SStringDescriptor*> oStrings;
+    size_t uiActiveConfig = SIZE_MAX;
   };
 
   /**
@@ -307,29 +329,23 @@ public:
    */
   virtual ~IUsbDevice();
 
-  virtual CcStatus loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor) = 0;
   virtual void read(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize) = 0;
   virtual void write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize) = 0;
   virtual void stallEp(uint8 uiEndpoint) = 0;
   virtual void ctrlSendStatus() = 0;
   virtual void ctrlReceiveStatus() = 0;
 
+  CDeviceDescriptor& getDeviceDescriptor()
+  { return m_oDeviceDescriptor; }
+  const CDeviceDescriptor& getDeviceDescriptor() const
+  { return m_oDeviceDescriptor; }
+
   void sendError();
   static void debugMessage(const char* pMessage);
-
-  void registerInterfaceRequestEvent(const CcEvent& oEvent)
-  { m_oInterfaceRequestEvent = oEvent; }
-  void registerInterfaceReceiveEvent(const CcEvent& oEvent)
-  { m_oInterfaceReceiveEvent = oEvent; }
-
 protected:
-  void callInterfaceRequest(SRequest* pRequest)
-  { m_oInterfaceRequestEvent.call(pRequest); }
-  void callInterfaceReceive(SRequest* pRequest)
-  { m_oInterfaceReceiveEvent.call(pRequest); }
-
-  EEnpointState eEp0State    = EEnpointState::Idle;
-  uint16        uiEp0MaxSize = 64;
-  CcEvent       m_oInterfaceRequestEvent;
-  CcEvent       m_oInterfaceReceiveEvent;
+  CDeviceDescriptor     m_oDeviceDescriptor;
+  EEnpointState         m_eEp0State    = EEnpointState::Idle;
+  uint16                m_uiEp0MaxSize = 64;
+  CcEvent               m_oInterfaceRequestEvent;
+  CcEvent               m_oInterfaceReceiveEvent;
 };

@@ -44,11 +44,6 @@ CcString    CcConsole::s_ReadLineBuffer;
 
 void CcConsole::init()
 {
-  #if defined(LINUX)
-    //int opts;
-    //opts = fcntl(STDIN_FILENO, F_GETFL);
-    //fcntl(STDIN_FILENO, F_SETFL, opts | O_NONBLOCK);
-  #endif
   #ifndef GENERIC
     if(s_pLock == nullptr)
       CCNEW(s_pLock, CcMutex);
@@ -57,14 +52,6 @@ void CcConsole::init()
     if (s_pInput == nullptr)
       CCNEW(s_pInput, CcStdIn);
   #endif
-  //DWORD dw;
-  //HANDLE inh = GetStdHandle(STD_INPUT_HANDLE);
-  //BOOL pipe = !GetConsoleMode(inh, &dw);
-  //if (!pipe)
-  //{
-  //  SetConsoleMode(inh, dw & ~(ENABLE_MOUSE_INPUT | ENABLE_WINDOW_INPUT));
-  //  FlushConsoleInputBuffer(inh);
-  //}
 }
 
 void CcConsole::deinit()

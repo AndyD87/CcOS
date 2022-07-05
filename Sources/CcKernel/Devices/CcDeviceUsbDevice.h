@@ -31,19 +31,30 @@
 /**
  * @brief Class for communication with a USB-HIDevice
  */
-class CcKernelSHARED CcDeviceUsb : public CcDevice
+class CcKernelSHARED CcDeviceUsbDevice : public CcDevice
 {
 public:
   /**
    * @brief Create device with handle
    * @param oHandle: Handle to init device
    */
-  CcDeviceUsb(const CcDevice& oHandle) :
+  CcDeviceUsbDevice(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
-  virtual ~CcDeviceUsb() = default;
+  CcDeviceUsbDevice(IUsbDevice* pDevice) :
+    CcDevice(pDevice)
+  {}
+  virtual ~CcDeviceUsbDevice() = default;
 
   //! @return Get basic device handle
   IUsbDevice* getDevice() const
   { return CcDevice::getDevice<IUsbDevice>(); }
+
+  IUsbDevice* operator*()
+  { return static_cast<IUsbDevice*>(getDevice());}
+  IUsbDevice* operator->()
+  { return static_cast<IUsbDevice*>(getDevice());}
+
+  void operator=(IUsbDevice* pDevice)
+  { CcDevice::operator=(pDevice); }
 };

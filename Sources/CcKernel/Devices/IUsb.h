@@ -55,7 +55,7 @@ public:
   };
 
   //! @return Create USB device
-  virtual IUsbDevice* createDevice(const IUsbDevice::CDeviceDescriptor& CCUNUSED_PARAM(oConfig))
+  virtual IUsbDevice* createDevice()
   { return nullptr; }
   //! @return Remove USB device
   virtual void removeDevice()

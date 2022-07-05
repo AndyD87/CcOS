@@ -48,7 +48,6 @@ public: //methods
   virtual CcStatus  onState(EState eState) override;
   virtual void      idle();
 
-  virtual CcStatus loadDeviceDescriptor(const CDeviceDescriptor& oDescriptor) override;
   virtual void read(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize) override;
   virtual void write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize) override;
   virtual void stallEp(uint8 uiEndpoint) override;
@@ -72,13 +71,13 @@ public: //methods
 
   void doInputData(uint8 uiEndpoint, uint8* pBuffer);
   void doOutputData(uint8 uiEndpoint, uint8* pBuffer);
+private:
+  CcStatus onStart();
 
 private:
   PCD_HandleTypeDef     m_oPcdHandle;
   USB_OTG_GlobalTypeDef m_oGlobalDef;
   USB_OTG_CfgTypeDef    m_oConfigDef;
-
-  CDeviceDescriptor     m_oDeviceDescriptor;
 
   EUsbState m_eOldState = EUsbState::Suspended;
   EUsbState m_eCurrentSate = EUsbState::Suspended;

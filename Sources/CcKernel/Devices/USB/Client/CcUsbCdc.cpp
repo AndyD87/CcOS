@@ -27,40 +27,23 @@
 #include "Devices/IUsbDevice.h"
 #include "CcKernel.h"
 
-CcUsbCdc::CcUsbCdc(const CcDeviceUsb& oInterface) :
-  m_oInterface(oInterface)
+CcUsbCdc::CcUsbCdc(const CcDeviceUsbDevice& oInterface) :
+  m_oUsbDevice(oInterface)
 {
   m_oClassData.resize(UsbCdcDataSize);
   m_oClassData.memset(0);
+  onStart();
 }
 
 CcUsbCdc::~CcUsbCdc()
 {
-
-}
-
-CcStatus CcUsbCdc::onState(EState eState)
-{   
-  CcStatus oState;
-  switch (eState)
-  {
-    case EState::Start:
-      oState = onStart();
-      break;
-    case EState::Stop:
-      oState = onStop();
-      break;
-    default:
-      break;
-  }
-  return oState;
+  onStop();
 }
 
 size_t CcUsbCdc::read(void* pBuffer, size_t uSize)
 {
   size_t uiRead = SIZE_MAX;
-  if( m_pUsbDevice &&
-      m_pUsbDevice->isStarted())
+  if( m_oUsbDevice.isValid())
   {
     if(m_oInputBuffer.size() > 0)
     {
@@ -80,13 +63,12 @@ size_t CcUsbCdc::read(void* pBuffer, size_t uSize)
 size_t CcUsbCdc::write(const void* pBuffer, size_t uSize)
 {
   size_t uiWritten = SIZE_MAX;
-  if( m_pUsbDevice &&
-      m_pUsbDevice->isStarted())
+  if( m_oUsbDevice.isValid())
   {
     uiWritten = 0;
     while(uSize > 0)
     {
-      m_pUsbDevice->write(0x81, static_cast<const uint8*>(pBuffer), CCMIN(UINT16_MAX, static_cast<uint16>(uSize)));
+      m_oUsbDevice.getDevice()->write(0x81, static_cast<const uint8*>(pBuffer), CCMIN(UINT16_MAX, static_cast<uint16>(uSize)));
       uiWritten += CCMIN(UINT16_MAX, uSize);
       uSize -= CCMIN(UINT16_MAX, uSize);
     }
@@ -96,12 +78,12 @@ size_t CcUsbCdc::write(const void* pBuffer, size_t uSize)
 
 CcStatus CcUsbCdc::open(EOpenFlags)
 {
-  return start();
+  return onStart();
 }
 
 CcStatus CcUsbCdc::close()
 {
-  return stop();
+  return onStop();
 }
 
 CcStatus CcUsbCdc::cancel()
@@ -112,35 +94,21 @@ CcStatus CcUsbCdc::cancel()
 CcStatus CcUsbCdc::onStart()
 {   
   CcStatus oState;
-  IUsbDevice::CDeviceDescriptor oDeviceDescriptor;
-  oDeviceDescriptor.uiBcd                   = 0x0200;
-  oDeviceDescriptor.uiDeviceClass           = 2;
-  oDeviceDescriptor.uiDeviceSubClass        = 2;
-  oDeviceDescriptor.uiDeviceProtocol        = 0;
-  oDeviceDescriptor.uiMaxPacketSize         = 64;
-  oDeviceDescriptor.uiVendorId  	          = 0x1234;
-  oDeviceDescriptor.uiProductId             = 0x1234;
-  oDeviceDescriptor.uiBcdDevice             = 0x0200;
-  oDeviceDescriptor.uiManufacturerStringIdx = 1;
-  oDeviceDescriptor.uiProductStringIdx      = 2;
-  oDeviceDescriptor.uiSerialNumberStringIdx = 3;
-  oDeviceDescriptor.uiNumConfigurations     = 1;
+  IUsbDevice::CDeviceDescriptor& oDeviceDescriptor = m_oUsbDevice.getDevice()->getDeviceDescriptor();
 
   IUsbDevice::CConfigDescriptor& oConfig = oDeviceDescriptor.createConfig();
-  oConfig.getConfig()->uiNumInterfaces = 2;
   oConfig.getConfig()->uiConfigurationValue = 1;
   oConfig.getConfig()->uiConfiguration = 0;
   oConfig.getConfig()->uiAttributes = 0xC0;
   oConfig.getConfig()->uiMaxPower   = 0x32; 
 
-  IUsbDevice::SInterfaceDescriptor* oInterface0 = oConfig.createInterface();
-  oInterface0->uiInterfaceNumber = 0;
+  IUsbDevice::SInterfaceDescriptor* oInterface0 = oConfig.createInterface(NewCcEvent(this, CcUsbCdc::onInterfaceRequest));
   oInterface0->uiAlternateSetting = 0;
   oInterface0->uiNumEndpoints = 1;
   oInterface0->uiInterfaceClass = 0x02;
   oInterface0->uiInterfaceSubClass = 0x02;
   oInterface0->uiInterfaceProtocol = 0x01;
-  oInterface0->uiInterfaceIdx = 0;
+  oInterface0->uiInterfaceStringIdx = 0;
 
   IUsbDevice::SFunctionalDescriptor* pFuntional0 = oConfig.createFunctional(5);
   pFuntional0->Data.Raw.uiRaw[0]= 0x00;
@@ -161,47 +129,27 @@ CcStatus CcUsbCdc::onStart()
   pFuntional3->Data.Raw.uiRaw[1]= 0x00;
   pFuntional3->Data.Raw.uiRaw[2]= 0x01;
 
-  oConfig.createEndpoint(0x82, 0x03, 0x08, 0x10, NewCcEvent(this, CcUsbCdc::onControl));
-  IUsbDevice::SInterfaceDescriptor* pInterface1 = oConfig.createInterface();
-  pInterface1->uiInterfaceNumber = 1;
+  oConfig.createEndpoint(true, 0x03, 0x08, 0x10, NewCcEvent(this, CcUsbCdc::onControl));
+  IUsbDevice::SInterfaceDescriptor* pInterface1 = oConfig.createInterface(NewCcEvent(this, CcUsbCdc::onInterfaceRequest));
   pInterface1->uiAlternateSetting = 0;
   pInterface1->uiNumEndpoints = 2;
   pInterface1->uiInterfaceClass = 0x0A;
   pInterface1->uiInterfaceSubClass = 0x00;
   pInterface1->uiInterfaceProtocol = 0x00;
-  pInterface1->uiInterfaceIdx = 0;
+  pInterface1->uiInterfaceStringIdx = 0;
 
-  oConfig.createEndpoint(0x01, 0x02, 64, 0x00, NewCcEvent(this, CcUsbCdc::onDataIn));
-  oConfig.createEndpoint(0x81, 0x02, 64, 0x00, NewCcEvent(this, CcUsbCdc::onDataOut));
+  oConfig.createEndpoint(false, 0x02, 64, 0x00, NewCcEvent(this, CcUsbCdc::onDataIn));
+  oConfig.createEndpoint(true, 0x02, 64, 0x00, NewCcEvent(this, CcUsbCdc::onDataOut));
 
-  oDeviceDescriptor.createString("GER");
-  oDeviceDescriptor.createString("CcOS Manu");
-  oDeviceDescriptor.createString("CcOS Prod");
-  oDeviceDescriptor.createString("CcOS Seri");
-  oDeviceDescriptor.createString("CcOS Numm");
-
-  m_pUsbDevice = m_oInterface.getDevice()->createDevice(oDeviceDescriptor);
-  if(m_pUsbDevice)
-  {
-    m_pUsbDevice->registerInterfaceRequestEvent(NewCcEvent(this, CcUsbCdc::onInterfaceRequest));
-    m_pUsbDevice->registerInterfaceReceiveEvent(NewCcEvent(this, CcUsbCdc::onInterfaceReceive));
-    m_pUsbDevice->start();
-  }
-  else
-  {
-    oState = EStatus::InvalidHandle;
-  }   
   return oState;
 }
 
 CcStatus CcUsbCdc::onStop()
 {   
   CcStatus oState;
-  if(m_pUsbDevice)
+  if(m_oUsbDevice.isValid())
   {
-    m_pUsbDevice->stop();
-    m_pUsbDevice = nullptr;
-    m_oInterface.getDevice()->removeDevice();
+    m_oUsbDevice->stop();
     m_oClassData.clear();
     m_oInputBuffer.clear();
   }
@@ -224,36 +172,22 @@ void CcUsbCdc::onInterfaceRequest(IUsbDevice::SRequest* pRequest)
         if ((pRequest->bmRequest & 0x80U) != 0U)
         {
           uint16 uiLen = static_cast<uint16>(CCMIN(UsbCdcDataSize, m_oClassData.size()));
-          m_pUsbDevice->write(0, m_oClassData.cast<uint8>(), uiLen);
+          m_oUsbDevice->write(0, m_oClassData.cast<uint8>(), uiLen);
         }
         else
         {
           m_uiCmd = pRequest->bRequest;
 
           uint16 uiLen = static_cast<uint16>(CCMIN(UsbCdcDataSize, m_oClassData.size()));
-          m_pUsbDevice->read(0, m_oClassData.cast<uint8>(), uiLen);
+          m_oUsbDevice->read(0, m_oClassData.cast<uint8>(), uiLen);
         }
         break;
       }
       else
       {
-        m_pUsbDevice->ctrlSendStatus();
+        m_oUsbDevice->ctrlSendStatus();
       }
   }
-}
-
-void CcUsbCdc::onInterfaceReceive(IUsbDevice::SRequest* pRequest)
-{
-  CCUNUSED(pRequest);
-  //if(m_uiCmd != UINT8_MAX)
-  //{
-  //  switch(m_uiCmd)
-  //  {
-  //    default:
-  //    break;
-  //  }
-  //}
-  //m_uiCmd = UINT8_MAX;
 }
 
 void CcUsbCdc::onControl(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest)

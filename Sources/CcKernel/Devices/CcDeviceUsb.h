@@ -46,4 +46,9 @@ public:
   //! @return Get basic device handle
   IUsb* getDevice() const
   { return CcDevice::getDevice<IUsb>(); }
+  
+  IUsb* operator*()
+  { return static_cast<IUsb*>(getDevice());}
+  IUsb* operator->()
+  { return static_cast<IUsb*>(getDevice());}
 };

@@ -22,9 +22,10 @@
 #pragma once
 
 #include "CcBase.h"
-#include "Devices/CcDeviceUsb.h"
+#include "Devices/CcDeviceUsbDevice.h"
 #include "Devices/IIoDevice.h"
 #include "IIo.h"
+#include "CcObject.h"
 #include "CcBinaryStream.h"
 
 #define UsbCdcDataSize      7
@@ -32,17 +33,15 @@
 /**
  * @brief Control the Input and Outputports on device
  */
-class CcKernelSHARED CcUsbCdc : public IIoDevice
+class CcKernelSHARED CcUsbCdc : public CcObject, public IIo
 {
 public:
   /**
    * @brief Create device with handle
    * @param oHandle: Handle to init device
    */
-  CcUsbCdc(const CcDeviceUsb& oInterface);
+  CcUsbCdc(const CcDeviceUsbDevice& oInterface);
   virtual ~CcUsbCdc();
-  
-  virtual CcStatus onState(EState eState) override;
   
   virtual size_t read(void* pBuffer, size_t uSize) override;
   virtual size_t write(const void* pBuffer, size_t uSize) override;
@@ -50,9 +49,7 @@ public:
   virtual CcStatus close() override;
   virtual CcStatus cancel() override;
 
-
   void onInterfaceRequest(IUsbDevice::SRequest* pRequest);
-  void onInterfaceReceive(IUsbDevice::SRequest* pRequest);
   
   void onDataIn(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest);
   void onDataOut(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest);
@@ -63,10 +60,8 @@ private:
   CcStatus onStop();
 
 private:
-  CcDeviceUsb m_oInterface;
-  CcByteArray m_oClassData;
-  CcByteArray m_oInputBuffer;
-
-  IUsbDevice* m_pUsbDevice;
-  uint8       m_uiCmd = UINT8_MAX;
+  CcByteArray       m_oClassData;
+  CcByteArray       m_oInputBuffer;
+  CcDeviceUsbDevice m_oUsbDevice;
+  uint8             m_uiCmd = UINT8_MAX;
 };
