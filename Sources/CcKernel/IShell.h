@@ -33,7 +33,6 @@
 #include "CcMutex.h"
 
 class IIo;
-class IShellPassthroughThread;
 class IShellCommand;
 class CcKernelShutdownEvent;
 class CcProcess;
@@ -94,7 +93,6 @@ private:
   CcMutex                   m_oActiveCommandLock;
   IShellCommand*            m_pActiveCommand = nullptr;
   CcProcess*                m_pActiveProcess = nullptr;
-  IShellPassthroughThread*  m_pPassthroughThread = nullptr;
 
   CcString  m_sRead;
   CcString  m_sWorkingDir;

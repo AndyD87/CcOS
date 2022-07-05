@@ -11,6 +11,7 @@
 #elif defined(STM32F103xx)
 
   #define USART2_IRQHandler_Handled
+  #define TIM2_IRQHandler_Handled
 
 #elif defined(STM32F207xx)
 
