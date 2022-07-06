@@ -64,4 +64,5 @@ private:
   CcByteArray       m_oInputBuffer;
   CcDeviceUsbDevice m_oUsbDevice;
   uint8             m_uiCmd = UINT8_MAX;
+  uint8             m_uiOutEp;
 };

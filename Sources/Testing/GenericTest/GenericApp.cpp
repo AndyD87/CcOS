@@ -50,6 +50,9 @@ void GenericApp::run()
     if(oUsbDevice.isValid())
     {
       IUsbDevice::CDeviceDescriptor& oDeviceDescriptor = oUsbDevice.getDevice()->getDeviceDescriptor();
+      oDeviceDescriptor.uiDeviceClass           = 0xef;
+      oDeviceDescriptor.uiDeviceSubClass        = 0x02;
+      oDeviceDescriptor.uiDeviceProtocol        = 0x01;
       oDeviceDescriptor.uiBcd                   = 0x0200;
       oDeviceDescriptor.uiMaxPacketSize         = 64;
       oDeviceDescriptor.uiVendorId  	          = 0x1234;
@@ -62,9 +65,18 @@ void GenericApp::run()
       oDeviceDescriptor.createString("CcOS Manu");
       oDeviceDescriptor.createString("CcOS Prod");
       oDeviceDescriptor.createString("CcOS Seri");
+      
+      IUsbDevice::CConfigDescriptor& oConfig = oDeviceDescriptor.createConfig();
+      oConfig.getConfig()->uiConfigurationValue = 1;
+      oConfig.getConfig()->uiConfiguration = 0;
+      oConfig.getConfig()->uiAttributes = 0xC0;
+      oConfig.getConfig()->uiMaxPower   = 0x32;
 
       CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);   
       oStatus = m_pCdcDevice->open(EOpenFlags::ReadWrite);
+
+      CCNEWTYPE(pCdcDevice, CcUsbCdc, oUsbDevice);   
+      oStatus = pCdcDevice->open(EOpenFlags::ReadWrite);
 
       if(oStatus)
       {

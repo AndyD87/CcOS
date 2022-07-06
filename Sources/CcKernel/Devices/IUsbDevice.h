@@ -144,6 +144,27 @@ public:
       }
     };
     
+    struct CcKernelSHARED SInterfaceAssociationDescriptor
+    {
+      public:
+      uint8   uiLength;               //< Size of descriptor in bytes
+      uint8   uiDescriptorType;       //< Interface Descriptor
+      uint8   uiFirstInterface;       //< Number of Interface
+      uint8   uiInterfaceCount;       //< Value used to select alternative setting
+      uint8   uiDeviceClass;          //< Number of Endpoints used for this interface
+      uint8   uiDeviceSubClass = 0;   //< Sub-Class information
+      uint8   uiDeviceProtocol = 0;   //< Protocoll information
+      uint8   uiInterfaceStringIdx;   //< Index of String Descriptor Describing this interface
+
+      SInterfaceAssociationDescriptor() = delete;
+      ~SInterfaceAssociationDescriptor() = delete;
+      void init()
+      {
+        uiLength = sizeof(SInterfaceAssociationDescriptor);
+        uiDescriptorType = 0x0B;
+      }
+    };
+    
     struct CcKernelSHARED SEndpointDescriptor
     {
       public:
@@ -261,12 +282,13 @@ public:
     CcKernelSHARED void* generateConfiguration(uint16& uiSize);
 
     CcKernelSHARED SInterfaceDescriptor* createInterface(const CcEvent& oOnRequest);
+    CcKernelSHARED SInterfaceAssociationDescriptor* createInterfaceAssociation(uint8 uiInterfaceCount);
     CcKernelSHARED SEndpointDescriptor* createEndpoint(bool bInOut, uint8 uiAttributes, uint16 wMaxPacketSize, uint8 uInterval, const CcEvent& oOnChange);
     CcKernelSHARED SFunctionalDescriptor* createFunctional(uint8 uiSize);
     CcKernelSHARED void setupInterfaces();
 
-    CcKernelSHARED uint16                    getNextInterfaceId();
-    CcKernelSHARED uint16                    getNextEndpointId(bool bInOut);
+    CcKernelSHARED uint8                     getNextInterfaceId();
+    CcKernelSHARED uint8                     getNextEndpointId(bool bInOut);
     CcKernelSHARED SConfigDescriptor*        getConfig()
     { return m_oBuffer.cast<IUsbDevice::SConfigDescriptor>(0);}
     CcKernelSHARED SInterfaceDescriptor*     getInterface(size_t uiIndex)
@@ -302,6 +324,7 @@ public:
     CcKernelSHARED ~CDeviceDescriptor();
 
     CcKernelSHARED uint8 findEndpoint(uint8 uiEndpoint, CConfigDescriptor** pConfig = nullptr);
+    CcKernelSHARED uint8 findInterface(uint8 uiEndpoint, CConfigDescriptor** pConfig = nullptr);
 
     CConfigDescriptor& getActiveConfig()
     { return oConfigs[uiActiveConfig]; }
@@ -346,6 +369,4 @@ protected:
   CDeviceDescriptor     m_oDeviceDescriptor;
   EEnpointState         m_eEp0State    = EEnpointState::Idle;
   uint16                m_uiEp0MaxSize = 64;
-  CcEvent               m_oInterfaceRequestEvent;
-  CcEvent               m_oInterfaceReceiveEvent;
 };

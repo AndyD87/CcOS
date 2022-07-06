@@ -475,8 +475,26 @@ void STM32UsbDevice::doSetupDeviceConfigDescriptor(uint8*& pBuffer, uint16& uiSi
 void STM32UsbDevice::doSetupInterface()
 {
   SRequest* pRequest = reinterpret_cast<SRequest*>(m_oPcdHandle.Setup);
-  IUsbDevice::CConfigDescriptor::CInterfaceInfo& oInterface =  m_oDeviceDescriptor.getActiveConfig().getInterfaceInfo(0);
-  oInterface.oOnRequest.call(pRequest);
+  /* Find the class ID relative to the current request */
+  switch (pRequest->bmRequest & 0x1FU)
+  {
+    case UsbRequestTarget_INTERFACE:
+    {
+      CConfigDescriptor* pConfig;
+      m_oDeviceDescriptor.findInterface(pRequest->wIndex, &pConfig);
+      if(pConfig)
+      {
+        pConfig->getInterfaceInfo(pRequest->wIndex).oOnRequest.call(pRequest);
+      }
+      break;
+    }
+    case UsbRequestTarget_ENDPOINT:
+      IUsbDevice::debugMessage("STM32UsbDevice::doOutputData Endpoint request");
+      break;
+    default:
+      IUsbDevice::debugMessage("STM32UsbDevice::doOutputData Unknown request");
+      break;
+  }
 }
 
 void STM32UsbDevice::doSetupEndPoint()
@@ -493,31 +511,40 @@ void STM32UsbDevice::doSetConfiguration()
     // @todo Configure and open endpoints. Enpoint interfaces are required
     IUsbDevice::CConfigDescriptor& oConfig = m_oDeviceDescriptor.getActiveConfig();
     for(size_t uiIdx=0; uiIdx<oConfig.getEndpointCount(); uiIdx++)  
-    {
-      HAL_PCD_EP_Open(
-        getPcdHandle(), 
-        oConfig.getEndpoint(uiIdx)->uiEndpointAddress,
-        oConfig.getEndpoint(uiIdx)->wMaxPacketSize,
-        oConfig.getEndpoint(uiIdx)->uiAttributes
-      );
-      if(oConfig.getEndpoint(uiIdx)->uiEndpointAddress == 0 ||
-          oConfig.getEndpoint(uiIdx)->uiEndpointAddress == 0x80)
+    { 
+      IUsbDevice::SEndpointDescriptor* pEndPoint = oConfig.getEndpoint(uiIdx);
+      IUsbDevice::CConfigDescriptor::CEndpointInfo& oEndPointInfo = oConfig.getEndpointInfo(uiIdx);
+      HAL_StatusTypeDef uiHallResult = HAL_PCD_EP_Open(
+                                          getPcdHandle(), 
+                                          pEndPoint->uiEndpointAddress,
+                                          pEndPoint->wMaxPacketSize,
+                                          pEndPoint->uiAttributes
+                                        );
+      if(uiHallResult != HAL_OK)
+      {
+        IUsbDevice::debugMessage(("Failed to setup endpoint: " + CcString::fromNumber((uint8)uiHallResult)).getCharString());
+      }
+      else if(pEndPoint->uiEndpointAddress == 0 ||
+          pEndPoint->uiEndpointAddress == 0x80)
       { 
         // Nothing to do, it is our default config
       }
-      else if(oConfig.getEndpoint(uiIdx)->uiEndpointAddress < 0x80)
+      else if(pEndPoint->uiEndpointAddress < 0x80)
       {
         // Setup receive buffer
-        oConfig.getEndpointInfo(uiIdx).oInBuffer.resize(oConfig.getEndpoint(uiIdx)->wMaxPacketSize);
-
-        // Prepare receive
-        HAL_PCD_EP_Receive(
+        oConfig.getEndpointInfo(uiIdx).oInBuffer.resize(pEndPoint->wMaxPacketSize);
+        uiHallResult = HAL_PCD_EP_Receive(
           getPcdHandle(), 
-          oConfig.getEndpoint(uiIdx)->uiEndpointAddress,
-          oConfig.getEndpointInfo(uiIdx).oInBuffer.cast<uint8>(), 
-          oConfig.getEndpoint(uiIdx)->wMaxPacketSize
+          pEndPoint->uiEndpointAddress,
+          oEndPointInfo.oInBuffer.cast<uint8>(), 
+          pEndPoint->wMaxPacketSize
         );
-      } 
+        // Prepare receive
+        if(HAL_OK != uiHallResult)
+        {
+          IUsbDevice::debugMessage("Failed to setup receive endpoint");
+        }
+      }
     }
   }
 }
@@ -612,8 +639,16 @@ void STM32UsbDevice::doOutputData(uint8 uiEndpoint, uint8* pBuffer)
         switch (pRequest->bmRequest & 0x1FU)
         {
           case UsbRequestTarget_INTERFACE:
-            m_oInterfaceReceiveEvent.call(pRequest);
+          {
+            CConfigDescriptor* pConfig;
+            m_oDeviceDescriptor.findInterface(pRequest->wIndex, &pConfig);
+            if(pConfig)
+            {
+              // Signal transfer done
+              //pConfig->getInterfaceInfo(pRequest->wIndex).oOnRequest.call(pRequest);
+            }
             break;
+          }
           case UsbRequestTarget_ENDPOINT:
             IUsbDevice::debugMessage("STM32UsbDevice::doOutputData Endpoint request");
             break;

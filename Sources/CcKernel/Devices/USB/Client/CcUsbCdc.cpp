@@ -32,12 +32,11 @@ CcUsbCdc::CcUsbCdc(const CcDeviceUsbDevice& oInterface) :
 {
   m_oClassData.resize(UsbCdcDataSize);
   m_oClassData.memset(0);
-  onStart();
 }
 
 CcUsbCdc::~CcUsbCdc()
 {
-  onStop();
+  close();
 }
 
 size_t CcUsbCdc::read(void* pBuffer, size_t uSize)
@@ -68,7 +67,7 @@ size_t CcUsbCdc::write(const void* pBuffer, size_t uSize)
     uiWritten = 0;
     while(uSize > 0)
     {
-      m_oUsbDevice.getDevice()->write(0x81, static_cast<const uint8*>(pBuffer), CCMIN(UINT16_MAX, static_cast<uint16>(uSize)));
+      m_oUsbDevice.getDevice()->write(m_uiOutEp, static_cast<const uint8*>(pBuffer), CCMIN(UINT16_MAX, static_cast<uint16>(uSize)));
       uiWritten += CCMIN(UINT16_MAX, uSize);
       uSize -= CCMIN(UINT16_MAX, uSize);
     }
@@ -94,42 +93,42 @@ CcStatus CcUsbCdc::cancel()
 CcStatus CcUsbCdc::onStart()
 {   
   CcStatus oState;
-  IUsbDevice::CDeviceDescriptor& oDeviceDescriptor = m_oUsbDevice.getDevice()->getDeviceDescriptor();
+  IUsbDevice::CConfigDescriptor& oConfig = m_oUsbDevice.getDevice()->getDeviceDescriptor().getActiveConfig();
 
-  IUsbDevice::CConfigDescriptor& oConfig = oDeviceDescriptor.createConfig();
-  oConfig.getConfig()->uiConfigurationValue = 1;
-  oConfig.getConfig()->uiConfiguration = 0;
-  oConfig.getConfig()->uiAttributes = 0xC0;
-  oConfig.getConfig()->uiMaxPower   = 0x32; 
+  IUsbDevice::SInterfaceAssociationDescriptor* oInterfaceAssoc = oConfig.createInterfaceAssociation(2);
+  oInterfaceAssoc->uiDeviceClass = 2;
+  oInterfaceAssoc->uiDeviceSubClass = 2;
+  oInterfaceAssoc->uiDeviceProtocol = 1;
 
   IUsbDevice::SInterfaceDescriptor* oInterface0 = oConfig.createInterface(NewCcEvent(this, CcUsbCdc::onInterfaceRequest));
   oInterface0->uiAlternateSetting = 0;
   oInterface0->uiNumEndpoints = 1;
-  oInterface0->uiInterfaceClass = 0x02;
-  oInterface0->uiInterfaceSubClass = 0x02;
-  oInterface0->uiInterfaceProtocol = 0x01;
+  oInterface0->uiInterfaceClass = 0x02;     // USB-Class Communication
+  oInterface0->uiInterfaceSubClass = 0x02;  // Abstract Control Model
+  oInterface0->uiInterfaceProtocol = 0x01;  // AT Command V.250 protocol
   oInterface0->uiInterfaceStringIdx = 0;
 
   IUsbDevice::SFunctionalDescriptor* pFuntional0 = oConfig.createFunctional(5);
-  pFuntional0->Data.Raw.uiRaw[0]= 0x00;
-  pFuntional0->Data.Raw.uiRaw[1]= 0x10;
-  pFuntional0->Data.Raw.uiRaw[2]= 0x01;
+  pFuntional0->Data.Raw.uiRaw[0]= 0x00;   // Header
+  pFuntional0->Data.Raw.uiRaw[1]= 0x10;   // BCD CDC
+  pFuntional0->Data.Raw.uiRaw[2]= 0x01;   // BCD CDC continue
   
   IUsbDevice::SFunctionalDescriptor* pFuntional1 = oConfig.createFunctional(5);
-  pFuntional1->Data.Raw.uiRaw[0]= 0x01;
-  pFuntional1->Data.Raw.uiRaw[1]= 0x00;
-  pFuntional1->Data.Raw.uiRaw[2]= 0x01;
+  pFuntional1->Data.Raw.uiRaw[0]= 0x01;                             // bDescriptorsubtype, CALL MANAGEMENT
+  pFuntional1->Data.Raw.uiRaw[1]= 0x00;                             // bmCapabilities, DIY
+  pFuntional1->Data.Raw.uiRaw[2]= oInterface0->uiInterfaceNumber+1; // DataInterface
   
   IUsbDevice::SFunctionalDescriptor* pFuntional2 = oConfig.createFunctional(4);
-  pFuntional2->Data.Raw.uiRaw[0]= 0x02;
-  pFuntional2->Data.Raw.uiRaw[1]= 0x02;
+  pFuntional2->Data.Raw.uiRaw[0]= 0x02; // bDescriptorsubtype, ABSTRACT CONTROL MANAGEMENT
+  pFuntional2->Data.Raw.uiRaw[1]= 0x00; // bmCapabilities: Supports subset of ACM commands
 
   IUsbDevice::SFunctionalDescriptor* pFuntional3 = oConfig.createFunctional(5);
-  pFuntional3->Data.Raw.uiRaw[0]= 0x06;
-  pFuntional3->Data.Raw.uiRaw[1]= 0x00;
-  pFuntional3->Data.Raw.uiRaw[2]= 0x01;
+  pFuntional3->Data.Raw.uiRaw[0]= 0x06;                             // bDescriptorsubtype, UNION
+  pFuntional3->Data.Raw.uiRaw[1]= oInterface0->uiInterfaceNumber;   // bControlInterface - Interface
+  pFuntional1->Data.Raw.uiRaw[2]= oInterface0->uiInterfaceNumber+1; // bSubordinateInterface0 - bControlInterface + 1
 
   oConfig.createEndpoint(true, 0x03, 0x08, 0x10, NewCcEvent(this, CcUsbCdc::onControl));
+
   IUsbDevice::SInterfaceDescriptor* pInterface1 = oConfig.createInterface(NewCcEvent(this, CcUsbCdc::onInterfaceRequest));
   pInterface1->uiAlternateSetting = 0;
   pInterface1->uiNumEndpoints = 2;
@@ -138,8 +137,12 @@ CcStatus CcUsbCdc::onStart()
   pInterface1->uiInterfaceProtocol = 0x00;
   pInterface1->uiInterfaceStringIdx = 0;
 
-  oConfig.createEndpoint(false, 0x02, 64, 0x00, NewCcEvent(this, CcUsbCdc::onDataIn));
-  oConfig.createEndpoint(true, 0x02, 64, 0x00, NewCcEvent(this, CcUsbCdc::onDataOut));
+  oConfig.createEndpoint(true, 0x02, 64, 0x00, NewCcEvent(this, CcUsbCdc::onDataIn));
+  IUsbDevice::SEndpointDescriptor* pEp = oConfig.createEndpoint(false, 0x02, 64, 0x00, NewCcEvent(this, CcUsbCdc::onDataOut));
+  if(pEp)
+  {
+    m_uiOutEp = pEp->uiEndpointAddress;
+  }
 
   return oState;
 }
@@ -181,18 +184,21 @@ void CcUsbCdc::onInterfaceRequest(IUsbDevice::SRequest* pRequest)
           uint16 uiLen = static_cast<uint16>(CCMIN(UsbCdcDataSize, m_oClassData.size()));
           m_oUsbDevice->read(0, m_oClassData.cast<uint8>(), uiLen);
         }
-        break;
       }
       else
       {
         m_oUsbDevice->ctrlSendStatus();
       }
+      break;
+    default:
+      IUsbDevice::debugMessage("CcUsbCdc::onInterfaceRequest");
   }
 }
 
 void CcUsbCdc::onControl(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest)
 {
   CCUNUSED(pRequest);
+  IUsbDevice::debugMessage("CcUsbCdc::onControl");
 }
 
 void CcUsbCdc::onDataIn(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest)
