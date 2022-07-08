@@ -99,7 +99,7 @@ public:
   /**
    * @brief Copy content from another node to this node
    * @param oToCopy: Objet to copy from
-   * @return Hanlde to this
+   * @return Handle to this
    */
   CcXmlNode& operator=(const CcXmlNode& oToCopy);
 
@@ -172,14 +172,14 @@ public:
   /**
    * @brief Append another node to child list
    * @param oAppend: Target node to append
-   * @return Hanlde to this
+   * @return Handle to this
    */
   CcXmlNode& append(const CcXmlNode& oAppend);
 
   /**
    * @brief Append another node to child list by moving it's content
    * @param oAppend: Target node to move and append
-   * @return Hanlde to this
+   * @return Handle to this
    */
   CcXmlNode& append(CcXmlNode&& oAppend);
 

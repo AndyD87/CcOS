@@ -63,6 +63,11 @@
 #define  UsbDescriptorType_OTHER_SPEED_CONFIGURATION        0x07U
 #define  UsbDescriptorType_BOS                              0x0FU
 
+#define UsbFeature_EP_HALT                             0x00U
+#define UsbFeature_REMOTE_WAKEUP                       0x01U
+#define UsbFeature_TEST_MODE                           0x02U
+
+
 /**
  * @brief Class for communication with a USB-HIDevice
  *        Informations from https://www.beyondlogic.org/usbnutshell/usb5.shtml
@@ -231,7 +236,7 @@ public:
       public:
       uint8   uiLength         = 0x00;    //< Size of descriptor in bytes
       uint8   uiDescriptorType = 0x03;    //< String Descriptor
-      char    pString[3];                  //< String described
+      uint16 pString[1];                  //< Unicode string described
     };
 
     struct CcKernelSHARED SRequest
@@ -242,6 +247,7 @@ public:
       uint16_t  wValue;
       uint16_t  wIndex;
       uint16_t  wLength;
+      uint8     uiData[7];
     };
   #pragma pack(pop)
   
@@ -276,19 +282,21 @@ public:
     {
       public:
       CcEvent                oOnRequest;
+      CcEvent                oOnReadDone;
       SInterfaceDescriptor*  pDescriptor;
     };
 
     CcKernelSHARED void* generateConfiguration(uint16& uiSize);
 
-    CcKernelSHARED SInterfaceDescriptor* createInterface(const CcEvent& oOnRequest);
+    CcKernelSHARED SInterfaceDescriptor* createInterface(const CcEvent& oOnRequest, const CcEvent& oOnReadDone);
     CcKernelSHARED SInterfaceAssociationDescriptor* createInterfaceAssociation(uint8 uiInterfaceCount);
-    CcKernelSHARED SEndpointDescriptor* createEndpoint(bool bInOut, uint8 uiAttributes, uint16 wMaxPacketSize, uint8 uInterval, const CcEvent& oOnChange);
+    CcKernelSHARED SEndpointDescriptor* createEndpoint(bool bInOut, uint8 uiAttributes, uint16 wMaxPacketSize, uint8 uInterval, const CcEvent& oOnChange, bool bCreateNewId = true);
     CcKernelSHARED SFunctionalDescriptor* createFunctional(uint8 uiSize);
     CcKernelSHARED void setupInterfaces();
 
     CcKernelSHARED uint8                     getNextInterfaceId();
-    CcKernelSHARED uint8                     getNextEndpointId(bool bInOut);
+    CcKernelSHARED uint8                     getNextEndpointId();
+    CcKernelSHARED uint8                     getLastEndpointId();
     CcKernelSHARED SConfigDescriptor*        getConfig()
     { return m_oBuffer.cast<IUsbDevice::SConfigDescriptor>(0);}
     CcKernelSHARED SInterfaceDescriptor*     getInterface(size_t uiIndex)

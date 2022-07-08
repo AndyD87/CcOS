@@ -218,5 +218,5 @@ private:
   EThreadState m_State;           //!< Current thread state
   CcMutex m_oStateLock;           //!< Keep state changes thread safe with this lock
   CcStatus m_oExitCode = 0;       //!< Exit code wich will be returned if application ends
-  CcEventHandler m_oStateHandler; //!< State change notification hanlder
+  CcEventHandler m_oStateHandler; //!< State change notification Handler
 };

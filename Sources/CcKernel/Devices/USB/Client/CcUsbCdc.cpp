@@ -100,7 +100,7 @@ CcStatus CcUsbCdc::onStart()
   oInterfaceAssoc->uiDeviceSubClass = 2;
   oInterfaceAssoc->uiDeviceProtocol = 1;
 
-  IUsbDevice::SInterfaceDescriptor* oInterface0 = oConfig.createInterface(NewCcEvent(this, CcUsbCdc::onInterfaceRequest));
+  IUsbDevice::SInterfaceDescriptor* oInterface0 = oConfig.createInterface(NewCcEvent(this, CcUsbCdc::onInterfaceRequest), NewCcEventEmpty());
   oInterface0->uiAlternateSetting = 0;
   oInterface0->uiNumEndpoints = 1;
   oInterface0->uiInterfaceClass = 0x02;     // USB-Class Communication
@@ -129,7 +129,7 @@ CcStatus CcUsbCdc::onStart()
 
   oConfig.createEndpoint(true, 0x03, 0x08, 0x10, NewCcEvent(this, CcUsbCdc::onControl));
 
-  IUsbDevice::SInterfaceDescriptor* pInterface1 = oConfig.createInterface(NewCcEvent(this, CcUsbCdc::onInterfaceRequest));
+  IUsbDevice::SInterfaceDescriptor* pInterface1 = oConfig.createInterface(NewCcEvent(this, CcUsbCdc::onInterfaceRequest), NewCcEvent(this, CcUsbCdc::onInterfaceReadDone));
   pInterface1->uiAlternateSetting = 0;
   pInterface1->uiNumEndpoints = 2;
   pInterface1->uiInterfaceClass = 0x0A;
@@ -138,7 +138,7 @@ CcStatus CcUsbCdc::onStart()
   pInterface1->uiInterfaceStringIdx = 0;
 
   oConfig.createEndpoint(true, 0x02, 64, 0x00, NewCcEvent(this, CcUsbCdc::onDataIn));
-  IUsbDevice::SEndpointDescriptor* pEp = oConfig.createEndpoint(false, 0x02, 64, 0x00, NewCcEvent(this, CcUsbCdc::onDataOut));
+  IUsbDevice::SEndpointDescriptor* pEp = oConfig.createEndpoint(false, 0x02, 64, 0x00, NewCcEvent(this, CcUsbCdc::onDataOut), false);
   if(pEp)
   {
     m_uiOutEp = pEp->uiEndpointAddress;
@@ -168,8 +168,6 @@ void CcUsbCdc::onInterfaceRequest(IUsbDevice::SRequest* pRequest)
   switch (pRequest->bmRequest & UsbRequestType_MASK)
   {
     case UsbRequestType_CLASS:
-    case UsbRequestType_VENDOR:
-    case UsbRequestType_STANDARD:
       if (pRequest->wLength != 0U)
       {
         if ((pRequest->bmRequest & 0x80U) != 0U)
@@ -190,8 +188,24 @@ void CcUsbCdc::onInterfaceRequest(IUsbDevice::SRequest* pRequest)
         m_oUsbDevice->ctrlSendStatus();
       }
       break;
+    case UsbRequestType_VENDOR:
+    case UsbRequestType_STANDARD:
     default:
       IUsbDevice::debugMessage("CcUsbCdc::onInterfaceRequest");
+  }
+}
+
+void CcUsbCdc::onInterfaceReadDone(IUsbDevice::SRequest* pRequest)
+{
+  switch (pRequest->bmRequest & UsbRequestType_MASK)
+  {
+    case UsbRequestType_CLASS:
+    case UsbRequestType_VENDOR:
+    case UsbRequestType_STANDARD:
+      IUsbDevice::debugMessage("CcUsbCdc::onInterfaceReadDone known");
+      break;
+    default:
+      IUsbDevice::debugMessage("CcUsbCdc::onInterfaceReadDone");
   }
 }
 

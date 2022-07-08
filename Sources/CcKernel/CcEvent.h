@@ -270,3 +270,10 @@ private:
  */
 #define NewCcEvent(CCOBJECT,CCMETHOD) \
   CcEvent::create(CCOBJECT,CcEvent_EventCasting(CLASSOFP(CCOBJECT),&CCMETHOD))
+
+/**
+ * @brief Create new empty event with no target to call
+ * @return Created event object.
+ */
+#define NewCcEventEmpty() \
+  CcEvent::create(nullptr,nullptr)

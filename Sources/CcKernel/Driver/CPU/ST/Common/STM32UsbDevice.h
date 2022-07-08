@@ -53,6 +53,7 @@ public: //methods
   virtual void stallEp(uint8 uiEndpoint) override;
   virtual void ctrlSendStatus() override;
   virtual void ctrlReceiveStatus() override;
+  void ctrlSendError();
 
   inline PCD_HandleTypeDef* getPcdHandle()
   { return &m_oPcdHandle; }

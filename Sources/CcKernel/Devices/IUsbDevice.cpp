@@ -27,6 +27,7 @@
 #include "CcStatic.h"
 #include "CcKernel.h"
 #include "CcConsole.h"
+#include "CcWString.h"
 
 IUsbDevice::CDeviceDescriptor::CDeviceDescriptor()
 {
@@ -86,12 +87,13 @@ IUsbDevice::CConfigDescriptor& IUsbDevice::CDeviceDescriptor::createConfig()
 
 IUsbDevice::SStringDescriptor& IUsbDevice::CDeviceDescriptor::createString(const CcString& sValue)
 {
-  uint8 uiStringLength = static_cast<uint8>((sizeof(SStringDescriptor) - 3) + sValue.length());
+  CcWString oWString(sValue);
+  uint8 uiStringLength = static_cast<uint8>((sizeof(SStringDescriptor) - (sizeof(SStringDescriptor().pString))) + (oWString.length()*sizeof(uint16)));
   CCNEWARRAYTYPE(pBuffer, uint8, uiStringLength);
   SStringDescriptor* pCasted = reinterpret_cast<SStringDescriptor*>(pBuffer);
   pCasted->uiDescriptorType = 0x03;
   pCasted->uiLength = uiStringLength;
-  CcStatic::memcpy(&pCasted->pString, sValue.getCharString(), sValue.length());
+  oWString.toUtf16(&pCasted->pString[0], oWString.length());
   oStrings.append(pCasted);
   return *pCasted;
 }
@@ -122,7 +124,7 @@ IUsbDevice::SInterfaceAssociationDescriptor* IUsbDevice::CConfigDescriptor::crea
   return m_oBuffer.cast<IUsbDevice::SInterfaceAssociationDescriptor>(uiCurrentOffset);
 }
 
-IUsbDevice::SInterfaceDescriptor* IUsbDevice::CConfigDescriptor::createInterface(const CcEvent& oOnRequest)
+IUsbDevice::SInterfaceDescriptor* IUsbDevice::CConfigDescriptor::createInterface(const CcEvent& oOnRequest, const CcEvent& oOnReadDone)
 {
   uint16 uiNextInterfaceId = getNextInterfaceId();
   uint32 uiCurrentOffset = static_cast<uint32>(m_oBuffer.size());
@@ -134,6 +136,7 @@ IUsbDevice::SInterfaceDescriptor* IUsbDevice::CConfigDescriptor::createInterface
   getConfig()->uiTotalLength = static_cast<uint16_t>(m_oBuffer.size());  
   
   CInterfaceInfo oInterface;
+  oInterface.oOnReadDone = oOnReadDone;
   oInterface.oOnRequest = oOnRequest;
   oInterface.pDescriptor = pInterface;
   m_oInterfaceConfigs.append(oInterface);
@@ -176,18 +179,19 @@ uint8 IUsbDevice::CConfigDescriptor::getNextInterfaceId()
   return getInterfaceCount();
 }
 
-uint8 IUsbDevice::CConfigDescriptor::getNextEndpointId(bool bInOut)
+uint8 IUsbDevice::CConfigDescriptor::getNextEndpointId()
 {
-  uint8 uiMax = bInOut ? 16 : 0x80 + 16;
-  uint16 uiId  = bInOut ? 1 : 0x81;
-  for(; uiId < uiMax; uiId++)
+  uint16 uiId  = 1;
+  for(; uiId < 16; uiId++)
   {
     bool bFound = false;
     for(CEndpointInfo& oEpInfo : m_oEndPointConfigs)
     {
-      if(oEpInfo.pDescriptor->uiEndpointAddress == uiId)
+      if(oEpInfo.pDescriptor->uiEndpointAddress == uiId ||
+         oEpInfo.pDescriptor->uiEndpointAddress == (uiId | 0x80))
       {
         bFound = true;
+        break;
       }
     }
     if(bFound == false)
@@ -198,15 +202,29 @@ uint8 IUsbDevice::CConfigDescriptor::getNextEndpointId(bool bInOut)
   return uiId;
 }
 
+uint8 IUsbDevice::CConfigDescriptor::getLastEndpointId()
+{
+  return getEndpoint(getEndpointCount()-1)->uiEndpointAddress & 0x7f;
+}
+
 IUsbDevice::SEndpointDescriptor* IUsbDevice::CConfigDescriptor::createEndpoint(
           bool bInOut, 
           uint8 uiAttributes, 
           uint16 wMaxPacketSize, 
           uint8 uInterval,
-          const CcEvent& oOnChange
+          const CcEvent& oOnChange,
+          bool bCreateNewId
 )
 {
-  uint8 uiNextEndpointId = getNextEndpointId(bInOut);
+  uint8 uiNextEndpointId = bInOut ? 0 : 0x80;
+  if(bCreateNewId)
+  {
+    uiNextEndpointId |= getNextEndpointId();
+  }
+  else
+  {
+    uiNextEndpointId |= getLastEndpointId();
+  }
   uint32 uiCurrentOffset = static_cast<uint32>(m_oBuffer.size());
   m_oBuffer.resize(m_oBuffer.size() + sizeof(SEndpointDescriptor));
   IUsbDevice::SEndpointDescriptor* pInterface = m_oBuffer.cast<IUsbDevice::SEndpointDescriptor>(uiCurrentOffset);

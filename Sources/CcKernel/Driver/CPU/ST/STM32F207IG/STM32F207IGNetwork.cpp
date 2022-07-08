@@ -64,7 +64,7 @@ STM32F207IGNetwork::CPrivate* STM32F207IGNetwork::CPrivate::s_Instance(nullptr);
  * @brief Initialize defualt settings for PHY interface
  * @param pMacDef: Init struct to fill
  */
-void STM32F207IGNetwork_defaultInitMac(ETH_MACInitTypeDef* pMacDef)
+void STM32F207IGNetwork_defaultInitMac(ETH_MACConfigTypeDef* pMacDef)
 {
     pMacDef->Watchdog = ETH_WATCHDOG_ENABLE;
     pMacDef->Jabber = ETH_JABBER_ENABLE;
@@ -146,7 +146,7 @@ STM32F207IGNetwork::STM32F207IGNetwork()
     /* Initialize Rx Descriptors list: Chain Mode */
     HAL_ETH_DMARxDescListInit(&m_pPrivate->oTypeDef, m_pPrivate->pDMARxDscrTab, m_pPrivate->oRx_Buff[0], ETH_RXBUFNB);
 
-    ETH_MACInitTypeDef oMacDef;
+    ETH_MACConfigTypeDef oMacDef;
     STM32F207IGNetwork_defaultInitMac(&oMacDef);
     if(HAL_ETH_ConfigMAC(&m_pPrivate->oTypeDef, &oMacDef) == HAL_OK)
     {

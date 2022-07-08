@@ -50,6 +50,7 @@ public:
   virtual CcStatus cancel() override;
 
   void onInterfaceRequest(IUsbDevice::SRequest* pRequest);
+  void onInterfaceReadDone(IUsbDevice::SRequest* pRequest);
   
   void onDataIn(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest);
   void onDataOut(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest);

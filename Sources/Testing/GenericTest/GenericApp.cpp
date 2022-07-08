@@ -61,7 +61,10 @@ void GenericApp::run()
       oDeviceDescriptor.uiManufacturerStringIdx = 1;
       oDeviceDescriptor.uiProductStringIdx      = 2;
       oDeviceDescriptor.uiSerialNumberStringIdx = 3;
-      oDeviceDescriptor.createString("GER");
+      IUsbDevice::SStringDescriptor& pString = oDeviceDescriptor.createString("123");
+      pString.uiLength = sizeof(IUsbDevice::SStringDescriptor);
+      pString.pString[0] = 0x0409;
+      
       oDeviceDescriptor.createString("CcOS Manu");
       oDeviceDescriptor.createString("CcOS Prod");
       oDeviceDescriptor.createString("CcOS Seri");
@@ -84,9 +87,14 @@ void GenericApp::run()
         if(oStatus)
         {
           CCNEW(m_pShell, IShell);   
-          m_pShell->init(m_pCdcDevice);
+          m_pShell->init(pCdcDevice);
           m_pShell->initDefaultCommands();
           m_pShell->start();
+          
+          CCNEWTYPE(pShell, IShell);   
+          pShell->init(pCdcDevice);
+          pShell->initDefaultCommands();
+          pShell->start();
         }
       }
     }

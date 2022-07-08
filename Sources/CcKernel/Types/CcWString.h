@@ -487,16 +487,24 @@ public:
    * @brief Import string from UTF8
    * @param wcString: String as char array
    * @param uiLength: Number character to import
-   * @return Hanlde to this
+   * @return Handle to this
    */
   CcWString& fromString(const char* wcString, size_t uiLength);
 
   /**
    * @brief Import string from UTF8
    * @param oString: CcString to import
-   * @return Hanlde to this
+   * @return Handle to this
    */
   CcWString& fromString(const CcString& oString);
+
+  /**
+   * @brief Write string to uint16 array
+   * @param pBuffer: Target output buffer
+   * @param uiSize:  Size of target output buffer
+   * @return Handle to this
+   */
+  CcWString& toUtf16(uint16* pBuffer, size_t uiSize);
 
   /**
    * @brief Length of this WString in characters

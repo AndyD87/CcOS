@@ -98,7 +98,7 @@ void IShell::run()
       updatePrefix();
       m_sRead.clear();
       if(uiReceived != SIZE_MAX)
-      m_pIoStream->writeString(m_sPrefix);
+        m_pIoStream->writeString(m_sPrefix);
 
       uiReceived = readLine();
       // Handle the line

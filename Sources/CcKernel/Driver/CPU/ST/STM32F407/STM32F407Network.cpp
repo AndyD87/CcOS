@@ -60,41 +60,42 @@ CCEXTERNC void ETH_IRQHandler()
 
 STM32F407NetworkPrivate* STM32F407NetworkPrivate::s_Instance(nullptr);
 
+#define TO_FUNCTIONAL_STATE(STATE) (!STATE ? DISABLE : ENABLE)
 /**
  * @brief Initialize defualt settings for PHY interface
  * @param pMacDef: Init struct to fill
  */
-void STM32F407Network_defaultInitMac(ETH_MACInitTypeDef* pMacDef)
+void STM32F407Network_defaultInitMac(ETH_MACConfigTypeDef* pMacDef)
 {
-    pMacDef->Watchdog = ETH_WATCHDOG_ENABLE;
-    pMacDef->Jabber = ETH_JABBER_ENABLE;
-    pMacDef->InterFrameGap = ETH_INTERFRAMEGAP_96BIT;
-    pMacDef->CarrierSense = ETH_CARRIERSENCE_ENABLE;
-    pMacDef->ReceiveOwn = ETH_RECEIVEOWN_DISABLE;
-    pMacDef->LoopbackMode = ETH_LOOPBACKMODE_DISABLE;
-    pMacDef->ChecksumOffload = ETH_CHECKSUMOFFLAOD_DISABLE;
-    pMacDef->RetryTransmission = ETH_RETRYTRANSMISSION_DISABLE;
-    pMacDef->AutomaticPadCRCStrip = ETH_AUTOMATICPADCRCSTRIP_DISABLE;
+    pMacDef->Watchdog = TO_FUNCTIONAL_STATE(ETH_WATCHDOG_ENABLE);
+    pMacDef->Jabber = TO_FUNCTIONAL_STATE(ETH_JABBER_ENABLE);
+    //pMacDef->InterFrameGap = TO_FUNCTIONAL_STATE(ETH_INTERFRAMEGAP_96BIT);
+    //pMacDef->CarrierSense = TO_FUNCTIONAL_STATE(ETH_CARRIERSENCE_ENABLE);
+    pMacDef->ReceiveOwn = TO_FUNCTIONAL_STATE(ETH_RECEIVEOWN_DISABLE);
+    pMacDef->LoopbackMode = TO_FUNCTIONAL_STATE(ETH_LOOPBACKMODE_DISABLE);
+    pMacDef->ChecksumOffload = TO_FUNCTIONAL_STATE(ETH_CHECKSUMOFFLAOD_DISABLE);
+    pMacDef->RetryTransmission = TO_FUNCTIONAL_STATE(ETH_RETRYTRANSMISSION_DISABLE);
+    pMacDef->AutomaticPadCRCStrip = TO_FUNCTIONAL_STATE(ETH_AUTOMATICPADCRCSTRIP_DISABLE);
     pMacDef->BackOffLimit = ETH_BACKOFFLIMIT_10;
-    pMacDef->DeferralCheck = ETH_DEFFERRALCHECK_DISABLE;
-    pMacDef->ReceiveAll = ETH_RECEIVEALL_ENABLE;
-    pMacDef->SourceAddrFilter = ETH_SOURCEADDRFILTER_DISABLE;
-    pMacDef->PassControlFrames = ETH_PASSCONTROLFRAMES_FORWARDALL;
-    pMacDef->BroadcastFramesReception = ETH_BROADCASTFRAMESRECEPTION_ENABLE;
+    pMacDef->DeferralCheck = ETH_DEFFERRALCHECK_DISABLE);
+    pMacDef->ReceiveAll = TO_FUNCTIONAL_STATE(ETH_RECEIVEALL_ENABLE);
+    pMacDef->SourceAddrFilter = TO_FUNCTIONAL_STATE(ETH_SOURCEADDRFILTER_DISABLE);
+    pMacDef->PassControlFrames = TO_FUNCTIONAL_STATE(ETH_PASSCONTROLFRAMES_FORWARDALL);
+    pMacDef->BroadcastFramesReception = TO_FUNCTIONAL_STATE(ETH_BROADCASTFRAMESRECEPTION_ENABLE);
     pMacDef->DestinationAddrFilter = ETH_DESTINATIONADDRFILTER_NORMAL;
-    pMacDef->PromiscuousMode = ETH_PROMISCIOUSMODE_DISABLE;
-    pMacDef->MulticastFramesFilter = ETH_MULTICASTFRAMESFILTER_PERFECT;
-    pMacDef->UnicastFramesFilter = ETH_UNICASTFRAMESFILTER_PERFECT;
-    pMacDef->HashTableHigh = 0x0;
-    pMacDef->HashTableLow = 0x0;
+    pMacDef->PromiscuousMode = TO_FUNCTIONAL_STATE(ETH_PROMISCIOUSMODE_DISABLE);
+    pMacDef->MulticastFramesFilter = TO_FUNCTIONAL_STATE(ETH_MULTICASTFRAMESFILTER_PERFECT);
+    pMacDef->UnicastFramesFilter = TO_FUNCTIONAL_STATE(ETH_UNICASTFRAMESFILTER_PERFECT);
+    //pMacDef->HashTableHigh = 0x0;
+    //pMacDef->HashTableLow = 0x0;
     pMacDef->PauseTime = 0x0;
-    pMacDef->ZeroQuantaPause = ETH_ZEROQUANTAPAUSE_DISABLE;
+    pMacDef->ZeroQuantaPause = TO_FUNCTIONAL_STATE(ETH_ZEROQUANTAPAUSE_DISABLE);
     pMacDef->PauseLowThreshold = ETH_PAUSELOWTHRESHOLD_MINUS4;
-    pMacDef->UnicastPauseFrameDetect = ETH_UNICASTPAUSEFRAMEDETECT_DISABLE;
+    pMacDef->UnicastPauseFrameDetect = TO_FUNCTIONAL_STATE(ETH_UNICASTPAUSEFRAMEDETECT_DISABLE);
     pMacDef->ReceiveFlowControl = ETH_RECEIVEFLOWCONTROL_DISABLE;
     pMacDef->TransmitFlowControl = ETH_TRANSMITFLOWCONTROL_DISABLE;
-    pMacDef->VLANTagComparison = ETH_VLANTAGCOMPARISON_16BIT;
-    pMacDef->VLANTagIdentifier = 0x0;
+    //pMacDef->VLANTagComparison = ETH_VLANTAGCOMPARISON_16BIT;
+    //pMacDef->VLANTagIdentifier = 0x0;
 }
 
 STM32F407Network::STM32F407Network()
@@ -133,9 +134,9 @@ STM32F407Network::STM32F407Network()
     /* Initialize Rx Descriptors list: Chain Mode */
     HAL_ETH_DMARxDescListInit(&m_pPrivate->oTypeDef, m_pPrivate->pDMARxDscrTab, m_pPrivate->oRx_Buff[0], ETH_RXBUFNB);
 
-    ETH_MACInitTypeDef oMacDef;
+    ETH_MACConfigTypeDef oMacDef;
     STM32F407Network_defaultInitMac(&oMacDef);
-    if(HAL_ETH_ConfigMAC(&m_pPrivate->oTypeDef, &oMacDef) == HAL_OK)
+    if(HAL_ETH_SetMACConfig(&m_pPrivate->oTypeDef, &oMacDef) == HAL_OK)
     {
       /* Enable MAC and DMA transmission and reception */
       if( HAL_ETH_Start(&m_pPrivate->oTypeDef) == HAL_OK)
@@ -143,30 +144,30 @@ STM32F407Network::STM32F407Network()
         uint32_t uiRegValue = 0;
         /**** Configure PHY to generate an interrupt when Eth Link state changes ****/
         /* Read Register Configuration */
-        if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_SR, &uiRegValue) == HAL_OK)
+        if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, 0, PHY_SR, &uiRegValue) == HAL_OK)
         {
           m_pPrivate->uiRegValue = uiRegValue;
         }
         /**** Configure PHY to generate an interrupt when Eth Link state changes ****/
         /* Read Register Configuration */
-        if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MICR, &uiRegValue) == HAL_OK)
+        if(HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, 0, PHY_MICR, &uiRegValue) == HAL_OK)
         {
           uiRegValue |= (PHY_MICR_INT_EN | PHY_MICR_INT_OE);
 
           /* Enable Interrupts */
-          if(HAL_OK == HAL_ETH_WritePHYRegister(&m_pPrivate->oTypeDef, PHY_MICR, uiRegValue ))
+          if(HAL_OK == HAL_ETH_WritePHYRegister(&m_pPrivate->oTypeDef, 0, PHY_MICR, uiRegValue ))
           {
             uiRegValue = 0;
-            if(HAL_OK == HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MICR, &uiRegValue ))
+            if(HAL_OK == HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, 0, PHY_MICR, &uiRegValue ))
             {
               if(IS_FLAG_SET(uiRegValue,(PHY_MICR_INT_EN | PHY_MICR_INT_OE)))
               {
                 /* Read Register Configuration */
-                if(HAL_OK == HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, PHY_MISR, &uiRegValue))
+                if(HAL_OK == HAL_ETH_ReadPHYRegister(&m_pPrivate->oTypeDef, 0, PHY_MISR, &uiRegValue))
                 {
                   uiRegValue |= PHY_MISR_LINK_INT_EN;
                   /* Enable Interrupt on change of link status */
-                  if(HAL_OK == HAL_ETH_WritePHYRegister(&m_pPrivate->oTypeDef, PHY_MISR, uiRegValue))
+                  if(HAL_OK == HAL_ETH_WritePHYRegister(&m_pPrivate->oTypeDef, 0, PHY_MISR, uiRegValue))
                   {
                     /* enable interrupts */
                     HAL_NVIC_SetPriority(ETH_IRQn, 5, 0);

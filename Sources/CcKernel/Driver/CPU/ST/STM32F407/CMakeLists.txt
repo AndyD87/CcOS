@@ -2,7 +2,7 @@
 # Prepare environment
 ########
 
-set(STM32F4_VERSION           "1.25.0" )
+set(STM32F4_VERSION           "1.27.0" )
 set(STM32F4_DIR               ${CC_CACHE_DIR}/Sources/STM32F4Cube_Driver/${STM32F4_VERSION} )
 set(STM32F4_DRIVER_DIR        ${STM32F4_DIR}/Drivers )
 

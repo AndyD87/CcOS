@@ -79,7 +79,8 @@ CcEvent::IEventObject::~IEventObject()
 
 void CcEvent::IEventObject::call(void* pParam)
 {
-  m_pObject->objectBaseCall(m_pFunc, pParam);
+  if(m_pObject && m_pFunc)
+    m_pObject->objectBaseCall(m_pFunc, pParam);
 }
 
 CcObject* CcEvent::IEventObject::getObject()

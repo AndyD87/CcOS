@@ -19,7 +19,7 @@ endif()
 message("--- CPU selected: ${CCOS_CPU_TYPE}")
 
 CcSetIfNotDefined( CCOS_GENERIC_USB        TRUE )
-CcSetIfNotDefined( CCOS_GENERIC_NETWORK    TRUE )
+CcSetIfNotDefined( CCOS_GENERIC_NETWORK    FALSE )
 
 set(CMAKE_SYSTEM_PROCESSOR         cortex-m4 )
 set(MCPU_FLAGS "-mcpu=${CMAKE_SYSTEM_PROCESSOR} -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16")

@@ -530,6 +530,23 @@ CcWString& CcWString::fromString(const CcString& oString)
   return fromString(oString.getCharString(), oString.length());
 }
 
+CcWString& CcWString::toUtf16(uint16* pBuffer, size_t uiSize)
+{
+  if(uiSize > 1)
+  {
+    size_t uiLength = CCMIN(m_uiLength+1, uiSize);
+    for(size_t uiPos = 0; uiPos < uiLength; uiPos++)
+    {
+      pBuffer[uiPos] = m_pBuffer[uiPos];
+    }
+  }
+  else if(uiSize == 1)
+  {
+    pBuffer[0] = L'\0';
+  }
+  return *this;
+}
+
 CcString CcWString::getString() const
 {
   CcString sRet(m_pBuffer, m_uiLength);
