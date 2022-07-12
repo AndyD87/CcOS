@@ -30,6 +30,7 @@
 #include "CcBase.h"
 #include "CcService.h"
 #include "Devices/USB/Client/CcUsbCdc.h"
+#include "Devices/USB/Client/CcUsbBulkTransfer.h"
 
 class IShell;
 
@@ -42,6 +43,7 @@ public:
   virtual void run() override;
 
 private:
-  CcUsbCdc* m_pCdcDevice = nullptr;
-  IShell*   m_pShell     = nullptr;
+  CcUsbCdc* m_pCdcDevice              = nullptr;
+  CcUsbBulkTransfer* m_pBulkTransfer  = nullptr;
+  IShell*   m_pShell                  = nullptr;
 };

@@ -376,5 +376,9 @@ public:
 protected:
   CDeviceDescriptor     m_oDeviceDescriptor;
   EEnpointState         m_eEp0State    = EEnpointState::Idle;
-  uint16                m_uiEp0MaxSize = 64;
+  #ifdef HS
+    uint16                m_uiEp0MaxSize = 0x200;
+  #else
+    uint16                m_uiEp0MaxSize = 0x40;
+  #endif
 };

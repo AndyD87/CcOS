@@ -216,7 +216,7 @@ void CcUsbCdc::onControl(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest)
 }
 
 void CcUsbCdc::onDataIn(IUsbDevice::CConfigDescriptor::CEndpointInfo* pRequest)
-{
+{                                                                 
   while(pRequest->oBufferList.getChunkCount())
   {
     m_oInputBuffer.append(pRequest->oBufferList[0]);

@@ -258,24 +258,41 @@ CcStatus STM32UsbDevice::onStart()
   CcStatus oStatus = EStatus::CommandInvalidParameter;
   
   /*Set LL Driver parameters */
-  m_oPcdHandle.Instance                 = USB_OTG_FS;
-  m_oPcdHandle.Init.dev_endpoints       = 4;
-  m_oPcdHandle.Init.speed               = PCD_SPEED_FULL;
-  m_oPcdHandle.Init.dma_enable          = DISABLE;
-  m_oPcdHandle.Init.phy_itface          = PCD_PHY_EMBEDDED;
-  m_oPcdHandle.Init.Sof_enable          = DISABLE;
-  m_oPcdHandle.Init.low_power_enable    = DISABLE;
-  m_oPcdHandle.Init.vbus_sensing_enable = DISABLE;
-  m_oPcdHandle.Init.use_dedicated_ep1   = DISABLE;
+  #ifdef HS
+    m_oPcdHandle.Instance                 = USB_OTG_HS;
+    m_oPcdHandle.Init.dev_endpoints       = getDeviceDescriptor().getActiveConfig().getEndpointCount();
+    m_oPcdHandle.Init.speed               = PCD_SPEED_FULL;
+    m_oPcdHandle.Init.dma_enable          = DISABLE;
+    m_oPcdHandle.Init.phy_itface          = USB_OTG_EMBEDDED_PHY;
+    m_oPcdHandle.Init.Sof_enable          = DISABLE;
+    m_oPcdHandle.Init.low_power_enable    = DISABLE;
+    m_oPcdHandle.Init.vbus_sensing_enable = ENABLE;
+    m_oPcdHandle.Init.use_dedicated_ep1   = DISABLE;
+  #else
+    m_oPcdHandle.Instance                 = USB_OTG_FS;
+    m_oPcdHandle.Init.dev_endpoints       = getDeviceDescriptor().getActiveConfig().getEndpointCount();
+    m_oPcdHandle.Init.speed               = PCD_SPEED_FULL;
+    m_oPcdHandle.Init.dma_enable          = DISABLE;
+    m_oPcdHandle.Init.phy_itface          = PCD_PHY_EMBEDDED;
+    m_oPcdHandle.Init.Sof_enable          = DISABLE;
+    m_oPcdHandle.Init.low_power_enable    = DISABLE;
+    m_oPcdHandle.Init.vbus_sensing_enable = DISABLE;
+    m_oPcdHandle.Init.use_dedicated_ep1   = DISABLE;
+  #endif
   /* Link The driver to the stack */
   m_oPcdHandle.pData = this;
 
-  __HAL_RCC_USB_OTG_FS_CLK_ENABLE();
+  __HAL_RCC_USB_OTG_HS_CLK_ENABLE();
 
   if(HAL_OK == HAL_PCD_Init(getPcdHandle()))
   {
-    HAL_PCDEx_SetRxFiFo(getPcdHandle(), 0x80);
-    HAL_PCDEx_SetTxFiFo(getPcdHandle(), 0, 0x40);
+    #ifdef HS
+      HAL_PCDEx_SetRxFiFo(getPcdHandle(), m_uiEp0MaxSize);
+      HAL_PCDEx_SetTxFiFo(getPcdHandle(), 0, 0x80);
+    #else
+      HAL_PCDEx_SetRxFiFo(getPcdHandle(), m_uiEp0MaxSize);
+      HAL_PCDEx_SetTxFiFo(getPcdHandle(), 0, 0x40);
+    #endif
     oStatus = true;
   }
   return oStatus;
@@ -319,7 +336,7 @@ void STM32UsbDevice::doReset()
 
   HAL_StatusTypeDef status = HAL_PCD_EP_Open(getPcdHandle(), 0x00, m_uiEp0MaxSize, EP_TYPE_CTRL);
   /* Open EP0 IN */
-  if(status == HAL_OK)
+  if(status == HAL_OK || status == HAL_BUSY)
   {
     status = HAL_PCD_EP_Open(getPcdHandle(), 0x80, m_uiEp0MaxSize, EP_TYPE_CTRL);
   }
@@ -540,45 +557,41 @@ void STM32UsbDevice::doSetConfiguration()
     { 
       IUsbDevice::SEndpointDescriptor* pEndPoint = oConfig.getEndpoint(uiIdx);
       IUsbDevice::CConfigDescriptor::CEndpointInfo& oEndPointInfo = oConfig.getEndpointInfo(uiIdx);
-      if( true ||
-          (pEndPoint->uiEndpointAddress > 2     && pEndPoint->uiEndpointAddress < 0x80) ||
-          (pEndPoint->uiEndpointAddress > 0x81  && pEndPoint->uiEndpointAddress > 0x80) )
+      
+      HAL_StatusTypeDef uiHallResult = HAL_PCD_EP_Open(
+                                          getPcdHandle(), 
+                                          pEndPoint->uiEndpointAddress,
+                                          pEndPoint->wMaxPacketSize,
+                                          pEndPoint->uiAttributes
+                                        );
+      if(uiHallResult != HAL_OK)
       {
-        HAL_StatusTypeDef uiHallResult = HAL_PCD_EP_Open(
-                                            getPcdHandle(), 
-                                            pEndPoint->uiEndpointAddress,
-                                            pEndPoint->wMaxPacketSize,
-                                            pEndPoint->uiAttributes
-                                          );
-        if(uiHallResult != HAL_OK)
+        IUsbDevice::debugMessage(("Failed to setup endpoint: " + CcString::fromNumber((uint8)uiHallResult)).getCharString());
+      }
+      else if(pEndPoint->uiEndpointAddress == 0 ||
+          pEndPoint->uiEndpointAddress == 0x80)
+      { 
+        // Nothing to do, it is our default config
+      }
+      else if(pEndPoint->uiEndpointAddress < 0x80)
+      {
+        // Setup receive buffer
+        oEndPointInfo.oInBuffer.resize(pEndPoint->wMaxPacketSize);
+        uiHallResult = HAL_PCD_EP_Receive(
+          getPcdHandle(), 
+          pEndPoint->uiEndpointAddress,
+          oEndPointInfo.oInBuffer.cast<uint8>(), 
+          pEndPoint->wMaxPacketSize
+        );
+        // Prepare receive
+        if(HAL_OK != uiHallResult)
         {
-          IUsbDevice::debugMessage(("Failed to setup endpoint: " + CcString::fromNumber((uint8)uiHallResult)).getCharString());
+          IUsbDevice::debugMessage("Failed to setup receive endpoint");
         }
-        else if(pEndPoint->uiEndpointAddress == 0 ||
-            pEndPoint->uiEndpointAddress == 0x80)
-        { 
-          // Nothing to do, it is our default config
-        }
-        else if(pEndPoint->uiEndpointAddress < 0x80)
-        {
-          // Setup receive buffer
-          oEndPointInfo.oInBuffer.resize(pEndPoint->wMaxPacketSize);
-          uiHallResult = HAL_PCD_EP_Receive(
-            getPcdHandle(), 
-            pEndPoint->uiEndpointAddress,
-            oEndPointInfo.oInBuffer.cast<uint8>(), 
-            pEndPoint->wMaxPacketSize
-          );
-          // Prepare receive
-          if(HAL_OK != uiHallResult)
-          {
-            IUsbDevice::debugMessage("Failed to setup receive endpoint");
-          }
-        }
-        else
-        {
-          HAL_PCDEx_SetTxFiFo(getPcdHandle(), pEndPoint->uiEndpointAddress & ~0x80, pEndPoint->wMaxPacketSize);
-        }
+      }
+      else
+      {
+        HAL_PCDEx_SetTxFiFo(getPcdHandle(), pEndPoint->uiEndpointAddress & ~0x80, pEndPoint->wMaxPacketSize);
       }
     }
   }

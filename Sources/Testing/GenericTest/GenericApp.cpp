@@ -75,11 +75,12 @@ void GenericApp::run()
       oConfig.getConfig()->uiAttributes = 0xC0;
       oConfig.getConfig()->uiMaxPower   = 0x32;
 
-      CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);   
-      oStatus = m_pCdcDevice->open(EOpenFlags::ReadWrite);
+      CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);
+      CCNEW(m_pBulkTransfer, CcUsbBulkTransfer, oUsbDevice);   
+      
+      oStatus = m_pBulkTransfer->open(EOpenFlags::ReadWrite);
 
-      CCNEWTYPE(pCdcDevice, CcUsbCdc, oUsbDevice);   
-      oStatus = pCdcDevice->open(EOpenFlags::ReadWrite);
+      oStatus = m_pCdcDevice->open(EOpenFlags::ReadWrite);
 
       if(oStatus)
       {
@@ -87,14 +88,12 @@ void GenericApp::run()
         if(oStatus)
         {
           CCNEW(m_pShell, IShell);   
-          m_pShell->init(pCdcDevice);
+          m_pShell->init(m_pCdcDevice);
           m_pShell->initDefaultCommands();
-          m_pShell->start();
-          
-          CCNEWTYPE(pShell, IShell);   
-          pShell->init(pCdcDevice);
-          pShell->initDefaultCommands();
-          pShell->start();
+          oStatus = m_pShell->start();
+          if(oStatus)
+          {
+          }
         }
       }
     }

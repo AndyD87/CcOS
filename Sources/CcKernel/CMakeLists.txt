@@ -124,6 +124,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Devices/Simulations/CcI2CSimulation.h
     Devices/Simulations/CcSpiSimulation.h
     Devices/USB/Client/CcUsbCdc.h
+    Devices/USB/Client/CcUsbBulkTransfer.h
 
     Filesystem/CcFilesystemDevice.h
     Filesystem/CcFilesystemSystem.h
@@ -250,6 +251,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Devices/Simulations/CcI2CSimulation.cpp
     Devices/Simulations/CcSpiSimulation.cpp
     Devices/USB/Client/CcUsbCdc.cpp
+    Devices/USB/Client/CcUsbBulkTransfer.cpp
 
     Documents/CcIniFile.cpp
 
