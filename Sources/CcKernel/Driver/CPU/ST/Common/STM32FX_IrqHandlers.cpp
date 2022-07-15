@@ -428,6 +428,86 @@ CCEXTERNC void FPU_IRQHandler               (){g_uiFailedHandler = 0x88;Crashed(
 CCEXTERNC void ETH_IRQHandler               (){g_uiFailedHandler = 0x90;Crashed();}
 #endif
 
+#ifndef TAMPER_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void TAMPER_IRQHandler               (){g_uiFailedHandler = 0x91;Crashed();}
+#endif
+
+#ifndef DMA1_Channel1_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void DMA1_Channel1_IRQHandler               (){g_uiFailedHandler = 0x92;Crashed();}
+#endif
+
+#ifndef DMA1_Channel2_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void DMA1_Channel2_IRQHandler               (){g_uiFailedHandler = 0x93;Crashed();}
+#endif
+
+#ifndef DMA1_Channel3_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void DMA1_Channel3_IRQHandler               (){g_uiFailedHandler = 0x94;Crashed();}
+#endif
+
+#ifndef DMA1_Channel4_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void DMA1_Channel4_IRQHandler               (){g_uiFailedHandler = 0x95;Crashed();}
+#endif
+
+#ifndef DMA1_Channel5_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void DMA1_Channel5_IRQHandler               (){g_uiFailedHandler = 0x96;Crashed();}
+#endif
+
+#ifndef DMA1_Channel6_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void DMA1_Channel6_IRQHandler               (){g_uiFailedHandler = 0x97;Crashed();}
+#endif
+
+#ifndef DMA1_Channel7_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void DMA1_Channel7_IRQHandler               (){g_uiFailedHandler = 0x99;Crashed();}
+#endif
+
+#ifndef ADC1_2_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void ADC1_2_IRQHandler               (){g_uiFailedHandler = 0x9a;Crashed();}
+#endif
+
+#ifndef USB_LP_CAN1_RX0_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void USB_LP_CAN1_RX0_IRQHandler               (){g_uiFailedHandler = 0x9b;Crashed();}
+#endif
+
+#ifndef TIM1_UP_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void TIM1_UP_IRQHandler               (){g_uiFailedHandler = 0x9c;Crashed();}
+#endif
+
+#ifndef TIM1_TRG_COM_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void TIM1_TRG_COM_IRQHandler               (){g_uiFailedHandler = 0x9d;Crashed();}
+#endif
+
+#ifndef USB_HP_CAN1_TX_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void USB_HP_CAN1_TX_IRQHandler               (){g_uiFailedHandler = 0x9e;Crashed();}
+#endif
+
+#ifndef USBWakeUp_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void USBWakeUp_IRQHandler               (){g_uiFailedHandler = 0x9f;Crashed();}
+#endif
+
+#ifndef TIM1_BRK_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void TIM1_BRK_IRQHandler               (){g_uiFailedHandler = 0xa0;Crashed();}
+#endif
+
+#ifndef RTC_IRQHandler_Handled
+//! Forward not implemented Handler and set crashed code
+CCEXTERNC void RTC_IRQHandler               (){g_uiFailedHandler = 0xa1;Crashed();}
+#endif
+
 #ifndef CCOS_DEFAULT_IRQHandler_Handled
 //! Forward not implemented Handler and set crashed code
 CCEXTERNC void CCOS_DEFAULT_IRQHandler      (){g_uiFailedHandler = 0xff;Crashed();}

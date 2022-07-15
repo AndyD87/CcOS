@@ -19,5 +19,12 @@
             "CCOS_BOARD":"STM32F4Discovery",
             "CMAKE_GENERATOR":"Unix Makefiles"
         }
+    },
+    {
+        "name":"STM32F103C8",
+        "cmakeSettings": {
+            "CCOS_BOARD":"STM32F103C8",
+            "CMAKE_GENERATOR":"Unix Makefiles"
+        }
     }
 ]

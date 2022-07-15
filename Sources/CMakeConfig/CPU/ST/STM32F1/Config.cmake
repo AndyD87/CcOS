@@ -15,12 +15,11 @@ endif()
 
 message("--- CPU selected: ${CCOS_CPU_TYPE}")
 
-CcSetIfNotDefined( CCOS_GENERIC_USB        FALSE )
+CcSetIfNotDefined( CCOS_GENERIC_USB        TRUE )
 CcSetIfNotDefined( CCOS_GENERIC_NETWORK    FALSE )
 
 set(CMAKE_SYSTEM_PROCESSOR cortex-m3 )
 set(MCPU_FLAGS "-mcpu=${CMAKE_SYSTEM_PROCESSOR} -mthumb")
-
 
 set(CMAKE_EXE_LINKER_FLAGS  "${MCPU_FLAGS}     --specs=nano.specs -T \"${CMAKE_CURRENT_LIST_DIR}/${FLASH_FILE}\" -Xlinker --gc-sections -Wl,--print-memory-usage")
 set(CMAKE_C_FLAGS           "${MCPU_FLAGS}     --specs=nosys.specs -falign-functions=4 -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -ffreestanding -Wall -Wextra")

@@ -164,29 +164,38 @@ void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd)
 
 STM32UsbDevice* s_pInstance = nullptr;
 
-/**
- * @brief  This function handles USB-On-The-Go FS/HS global interrupt request.
- */
-CCEXTERNC void OTG_HS_IRQHandler(void)
-{
-  if(s_pInstance)
-    HAL_PCD_IRQHandler(s_pInstance->getPcdHandle());
-}
+#ifdef USB_EXTENDED_OFF
+  /**
+   * @brief  This function handles USB-On-The-Go HS global interrupt request.
+   */
+  CCEXTERNC void USB_LP_CAN1_RX0_IRQHandler(void)
+  {
+    if(s_pInstance)
+      HAL_PCD_IRQHandler(s_pInstance->getPcdHandle());
+  }
+#else
+  /**
+   * @brief  This function handles USB-On-The-Go FS/HS global interrupt request.
+   */
+  CCEXTERNC void OTG_HS_IRQHandler(void)
+  {
+    if(s_pInstance)
+      HAL_PCD_IRQHandler(s_pInstance->getPcdHandle());
+  }
 
-/**
- * @brief  This function handles USB-On-The-Go HS global interrupt request.
- */
-CCEXTERNC void OTG_FS_IRQHandler(void)
-{
-  if(s_pInstance)
-    HAL_PCD_IRQHandler(s_pInstance->getPcdHandle());
-}
+  /**
+   * @brief  This function handles USB-On-The-Go HS global interrupt request.
+   */
+  CCEXTERNC void OTG_FS_IRQHandler(void)
+  {
+    if(s_pInstance)
+      HAL_PCD_IRQHandler(s_pInstance->getPcdHandle());
+  }
+#endif
 
 STM32UsbDevice::STM32UsbDevice()
 {
   s_pInstance = this;
-  CcStatic_memsetZeroObject(m_oGlobalDef);
-  CcStatic_memsetZeroObject(m_oConfigDef);
   CcStatic_memsetZeroObject(m_oPcdHandle);
 }
 
@@ -269,15 +278,21 @@ CcStatus STM32UsbDevice::onStart()
     m_oPcdHandle.Init.vbus_sensing_enable = ENABLE;
     m_oPcdHandle.Init.use_dedicated_ep1   = DISABLE;
   #else
-    m_oPcdHandle.Instance                 = USB_OTG_FS;
     m_oPcdHandle.Init.dev_endpoints       = getDeviceDescriptor().getActiveConfig().getEndpointCount();
-    m_oPcdHandle.Init.speed               = PCD_SPEED_FULL;
-    m_oPcdHandle.Init.dma_enable          = DISABLE;
     m_oPcdHandle.Init.phy_itface          = PCD_PHY_EMBEDDED;
     m_oPcdHandle.Init.Sof_enable          = DISABLE;
     m_oPcdHandle.Init.low_power_enable    = DISABLE;
-    m_oPcdHandle.Init.vbus_sensing_enable = DISABLE;
-    m_oPcdHandle.Init.use_dedicated_ep1   = DISABLE;
+    m_oPcdHandle.Init.speed               = PCD_SPEED_FULL;
+    #ifndef USB_EXTENDED_OFF
+      m_oPcdHandle.Instance                 = USB_OTG_FS;
+      m_oPcdHandle.Init.dma_enable          = DISABLE;
+      m_oPcdHandle.Init.vbus_sensing_enable = DISABLE;
+      m_oPcdHandle.Init.use_dedicated_ep1   = DISABLE;
+    #else
+      m_oPcdHandle.Instance                 = USB;
+      m_oPcdHandle.Init.lpm_enable = DISABLE;
+      m_oPcdHandle.Init.battery_charging_enable = DISABLE;
+    #endif
   #endif
   /* Link The driver to the stack */
   m_oPcdHandle.pData = this;
@@ -286,7 +301,12 @@ CcStatus STM32UsbDevice::onStart()
 
   if(HAL_OK == HAL_PCD_Init(getPcdHandle()))
   {
-    #ifdef HS
+    #ifdef USB_EXTENDED_OFF
+      HAL_PCDEx_PMAConfig(getPcdHandle(), 0x00 , PCD_SNG_BUF, m_uiPmaOffset);
+      m_uiPmaOffset += m_uiEp0MaxSize;
+      HAL_PCDEx_PMAConfig(getPcdHandle(), 0x80 , PCD_SNG_BUF, m_uiPmaOffset);
+      m_uiPmaOffset += m_uiEp0MaxSize;
+    #elif defined(HS)
       HAL_PCDEx_SetRxFiFo(getPcdHandle(), m_uiEp0MaxSize);
       HAL_PCDEx_SetTxFiFo(getPcdHandle(), 0, 0x80);
     #else
@@ -588,10 +608,19 @@ void STM32UsbDevice::doSetConfiguration()
         {
           IUsbDevice::debugMessage("Failed to setup receive endpoint");
         }
+        #ifdef USB_EXTENDED_OFF
+          HAL_PCDEx_PMAConfig(getPcdHandle(), pEndPoint->uiEndpointAddress, PCD_SNG_BUF, m_uiPmaOffset);
+          m_uiPmaOffset += pEndPoint->wMaxPacketSize;
+        #endif
       }
       else
       {
-        HAL_PCDEx_SetTxFiFo(getPcdHandle(), pEndPoint->uiEndpointAddress & ~0x80, pEndPoint->wMaxPacketSize);
+        #ifdef USB_EXTENDED_OFF
+          HAL_PCDEx_PMAConfig(getPcdHandle(), pEndPoint->uiEndpointAddress, PCD_SNG_BUF, m_uiPmaOffset);
+          m_uiPmaOffset += pEndPoint->wMaxPacketSize;
+        #else
+          HAL_PCDEx_SetTxFiFo(getPcdHandle(), pEndPoint->uiEndpointAddress & ~0x80, pEndPoint->wMaxPacketSize);
+        #endif
       }
     }
   }

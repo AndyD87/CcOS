@@ -24,6 +24,7 @@
  **/
 
 #include <stm32f1xx_hal.h>
+#include <stm32f1xx_hal_rcc_ex.h>
 #include "STM32F103Cpu.h"
 #include "STM32F103Driver.h"
 #include "CcKernel.h"
@@ -61,12 +62,11 @@ CCEXTERNC void STM32F103Cpu_SysTick()
  */
 CCEXTERNC void STM32F103Cpu_ThreadTick()
 {
-  NVIC_ClearPendingIRQ(USART2_IRQn);
   if(STM32F103Cpu::getCpu() != nullptr)
   {
     STM32F103Cpu::getCpu()->changeThread();
   }
-}
+  NVIC_ClearPendingIRQ(USART2_IRQn);}
 
 /**
  * @brief ISR for System tick with saving thread program state for
@@ -74,33 +74,36 @@ CCEXTERNC void STM32F103Cpu_ThreadTick()
  */
 CCEXTERNC void SysTick_Handler( void )
 {
-	__asm volatile("  mrs r0, psp            \n");
-	__asm volatile("  isb                    \n");
-	__asm volatile("  ldr	r3, pCurrentThreadContextConst\n");			/* Get the location of the current TCB. */
-	__asm volatile("  ldr	r2, [r3]         \n");
-    __asm volatile("                         \n");
-	__asm volatile("  stmdb r0!, {r4-r11}	 \n");			/* Save the remaining registers. */
-	__asm volatile("  str r0, [r2]			 \n");		/* Save the new top of stack into the first member of the TCB. */
-    __asm volatile("                         \n");
-	__asm volatile("  stmdb sp!, {r3, r14}   \n");
-	__asm volatile("  mov r0, #0             \n");
-	__asm volatile("  msr basepri, r0        \n");
+  __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
+  __asm volatile("  isb                            \n");
+  __asm volatile("                                 \n");
+  __asm volatile("  ldr  r3, pCurrentThreadDataConst\n"); // Load current thread context
+  __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
+  __asm volatile("                                 \n");
+  __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
+  __asm volatile("  str r0, [r2]                   \n"); // Backup new stack pointer in thread context
+  __asm volatile("                                 \n");
+  __asm volatile("  stmdb sp!, {r0, r3}            \n"); // Backup current register state on Main Stack Pointer
+  __asm volatile("  mov r0, #0                     \n"); // Disable exceptions
+  __asm volatile("  msr basepri, r0                \n");
+  __asm volatile("  dsb                            \n");
+  __asm volatile("  isb                            \n");
 
-	__asm volatile("  bl STM32F103Cpu_SysTick  \n");
+  __asm volatile("  bl STM32F103Cpu_SysTick        \n");  // Publish tick to kernel, it could change thread context too.
 
-	__asm volatile("  mov r0, #0             \n");
-	__asm volatile("  msr basepri, r0        \n");
-	__asm volatile("  ldmia sp!, {r3, r14}   \n");
-    __asm volatile("                         \n");
-	__asm volatile("  ldr r1, [r3]           \n");
-	__asm volatile("  ldr r0, [r1]			 \n");		/* The first item in pxCurrentTCB is the task top of stack. */
-	__asm volatile("  ldmia r0!, {r4-r11}	 \n");			/* Pop the registers. */
-	__asm volatile("  msr psp, r0            \n");
-	__asm volatile("  isb                    \n");
-	__asm volatile("  bx r14                 \n");
-	__asm volatile("\n");
-	__asm volatile(".align 4\n");
-    __asm volatile("pCurrentThreadContextConst: .word pCurrentThreadData  \n");
+  __asm volatile("  mov r0, #0                     \n");
+  __asm volatile("  msr basepri, r0                \n");
+  __asm volatile("  ldmia sp!, {r0, r3}            \n"); // Restore registers from MSP
+  __asm volatile("                                 \n");
+  __asm volatile("  ldr r1, [r3]                   \n"); // Get back thread context
+  __asm volatile("  ldr r0, [r1]                   \n"); // Get back stack pointer form thread context
+  __asm volatile("  ldmia r0!, {r4-r11, r14}       \n"); // Get back registers from stack of thread
+  __asm volatile("                                 \n");
+  __asm volatile("  msr psp, r0                    \n"); // Load stack pointer of thread context
+  __asm volatile("  bx r14                         \n"); // continue execution.
+  __asm volatile("                                 \n");
+  __asm volatile("  .align 4                       \n");
+  __asm volatile("pCurrentThreadDataConst: .word pCurrentThreadData  \n");
 }
 
 /**
@@ -109,33 +112,36 @@ CCEXTERNC void SysTick_Handler( void )
  */
 CCEXTERNC void USART2_IRQHandler( void )
 {
-	__asm volatile("  mrs r0, psp            \n");
-	__asm volatile("  isb                    \n");
-	__asm volatile("  ldr	r3, pCurrentThreadContextConst2\n");			/* Get the location of the current TCB. */
-	__asm volatile("  ldr	r2, [r3]         \n");
-    __asm volatile("                         \n");
-	__asm volatile("  stmdb r0!, {r4-r11}	 \n");			/* Save the remaining registers. */
-	__asm volatile("  str r0, [r2]			 \n");		/* Save the new top of stack into the first member of the TCB. */
-    __asm volatile("                         \n");
-	__asm volatile("  stmdb sp!, {r3, r14}   \n");
-	__asm volatile("  mov r0, #0             \n");
-	__asm volatile("  msr basepri, r0        \n");
+  __asm volatile("  mrs r0, psp                    \n"); // Load Process Stack Pointer, here we are storing our stack
+  __asm volatile("  isb                            \n");
+  __asm volatile("                                 \n");
+  __asm volatile("  ldr  r3, pCurrentThreadDataConst2\n"); // Load current thread context
+  __asm volatile("  ldr  r2, [r3]                  \n"); // Write address of first context to r2
+  __asm volatile("                                 \n");
+  __asm volatile("  stmdb r0!, {r4-r11, r14}       \n"); // Backup Registers to stack of current thread
+  __asm volatile("  str r0, [r2]                   \n"); // Backup new stack pointer in thread context
+  __asm volatile("                                 \n");
+  __asm volatile("  stmdb sp!, {r0, r3}            \n"); // Backup current register state on Main Stack Pointer
+  __asm volatile("  mov r0, #0                     \n"); // Disable exceptions
+  __asm volatile("  msr basepri, r0                \n");
+  __asm volatile("  dsb                            \n");
+  __asm volatile("  isb                            \n");
 
-	__asm volatile("  bl STM32F103Cpu_ThreadTick  \n");
+  __asm volatile("  bl STM32F103Cpu_ThreadTick     \n");  // Publish tick to kernel, it could change thread context too.
 
-	__asm volatile("  mov r0, #0             \n");
-	__asm volatile("  msr basepri, r0        \n");
-	__asm volatile("  ldmia sp!, {r3, r14}   \n");
-    __asm volatile("                         \n");
-	__asm volatile("  ldr r1, [r3]           \n");
-	__asm volatile("  ldr r0, [r1]			 \n");		/* The first item in pxCurrentTCB is the task top of stack. */
-	__asm volatile("  ldmia r0!, {r4-r11}	 \n");			/* Pop the registers. */
-	__asm volatile("  msr psp, r0            \n");
-	__asm volatile("  isb                    \n");
-	__asm volatile("  bx r14                 \n");
-	__asm volatile("\n");
-	__asm volatile(".align 4\n");
-    __asm volatile("pCurrentThreadContextConst2: .word pCurrentThreadData  \n");
+  __asm volatile("  mov r0, #0                     \n");
+  __asm volatile("  msr basepri, r0                \n");
+  __asm volatile("  ldmia sp!, {r0, r3}            \n"); // Restore registers from MSP
+  __asm volatile("                                 \n");
+  __asm volatile("  ldr r1, [r3]                   \n"); // Get back thread context
+  __asm volatile("  ldr r0, [r1]                   \n"); // Get back stack pointer form thread context
+  __asm volatile("  ldmia r0!, {r4-r11, r14}       \n"); // Get back registers from stack of thread
+  __asm volatile("                                 \n");
+  __asm volatile("  msr psp, r0                    \n"); // Load stack pointer of thread context
+  __asm volatile("  bx r14                         \n"); // continue execution.
+  __asm volatile("                                 \n");
+  __asm volatile("  .align 4                       \n");
+  __asm volatile("pCurrentThreadDataConst2: .word pCurrentThreadData  \n");
 }
 
 STM32F103Cpu::STM32F103Cpu() :
@@ -146,6 +152,7 @@ STM32F103Cpu::STM32F103Cpu() :
   oCpuThreadContext.setData(&oCpuThreadData);
   pCurrentThreadContext    = &oCpuThreadContext;
   pCurrentThreadData       = &oCpuThreadData;
+  CcGenericThreadManager::getInstance()->oThreadsRunning.append(&oCpuThreadContext);
   enterCriticalSection();
   leaveCriticalSection();
   startSysClock();
@@ -248,109 +255,42 @@ bool STM32F103Cpu::isInIsr()
 CcStatus STM32F103Cpu::startSysClock()
 {
   CcStatus oStatus(false);
-  uint32_t tmp = 0, pllmull = 0, pllsource = 0;
+  
+  RCC_OscInitTypeDef RCC_OscInitStruct = {};
+  RCC_ClkInitTypeDef RCC_ClkInitStruct = {};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {};
 
-#if defined(STM32F105xC) || defined(STM32F107xC)
-  uint32_t prediv1source = 0, prediv1factor = 0, prediv2factor = 0, pll2mull = 0;
-#endif /* STM32F105xC */
-
-#if defined(STM32F100xB) || defined(STM32F100xE)
-  uint32_t prediv1factor = 0;
-#endif /* STM32F100xB or STM32F100xE */
-
-  /* Get SYSCLK source -------------------------------------------------------*/
-  tmp = RCC->CFGR & RCC_CFGR_SWS;
-
-  switch (tmp)
+  /** Initializes the RCC Oscillators according to the specified parameters
+  * in the RCC_OscInitTypeDef structure.
+  */
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.HSEState = RCC_HSE_ON;
+  RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
+  RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL6;
+  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) == HAL_OK)
   {
-    case 0x00:  /* HSI used as system clock */
-      SystemCoreClock = HSI_VALUE;
-      break;
-    case 0x04:  /* HSE used as system clock */
-      SystemCoreClock = HSE_VALUE;
-      break;
-    case 0x08:  /* PLL used as system clock */
+    /** Initializes the CPU, AHB and APB buses clocks
+    */
+    RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                                |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+    RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
+    RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
+    RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+    RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-      /* Get PLL clock source and multiplication factor ----------------------*/
-      pllmull = RCC->CFGR & RCC_CFGR_PLLMULL;
-      pllsource = RCC->CFGR & RCC_CFGR_PLLSRC;
-
-#if !defined(STM32F105xC) && !defined(STM32F107xC)
-      pllmull = ( pllmull >> 18) + 2;
-
-      if (pllsource == 0x00)
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) == HAL_OK)
+    {
+      PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB;
+      PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL;
+      if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) == HAL_OK)
       {
-        /* HSI oscillator clock divided by 2 selected as PLL clock entry */
-        SystemCoreClock = (HSI_VALUE >> 1) * pllmull;
+        oStatus = true;
       }
-      else
-      {
- #if defined(STM32F100xB) || defined(STM32F100xE)
-       prediv1factor = (RCC->CFGR2 & RCC_CFGR2_PREDIV1) + 1;
-       /* HSE oscillator clock selected as PREDIV1 clock entry */
-       SystemCoreClock = (HSE_VALUE / prediv1factor) * pllmull;
- #else
-        /* HSE selected as PLL clock entry */
-        if ((RCC->CFGR & RCC_CFGR_PLLXTPRE) != (uint32_t)RESET)
-        {/* HSE oscillator clock divided by 2 */
-          SystemCoreClock = (HSE_VALUE >> 1) * pllmull;
-        }
-        else
-        {
-          SystemCoreClock = HSE_VALUE * pllmull;
-        }
- #endif
-      }
-#else
-      pllmull = pllmull >> 18;
-
-      if (pllmull != 0x0D)
-      {
-         pllmull += 2;
-      }
-      else
-      { /* PLL multiplication factor = PLL input clock * 6.5 */
-        pllmull = 13 / 2;
-      }
-
-      if (pllsource == 0x00)
-      {
-        /* HSI oscillator clock divided by 2 selected as PLL clock entry */
-        SystemCoreClock = (HSI_VALUE >> 1) * pllmull;
-      }
-      else
-      {/* PREDIV1 selected as PLL clock entry */
-
-        /* Get PREDIV1 clock source and division factor */
-        prediv1source = RCC->CFGR2 & RCC_CFGR2_PREDIV1SRC;
-        prediv1factor = (RCC->CFGR2 & RCC_CFGR2_PREDIV1) + 1;
-
-        if (prediv1source == 0)
-        {
-          /* HSE oscillator clock selected as PREDIV1 clock entry */
-          SystemCoreClock = (HSE_VALUE / prediv1factor) * pllmull;
-        }
-        else
-        {/* PLL2 clock selected as PREDIV1 clock entry */
-
-          /* Get PREDIV2 division factor and PLL2 multiplication factor */
-          prediv2factor = ((RCC->CFGR2 & RCC_CFGR2_PREDIV2) >> 4) + 1;
-          pll2mull = ((RCC->CFGR2 & RCC_CFGR2_PLL2MUL) >> 8 ) + 2;
-          SystemCoreClock = (((HSE_VALUE / prediv2factor) * pll2mull) / prediv1factor) * pllmull;
-        }
-      }
-#endif /* STM32F105xC */
-      break;
-
-    default:
-      SystemCoreClock = HSI_VALUE;
-      break;
+    }
   }
 
-  /* Compute HCLK clock frequency ----------------*/
-  /* Get HCLK prescaler */
-  tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
-  /* HCLK clock frequency */
-  SystemCoreClock >>= tmp;
   return oStatus;
 }

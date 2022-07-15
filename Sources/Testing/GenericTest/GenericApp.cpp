@@ -78,9 +78,9 @@ void GenericApp::run()
       CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);
       CCNEW(m_pBulkTransfer, CcUsbBulkTransfer, oUsbDevice);   
       
-      oStatus = m_pBulkTransfer->open(EOpenFlags::ReadWrite);
-
       oStatus = m_pCdcDevice->open(EOpenFlags::ReadWrite);
+
+      oStatus = m_pBulkTransfer->open(EOpenFlags::ReadWrite);
 
       if(oStatus)
       {

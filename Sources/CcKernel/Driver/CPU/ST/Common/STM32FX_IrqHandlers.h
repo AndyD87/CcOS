@@ -14,6 +14,7 @@
 
   #define USART2_IRQHandler_Handled
   #define TIM2_IRQHandler_Handled
+  #define USB_LP_CAN1_RX0_IRQHandler_Handled
 
 #elif defined(STM32F207xx)
 

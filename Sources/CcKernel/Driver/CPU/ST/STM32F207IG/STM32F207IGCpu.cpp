@@ -83,7 +83,7 @@ CCEXTERNC void SysTick_Handler( void )
   __asm volatile("  dsb                            \n");
   __asm volatile("  isb                            \n");
 
-  __asm volatile("  bl STM32F207IGCpu_SysTick       \n");  // Publish tick to kernel, it could change thread context too.
+  __asm volatile("  bl STM32F207IGCpu_SysTick      \n");  // Publish tick to kernel, it could change thread context too.
 
   __asm volatile("  mov r0, #0                     \n");
   __asm volatile("  msr basepri, r0                \n");

@@ -23,13 +23,13 @@
  * @brief     Implementation of class STM32F407Cpu
  **/
 
-#include "stm32f4xx_hal.h"
+#include <stm32f4xx_hal.h>
 #include "STM32F407Cpu.h"
 #include "STM32F407Driver.h"
 #include "CcKernel.h"
 #include "CcStatic.h"
 #include "CcGenericThreadManager.h"
-#include "stdlib.h"
+#include <stdlib.h>
 
 STM32F407Cpu* STM32F407Cpu::pCpu      = nullptr;  //!< Cpu data initialized on cpu start
 volatile CcThreadContext* pCurrentThreadContext = nullptr;  //!< Cpu current running thread Context

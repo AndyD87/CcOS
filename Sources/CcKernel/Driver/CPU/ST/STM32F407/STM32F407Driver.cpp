@@ -93,7 +93,6 @@ CcStatus STM32F407Driver::entry()
     CcKernel::addDevice(CcDevice(pUsbDevice,EDeviceType::Usb));
   #endif
   
-    m_oSystemDevices.append(pTimerDevice);
   return true;
 }
 
@@ -101,7 +100,7 @@ CcStatus STM32F407Driver::unload()
 {
   while(m_oSystemDevices.size())
   {
-	CCDELETE_RO(m_oSystemDevices[0].ptr());
+    CCDELETE_RO(m_oSystemDevices[0].ptr());
     m_oSystemDevices.remove(0);
   }
   // System device should never fail, we would have big problems

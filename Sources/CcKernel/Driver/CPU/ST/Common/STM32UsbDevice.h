@@ -27,6 +27,12 @@
 #include "Devices/IUsbDevice.h"
 #include "usbh_conf.h"
 
+#ifndef USB_OTG_FS
+  #define USB_EXTENDED_OFF
+  #define __HAL_RCC_USB_OTG_HS_CLK_ENABLE __HAL_RCC_USB_CLK_ENABLE
+  #define __HAL_PCD_GATE_PHYCLOCK(VOID)         
+#endif
+
 /**
  * @brief First test of an USB Implementation on STM32F4
  */
@@ -77,8 +83,11 @@ private:
 
 private:
   PCD_HandleTypeDef     m_oPcdHandle;
-  USB_OTG_GlobalTypeDef m_oGlobalDef;
-  USB_OTG_CfgTypeDef    m_oConfigDef;
+  //USB_OTG_GlobalTypeDef m_oGlobalDef;
+  //USB_OTG_CfgTypeDef    m_oConfigDef;
+  #ifdef USB_EXTENDED_OFF
+    uint16 m_uiPmaOffset = 0x18;
+  #endif
 
   EUsbState m_eOldState = EUsbState::Suspended;
   EUsbState m_eCurrentSate = EUsbState::Suspended;

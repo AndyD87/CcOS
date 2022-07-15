@@ -29,6 +29,10 @@
 #include "Driver/CPU/ST/STM32F103/STM32F103SystemGpioPort.h"
 #include "Driver/CPU/ST/STM32F103/STM32F103Cpu.h"
 
+#ifdef CCOS_GENERIC_USB
+  #include "../Common/STM32Usb.h"
+#endif
+
 #ifdef CCOS_GENERIC_NETWORK
   #include "Driver/CPU/ST/STM32F103/STM32F103Network.h"
 #endif
@@ -68,6 +72,13 @@ CcStatus STM32F103Driver::entry()
   IDevice* pTimerDevice = CCNEW_INLINE(STM32F103Timer);
   CcKernel::addDevice(CcDevice(pTimerDevice,EDeviceType::Timer));
   m_oSystemDevices.append(pTimerDevice);
+
+  #ifdef CCOS_GENERIC_USB
+    // Setup USB
+    IUsb* pUsbDevice = CCNEW_INLINE(STM32Usb);
+    CcKernel::addDevice(CcDevice(pUsbDevice,EDeviceType::Usb));
+  #endif
+  
   return true;
 }
 
@@ -75,7 +86,7 @@ CcStatus STM32F103Driver::unload()
 {
   while(m_oSystemDevices.size())
   {
-    delete m_oSystemDevices[0].ptr();
+    CCDELETE_RO(m_oSystemDevices[0].ptr());
     m_oSystemDevices.remove(0);
   }
   // System device should never fail, we would have big problems

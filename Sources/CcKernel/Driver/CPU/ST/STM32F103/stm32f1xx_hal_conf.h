@@ -51,8 +51,7 @@
 #define HAL_EXTI_MODULE_ENABLED     //!< Enable exti module
 #define HAL_PWR_MODULE_ENABLED      //!< Enable power module
 #define HAL_RCC_MODULE_ENABLED      //!< Enable rcc module
-
-#define  USE_HAL_PCD_REGISTER_CALLBACKS         1U /**< PCD register callback disabled       */
+#define HAL_PCD_MODULE_ENABLED      //!< Enable USB
 
 /*#define HAL_ADC_MODULE_ENABLED   */
 /*#define HAL_CRYP_MODULE_ENABLED   */
@@ -71,7 +70,6 @@
 /*#define HAL_NOR_MODULE_ENABLED   */
 /*#define HAL_NAND_MODULE_ENABLED   */
 /*#define HAL_PCCARD_MODULE_ENABLED   */
-/*#define HAL_PCD_MODULE_ENABLED   */
 /*#define HAL_HCD_MODULE_ENABLED   */
 /*#define HAL_PWR_MODULE_ENABLED   */
 /*#define HAL_RCC_MODULE_ENABLED   */
