@@ -76,11 +76,11 @@ void GenericApp::run()
       oConfig.getConfig()->uiMaxPower   = 0x32;
 
       CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);
-      CCNEW(m_pBulkTransfer, CcUsbBulkTransfer, oUsbDevice);   
+      //CCNEW(m_pBulkTransfer, CcUsbBulkTransfer, oUsbDevice);   
       
       oStatus = m_pCdcDevice->open(EOpenFlags::ReadWrite);
 
-      oStatus = m_pBulkTransfer->open(EOpenFlags::ReadWrite);
+      //oStatus = m_pBulkTransfer->open(EOpenFlags::ReadWrite);
 
       if(oStatus)
       {

@@ -76,7 +76,7 @@ void HAL_PCD_SOFCallback(PCD_HandleTypeDef *hpcd)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(hpcd);
-  IUsbDevice::debugMessage("HAL_PCD_SOFCallback");
+  //IUsbDevice::debugMessage("HAL_PCD_SOFCallback");
 }
 
 /**
@@ -313,6 +313,33 @@ CcStatus STM32UsbDevice::onStart()
       HAL_PCDEx_SetRxFiFo(getPcdHandle(), m_uiEp0MaxSize);
       HAL_PCDEx_SetTxFiFo(getPcdHandle(), 0, 0x40);
     #endif
+    //Configure and open endpoints. Enpoint interfaces are required
+    IUsbDevice::CConfigDescriptor& oConfig = m_oDeviceDescriptor.getActiveConfig();
+    for(size_t uiIdx=0; uiIdx<oConfig.getEndpointCount(); uiIdx++)  
+    { 
+      IUsbDevice::SEndpointDescriptor* pEndPoint = oConfig.getEndpoint(uiIdx);
+      if(pEndPoint->uiEndpointAddress == 0 ||
+          pEndPoint->uiEndpointAddress == 0x80)
+      { 
+        // Nothing to do, it is our default config
+      }
+      else if(pEndPoint->uiEndpointAddress < 0x80)
+      {
+        #ifdef USB_EXTENDED_OFF
+          HAL_PCDEx_PMAConfig(getPcdHandle(), pEndPoint->uiEndpointAddress, PCD_SNG_BUF, m_uiPmaOffset);
+          m_uiPmaOffset += pEndPoint->wMaxPacketSize;
+        #endif
+      }
+      else
+      {
+        #ifdef USB_EXTENDED_OFF
+          HAL_PCDEx_PMAConfig(getPcdHandle(), pEndPoint->uiEndpointAddress, PCD_SNG_BUF, m_uiPmaOffset);
+          m_uiPmaOffset += pEndPoint->wMaxPacketSize;
+        #else
+          HAL_PCDEx_SetTxFiFo(getPcdHandle(), pEndPoint->uiEndpointAddress & ~0x80, pEndPoint->wMaxPacketSize);
+        #endif
+      }
+    }
     oStatus = true;
   }
   return oStatus;
@@ -608,17 +635,10 @@ void STM32UsbDevice::doSetConfiguration()
         {
           IUsbDevice::debugMessage("Failed to setup receive endpoint");
         }
-        #ifdef USB_EXTENDED_OFF
-          HAL_PCDEx_PMAConfig(getPcdHandle(), pEndPoint->uiEndpointAddress, PCD_SNG_BUF, m_uiPmaOffset);
-          m_uiPmaOffset += pEndPoint->wMaxPacketSize;
-        #endif
       }
       else
       {
-        #ifdef USB_EXTENDED_OFF
-          HAL_PCDEx_PMAConfig(getPcdHandle(), pEndPoint->uiEndpointAddress, PCD_SNG_BUF, m_uiPmaOffset);
-          m_uiPmaOffset += pEndPoint->wMaxPacketSize;
-        #else
+        #ifndef USB_EXTENDED_OFF
           HAL_PCDEx_SetTxFiFo(getPcdHandle(), pEndPoint->uiEndpointAddress & ~0x80, pEndPoint->wMaxPacketSize);
         #endif
       }
