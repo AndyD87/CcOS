@@ -32,7 +32,8 @@
 #include "CcFileInfo.h"
 #include "CcFileInfoList.h"
 
-CcGenericFile::CcGenericFile()
+CcGenericFile::CcGenericFile(const CcString& sName) :
+  m_sName(sName)
 {
 }
 

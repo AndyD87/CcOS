@@ -27,11 +27,14 @@
 #include "CcBase.h"
 #include "IFileSystem.h"
 #include "CcFile.h"
+#include "CcGenericDirectory.h"
+#include "IFileInterface.h"
 
 /**
- * @brief Button for GUI Applications
+ * @brief Basic filesystem with bufferd files
  */
-class CcGenericFilesystem : public IFileSystem{
+class CcGenericFilesystem : public IFileSystem
+{
 public:
   /**
    * @brief Constructor
@@ -43,7 +46,7 @@ public:
    */
   virtual ~CcGenericFilesystem();
 
-  CcFilePointer getFile(const CcString& path) const override;
+  CcFilePointer getFile(const CcString& path) override;
   CcStatus mkdir(const CcString& Path) const override;
   CcStatus remove(const CcString& Path) const override;
 };

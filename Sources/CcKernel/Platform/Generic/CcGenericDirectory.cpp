@@ -33,7 +33,8 @@
 #include "CcFileInfo.h"
 #include "CcFileInfoList.h"
 
-CcGenericDirectory::CcGenericDirectory()
+CcGenericDirectory::CcGenericDirectory(const CcString& sName) :
+  m_sName(sName)
 {
 }
 

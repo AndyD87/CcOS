@@ -36,7 +36,7 @@ CcWindowsRegistryFilesystem::~CcWindowsRegistryFilesystem()
 {
 }
 
-CcFilePointer CcWindowsRegistryFilesystem::getFile(const CcString& path) const
+CcFilePointer CcWindowsRegistryFilesystem::getFile(const CcString& path)
 {
   CCNEWTYPE(file, CcWindowsRegistryFile, path);
   return file;

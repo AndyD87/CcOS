@@ -41,7 +41,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcGenericFile();
+  CcGenericFile(const CcString& sName);
 
   /**
    * @brief Destructor
@@ -86,8 +86,9 @@ public:
     { return false; }
 
 private:
-  CcFileInfo m_oFileInfo;
-  CcBufferList m_oData;
-  EOpenFlags m_eOpenFlags;
-  uint64     m_uiOffset;
+  CcFileInfo    m_oFileInfo;
+  CcBufferList  m_oData;
+  EOpenFlags    m_eOpenFlags;
+  uint64        m_uiOffset;
+  CcString      m_sName;
 };

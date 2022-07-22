@@ -42,7 +42,7 @@ CcLinuxFilesystem::~CcLinuxFilesystem()
 {
 }
 
-CcFilePointer CcLinuxFilesystem::getFile(const CcString& sPath) const
+CcFilePointer CcLinuxFilesystem::getFile(const CcString& sPath)
 {
   CCNEWTYPE(pFile, CcLinuxFile, sPath);
   return pFile;

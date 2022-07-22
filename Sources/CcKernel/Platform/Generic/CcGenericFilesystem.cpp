@@ -26,7 +26,6 @@
  */
 #include "CcGenericFilesystem.h"
 #include "CcGenericFile.h"
-#include "CcGenericDirectory.h"
 
 CcGenericFilesystem::CcGenericFilesystem()
 {
@@ -36,10 +35,10 @@ CcGenericFilesystem::~CcGenericFilesystem()
 {
 }
 
-CcFilePointer CcGenericFilesystem::getFile(const CcString& ) const
+CcFilePointer CcGenericFilesystem::getFile(const CcString& sPath)
 {
   CcFilePointer file;
-  //CCNEW(file, CcGenericDirectory);
+  CCUNUSED(sPath);
   return file;
 }
 

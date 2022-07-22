@@ -45,7 +45,7 @@ public:
    */
   virtual ~CcWindowsFilesystem();
 
-  CcFilePointer getFile(const CcString& path) const override;
+  CcFilePointer getFile(const CcString& path) override;
   CcStatus mkdir(const CcString& Path) const override;
   CcStatus remove(const CcString& Path) const override;
 };

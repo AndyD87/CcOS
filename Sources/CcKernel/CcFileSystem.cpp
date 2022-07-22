@@ -26,6 +26,7 @@
 #include "CcKernel.h"
 #include "CcDirectory.h"
 #include "CcGlobalStrings.h"
+#include "IFileInterface.h"
 
 // Will be initialized by CcKernel at startup
 CcVector<CcFileSystemListItem>* CcFileSystem::s_pFSList;
@@ -50,27 +51,39 @@ void CcFileSystem::deinit(CcVector<CcFileSystemListItem>*& pItem)
 
 CcFilePointer CcFileSystem::getFile(const CcString& Path)
 {
-  CcFileSystemHandle oFs = getFileSystemByPath(Path);
+  CcString sInnerPath;
+  CcFileSystemHandle oFs = getFileSystemByPath(Path, sInnerPath);
   if (oFs.isValid())
-    return oFs->getFile(Path);
+  {
+    if(sInnerPath.length() == 0 || ( sInnerPath.length() == 1 && sInnerPath[0] == '/'))
+    {
+      return CCNEW_INLINE(IFileInterface, oFs.cast<IFile>());
+    }
+    else
+    {
+      return oFs->getFile(Path);
+    }
+  }
   else
     return CcFilePointer();
 }
 
 CcStatus CcFileSystem::mkdir(const CcString& Path)
 {
-  CcFileSystemHandle oFs = getFileSystemByPath(Path);
+  CcString sInnerPath;
+  CcFileSystemHandle oFs = getFileSystemByPath(Path, sInnerPath);
   if (oFs.isValid())
-    return oFs->mkdir(Path);
+    return oFs->mkdir(sInnerPath);
   else
     return EStatus::FileSystemNotFound;
 }
 
 CcStatus CcFileSystem::remove(const CcString& Path)
 {
-  CcFileSystemHandle oFs = getFileSystemByPath(Path);
+  CcString sInnerPath;
+  CcFileSystemHandle oFs = getFileSystemByPath(Path, sInnerPath);
   if (oFs.isValid())
-    return oFs->remove(Path);
+    return oFs->remove(sInnerPath);
   else
     return EStatus::FileSystemNotFound;
 }
@@ -200,7 +213,7 @@ void CcFileSystem::removeMountPoint(const CcString& sPath)
   }
 }
 
-CcFileSystemHandle CcFileSystem::getFileSystemByPath(const CcString& sPath)
+CcFileSystemHandle CcFileSystem::getFileSystemByPath(const CcString& sPath, CcString& sInnerPath)
 {
   CcFileSystemHandle pFileSystem;
   // search in registered providers
@@ -208,6 +221,7 @@ CcFileSystemHandle CcFileSystem::getFileSystemByPath(const CcString& sPath)
   {
     if (sPath.startsWith(s_pFSList->at(i).getPath()))
     {
+      sInnerPath = sPath.substr(s_pFSList->at(i).getPath().length());
       pFileSystem = s_pFSList->at(i).getFileSystem();
       break;
     }
@@ -217,6 +231,37 @@ CcFileSystemHandle CcFileSystem::getFileSystemByPath(const CcString& sPath)
   {
     // Take root file system if nothing was found
     pFileSystem = s_pFSList->at(0).getFileSystem();
+  }
+  return pFileSystem;
+}
+
+CcFileInfoList CcFileSystem::getFileSystemsByPath(const CcString& sPath)
+{
+  CcFileInfoList pFileSystem;
+  // search in registered providers
+  CcString sSearchPath = sPath;
+  while(sSearchPath.endsWith(CcGlobalStrings::Seperators::Path))
+    sSearchPath.remove(sSearchPath.length()-1);
+  for (size_t i = 0; i < s_pFSList->size(); i++)
+  {
+    if (s_pFSList->at(i).getPath().startsWith(sSearchPath) &&
+        ( s_pFSList->at(i).getPath().length() > sSearchPath.length() &&
+          s_pFSList->at(i).getPath()[sSearchPath.length()] == '/')
+    )
+    {
+      CcString sName = s_pFSList->at(i).getPath().getReplace(sSearchPath, "");
+      if(sName.length())
+      {
+        if(sName.length() && sName[0] == '/') sName.remove(0);
+        size_t uiOffset = sName.find('/');
+        if(uiOffset < sName.length()) sName.remove(uiOffset, SIZE_MAX);
+        CcFileInfo oFileInfo;
+        oFileInfo.setFileAccess(EFileAccess::RWX);
+        oFileInfo.setFlags(EFileAttributes::EFlags::Directory + static_cast<uint16>(0777));
+        oFileInfo.setName(sName);
+        pFileSystem.append(oFileInfo);
+      }
+    }
   }
   return pFileSystem;
 }

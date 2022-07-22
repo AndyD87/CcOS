@@ -54,6 +54,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     IDevice.h
     IDriver.h
     IFile.h
+    IFileInterface.h
     IFileSystem.h
     IKernel.h
     IModuleBase.h
@@ -213,6 +214,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     CcTimer.cpp
     IDevice.cpp
     IDriver.cpp
+    IFileSystem.cpp
     IModuleBase.cpp
     IShell.cpp
     IThread.cpp

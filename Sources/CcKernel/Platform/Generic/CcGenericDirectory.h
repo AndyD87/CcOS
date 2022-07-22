@@ -41,7 +41,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcGenericDirectory();
+  CcGenericDirectory(const CcString& sName);
 
   /**
    * @brief Destructor
@@ -88,4 +88,5 @@ public:
 private:
   CcFileInfo      m_oFileInfo;
   CcList<IFile*>  m_oFileList;
+  CcString        m_sName;
 };

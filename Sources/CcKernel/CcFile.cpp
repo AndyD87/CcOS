@@ -111,7 +111,8 @@ void CcFile::setFilePath(const CcString& sPath)
   {
     close();
   }
-  m_SystemFile = CcFileSystem::getFile(getAbsolutePath(sPath));
+  m_sFilePath = getAbsolutePath(sPath);
+  m_SystemFile = CcFileSystem::getFile(m_sFilePath);
 }
 
 bool CcFile::isFile() const
@@ -262,10 +263,17 @@ CcDateTime CcFile::getModified(const CcString& sFilePath)
 
 CcFileInfoList CcFile::getFileList() const
 {
+  CcFileInfoList oFileList;
   if(m_SystemFile.isValid())
-    return m_SystemFile->getFileList();
-  else
-    return CcFileInfoList();
+  {
+    oFileList = m_SystemFile->getFileList();
+    CcFileInfoList oFileSystems = CcFileSystem::getFileSystemsByPath(m_sFilePath);
+    if(oFileSystems.size())
+    {
+      oFileList.append(oFileSystems);
+    }
+  }
+  return oFileList;
 }
 
 uint64 CcFile::getFilePointer() const

@@ -256,6 +256,26 @@ inline void operator&=(EFileAttributes::EFlags& leftOp, EFileAttributes::EFlags 
   leftOp = static_cast<EFileAttributes::EFlags> (static_cast<uint16>(leftOp) & static_cast<uint16>(rightOp));
 }
 
+/**
+ * @brief AND two EFlags and save result in first
+ * @param[in,out] leftOp:   First EFlag to AND, and output for result
+ * @param rightOp:          Second EFlag to AND
+ */
+static inline EFileAttributes::EFlags operator+(EFileAttributes::EFlags leftOp, EFileAttributes::EFlags rightOp)
+{
+  return static_cast<EFileAttributes::EFlags>(static_cast<uint16>(leftOp) + static_cast<uint16>(rightOp));
+}
+
+/**
+ * @brief AND two EFlags and save result in first
+ * @param[in,out] leftOp:   First EFlag to AND, and output for result
+ * @param rightOp:          Second EFlag to AND
+ */
+static inline EFileAttributes::EFlags operator+(EFileAttributes::EFlags leftOp, uint16 rightOp)
+{
+  return static_cast<EFileAttributes::EFlags>(static_cast<uint16>(leftOp) + rightOp);
+}
+
 
 class IFile;
 class CcFileInfo;

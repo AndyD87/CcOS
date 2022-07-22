@@ -42,6 +42,9 @@
 #include "CcFileSystem.h"
 #include "CcMutex.h"
 #include "CcGenericFilesystem.h"
+#include "Filesystem/CcFilesystemDevice.h"
+#include "Filesystem/CcFilesystemSystem.h"
+#include "CcGenericFilesystem.h"
 #ifdef CCOS_GENERIC_NETWORK
   #include "Network/INetworkStack.h"
   #if defined(CCOS_CCKERNEL_GENERIC_LWIP_STACK)
@@ -66,6 +69,8 @@ public:
   }
   CcGenericThreadManager    oThreadManager;
   CcGenericFilesystem       oFileSystem;
+  CcFilesystemDevice        oFileSystemDevice;
+  CcFilesystemSystem        oFileSystemSystem;
   CcStringMap               oEnvVars;
   #ifdef CCOS_GENERIC_NETWORK
     INetworkStack*            pNetworkStack = nullptr;
@@ -97,6 +102,8 @@ void CcSystem::init()
   #endif // CCOS_GENERIC_NETWORK
 
   CcFileSystem::addMountPoint("/", &m_pPrivate->oFileSystem);
+  CcFileSystem::addMountPoint("/system", &m_pPrivate->oFileSystemSystem);
+  CcFileSystem::addMountPoint("/device", &m_pPrivate->oFileSystemDevice);
 }
 
 void CcSystem::deinit()

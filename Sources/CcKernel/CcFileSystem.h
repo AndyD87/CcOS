@@ -121,9 +121,17 @@ public:
   /**
    * @brief Get a filesystem by path
    * @param sPath: Path to search for basic filsystem
+   * @param[out] sInnerPath: Path to file within filesystem.
    * @return Filesystem handle of path, or invalid handle if path not found
    */
-  static CcFileSystemHandle getFileSystemByPath(const CcString& sPath);
+  static CcFileSystemHandle getFileSystemByPath(const CcString& sPath, CcString& sInnerPath);
+
+  /**
+   * @brief Get all Filesystems wich are mapped wit this given path and higher
+   * @param sPath: Target mount dir
+   * @return List of all Filesystems
+   */
+  static CcFileInfoList getFileSystemsByPath(const CcString& sPath);
   
 private:
   static CcVector<CcFileSystemListItem> *s_pFSList; //!< List of Mounted FileSystems

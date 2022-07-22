@@ -25,12 +25,11 @@
 #pragma once
 
 #include "CcBase.h"
-#include "CcBase.h"
+#include "CcString.h"
 #include "IFile.h"
 
 class CcCrc32;
 class CcFile;
-class CcString;
 class CcByteArray;
 
 /**
@@ -307,7 +306,8 @@ public:
   virtual void* getStdFile() override;
 
 protected: //Variables
-  size_t m_filePointer = 0; //!< Position of FilePointer in File
+  size_t    m_filePointer = 0; //!< Position of FilePointer in File
+  CcString  m_sFilePath;
 private:
   CcFilePointer m_SystemFile; //!< Pointer to SystemFile for interface-Class
 };
