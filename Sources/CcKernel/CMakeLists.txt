@@ -163,6 +163,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     
     Shell/CcShellCd.h
     Shell/CcShellGetEnv.h
+    Shell/CcShellEcho.h
     Shell/CcShellExit.h
     Shell/CcShellExport.h
     Shell/CcShellLs.h
@@ -288,6 +289,7 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Network/Stack/INetworkSocket.cpp
     
     Shell/CcShellCd.cpp
+    Shell/CcShellEcho.cpp
     Shell/CcShellExit.cpp
     Shell/CcShellExport.cpp
     Shell/CcShellGetEnv.cpp

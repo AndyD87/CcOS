@@ -122,7 +122,7 @@ CcStatus IThread::enterState(EThreadState State)
     case EThreadState::Running:
       if (EThreadState::Starting == m_State)
       {
-        m_State = State;
+        setState(State);
         m_oStateLock.unlock();
         bDoUnlock = false;
         run();
@@ -136,7 +136,7 @@ CcStatus IThread::enterState(EThreadState State)
     case EThreadState::Stopping:
       if (m_State < EThreadState::Stopping)
       {
-        m_State = State;
+        setState(State);
         onStop();
       }
       oSuccess = true;
@@ -150,7 +150,7 @@ CcStatus IThread::enterState(EThreadState State)
       }
       if (m_State != EThreadState::Stopped)
       {
-        m_State = State;
+        setState(State);
         bDoUnlock = false;
         m_oStateLock.unlock();
         // Be aware here! Worker will delete itself here

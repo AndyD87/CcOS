@@ -20,16 +20,31 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IShellCommand
+ * @brief     Class CcShellEcho
  */
-#include "IShell.h"
-#include "IShellCommand.h"
+#pragma once
 
-IShellCommand::IShellCommand(const CcString& sCommand) :
-  m_sCommand(sCommand)
-{
-}
+#include "CcBase.h"
+#include "Shell/IShellCommand.h"
 
-IShellCommand::~IShellCommand()
+class IShell;
+
+/**
+ * @brief Basic shell application.
+ */
+class CcKernelSHARED CcShellEcho : public IShellCommand
 {
-}
+public:
+  /**
+   * @brief Create thread instantce with name.
+   * @param sName: Target name of thread
+   */
+  CcShellEcho();
+
+  /**
+   * @brief Destroy Object and waiting until @ref getThreadState is set to EThreadState::Stopped
+   */
+  virtual ~CcShellEcho();
+
+  virtual CcStatus exec(IShell& oBasicShell, const CcStringList& oArguments) override;
+};

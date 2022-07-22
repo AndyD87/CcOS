@@ -20,16 +20,26 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IShellCommand
+ * @brief     Class CcShellEcho
  */
+#include "CcShellEcho.h"
 #include "IShell.h"
-#include "IShellCommand.h"
+#include "CcStringUtil.h"
+#include "CcGlobalStrings.h"
+#include "CcStringUtil.h"
 
-IShellCommand::IShellCommand(const CcString& sCommand) :
-  m_sCommand(sCommand)
+CcShellEcho::CcShellEcho() :
+  IShellCommand("echo")
 {
 }
 
-IShellCommand::~IShellCommand()
+CcShellEcho::~CcShellEcho()
 {
+}
+
+CcStatus CcShellEcho::exec(IShell& oBasicShell, const CcStringList& oArguments)
+{
+  CcStatus oSuccess;
+  oBasicShell.writeLine(oArguments.collapse(CcGlobalStrings::Space));
+  return oSuccess;
 }

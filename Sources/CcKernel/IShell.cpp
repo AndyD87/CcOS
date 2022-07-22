@@ -90,6 +90,7 @@ IShell::~IShell()
 void IShell::run()
 {
   size_t uiReceived = 0;
+  writeLine("Welcome to CcOS Basic Shell");
   while(isRunning())
   {
     if(m_pIoStream)
@@ -119,6 +120,7 @@ void IShell::init(IIo* pIoStream)
 #include "Shell/CcShellGetEnv.h"
 #include "Shell/CcShellExit.h"
 #include "Shell/CcShellExport.h"
+#include "Shell/CcShellEcho.h"
 
 #define CREATE_AND_APPEND(COMMAND)                    \
   m_oCreatedCommands.append(CCNEW_INLINE(COMMAND)); \
@@ -131,6 +133,7 @@ void IShell::initDefaultCommands()
   CREATE_AND_APPEND(CcShellGetEnv);
   CREATE_AND_APPEND(CcShellExit);
   CREATE_AND_APPEND(CcShellExport);
+  CREATE_AND_APPEND(CcShellEcho);
 }
 
 CcStatus IShell::changeDirectory(const CcString& sPath)
@@ -239,7 +242,6 @@ CcStatus IShell::execLine(CcStringList& oArguments)
       if (pCommand->getCommand() == sCommand)
       {
         bCommandFound = true;
-        oArguments.remove(0);
 
         m_oActiveCommandLock.lock();
         m_pActiveCommand = pCommand;

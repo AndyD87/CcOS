@@ -350,17 +350,48 @@ void STM32UsbDevice::setUsbState(EUsbState eNewState)
   switch(eNewState) 
   {
     case EUsbState::Connected:
-      CCFALLTHROUGH;
+    {
+      // EPTypes:
+      //   EP_TYPE_CTRL                           0U
+      //   EP_TYPE_ISOC                           1U
+      //   EP_TYPE_BULK                           2U
+      //   EP_TYPE_INTR                           3U
+      //   EP_TYPE_MSK                            3U
+      // configure endpoints!
+      /* Open EP0 OUT */
+      HAL_StatusTypeDef status = HAL_PCD_EP_Open(getPcdHandle(), 0x00, m_uiEp0MaxSize, EP_TYPE_CTRL);
+      /* Open EP0 IN */
+      if(status == HAL_OK || status == HAL_BUSY)
+      {
+        status = HAL_PCD_EP_Open(getPcdHandle(), 0x80, m_uiEp0MaxSize, EP_TYPE_CTRL);
+      }
+      m_eCurrentSate = eNewState; 
+      break;
+    }
     case EUsbState::Addressed:
       CCFALLTHROUGH;
     case EUsbState::Configured:
-      m_eCurrentSate = eNewState; 
+      m_eCurrentSate = eNewState;       
       break;
     case EUsbState::Suspended:
+    {
       __HAL_PCD_GATE_PHYCLOCK(getPcdHandle());
+      // Close all endpoints
+      HAL_PCD_EP_Close(getPcdHandle(), 0x00);
+      HAL_PCD_EP_Close(getPcdHandle(), 0x80);
+      IUsbDevice::CConfigDescriptor& oConfig = m_oDeviceDescriptor.getActiveConfig();
+      for(size_t uiIdx=0; uiIdx<oConfig.getEndpointCount(); uiIdx++)  
+      { 
+        IUsbDevice::SEndpointDescriptor* pEndPoint = oConfig.getEndpoint(uiIdx);
+        HAL_PCD_EP_Close(
+          getPcdHandle(), 
+          pEndPoint->uiEndpointAddress
+        );
+      }
       m_eOldState = m_eCurrentSate;
       m_eCurrentSate = eNewState; 
-    break;
+      break;
+    }
     case EUsbState::Resume:
       // Reload old state
       if(m_eCurrentSate == EUsbState::Suspended)
@@ -371,22 +402,7 @@ void STM32UsbDevice::setUsbState(EUsbState eNewState)
 
 void STM32UsbDevice::doReset()
 {
-  // EPTypes:
-  //   EP_TYPE_CTRL                           0U
-  //   EP_TYPE_ISOC                           1U
-  //   EP_TYPE_BULK                           2U
-  //   EP_TYPE_INTR                           3U
-  //   EP_TYPE_MSK                            3U
-  // configure endpoints!
-  /* Open EP0 OUT */
   setUsbState(Connected);
-
-  HAL_StatusTypeDef status = HAL_PCD_EP_Open(getPcdHandle(), 0x00, m_uiEp0MaxSize, EP_TYPE_CTRL);
-  /* Open EP0 IN */
-  if(status == HAL_OK || status == HAL_BUSY)
-  {
-    status = HAL_PCD_EP_Open(getPcdHandle(), 0x80, m_uiEp0MaxSize, EP_TYPE_CTRL);
-  }
 }
 
 #define  SWAPBYTE(addr)        (((uint16_t)(*((uint8_t *)(addr)))) + \

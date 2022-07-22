@@ -41,6 +41,8 @@ public:
   virtual ~GenericApp();
 
   virtual void run() override;
+private:
+  void onShellStateChanged(void* pVoid);
 
 private:
   CcUsbCdc* m_pCdcDevice              = nullptr;

@@ -20,7 +20,7 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class IShell
+ * @brief     Class CcShellCd
  */
 #include "CcShellCd.h"
 #include "IShell.h"

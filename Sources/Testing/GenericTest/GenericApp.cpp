@@ -90,6 +90,7 @@ void GenericApp::run()
           CCNEW(m_pShell, IShell);   
           m_pShell->init(m_pCdcDevice);
           m_pShell->initDefaultCommands();
+          m_pShell->registerOnStateChange(NewCcEvent(this, GenericApp::onShellStateChanged));
           oStatus = m_pShell->start();
           if(oStatus)
           {
@@ -99,5 +100,15 @@ void GenericApp::run()
     }
 
     setExitCode(oStatus);
+  }
+}
+
+void GenericApp::onShellStateChanged(void* pVoid)
+{
+  // Verify shell as sender and restart
+  if( pVoid == m_pShell &&
+      m_pShell->getThreadState() == EThreadState::Stopped)
+  {
+    m_pShell->start();
   }
 }
