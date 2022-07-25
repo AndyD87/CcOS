@@ -38,6 +38,23 @@ CcWindowsFilesystem::~CcWindowsFilesystem()
 {
 }
 
+bool CcWindowsFilesystem::isIn(const CcString& sMountPath, const CcString& sTargetPath, CcString& sInnerPath) const
+{
+  CCUNUSED(sMountPath);
+  bool bIsIn = sTargetPath.length() > 1 && sTargetPath[1] == ':';
+  if (bIsIn)
+  {
+    sInnerPath = sTargetPath;
+  }
+  else if (sTargetPath.length() > 1 && sTargetPath[0] == '\\' && sTargetPath[1] == '\\')
+  {
+    sInnerPath = sTargetPath;
+    bIsIn = true;
+  }
+  return bIsIn;
+}
+
+
 CcFilePointer CcWindowsFilesystem::getFile(const CcString& path)
 {
   CCNEWTYPE(file, CcWindowsFile, path);
@@ -103,4 +120,118 @@ CcStatus CcWindowsFilesystem::remove(const CcString& Path) const
     }
   }
   return bRet;
+}
+
+CcFileInfo CcWindowsFilesystem::getInfo() const
+{
+  CcFileInfo oFileInfo;
+  return oFileInfo;
+}
+
+size_t CcWindowsFilesystem::read(void*, size_t)
+{
+  return SIZE_MAX;
+}
+
+size_t CcWindowsFilesystem::size()
+{
+  return SIZE_MAX;
+}
+
+uint64 CcWindowsFilesystem::size64()
+{
+  return SIZE_MAX;
+}
+
+size_t CcWindowsFilesystem::write(const void*, size_t)
+{
+  return SIZE_MAX;
+}
+
+CcStatus CcWindowsFilesystem::open(EOpenFlags)
+{
+  CcStatus bRet(true);
+  return bRet;
+}
+
+CcStatus CcWindowsFilesystem::close()
+{
+  bool bRet = true;
+  return bRet;
+}
+
+bool CcWindowsFilesystem::isFile() const
+{
+  return false;
+}
+
+CcStatus CcWindowsFilesystem::setFilePointer(uint64)
+{
+  return false;
+}
+
+bool CcWindowsFilesystem::isDir() const
+{
+  return true;
+}
+
+CcFileInfoList CcWindowsFilesystem::getFileList() const
+{
+  return CcFileInfoList();
+}
+
+CcStatus CcWindowsFilesystem::move(const CcString&)
+{
+  return false;
+}
+
+CcStatus CcWindowsFilesystem::copy(const CcString&)
+{
+  return false;
+}
+
+CcDateTime CcWindowsFilesystem::getModified() const
+{
+  return CcDateTime();
+}
+
+CcDateTime CcWindowsFilesystem::getCreated() const
+{
+  return CcDateTime();
+}
+
+CcStatus CcWindowsFilesystem::setCreated(const CcDateTime& CCUNUSED_PARAM(oDateTime))
+{
+  return false;
+}
+
+CcStatus CcWindowsFilesystem::setModified(const CcDateTime& CCUNUSED_PARAM(oDateTime))
+{
+  return false;
+}
+
+CcStatus CcWindowsFilesystem::setUserId(uint32 CCUNUSED_PARAM(uiUserId))
+{
+  return false;
+}
+
+CcStatus CcWindowsFilesystem::setGroupId(uint32 CCUNUSED_PARAM(uiGroupId))
+{
+  return false;
+}
+
+CcStatus CcWindowsFilesystem::ioControl(uint32 cmd, const void *pInArg, size_t uiInSize, void *pOutArg, size_t uiOutSize, size_t* puiWritten)
+{
+  CCUNUSED(cmd);
+  CCUNUSED(pInArg);
+  CCUNUSED(uiInSize);
+  CCUNUSED(pOutArg);
+  CCUNUSED(uiOutSize);
+  CCUNUSED(puiWritten);
+  return false;
+}
+
+CcStatus CcWindowsFilesystem::setAttributes(EFileAttributes CCUNUSED_PARAM(uiAttributes))
+{
+  return false;
 }

@@ -111,12 +111,12 @@ void CcWindowsProcessThread::run()
     }
 
     setExitCode(uiExitCode);
-    CCDEBUG("ExitCode: " + CcString::fromNumber(uiExitCode));
+    CCVERBOSE("ExitCode: " + CcString::fromNumber(uiExitCode));
     m_hProcess->setExitCode(uiExitCode);
 
     m_bProcessStarted = false;
   }
-  CCDEBUG("Process finished");
+  CCVERBOSE("Process finished");
 }
 
 void CcWindowsProcessThread::kill()

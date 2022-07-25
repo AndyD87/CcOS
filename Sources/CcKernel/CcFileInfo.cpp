@@ -23,6 +23,14 @@
  * @brief     Implemtation of class CcFileInfo
  */
 #include "CcFileInfo.h"
+#include "CcKernel.h"
+
+CcFileInfo::CcFileInfo(const CcString& sName, EFileAttributes eAttributes) :
+  m_sName(sName),
+  m_uiFlags(eAttributes)
+{
+  
+}
 
 CcFileInfo& CcFileInfo::operator=(CcFileInfo&& oToMove)
 {
@@ -72,23 +80,23 @@ bool CcFileInfo::operator!=(const CcFileInfo& oToCompare) const
 bool CcFileInfo::isDir() const
 {
   bool bRet =false;
-  bRet = IS_FLAG_SET(m_uiFlags, EFileAttributes::EFlags::Directory);
+  bRet = IS_FLAG_SET(m_uiFlags, EFileAttributes::Directory);
   return bRet;
 }
 
 bool CcFileInfo::isFile() const
 {
   bool bRet =false;
-  bRet = IS_FLAG_NOT_SET(m_uiFlags, EFileAttributes::EFlags::Directory);
+  bRet = IS_FLAG_NOT_SET(m_uiFlags, EFileAttributes::Directory);
   return bRet;
 }
 
 void CcFileInfo::setIsFile(bool bIsFile)
 {
   if (bIsFile)
-    m_uiFlags &= ~EFileAttributes::EFlags::Directory;
+    m_uiFlags &= ~EFileAttributes::Directory;
   else
-    m_uiFlags |= EFileAttributes::EFlags::Directory;
+    m_uiFlags |= EFileAttributes::Directory;
 }
 
 void CcFileInfo::setFlags(EFileAttributes uiFlags)
@@ -144,45 +152,69 @@ CcString CcFileInfo::getAttributesString() const
 CcString CcFileInfo::getAttributesString(EFileAttributes uiAttributes)
 {
   CcString sRet("----------");
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::Directory))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::Directory))
   {
     sRet[0] = 'd';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::UserExecute))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserExecute))
   {
     sRet[1] = 'x';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::UserRead))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserRead))
   {
     sRet[2] = 'r';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::UserWrite))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::UserWrite))
   {
     sRet[3] = 'w';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GroupExecute))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupExecute))
   {
     sRet[4] = 'x';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GroupRead))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupRead))
   {
     sRet[5] = 'r';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GroupWrite))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GroupWrite))
   {
     sRet[6] = 'w';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GlobalExecute))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalExecute))
   {
     sRet[7] = 'x';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GlobalRead))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalRead))
   {
     sRet[8] = 'r';
   }
-  if (IS_FLAG_SET(uiAttributes, EFileAttributes::EFlags::GlobalWrite))
+  if (IS_FLAG_SET(uiAttributes, EFileAttributes::GlobalWrite))
   {
     sRet[9] = 'w';
   }
   return sRet;
+}
+
+EFileAccess CcFileInfo::getFileAccess() const
+{
+  EFileAccess eAccess = EFileAccess::None;
+  if(IS_FLAG_SET(m_uiFlags, EFileAttributes::GlobalExecute) ||
+     IS_FLAG_SET(m_uiFlags, EFileAttributes::GroupExecute) ||
+     IS_FLAG_SET(m_uiFlags, EFileAttributes::UserExecute))
+  {
+    eAccess = EFileAccess::X;
+  }
+  if(IS_FLAG_SET(m_uiFlags, EFileAttributes::GlobalWrite) ||
+     IS_FLAG_SET(m_uiFlags, EFileAttributes::GroupWrite) ||
+     IS_FLAG_SET(m_uiFlags, EFileAttributes::UserWrite))
+  {
+    eAccess = eAccess | EFileAccess::W;
+  }
+  if(IS_FLAG_SET(m_uiFlags, EFileAttributes::GlobalRead) ||
+     IS_FLAG_SET(m_uiFlags, EFileAttributes::GroupRead) ||
+     IS_FLAG_SET(m_uiFlags, EFileAttributes::UserRead))
+  {
+    eAccess = eAccess | EFileAccess::R;
+  }
+  return eAccess;
 }

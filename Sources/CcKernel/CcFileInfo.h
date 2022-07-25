@@ -41,6 +41,8 @@ public:
   ~CcFileInfo() = default;
   CCDEFINE_CONSTRUCTOR_TO_OPERATORS(CcFileInfo)
 
+  CcFileInfo(const CcString& sName, EFileAttributes eAttributes);
+
   /**
    * @brief Move file informations from another info to this.
    *        This will not change informations on disk.
@@ -78,13 +80,13 @@ public:
   bool isFile() const;
   //! @return True if this object is executable
   inline bool isExecutable() const
-  { return IS_FLAG_SET(m_eAccess, EFileAccess::X); }
+  { return IS_FLAG_SET(getFileAccess(), EFileAccess::X); }
   //! @return True if this object is readable
   inline bool isReadable() const
-  { return IS_FLAG_SET(m_eAccess, EFileAccess::R); }
+  { return IS_FLAG_SET(getFileAccess(), EFileAccess::R); }
   //! @return True if this object is writable
   inline bool isWritable() const
-  { return IS_FLAG_SET(m_eAccess, EFileAccess::W); }
+  { return IS_FLAG_SET(getFileAccess(), EFileAccess::W); }
 
   //! @return Get file of size as uint64 value
   uint64 getFileSize() const
@@ -112,6 +114,8 @@ public:
   //! @return Get attributes as string from specified enum
   //! @param uiAttributes: Enum to generate string from
   static CcString getAttributesString(EFileAttributes uiAttributes);
+  //! @return Get file access for current active user.
+  EFileAccess getFileAccess() const;
   //! @return Get editable file name
   CcString& name()
   { return m_sName; }
@@ -137,9 +141,6 @@ public:
   void setCreated(CcDateTime oTime);
   //! @param uiFileSize: Set new file size
   void setFileSize(uint64 uiFileSize);
-  //! @param eFileAccess: Set new FileAccess attributes
-  inline void setFileAccess(EFileAccess eFileAccess)
-  { m_eAccess = eFileAccess; }
 
 public:
 
@@ -149,7 +150,6 @@ private:
   uint32      m_uiGroupId = 0;
   CcDateTime  m_oCreated;
   CcDateTime  m_oLastModified;
-  EFileAttributes m_uiFlags = EFileAttributes::EFlags::None;
-  EFileAccess m_eAccess     = EFileAccess::None;
+  EFileAttributes m_uiFlags = EFileAttributes::None;
   uint64      m_uiFileSize = 0;
 };

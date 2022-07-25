@@ -303,7 +303,7 @@ public: // Methods
    * @brief Get all Devices registered in Kernel
    * @return List of Devices
    */
-  static const CcDeviceList &getDeviceList();
+  static CcDeviceList getDeviceList();
 
   /**
    * @brief Get a Socket Handle from Kernel

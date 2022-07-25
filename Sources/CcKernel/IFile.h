@@ -86,7 +86,9 @@ inline void operator&=(EFileAccess& leftOp, EFileAccess rightOp)
 }
 
 /**
- * @brief Attributes to define access rights and type of file.
+ * @brief File access flags in global context.
+ *        The rights are generated from basic EFileAccess.
+ *        Additionaly information is available with directory flag as type.
  */
 class CcKernelSHARED EFileAttributes
 {
@@ -96,7 +98,7 @@ public:
    *        The rights are generated from basic EFileAccess.
    *        Additionaly information is available with directory flag as type.
    */
-  enum class EFlags : uint16
+  enum EFlags
   {
     None          = static_cast<uint16>(EFileAccess::None),
     GlobalExecute = static_cast<uint16>(EFileAccess::X),
@@ -199,6 +201,17 @@ public:
   {
     return ~m_uiData;
   }
+
+  static inline EFileAttributes getAllAccess()
+  { return  EFileAttributes::UserExecute | EFileAttributes::UserRead | EFileAttributes::UserWrite |
+            EFileAttributes::GroupExecute | EFileAttributes::GroupRead | EFileAttributes::GroupWrite |
+            EFileAttributes::GlobalExecute | EFileAttributes::GlobalRead | EFileAttributes::GlobalWrite; }
+            
+  static inline EFileAttributes getAllAccessAndDirectory()
+  { return  EFileAttributes::UserExecute | EFileAttributes::UserRead | EFileAttributes::UserWrite |
+            EFileAttributes::GroupExecute | EFileAttributes::GroupRead | EFileAttributes::GroupWrite |
+            EFileAttributes::GlobalExecute | EFileAttributes::GlobalRead | EFileAttributes::GlobalWrite |
+            EFileAttributes::Directory; }
 
 private:
   uint16 m_uiData; //! Storage for all EFlags

@@ -45,7 +45,34 @@ public:
    */
   virtual ~CcWindowsFilesystem();
 
-  CcFilePointer getFile(const CcString& path) override;
-  CcStatus mkdir(const CcString& Path) const override;
-  CcStatus remove(const CcString& Path) const override;
+  virtual bool isIn(const CcString& sMountPath, const CcString& sTargetPath, CcString& sInnerPath) const override;
+  virtual CcFilePointer getFile(const CcString& path) override;
+  virtual CcStatus mkdir(const CcString& Path) const override;
+  virtual CcStatus remove(const CcString& Path) const override;
+
+  virtual size_t size() override;
+  virtual uint64 size64() override;
+  virtual size_t read(void* pBuffer, size_t uSize) override;
+  virtual size_t write(const void* pBuffer, size_t uSize) override;
+  virtual CcStatus open(EOpenFlags flags) override;
+  virtual CcStatus close() override;
+  virtual bool isFile() const override;
+  virtual bool isDir() const override;
+  virtual CcStatus move(const CcString& Path) override;
+  virtual CcStatus copy(const CcString& Path) override;
+  virtual CcDateTime getModified() const override;
+  virtual CcDateTime getCreated() const override;
+  virtual CcStatus setCreated(const CcDateTime& oDateTime) override;
+  virtual CcStatus setModified(const CcDateTime& oDateTime) override;
+  virtual CcStatus setUserId(uint32 uiUserId) override;
+  virtual CcStatus setGroupId(uint32 uiUserId) override;
+  virtual CcStatus setAttributes(EFileAttributes uiAttributes) override;
+  virtual CcStatus ioControl(uint32 cmd, const void *pInArg = nullptr, size_t uiInSize = 0, void *pOutArg = nullptr, size_t uiOutSize = 0, size_t* puiWritten = nullptr) override;
+  virtual CcStatus setFilePointer(uint64 pos) override;
+  virtual CcFileInfo getInfo() const override;
+  virtual CcFileInfoList getFileList() const override;
+  virtual CcStatus cancel() override
+  {
+    return false;
+  }
 };

@@ -257,7 +257,7 @@ CcStatus IShell::execLine(CcStringList& oArguments)
     if (bCommandFound == false)
     {
       // Search for Executable
-      CcString sPath = CcFileSystem::findExecutable(sCommand);
+      CcString sPath = CcFileSystem::findExecutable(sCommand, m_sWorkingDir);
       if (sPath.length())
       {
         bCommandFound = true;

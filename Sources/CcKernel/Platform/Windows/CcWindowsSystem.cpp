@@ -457,7 +457,7 @@ bool CcSystem::createThread(IThread &Thread)
 
 bool CcSystem::createProcess(CcProcess &processToStart)
 {
-  CCDEBUG("CcSystem::createProcess");
+  CCVERBOSE("CcSystem::createProcess");
   CCNEWTYPE(pPipe, CcWindowsPipe);
   processToStart.setPipe(pPipe);
   CCNEWTYPE(pWorker, CcWindowsProcessThread, processToStart);

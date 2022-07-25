@@ -28,6 +28,16 @@
 #include "CcFileInfo.h"
 #include "CcFileInfoList.h"
 
+bool IFileSystem::isIn(const CcString& sMountPath, const CcString& sTargetPath, CcString& sInnerPath) const
+{
+  bool bIsIn = sTargetPath.startsWith(sMountPath);
+  if (bIsIn)
+  {
+    sInnerPath = sTargetPath.substr(sMountPath.length());
+  }
+  return bIsIn;
+}
+
 uint64 IFileSystem::getFilePointer() const
 {
   return 0;

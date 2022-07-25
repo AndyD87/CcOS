@@ -126,7 +126,7 @@ IUsbDevice::SInterfaceAssociationDescriptor* IUsbDevice::CConfigDescriptor::crea
 
 IUsbDevice::SInterfaceDescriptor* IUsbDevice::CConfigDescriptor::createInterface(const CcEvent& oOnRequest, const CcEvent& oOnReadDone)
 {
-  uint16 uiNextInterfaceId = getNextInterfaceId();
+  uint8 uiNextInterfaceId = getNextInterfaceId();
   uint32 uiCurrentOffset = static_cast<uint32>(m_oBuffer.size());
   m_oBuffer.resize(m_oBuffer.size() + sizeof(SInterfaceDescriptor));
   IUsbDevice::SInterfaceDescriptor* pInterface = m_oBuffer.cast<IUsbDevice::SInterfaceDescriptor>(uiCurrentOffset);
@@ -176,12 +176,12 @@ void IUsbDevice::CConfigDescriptor::setupInterfaces()
 
 uint8 IUsbDevice::CConfigDescriptor::getNextInterfaceId()
 {
-  return getInterfaceCount();
+  return static_cast<uint8>(getInterfaceCount());
 }
 
 uint8 IUsbDevice::CConfigDescriptor::getNextEndpointId()
 {
-  uint16 uiId  = 1;
+  uint8 uiId  = 1;
   for(; uiId < 16; uiId++)
   {
     bool bFound = false;

@@ -29,6 +29,7 @@
 #include "CcFileSystemListItem.h"
 #include "CcVector.h"
 #include "IFile.h"
+#include "CcGlobalStrings.h"
 
 #ifdef _MSC_VER
 template class CcKernelSHARED CcVector<CcFileSystemListItem>;
@@ -99,7 +100,7 @@ public:
    * @param sName: Name of Executable to find.
    * @return Absolute path or empty string if not found.
    */
-  static CcString findExecutable(const CcString& sName);
+  static CcString findExecutable(const CcString& sName, const CcString& sWorkingDir = CcGlobalStrings::Empty);
 
   /**
    * @brief Find all executables in all binary PATH dirs
@@ -107,7 +108,7 @@ public:
    * @param uiNr:  Maximum number of executables to find. Default = 0 for no limit.
    * @return Absolute path or empty string if not found.
    */
-  static CcStringList findExecutables(const CcString& sName, size_t uiNr = 0);
+  static CcStringList findExecutables(const CcString& sName, size_t uiNr = 0, const CcString& sWorkingDir = CcGlobalStrings::Empty);
 
   /**
    * @brief Find all executables in all binary PATH dirs
@@ -121,7 +122,6 @@ public:
   /**
    * @brief Get a filesystem by path
    * @param sPath: Path to search for basic filsystem
-   * @param[out] sInnerPath: Path to file within filesystem.
    * @return Filesystem handle of path, or invalid handle if path not found
    */
   static CcFileSystemHandle getFileSystemByPath(const CcString& sPath, CcString& sInnerPath);

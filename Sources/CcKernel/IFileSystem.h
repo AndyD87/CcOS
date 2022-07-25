@@ -47,12 +47,12 @@ public:
   /**
    * @brief Constructor
    */
-  IFileSystem() = default;
+  IFileSystem(){};
 
   /**
    * @brief Destructor
    */
-  virtual ~IFileSystem() = default;
+  virtual ~IFileSystem(){};
 
   /**
    * @brief Get File by Path
@@ -74,6 +74,8 @@ public:
    * @return true if successfully deleted
    */
   virtual CcStatus remove(const CcString& Path) const = 0;
+
+  virtual bool isIn(const CcString& sMountPath, const CcString& sTargetPath, CcString& sInnerPath) const;
   
   virtual size_t size() override;
   virtual uint64 size64() override;

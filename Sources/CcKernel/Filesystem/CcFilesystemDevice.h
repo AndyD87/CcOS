@@ -44,7 +44,9 @@ public:
    */
   virtual ~CcFilesystemDevice();
 
-  CcFilePointer getFile(const CcString& path) override;
-  CcStatus mkdir(const CcString& Path) const override;
-  CcStatus remove(const CcString& Path) const override;
+  virtual CcFilePointer getFile(const CcString& path) override;
+  virtual CcStatus mkdir(const CcString& Path) const override;
+  virtual CcStatus remove(const CcString& Path) const override;
+
+  virtual CcFileInfoList getFileList();
 };

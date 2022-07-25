@@ -26,7 +26,7 @@ elseif(${CCOS_APPS_CCSHELLAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   )
 
   set_target_properties(${CURRENT_PROJECT} PROPERTIES FOLDER      "CcOS/${CURRENT_PROJECT_IDE_PATH}")
-  set_target_properties(${CURRENT_PROJECT} PROPERTIES OUTPUT_NAME CcShellApp)
+  set_target_properties(${CURRENT_PROJECT} PROPERTIES OUTPUT_NAME CcShell)
 
   #################
   # Post configuration steps

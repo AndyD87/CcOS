@@ -73,7 +73,7 @@ CcConstStringClass_C(sWlanAccessPoint ,"WlanAccessPoint", CcDevice);
 CcConstStringClass_C(sEeprom          ,"Eeprom", CcDevice);
 CcConstStringClass_C(sClock           ,"Clock", CcDevice);
 CcConstStringClass_C(sUsb             ,"Usb", CcDevice);
-CcConstStringClass_C(sBoardSupport    , "BoardSupport", CcDevice);
+CcConstStringClass_C(sBoardSupport    ,"BoardSupport", CcDevice);
 
 const CcString& CcDevice::getTypeString(EDeviceType eType)
 {

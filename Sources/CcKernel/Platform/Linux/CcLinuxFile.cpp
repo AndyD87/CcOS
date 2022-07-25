@@ -79,7 +79,7 @@ CcFileInfo CcLinuxFile::getInfo() const
 
     if (S_ISDIR(sStat.st_mode))
     {
-      oFileInfo.addFlags(EFileAttributes::EFlags::Directory);
+      oFileInfo.addFlags(EFileAttributes::Directory);
     }
     if (sStat.st_mode & S_IRUSR)
       oFileInfo.addFlags(EFileAttributes::EFlags::UserRead);
@@ -102,7 +102,6 @@ CcFileInfo CcLinuxFile::getInfo() const
     EFileAccess eAccess = (access(m_sPath.getCharString(), R_OK))?EFileAccess::R : EFileAccess::None;
     eAccess |= (access(m_sPath.getCharString(), W_OK))?EFileAccess::W : EFileAccess::None;
     eAccess |= (access(m_sPath.getCharString(), X_OK))?EFileAccess::X : EFileAccess::None;
-    oFileInfo.setFileAccess(eAccess);
   }
   else
   {

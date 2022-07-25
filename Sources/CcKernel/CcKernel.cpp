@@ -100,7 +100,8 @@ public:
 
   CcServiceSystem               oServiceSystem;
   CcAppList                     m_AppList;
-  CcDeviceList                  m_DeviceList;
+  CcMutex                       oDeviceListLock;
+  CcDeviceList                  oDeviceList;
   CcDriverLoad                  m_oDriverList;
   CcEventHandler                m_oInputEventHandler;
   CcEventHandler                m_oShutdownHandler;
@@ -147,17 +148,24 @@ CcKernel::CcKernel()
   #endif
 
   CcFileSystem::init(CcKernelPrivate::m_pInterface->s_pFSList);
+  if (m_pPrivate == CcKernelPrivate::m_pInterface)
+  {
+    // Start drivers
+    CcKernelPrivate::m_pInterface->m_oDriverList.init(0);
+    CcKernelPrivate::m_pInterface->oSystem.init();
+    CcKernelPrivate::m_pInterface->m_oDriverList.init(1);
+    CcKernelPrivate::m_pInterface->m_oDriverList.init(2);
+    CcKernelPrivate::m_pInterface->m_oDriverList.init(3);
+    CcKernelPrivate::m_pInterface->m_bInitialized = true;
+  }
+  else
+  {
+    //CcFileSystem::init(CcKernelPrivate::m_pInterface->s_pFSList);
+  }
 
-  // Start drivers
-  CcKernelPrivate::m_pInterface->m_oDriverList.init(0);
-  CcKernelPrivate::m_pInterface->oSystem.init();
-  CcKernelPrivate::m_pInterface->m_oDriverList.init(1);
-  CcKernelPrivate::m_pInterface->m_oDriverList.init(2);
-  CcKernelPrivate::m_pInterface->m_oDriverList.init(3);
 
   // To ensure that user is running in separate context initialize userspace just now.
   CcMemoryManager::initUserSpace();
-  CcKernelPrivate::m_pInterface->m_bInitialized = true;
 }
 
 CcKernel::~CcKernel()
@@ -265,7 +273,9 @@ bool CcKernel::shutdown(CcKernelShutdownEvent::EReason eReason)
 
         CcKernelPrivate::m_pInterface->m_oDriverList.deinit();
         CcKernelPrivate::m_pInterface->m_oDeviceEventHandler.clear();
-        CcKernelPrivate::m_pInterface->m_DeviceList.clear();
+        CcKernelPrivate::m_pInterface->oDeviceList.lock();
+        CcKernelPrivate::m_pInterface->oDeviceList.clear();
+        CcKernelPrivate::m_pInterface->oDeviceList.unlock();
 
         while (CcKernelPrivate::m_pInterface->m_oExitFunctions.size() > 0)
         {
@@ -387,7 +397,9 @@ bool CcKernel::getDebug()
 
 const CcDevice& CcKernel::getDevice(EDeviceType eType, size_t nr)
 {
-  CcDevice& oHandle = CcKernelPrivate::m_pInterface->m_DeviceList.getDevice(eType, nr);
+  CcKernelPrivate::m_pInterface->oDeviceListLock.lock();
+  CcDevice& oHandle = CcKernelPrivate::m_pInterface->oDeviceList.getDevice(eType, nr);
+  CcKernelPrivate::m_pInterface->oDeviceListLock.unlock();
   if (oHandle.isValid() == false && eType != EDeviceType::BoardSupport)
   {
     CcBoardSupport oBoardSupport = CcKernel::getDevice(EDeviceType::BoardSupport);
@@ -399,7 +411,9 @@ const CcDevice& CcKernel::getDevice(EDeviceType eType, size_t nr)
   if (oHandle.isValid() == false)
   {
     CcKernelPrivate::m_pInterface->m_oDriverList.load(eType);
-    oHandle = CcKernelPrivate::m_pInterface->m_DeviceList.getDevice(eType, nr);
+    CcKernelPrivate::m_pInterface->oDeviceListLock.lock();
+    oHandle = CcKernelPrivate::m_pInterface->oDeviceList.getDevice(eType, nr);
+    CcKernelPrivate::m_pInterface->oDeviceListLock.unlock();
   }
   return oHandle;
 }
@@ -407,13 +421,15 @@ const CcDevice& CcKernel::getDevice(EDeviceType eType, size_t nr)
 CcDeviceList CcKernel::getDevices(EDeviceType Type)
 {
   CcDeviceList oDeviceList;
-  for(CcDevice& oHandle : CcKernelPrivate::m_pInterface->m_DeviceList)
+  CcKernelPrivate::m_pInterface->oDeviceListLock.lock();
+  for(CcDevice& oHandle : CcKernelPrivate::m_pInterface->oDeviceList)
   {
     if(oHandle.getType() == Type)
     {
       oDeviceList.append(oHandle);
     }
   }
+  CcKernelPrivate::m_pInterface->oDeviceListLock.unlock();
   return oDeviceList;
 }
 
@@ -430,9 +446,9 @@ const CcDevice& CcKernel::getDevice(EDeviceType Type, const CcString& Name)
 
 const CcDevice& CcKernel::addDevice(const CcDevice& Device)
 {
-  CcKernelPrivate::m_pInterface->m_DeviceList.lock();
-  CcKernelPrivate::m_pInterface->m_DeviceList.append(Device);
-  const CcDevice& oDevice = CcKernelPrivate::m_pInterface->m_DeviceList.last();
+  CcKernelPrivate::m_pInterface->oDeviceList.lock();
+  CcKernelPrivate::m_pInterface->oDeviceList.append(Device);
+  const CcDevice& oDevice = CcKernelPrivate::m_pInterface->oDeviceList.last();
   for (CcPair<EDeviceType, CcEvent>& oEntry : CcKernelPrivate::m_pInterface->m_oDeviceEventHandler)
   {
     if (oEntry.getKey() == Device.getType())
@@ -440,7 +456,7 @@ const CcDevice& CcKernel::addDevice(const CcDevice& Device)
       oEntry.getValue().call(Device.ptr());
     }
   }
-  CcKernelPrivate::m_pInterface->m_DeviceList.unlock();
+  CcKernelPrivate::m_pInterface->oDeviceList.unlock();
   return oDevice;
 }
 
@@ -453,12 +469,16 @@ bool CcKernel::removeDevice(const CcDevice& Device)
       oEntry.getValue().call(Device.ptr());
     }
   }
-  return CcKernelPrivate::m_pInterface->m_DeviceList.removeItem(Device);
+  return CcKernelPrivate::m_pInterface->oDeviceList.removeItem(Device);
 }
 
-const CcDeviceList &CcKernel::getDeviceList()
+CcDeviceList CcKernel::getDeviceList()
 {
-  return CcKernelPrivate::m_pInterface->m_DeviceList;
+  CcDeviceList oDeviceList;
+  CcKernelPrivate::m_pInterface->oDeviceListLock.lock();
+  oDeviceList = CcKernelPrivate::m_pInterface->oDeviceList;
+  CcKernelPrivate::m_pInterface->oDeviceListLock.unlock();
+  return oDeviceList;
 }
 
 ISocket* CcKernel::getSocket(ESocketType eType)

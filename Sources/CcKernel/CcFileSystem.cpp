@@ -55,7 +55,14 @@ CcFilePointer CcFileSystem::getFile(const CcString& Path)
   CcFileSystemHandle oFs = getFileSystemByPath(Path, sInnerPath);
   if (oFs.isValid())
   {
-    if(sInnerPath.length() == 0 || ( sInnerPath.length() == 1 && sInnerPath[0] == '/'))
+    if(sInnerPath.length() == 0 ||
+      #ifdef WINDOWS
+        false
+      #else
+        ( sInnerPath.length() == 1 && sInnerPath[0] == '/')
+      #endif
+    )
+
     {
       return CCNEW_INLINE(IFileInterface, oFs.cast<IFile>());
     }
@@ -107,23 +114,26 @@ CcString CcFileSystem::getNextFreeFilename(const CcString& sPath, const CcString
   return sTargetName;
 }
 
-CcString CcFileSystem::findExecutable(const CcString& sName)
+CcString CcFileSystem::findExecutable(const CcString& sName, const CcString& sWorkingDir)
 {
-  CcStringList oList = findExecutables(sName, 1);
+  CcStringList oList = findExecutables(sName, 1, sWorkingDir);
   return oList.size() > 0 ? oList[0] : CcGlobalStrings::Empty;
 }
 
-CcStringList CcFileSystem::findExecutables(const CcString& sName, size_t uiNr)
+CcStringList CcFileSystem::findExecutables(const CcString& sName, size_t uiNr, const CcString& sWorkingDir)
 {
   // First search in Working dir
   CcStringList oFileList;
   size_t uiCurrentFound = 0;
-  CcFileInfoList oCurrentDirList = CcDirectory::getFileList("./");
+  CcString sCurrentWorkingDir = sWorkingDir;
+  if (sWorkingDir == CcGlobalStrings::Empty)
+    sCurrentWorkingDir = CcKernel::getWorkingDir();
+  CcFileInfoList oCurrentDirList = CcDirectory::getFileList(sCurrentWorkingDir);
   for (CcFileInfo& oCurrentFile : oCurrentDirList)
   {
     if (oCurrentFile.getName() == sName)
     {
-      CcString sPath = CcKernel::getWorkingDir();
+      CcString sPath = sCurrentWorkingDir;
       sPath.appendPath(sName);
       oFileList.append(sPath);
       uiCurrentFound++;
@@ -217,12 +227,11 @@ CcFileSystemHandle CcFileSystem::getFileSystemByPath(const CcString& sPath, CcSt
 {
   CcFileSystemHandle pFileSystem;
   // search in registered providers
-  for (size_t i = 0; i < s_pFSList->size(); i++)
+  for (CcFileSystemListItem& pFileSysem : *s_pFSList)
   {
-    if (sPath.startsWith(s_pFSList->at(i).getPath()))
+    if (pFileSysem.getFileSystem()->isIn(pFileSysem.getPath(), sPath, sInnerPath))
     {
-      sInnerPath = sPath.substr(s_pFSList->at(i).getPath().length());
-      pFileSystem = s_pFSList->at(i).getFileSystem();
+      pFileSystem = pFileSysem.getFileSystem();
       break;
     }
   }
@@ -231,6 +240,7 @@ CcFileSystemHandle CcFileSystem::getFileSystemByPath(const CcString& sPath, CcSt
   {
     // Take root file system if nothing was found
     pFileSystem = s_pFSList->at(0).getFileSystem();
+    sInnerPath = sPath;
   }
   return pFileSystem;
 }
@@ -256,8 +266,7 @@ CcFileInfoList CcFileSystem::getFileSystemsByPath(const CcString& sPath)
         size_t uiOffset = sName.find('/');
         if(uiOffset < sName.length()) sName.remove(uiOffset, SIZE_MAX);
         CcFileInfo oFileInfo;
-        oFileInfo.setFileAccess(EFileAccess::RWX);
-        oFileInfo.setFlags(EFileAttributes::EFlags::Directory + static_cast<uint16>(0777));
+        oFileInfo.setFlags(EFileAttributes::Directory + static_cast<uint16>(0777));
         oFileInfo.setName(sName);
         pFileSystem.append(oFileInfo);
       }

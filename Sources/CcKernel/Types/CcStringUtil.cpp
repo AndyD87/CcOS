@@ -1572,7 +1572,8 @@ bool CcStringUtil::isPathAbsolute(const CcString& sPath)
 {
 #ifdef WINDOWS
   return sPath.startsWith(CcGlobalStrings::Seperators::Slash) ||
-    (sPath.size() > 1 && sPath[1] == CcGlobalStrings::Seperators::Colon[0]);
+    (sPath.size() > 1 && sPath[1] == ':') ||
+    (sPath.size() > 1 && sPath[1] == '\\' && sPath[1] == '\\');
 #else
   return sPath.startsWith(CcGlobalStrings::Seperators::Slash);
 #endif

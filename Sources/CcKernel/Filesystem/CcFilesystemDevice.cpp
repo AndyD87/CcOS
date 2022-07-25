@@ -25,6 +25,9 @@
  * @brief     Implementation of Class CcFilesystemDevice
  */
 #include "CcFilesystemDevice.h"
+#include "CcFileInfoList.h"
+#include "CcDeviceList.h"
+#include "CcKernel.h"
 
 CcFilesystemDevice::CcFilesystemDevice()
 {
@@ -53,4 +56,24 @@ CcStatus CcFilesystemDevice::remove(const CcString &Path) const
   CcStatus oResult(false);
   CCUNUSED(Path);
   return oResult;
+}
+
+CcFileInfoList CcFilesystemDevice::getFileList()
+{
+  CcFileInfoList oList;
+  CcDeviceList oDeviceList = CcKernel::getDeviceList();
+  CcVector<EDeviceType> oAvailableClasses;
+  for(CcDevice& oDevice : oDeviceList)
+  {
+    size_t uiPos = oAvailableClasses.find(oDevice.getType());
+    if(uiPos > oDeviceList.size())
+    {
+      oAvailableClasses.append(oDevice.getType());
+    }
+  }
+  for(EDeviceType eType : oAvailableClasses)
+  {
+    oList.append(CcFileInfo(CcDevice::getTypeString(eType), EFileAttributes::getAllAccessAndDirectory()));
+  }
+  return oList;
 }

@@ -1335,6 +1335,10 @@ CcString CcString::fromUint(uint number, uint8 uiBase)
 
 CcString& CcString::normalizePath()
 {
+#ifdef WINDOWS
+  bool bIsNetworkPath = (length() > 1 && at(0) == '\\' && at(1) == '\\');
+  if (bIsNetworkPath) remove(0, 2);
+#endif
   replace(CcGlobalStrings::Seperators::BackSlash, CcGlobalStrings::Seperators::Path);
   replace(CcGlobalStrings::Seperators::DoubleSlashes, CcGlobalStrings::Seperators::Path);
   replace("/./", CcGlobalStrings::Seperators::Path);
@@ -1367,6 +1371,9 @@ CcString& CcString::normalizePath()
     else                    set(CcGlobalStrings::Seperators::Path);
     append(slPath.collapse(CcGlobalStrings::Seperators::Path));
   }
+  #ifdef WINDOWS
+  if (bIsNetworkPath) prepend("\\\\");
+  #endif  
   return *this;
 }
 
