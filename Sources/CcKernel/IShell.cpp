@@ -47,9 +47,9 @@ public:
     while (m_pStream && m_pProcess &&
             m_pProcess->getCurrentState() != EThreadState::Stopped)
     {
-      size_t uiRead = m_pStream->readArray(oReadBuffer, false);
-      if (uiRead && uiRead < oReadBuffer.size() && m_pStream)
-        m_pProcess->pipe().writeArray(oReadBuffer, uiRead);
+      size_t uiRead = m_pProcess->pipe().readArray(oReadBuffer, false);
+      if (uiRead && m_pStream)
+        m_pStream->writeArray(oReadBuffer, uiRead);
     }
     m_pStream = nullptr;
     m_pProcess = nullptr;
@@ -101,7 +101,7 @@ void IShell::run()
       if(uiReceived != SIZE_MAX)
         m_pIoStream->writeString(m_sPrefix);
 
-      uiReceived = readLine();
+      uiReceived = readLine(nullptr);
       // Handle the line
       CcStringList oArguments = CcStringUtil::getArguments(m_sRead);
       setExitCode(execLine(oArguments));
@@ -160,7 +160,7 @@ void IShell::writeLine(const CcString& sLine)
   }
 }
 
-size_t IShell::readLine()
+size_t IShell::readLine(IIo* pOutStream)
 {
   size_t uiReceived = 0;
   if(m_oReadLineBuffer.size())
@@ -185,11 +185,26 @@ size_t IShell::readLine()
     {
       switch (static_cast<uint8>(m_oTransferBuffer[uiPos]))
       {
+        case '\b': // del pressed
+          if (m_sRead.size() > 0)
+          {
+            m_sRead.remove(m_sRead.size() - 1);
+            if (m_bEchoInput)
+            {
+              m_pIoStream->write("\b \b", 3);
+              if (pOutStream) pOutStream->write("\b \b", 3);
+            }
+          }
+          break;
         case 127: // del pressed
           if(m_sRead.size() > 0)
           {
             m_sRead.remove(m_sRead.size()-1);
-            if(m_bEchoInput) m_pIoStream->write(&m_oTransferBuffer[uiPos], 1);
+            if (m_bEchoInput)
+            {
+              m_pIoStream->write(&m_oTransferBuffer[uiPos], 1);
+              if (pOutStream) pOutStream->write(&m_oTransferBuffer[uiPos], 1);
+            }
           }
           break;
         case '\r':
@@ -205,7 +220,11 @@ size_t IShell::readLine()
           {
             bEndOfLine = true;
           }
-          if (m_bEchoInput) m_pIoStream->writeString(CcGlobalStrings::EolLong);
+          if (m_bEchoInput)
+          {
+            m_pIoStream->writeString(CcGlobalStrings::EolLong);
+            if (pOutStream) pOutStream->writeString(CcGlobalStrings::EolLong);
+          }
           break;
         default:
           if(static_cast<uint8>(m_oTransferBuffer[uiPos]) < 32)
@@ -215,7 +234,11 @@ size_t IShell::readLine()
           else
           {
             m_sRead.append(m_oTransferBuffer[uiPos]);
-            if (m_bEchoInput) m_pIoStream->write(&m_oTransferBuffer[uiPos], 1);
+            if (m_bEchoInput)
+            {
+              m_pIoStream->write(&m_oTransferBuffer[uiPos], 1);
+              if(pOutStream) pOutStream->write(&m_oTransferBuffer[uiPos], 1);
+            }
           }
           break;
       }
@@ -267,6 +290,7 @@ CcStatus IShell::execLine(CcStringList& oArguments)
 
         m_pActiveProcess->setArguments(oArguments);
         m_pActiveProcess->setWorkingDirectory(getWorkingDirectory());
+        m_pActiveProcess->registerOnStateChange(NewCcEvent(this, IShell::cancelOnStop));
 
         m_pActiveProcess->start();
         oPassThroughThread.start();
@@ -275,9 +299,18 @@ CcStatus IShell::execLine(CcStringList& oArguments)
         oReadBuffer.resize(1024);
         while (m_pActiveProcess->getCurrentState() != EThreadState::Stopped)
         {
-          size_t uiRead = m_pActiveProcess->pipe().readArray(oReadBuffer, false);
-          if (uiRead && m_pIoStream)
-            m_pIoStream->writeArray(oReadBuffer, uiRead);
+#ifdef WINDOWS
+          m_sRead.clear();
+          size_t uiRead = readLine(&m_pActiveProcess->pipe());
+#else
+          size_t uiRead = m_pIoStream->readArray(oReadBuffer, false);
+          if (uiRead &&
+              uiRead < oReadBuffer.size() &&
+              m_pIoStream)
+          {
+            m_pActiveProcess->pipe().writeArray(oReadBuffer, uiRead);
+          }
+#endif
         }
         oPassThroughThread.stop();
         CCDELETE(m_pActiveProcess);
@@ -333,5 +366,15 @@ void IShell::onKernelShutdown(CcKernelShutdownEvent* pEvent)
     default:
       stop();
       waitForState(EThreadState::Stopped, CcDateTimeFromMSeconds(1000));
+  }
+}
+
+void IShell::cancelOnStop(IThread* pProcess)
+{
+  if( pProcess && 
+      pProcess->getThreadState() == EThreadState::Stopped && 
+      m_pIoStream)
+  {
+    m_pIoStream->cancel();
   }
 }

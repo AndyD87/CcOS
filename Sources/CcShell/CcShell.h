@@ -64,5 +64,6 @@ public:
    */
   virtual ~CcShell();
 private:
+  IIo*       m_pStreamControl = nullptr;
   CcIoSwitch m_oIoStream;
 };

@@ -168,6 +168,8 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Shell/CcShellExit.h
     Shell/CcShellExport.h
     Shell/CcShellLs.h
+    Shell/CcWinRawConsole.h
+    Shell/CcWinPseudoConsole.h
     Shell/IShellCommand.h
   )
 
@@ -296,6 +298,8 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Shell/CcShellExport.cpp
     Shell/CcShellGetEnv.cpp
     Shell/CcShellLs.cpp
+    Shell/CcWinPseudoConsole.cpp
+    Shell/CcWinRawConsole.cpp
     Shell/IShellCommand.cpp
 )
 

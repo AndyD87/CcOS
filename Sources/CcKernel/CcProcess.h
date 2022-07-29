@@ -32,6 +32,7 @@
 #include "CcGlobalStrings.h"
 #include "CcSharedPointer.h"
 #include "IIo.h"
+#include "CcObject.h"
 
 /**
  * @brief Processes object with seperate thread for start and stop.
@@ -63,7 +64,7 @@ template class CcKernelSHARED CcSharedPointer<IIo>;
  * @brief Process-Connection to an external Process
  *        It can start stop them or @todo in future attach to one.
  */
-class CcKernelSHARED CcProcess
+class CcKernelSHARED CcProcess : public CcObject
 {
 public:
   /**
@@ -179,6 +180,11 @@ public:
   IIo& pipe();
   //! @return True if application has finished.
   bool hasExited();
+  
+  void registerOnStateChange(const CcEvent& eEventHandle)
+  { m_oStateHandler.append(eEventHandle); }
+  void deregisterOnStateChange(CcObject* pObject)
+  { m_oStateHandler.removeObject(pObject); }
 
   /**
    * @brief Start application directly with different option.
@@ -199,6 +205,9 @@ public:
                        const CcDateTime& oTimeout = 0,
                        CcString* pOutput = nullptr
   );
+private:
+  void onThreadStateChange(IThread* pThread)
+  { m_oStateHandler.call(pThread); }
 
 private: // Types
   class CPrivate;
@@ -208,6 +217,7 @@ private: // Member
   CcStringList m_Arguments;
   CcString m_sWorkingDir;
   CcStatus m_oExitCode = 0;
+  CcEventHandler m_oStateHandler; //!< State change notification Handler
 
   CcSharedPointer<IIo>              m_pPipe = nullptr;
   CcSharedPointer<CcProcessThread>  m_pThreadHandle = nullptr;

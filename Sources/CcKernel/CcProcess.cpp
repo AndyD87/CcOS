@@ -264,6 +264,7 @@ void CcProcess::clearArguments()
 void CcProcess::setThreadHandle(CcProcessThread* pThreadHandle)
 {
   m_pThreadHandle = pThreadHandle;
+  m_pThreadHandle->registerOnStateChange(NewCcEvent(this, CcProcess::onThreadStateChange));
 }
 
 void CcProcess::setPipe(IIo* pInput)

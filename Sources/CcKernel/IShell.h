@@ -80,10 +80,11 @@ protected:
   CcStatus execLine(CcStringList& oArguments);
 
 private:
-  size_t readLine();
+  size_t readLine(IIo* pOutStream);
   void updatePrefix();
   virtual void onStop() override;
   void onKernelShutdown(CcKernelShutdownEvent* pEvent);
+  void cancelOnStop(IThread* pProcess);
 
 private:
   IIo*                      m_pIoStream;

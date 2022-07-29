@@ -56,7 +56,7 @@ void CcWindowsProcessThread::run()
   m_pPrivate->pi.hProcess = INVALID_HANDLE_VALUE;
   m_pPrivate->pi.hThread = INVALID_HANDLE_VALUE;
   si.cb = sizeof(STARTUPINFO);
-  si.dwFlags |= STARTF_USESTDHANDLES;
+  si.dwFlags |= STARTF_USESTDHANDLES | STARTF_USESHOWWINDOW;
   si.hStdInput  = static_cast<CcWindowsPipe&>(m_hProcess->pipe()).m_HandleIn;
   si.hStdOutput = static_cast<CcWindowsPipe&>(m_hProcess->pipe()).m_HandleOut;
   si.hStdError  = static_cast<CcWindowsPipe&>(m_hProcess->pipe()).m_HandleOut;
@@ -66,16 +66,16 @@ void CcWindowsProcessThread::run()
   if(wsWorkingDir.length() > 0)
     pWDir = wsWorkingDir.getWcharString();
   // Start the child process.
-  if (!CreateProcessW(nullptr,   // No module name (use command line)
-    wsCommand.getLPWSTR(),        // Command line
-    nullptr,           // Process handle not inheritable
-    nullptr,           // Thread handle not inheritable
-    TRUE,          // Set handle inheritance to FALSE
-    CREATE_NO_WINDOW,              // No creation flags
-    nullptr,           // Use parent's environment block
-    pWDir,           // Use parent's starting directory
-    &si,            // Pointer to STARTUPINFO structure
-    &m_pPrivate->pi)           // Pointer to PROCESS_INFORMATION structure
+  if (!CreateProcessW(nullptr,  // No module name (use command line)
+    wsCommand.getLPWSTR(),      // Command line
+    nullptr,                    // Process handle not inheritable
+    nullptr,                    // Thread handle not inheritable
+    TRUE,                       // Set handle inheritance to FALSE
+    CREATE_NEW_CONSOLE,         // No creation flags
+    nullptr,                    // Use parent's environment block
+    pWDir,                      // Use parent's starting directory
+    &si,                        // Pointer to STARTUPINFO structure
+    &m_pPrivate->pi)            // Pointer to PROCESS_INFORMATION structure
     )
   {
     CcStatus oStatus;

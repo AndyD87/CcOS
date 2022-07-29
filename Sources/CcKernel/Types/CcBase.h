@@ -221,6 +221,8 @@
   #endif
 #endif
 
+typedef void* CCHANDLE;
+
 #if (defined(LINUX) || defined(WINDOWS)) && !defined(LINUXKERNEL) && !defined(WINDOWSKERNEL)
   #define FULL_OS_AVAILABLE
   #ifdef __cplusplus
