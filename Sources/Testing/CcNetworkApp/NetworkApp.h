@@ -30,7 +30,6 @@
 #include "CcBase.h"
 #include "CcApp.h"
 #include "CcHttpServer.h"
-#include "CcTelnetServer.h"
 #include "CcFtpServer.h"
 #include "CcTftpServer.h"
 #include "Network/Server/CcUdpEchoServer.h"
@@ -50,7 +49,6 @@ public:
   void run() override;
 
 private:
-  CcTelnetServer      m_Telnet;
   CcHttpServer  m_HttpServer;
   CcFtpServer   m_FtpServer;
   CcTftpServer  m_TftpServer;

@@ -75,7 +75,31 @@ CcSslCertificate::~CcSslCertificate()
   CCDELETE(m_pPrivate);
 }
 
-bool CcSslCertificate::create(const CcString& sCertFilePath, const CcString& sKeyFilePath)
+bool CcSslCertificate::createFiles(const CcString& sCertFilePath, const CcString& sKeyFilePath)
+{
+  bool bSuccess = false;
+  CcString sKey;
+  CcString sCert;
+
+  CcFile oKeyFile(sKeyFilePath);
+  if (oKeyFile.open(EOpenFlags::Write))
+  {
+    CcFile oCertFile(sCertFilePath);
+    if (oCertFile.open(EOpenFlags::Write))
+    {
+      if (createString(sCert, sKey))
+      {
+        bSuccess = oCertFile.writeString(sCert);
+        bSuccess &= oKeyFile.writeString(sKey);
+      }
+      oCertFile.close();
+    }
+    oKeyFile.close();
+  }
+  return bSuccess;
+}
+
+bool CcSslCertificate::createString(CcString& sCert, CcString& sKey)
 {
   bool bRet = false;
 
@@ -100,14 +124,7 @@ bool CcSslCertificate::create(const CcString& sCertFilePath, const CcString& sKe
             bRet = true;
             if (PEM_write_bio_PrivateKey(pBioBuffer, m_pPrivate->pEvpPkey, NULL, NULL, 0, NULL, NULL))
             {
-              CcByteArray oPemBuffer = CcSslControl::getBioData(pBioBuffer);
-              oPrivateKeyPemBuffer = oPemBuffer;
-              CcFile oKeyFile(sKeyFilePath);
-              if (oKeyFile.open(EOpenFlags::Write))
-              {
-                oKeyFile.writeArray(oPemBuffer);
-                oKeyFile.close();
-              }
+              sKey = CcSslControl::getBioData(pBioBuffer);
             }
 
             BIO_free(pBioBuffer);
@@ -116,14 +133,8 @@ bool CcSslCertificate::create(const CcString& sCertFilePath, const CcString& sKe
 
             if (PEM_write_bio_X509(pBioBuffer, m_pPrivate->pX509Cert))
             {
-              CcByteArray oPemBuffer = CcSslControl::getBioData(pBioBuffer);
-              CcFile oCertFile(sCertFilePath);
-              if (oCertFile.open(EOpenFlags::Write))
-              {
-                oCertFile.writeArray(oPrivateKeyPemBuffer);
-                oCertFile.writeArray(oPemBuffer);
-                oCertFile.close();
-              }
+              //sCert = sKey;
+              sCert = CcSslControl::getBioData(pBioBuffer);
             }
             BIO_free(pBioBuffer);
           }

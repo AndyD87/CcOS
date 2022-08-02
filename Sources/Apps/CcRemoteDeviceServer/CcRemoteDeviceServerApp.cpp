@@ -87,7 +87,7 @@ void CcRemoteDeviceServerApp::run()
       i++;
       if (m_oArguments.size() >= i)
       {
-        CcArguments oArgs(m_oArguments[i]);
+        CcArguments oArgs({}, m_oArguments[i]);
         CcService oService(sServiceName, nullptr);
         oStatus = CcKernel::getServiceSystem().setArguments(oService, oArgs);
       }

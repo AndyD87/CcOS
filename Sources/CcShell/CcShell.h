@@ -57,7 +57,7 @@ public:
   /**
    * @brief Default shell instance with reading and writin from stdin.
    */
-  CcShell();
+  CcShell(IIo* pIoStream = nullptr);
 
   /**
    * @brief Destructor

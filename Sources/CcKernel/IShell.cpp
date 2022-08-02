@@ -32,6 +32,10 @@
 #include "CcFileSystem.h"
 #include "CcProcess.h"
 
+#ifdef _MSC_VER
+  #include "Shell/CcWinPseudoConsole.h"
+#endif
+
 class IShellPassthroughThread : public IThread
 {
 public:
@@ -48,7 +52,7 @@ public:
             m_pProcess->getCurrentState() != EThreadState::Stopped)
     {
       size_t uiRead = m_pProcess->pipe().readArray(oReadBuffer, false);
-      if (uiRead && m_pStream)
+      if (uiRead && m_pStream && uiRead < oReadBuffer.size())
         m_pStream->writeArray(oReadBuffer, uiRead);
     }
     m_pStream = nullptr;
@@ -89,22 +93,29 @@ IShell::~IShell()
 
 void IShell::run()
 {
-  size_t uiReceived = 0;
   writeLine("Welcome to CcOS Basic Shell");
-  while(isRunning())
+  while(isRunning() && isConnectionActive())
   {
     if(m_pIoStream)
     {
       // Start with next line
       updatePrefix();
       m_sRead.clear();
-      if(uiReceived != SIZE_MAX)
-        m_pIoStream->writeString(m_sPrefix);
+      if(isConnectionActive())
+          m_uiLastWritten = m_pIoStream->writeString(m_sPrefix);
 
-      uiReceived = readLine(nullptr);
-      // Handle the line
-      CcStringList oArguments = CcStringUtil::getArguments(m_sRead);
-      setExitCode(execLine(oArguments));
+      m_uiLastRead = readLine();
+      if (isConnectionActive())
+      {
+        // Handle the line
+        CcStringList oArguments = CcStringUtil::getArguments(m_sRead);
+        setExitCode(execLine(oArguments));
+      }
+      else
+      {
+        // Connection closed
+        stop();
+      }
     }
   }
 }
@@ -152,36 +163,43 @@ CcStatus IShell::changeDirectory(const CcString& sPath)
   return oStatus;
 }
 
-void IShell::writeLine(const CcString& sLine)
+size_t IShell::writeLine(const CcString& sLine)
 {
+  m_uiLastWritten = SIZE_MAX;
   if(m_pIoStream)
   {
-    m_pIoStream->writeLine(sLine, IIo::ELineEnding::CRNL);
+    if (m_pIoStream->writeLine(sLine, IIo::ELineEnding::CRNL))
+    {
+      m_uiLastWritten = sLine.length();
+    }
   }
+  return m_uiLastWritten;
 }
 
-size_t IShell::readLine(IIo* pOutStream)
+size_t IShell::readLine()
 {
-  size_t uiReceived = 0;
+  m_uiLastRead = SIZE_MAX;
   if(m_oReadLineBuffer.size())
   {
-    uiReceived = CCMIN(m_oReadLineBuffer.size(), m_oTransferBuffer.size());
-    m_oTransferBuffer.write(m_oReadLineBuffer.getArray(), uiReceived);
-    m_oReadLineBuffer.remove(0, uiReceived);
+    size_t uiLastRead = CCMIN(m_oReadLineBuffer.size(), m_oTransferBuffer.size());
+    m_oTransferBuffer.write(m_oReadLineBuffer.getArray(), uiLastRead);
+    m_oReadLineBuffer.remove(0, uiLastRead);
   }
   else
   {
-    uiReceived = m_pIoStream->read(m_oTransferBuffer.getArray(), m_oTransferBuffer.size());
-    if(uiReceived > m_oTransferBuffer.size())
-      CcKernel::sleep(10);
+    m_uiLastRead = m_pIoStream->read(m_oTransferBuffer.getArray(), m_oTransferBuffer.size());
+    if (m_uiLastRead > m_oTransferBuffer.size())
+    {
+      m_uiLastRead = SIZE_MAX;
+    }
   }
   bool bEndOfLine = false;
-  while(bEndOfLine == false && uiReceived != SIZE_MAX)
+  while(bEndOfLine == false && m_uiLastRead != SIZE_MAX)
   {
     // echo read data
 
     // Interpret read data
-    for(size_t uiPos =0 ; uiPos < uiReceived && bEndOfLine == false; uiPos++)
+    for(size_t uiPos =0 ; uiPos < m_uiLastRead && bEndOfLine == false; uiPos++)
     {
       switch (static_cast<uint8>(m_oTransferBuffer[uiPos]))
       {
@@ -191,8 +209,11 @@ size_t IShell::readLine(IIo* pOutStream)
             m_sRead.remove(m_sRead.size() - 1);
             if (m_bEchoInput)
             {
-              m_pIoStream->write("\b \b", 3);
-              if (pOutStream) pOutStream->write("\b \b", 3);
+              if (m_pIoStream->write("\b \b", 3) > 3)
+              {
+                m_uiLastRead = SIZE_MAX;
+                bEndOfLine = true;
+              }
             }
           }
           break;
@@ -202,28 +223,37 @@ size_t IShell::readLine(IIo* pOutStream)
             m_sRead.remove(m_sRead.size()-1);
             if (m_bEchoInput)
             {
-              m_pIoStream->write(&m_oTransferBuffer[uiPos], 1);
-              if (pOutStream) pOutStream->write(&m_oTransferBuffer[uiPos], 1);
+              if (m_pIoStream->write(&m_oTransferBuffer[uiPos], 1) > 1)
+              {
+                m_uiLastRead = SIZE_MAX;
+                bEndOfLine = true;
+              }
             }
           }
           break;
         case '\r':
+          if (m_uiLastRead > uiPos + 1 &&
+             m_oTransferBuffer[uiPos+1] ==  '\n')
+          {
+            // Ignore the \n
+            uiPos++;
+          }
           CCFALLTHROUGH;
         case '\n':
-          uiPos++; // Ignore this char
-          if(uiReceived > uiPos)
+          uiPos++;
+          bEndOfLine = true; // Ignore this char
+          if(m_uiLastRead > uiPos)
           {
-            m_oReadLineBuffer.append(m_oTransferBuffer.getArray(uiPos), uiReceived - uiPos);
-            uiPos = uiReceived;
-          }
-          else
-          {
-            bEndOfLine = true;
+            m_oReadLineBuffer.append(m_oTransferBuffer.getArray(uiPos), m_uiLastRead - uiPos);
+            uiPos = m_uiLastRead;
           }
           if (m_bEchoInput)
           {
-            m_pIoStream->writeString(CcGlobalStrings::EolLong);
-            if (pOutStream) pOutStream->writeString(CcGlobalStrings::EolLong);
+            if (!m_pIoStream->writeString(CcGlobalStrings::EolLong))
+            {
+              m_uiLastRead = SIZE_MAX;
+              bEndOfLine = true;
+            }
           }
           break;
         default:
@@ -236,8 +266,11 @@ size_t IShell::readLine(IIo* pOutStream)
             m_sRead.append(m_oTransferBuffer[uiPos]);
             if (m_bEchoInput)
             {
-              m_pIoStream->write(&m_oTransferBuffer[uiPos], 1);
-              if(pOutStream) pOutStream->write(&m_oTransferBuffer[uiPos], 1);
+              if (m_pIoStream->write(&m_oTransferBuffer[uiPos], 1) > 1)
+              {
+                m_uiLastRead = SIZE_MAX;
+                bEndOfLine = true;
+              }
             }
           }
           break;
@@ -245,11 +278,11 @@ size_t IShell::readLine(IIo* pOutStream)
     }
     if(bEndOfLine == false)
     {
-      uiReceived = m_pIoStream->read(m_oTransferBuffer.getArray(), m_oTransferBuffer.size());
+      m_uiLastRead = m_pIoStream->read(m_oTransferBuffer.getArray(), m_oTransferBuffer.size());
       CcKernel::sleep(10);
     }
   }
-  return uiReceived;
+  return m_uiLastRead;
 }
 
 CcStatus IShell::execLine(CcStringList& oArguments)
@@ -285,6 +318,23 @@ CcStatus IShell::execLine(CcStringList& oArguments)
       {
         bCommandFound = true;
 
+#ifdef WINDOWS
+        CCNEWTYPE(pProcess, CcWinPseudoConsole, sPath, getWorkingDirectory(), m_pIoStream);
+        if (pProcess && pProcess->open(EOpenFlags::ReadWrite))
+        {
+          CcByteArray oData;
+          oData.resize(1024);
+          size_t uiReadSize;
+          do
+          {
+            uiReadSize = m_pIoStream->readArray(oData, false);
+            if(uiReadSize > 0 && uiReadSize < oData.size())
+              pProcess->writeArray(oData, uiReadSize);
+          } while (pProcess->check() && uiReadSize < oData.size());
+          pProcess->close();
+          CCDELETE(pProcess);
+        }
+#else
         CCNEW(m_pActiveProcess, CcProcess, sPath);
         IShellPassthroughThread oPassThroughThread(m_pActiveProcess, m_pIoStream);
 
@@ -299,10 +349,6 @@ CcStatus IShell::execLine(CcStringList& oArguments)
         oReadBuffer.resize(1024);
         while (m_pActiveProcess->getCurrentState() != EThreadState::Stopped)
         {
-#ifdef WINDOWS
-          m_sRead.clear();
-          size_t uiRead = readLine(&m_pActiveProcess->pipe());
-#else
           size_t uiRead = m_pIoStream->readArray(oReadBuffer, false);
           if (uiRead &&
               uiRead < oReadBuffer.size() &&
@@ -310,19 +356,27 @@ CcStatus IShell::execLine(CcStringList& oArguments)
           {
             m_pActiveProcess->pipe().writeArray(oReadBuffer, uiRead);
           }
-#endif
         }
         oPassThroughThread.stop();
         CCDELETE(m_pActiveProcess);
+#endif
       }
     }
     if (bCommandFound == false)
     {
-      writeLine("Unknown command: " + sCommand);
+      if (!writeLine("Unknown command: " + sCommand))
+      {
+        m_uiLastWritten = SIZE_MAX;
+      }
       oStatus = EStatus::CommandUnknown;
     }
   }
   return oStatus;
+}
+
+CcStatus IShell::isConnectionActive()
+{
+  return m_uiLastRead != SIZE_MAX && m_uiLastWritten != SIZE_MAX;
 }
 
 void IShell::updatePrefix()

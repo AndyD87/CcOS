@@ -43,7 +43,7 @@ public:
 
 CcOSModuleLoaderApp::CcOSModuleLoaderApp(int argc, char** argv) :
   CcApp("CcOSModuleLoaderApp"),
-  m_oArguments(argc, argv)
+  m_oArguments({}, argc, argv)
 {
   CCNEW(m_pPrivate, CPrivate);
   parseArgs();

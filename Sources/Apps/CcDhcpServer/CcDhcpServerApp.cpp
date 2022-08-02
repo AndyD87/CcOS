@@ -31,7 +31,7 @@
 
 CcDhcpServerApp::CcDhcpServerApp(int argc, char** argv) :
   CcService(CcDhcpGlobals::Strings::ServerName, CCNEW_INLINE(CcDhcpServer)),
-  m_oArguments(argc, argv)
+  m_oArguments({}, argc, argv)
 {
   parseArgs();
 }

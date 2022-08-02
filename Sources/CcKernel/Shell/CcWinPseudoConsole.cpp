@@ -30,19 +30,60 @@
 #include "CcWString.h"
 #include "CcStringUtil.h"
 #include "CcGlobalStrings.h"
-#include <windows.h>
+#include "CcByteArray.h"
+#include "IThread.h"
 #include <stdio.h>
+
+class IWinPseudoConsolePassthroughThread : public IThread
+{
+public:
+  IWinPseudoConsolePassthroughThread(CcWinPseudoConsole* pProcess, IIo* pStream) :
+    m_pProcess(pProcess),
+    m_pStream(pStream)
+  {
+  }
+
+  virtual void run() override
+  {
+    CcByteArray oReadBuffer;
+    oReadBuffer.resize(1024);
+    size_t uiRead;
+    while (m_pStream && m_pProcess)// m_pProcess->getCurrentState() != EThreadState::Stopped)
+    {
+      uiRead = m_pProcess->readArray(oReadBuffer, false);
+      if (uiRead && m_pStream)
+        m_pStream->writeArray(oReadBuffer, uiRead);
+    }
+    m_pStream = nullptr;
+    m_pProcess = nullptr;
+  }
+
+  virtual void onStop() override
+  {
+    m_pStream = nullptr;
+    if (m_pProcess)
+    {
+      m_pProcess->cancel();
+      m_pProcess = nullptr;
+    }
+  }
+
+  CcWinPseudoConsole*  m_pProcess;
+  IIo*        m_pStream;
+};
 
 CcWinPseudoConsole::~CcWinPseudoConsole()
 {
   close();
+  ClosePseudoConsole(hConsole);
+  if (pi.hProcess) CloseHandle(pi.hProcess);
 }
 
 size_t CcWinPseudoConsole::read(void* pBuffer, size_t uSize)
 {
   size_t uiRet = SIZE_MAX;
   DWORD uiReadSize = 0;
-  if (ReadFile(hStdout, pBuffer, uSize, &uiReadSize, nullptr))
+  if (ReadFile(hStdout, pBuffer, static_cast<DWORD>(uSize), &uiReadSize, nullptr))
   {
     uiRet = uiReadSize;
   }
@@ -53,7 +94,7 @@ size_t CcWinPseudoConsole::readHidden(void* pBuffer, size_t uSize)
 {
   size_t uiRet = SIZE_MAX;
   DWORD uiReadSize = 0;
-  if (WriteFile(hStdin, pBuffer, uSize, &uiReadSize, nullptr))
+  if (ReadFile(hStdout, pBuffer, static_cast<DWORD>(uSize), &uiReadSize, nullptr))
   {
     uiRet = uiReadSize;
   }
@@ -62,7 +103,13 @@ size_t CcWinPseudoConsole::readHidden(void* pBuffer, size_t uSize)
 
 size_t CcWinPseudoConsole::write(const void* pBuffer, size_t uSize)
 {
-  return CcConsole::write(pBuffer, uSize);
+  size_t uiRet = SIZE_MAX;
+  DWORD uiReadSize = 0;
+  if (WriteFile(hStdin, pBuffer, static_cast<DWORD>(uSize), &uiReadSize, nullptr))
+  {
+    uiRet = uiReadSize;
+  }
+  return uiRet;
 }
 
 CcStatus CcWinPseudoConsole::open(EOpenFlags)
@@ -83,18 +130,20 @@ CcStatus CcWinPseudoConsole::open(EOpenFlags)
     }
     else
     {
-
-      PROCESS_INFORMATION pi;
       memset(&pi, 0, sizeof(pi));
 
       // Call CreateProcess
+      m_sCommandLine.replace(CcGlobalStrings::Seperators::Path, CcGlobalStrings::Seperators::BackSlash);
       if (!CreateProcessW(NULL, m_sCommandLine.getLPWSTR(), NULL, NULL, FALSE, EXTENDED_STARTUPINFO_PRESENT, NULL, NULL, &si.StartupInfo, &pi))
       {
         oRet = false;
       }
       else
       {
+        CloseHandle(pi.hThread);
         oRet = true;
+        CCNEW(pThread, IWinPseudoConsolePassthroughThread, this, pIoStream);
+        pThread->start();
       }
     }
   }
@@ -105,39 +154,28 @@ CcStatus CcWinPseudoConsole::open(EOpenFlags)
 CcStatus CcWinPseudoConsole::close()
 {
   CcStatus oRet = false;
-  // Enable the window and mouse input events.
-  if (hStdin != INVALID_HANDLE_VALUE)
+  hConsole = nullptr;
+  if (pThread)
   {
-    if (!SetConsoleMode(hStdin, fdwSaveOldMode))
-    {
-      CCDEBUG("SetConsoleMode");
-    }
-    else
-    {
-      oRet = true;
-    }
+    pThread->stop();
+    CCDELETE(pThread);
   }
+  CloseHandle(inRead);
+  CloseHandle(outWrite);
+  inRead = nullptr;
+  outWrite = nullptr;
   return oRet;
 }
 
 CcStatus CcWinPseudoConsole::cancel()
 {
   CcStatus oRet = EStatus::AllOk;
-  bCancel = true;
-  INPUT_RECORD ir[2];
-  for (int i = 0; i < 2; i++)
+  if (!WriteFile(outWrite, "\n", 1, nullptr, nullptr))
   {
-    KEY_EVENT_RECORD *kev = &ir[i].Event.KeyEvent;
-    ir[i].EventType = KEY_EVENT;
-    kev->bKeyDown = i == 0;    //<-true, than false
-    kev->dwControlKeyState = 0;
-    kev->wRepeatCount = 1;
-    kev->uChar.UnicodeChar = VK_RETURN;
-    kev->wVirtualKeyCode = VK_RETURN;
-    kev->wVirtualScanCode = static_cast<WORD>(MapVirtualKey(VK_RETURN, MAPVK_VK_TO_VSC));
+    DWORD dwError = GetLastError();
+    CCDEBUG("cancel failed with " + CcString::fromNumber(dwError));
   }
-  DWORD dw;
-  WriteConsoleInput(GetStdHandle(STD_INPUT_HANDLE), ir, 2, &dw);
+  if (hStdout) CloseHandle(hStdout);
   return oRet;
 }
 
@@ -158,16 +196,25 @@ CcStatus CcWinPseudoConsole::flush()
   return oRet;
 }
 
+CcStatus CcWinPseudoConsole::check()
+{
+  CcStatus oRet = EStatus::AlreadyStopped;
+  if (WAIT_TIMEOUT == WaitForSingleObject(pi.hProcess, 100))
+  {
+    oRet = EStatus::AllOk;
+  }
+  return oRet;
+}
+
 CcStatus CcWinPseudoConsole::CreateConsole()
 {
   CcStatus oStatus = false;
-  HANDLE inRead = NULL;
-  HANDLE outWrite = NULL;
-
   if (!CreatePipe(&inRead, &hStdin, NULL, 0))
   {
     if (inRead) CloseHandle(inRead);
     if (hStdout) CloseHandle(hStdin);
+    inRead = nullptr;
+    hStdin = nullptr;
   }
   else
   {
@@ -177,6 +224,10 @@ CcStatus CcWinPseudoConsole::CreateConsole()
       if (hStdout) CloseHandle(hStdout);
       if (hStdin) CloseHandle(hStdin);
       if (outWrite) CloseHandle(outWrite);
+      inRead = nullptr;
+      hStdin = nullptr;
+      hStdout = nullptr;
+      outWrite = nullptr;
     }
     else
     {
@@ -188,6 +239,10 @@ CcStatus CcWinPseudoConsole::CreateConsole()
         if (hStdout) CloseHandle(hStdout);
         if (hStdin) CloseHandle(hStdin);
         if (outWrite) CloseHandle(outWrite);
+        inRead = nullptr;
+        hStdin = nullptr;
+        hStdout = nullptr;
+        outWrite = nullptr;
       }
       else
       {
@@ -214,28 +269,32 @@ CcStatus CcWinPseudoConsole::PrepareStartupInformation(void* pvsi)
   psi->lpAttributeList = (PPROC_THREAD_ATTRIBUTE_LIST) HeapAlloc(GetProcessHeap(), 0, bytesRequired);
   if (!psi->lpAttributeList)
   {
-    return FALSE;
   }
-
-  // Initialize the list memory location
-  if (!InitializeProcThreadAttributeList(psi->lpAttributeList, 1, 0, &bytesRequired))
+  else
   {
-    HeapFree(GetProcessHeap(), 0, psi->lpAttributeList);
-    return FALSE;
+    // Initialize the list memory location
+    if (!InitializeProcThreadAttributeList(psi->lpAttributeList, 1, 0, &bytesRequired))
+    {
+      HeapFree(GetProcessHeap(), 0, psi->lpAttributeList);
+    }
+    else
+    {
+      // Set the pseudoconsole information into the list
+      if (!UpdateProcThreadAttribute(psi->lpAttributeList,
+        0,
+        PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE,
+        hConsole,
+        sizeof(hConsole),
+        NULL,
+        NULL))
+      {
+        HeapFree(GetProcessHeap(), 0, psi->lpAttributeList);
+      }
+      else
+      {
+        oStatus = EStatus::AllOk;
+      }
+    }
   }
-
-  // Set the pseudoconsole information into the list
-  if (!UpdateProcThreadAttribute(psi->lpAttributeList,
-    0,
-    PROC_THREAD_ATTRIBUTE_PSEUDOCONSOLE,
-    hConsole,
-    sizeof(hConsole),
-    NULL,
-    NULL))
-  {
-    HeapFree(GetProcessHeap(), 0, psi->lpAttributeList);
-    return FALSE;
-  }
-
   return oStatus;
 }

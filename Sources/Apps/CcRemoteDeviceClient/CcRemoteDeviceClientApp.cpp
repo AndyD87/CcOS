@@ -43,7 +43,7 @@ public:
 
 CcRemoteDeviceClientApp::CcRemoteDeviceClientApp(int argc, char** argv) :
   CcGuiApplication(CcRemoteDeviceGlobals::Names::ClientAppName),
-  m_oArguments(argc, argv)
+  m_oArguments({}, argc, argv)
 {
   CCNEW(m_pPrivate, CPrivate);
   parseArgs();

@@ -52,7 +52,8 @@ public:
    * @param sKeyFilePath:  Path to output file for key.
    * @return
    */
-  static bool createCert(const CcString& sCertFilePath, const CcString& sKeyFilePath);
+  static bool createCertFiles(const CcString& sCertFilePath, const CcString& sKeyFilePath);
+  static bool createCertStrings(CcString& sCert, CcString& sKey);
 
   /**
    * @brief Get matching error string to error number.

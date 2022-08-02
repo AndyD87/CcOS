@@ -43,7 +43,7 @@ int main(int iArgc, char** ppArgv)
   int iRet = 0;
   CcExportTestList oList;
   CcExportTestVector oVector;
-  CcArguments oArguments(iArgc, ppArgv);
+  CcArguments oArguments({}, iArgc, ppArgv);
   CcString sPath = oArguments.getPath();
   CcString sApplication = oArguments.getApplication();
   CcString sDirectory = oArguments.getDirectory();

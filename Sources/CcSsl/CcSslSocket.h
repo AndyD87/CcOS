@@ -200,14 +200,16 @@ public:
    * @param sPathToKey: Path to file wich contains the key.
    * @return true if Key was successfully read.
    */
-  bool loadKey(const CcString& sPathToKey);
+  bool loadKeyFile(const CcString& sPathToKey);
+  bool loadKeyString(const CcString& sKey);
 
   /**
    * @brief Load certificate for socket communication from file.
    * @param sPathToKey: Path to file wich contains the key.
    * @return true if certificate was successfully read.
    */
-  bool loadCertificate(const CcString& sPathToKey);
+  bool loadCertificateFile(const CcString& sPathToKey);
+  bool loadCertificateString(const CcString& sCert);
 
   /**
    * @brief Deinitialize Socket, it is never mined if it was initialized by initServer or initClient

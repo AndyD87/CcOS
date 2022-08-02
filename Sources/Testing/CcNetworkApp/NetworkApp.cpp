@@ -32,7 +32,6 @@
 #include "CcDevice.h"
 
 NetworkApp::NetworkApp():
-m_Telnet(CcCommonPorts::CcTestBase + CcCommonPorts::TELNET),
 m_HttpServer(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP),
 m_FtpServer(CcCommonPorts::CcTestBase + CcCommonPorts::FTP),
 m_oUdpEchoServer(CcCommonPorts::CcTestBase),
@@ -64,8 +63,6 @@ void NetworkApp::run()
   m_TftpServer.config().setRootDir("C:/tftpboot");
   m_TftpServer.start();
 
-  m_Telnet.start();
-
   m_oUdpEchoServer.start();
   m_oTcpEchoServer.start();
 
@@ -76,7 +73,6 @@ void NetworkApp::run()
 
   while ( m_TftpServer.getThreadState() != EThreadState::Stopped ||
           m_HttpServer.getThreadState() != EThreadState::Stopped ||
-          m_Telnet.getThreadState() != EThreadState::Stopped ||
           m_oUdpEchoServer.getThreadState() != EThreadState::Stopped ||
           m_oTcpEchoServer.getThreadState() != EThreadState::Stopped ||
           m_FtpServer.getThreadState() != EThreadState::Stopped
@@ -88,7 +84,6 @@ void NetworkApp::run()
     if (getThreadState() != EThreadState::Running)
     {
       m_HttpServer.stop();
-      m_Telnet.stop();
       m_FtpServer.stop();
       m_TftpServer.stop();
       m_oUdpEchoServer.stop();

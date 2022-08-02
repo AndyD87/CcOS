@@ -25,7 +25,7 @@
 
 #include "CcBase.h"
 #include "CcKernel.h"
-#include "CcShell.h"
+#include "CcShellApp.h"
 
 /**
  * @brief Default application entry point
@@ -35,9 +35,7 @@
  */
 int main(int iArgc, char** ppArgv)
 {
-  CCUNUSED(iArgc);
-  CCUNUSED(ppArgv);
-
-  CcShell oShell;
+  CcShellApp oShell;
+  oShell.parseArguments(iArgc, ppArgv);
   return oShell.exec().getErrorInt();
 }

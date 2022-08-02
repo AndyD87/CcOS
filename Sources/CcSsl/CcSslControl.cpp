@@ -86,10 +86,16 @@ bool CcSslControl::initSsl()
   return s_bIsInitialized;
 }
 
-bool CcSslControl::createCert(const CcString& sCertFilePath, const CcString& sKeyFilePath)
+bool CcSslControl::createCertFiles(const CcString& sCertFilePath, const CcString& sKeyFilePath)
 {
   CcSslCertificate oCertificate;
-  return oCertificate.create(sCertFilePath, sKeyFilePath);
+  return oCertificate.createFiles(sCertFilePath, sKeyFilePath);
+}
+
+bool CcSslControl::createCertStrings(CcString& sCert, CcString& sKey)
+{
+  CcSslCertificate oCertificate;
+  return oCertificate.createString(sCert, sKey);
 }
 
 CcString CcSslControl::getErrorString(uint32 uiErrorCode)

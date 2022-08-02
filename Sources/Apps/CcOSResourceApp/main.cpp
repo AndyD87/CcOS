@@ -319,7 +319,7 @@ int run(const CcString& sInputFile, const CcString& sOutputFile, const CcString&
 int main(int iArgc, char** ppArgv)
 {
   int iRet = 0;
-  CcArguments oArguments(iArgc, ppArgv);
+  CcArguments oArguments({}, iArgc, ppArgv);
   CcKernel::initCLI();
 
   CcString sOutputFile;

@@ -70,7 +70,7 @@ public:
   void setEnvironmentVariable(const CcString& sName, const CcString& sValue)
   { m_oEnvironmentVariables.set(sName, sValue); }
 
-  void writeLine(const CcString& sLine);
+  size_t writeLine(const CcString& sLine);
   void setEcho(bool bOnOff)
   { m_bEchoInput = bOnOff; }
   void setStream(IIo* pIoStream)
@@ -78,9 +78,10 @@ public:
 
 protected:
   CcStatus execLine(CcStringList& oArguments);
+  CcStatus isConnectionActive();
 
 private:
-  size_t readLine(IIo* pOutStream);
+  size_t readLine();
   void updatePrefix();
   virtual void onStop() override;
   void onKernelShutdown(CcKernelShutdownEvent* pEvent);
@@ -95,6 +96,8 @@ private:
   IShellCommand*            m_pActiveCommand = nullptr;
   CcProcess*                m_pActiveProcess = nullptr;
 
+  size_t    m_uiLastRead = 0;
+  size_t    m_uiLastWritten = 0;
   CcString  m_sRead;
   CcString  m_sWorkingDir;
   CcString  m_sPrefix;

@@ -29,23 +29,31 @@
   #include "Shell/CcWinRawConsole.h"
 #endif
 
-CcShell::CcShell() :
+CcShell::CcShell(IIo* pIoStream) :
   IShell()
 {
-#ifdef WINDOWS
-  CCNEW(m_pStreamControl, CcWinRawConsole);
-  if (m_pStreamControl->open(EOpenFlags::ReadWrite))
+  if (pIoStream)
   {
-    m_oIoStream.setReadStream(m_pStreamControl);
-    m_oIoStream.setWriteStream(m_pStreamControl);
+    m_oIoStream.setReadStream(pIoStream);
+    m_oIoStream.setWriteStream(pIoStream);
   }
-#else
-  #ifndef GENERIC
-    setEcho(false);
-  #endif // !GENERIC
-  m_oIoStream.setReadStream(&CcConsole::getInStream());
-  m_oIoStream.setWriteStream(&CcConsole::getOutStream());
-#endif
+  else
+  {
+    #ifdef WINDOWS
+      CCNEW(m_pStreamControl, CcWinRawConsole);
+      if (m_pStreamControl->open(EOpenFlags::ReadWrite))
+      {
+        m_oIoStream.setReadStream(m_pStreamControl);
+        m_oIoStream.setWriteStream(m_pStreamControl);
+      }
+    #else
+    #ifndef GENERIC
+      setEcho(false);
+    #endif // !GENERIC
+      m_oIoStream.setReadStream(&CcConsole::getInStream());
+      m_oIoStream.setWriteStream(&CcConsole::getOutStream());
+    #endif
+  }
   init(&m_oIoStream);
   initDefaultCommands();
 }

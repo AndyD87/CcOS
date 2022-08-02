@@ -28,6 +28,9 @@
 #include "CcObject.h"
 #include "IIo.h"
 #include "CcWString.h"
+#include <windows.h>
+
+class IWinPseudoConsolePassthroughThread;
 
 /**
  * @brief Abstract Class for inheriting to every IODevice
@@ -39,8 +42,10 @@ public:
    * @brief Create an async interface for specific io device
    * @param pIoDevice: Target io device to make async
    */
-  CcWinPseudoConsole(const CcString& sCommandLine) :
-    m_sCommandLine(sCommandLine)
+  CcWinPseudoConsole(const CcString& sCommandLine, const CcString& sWorkingDir, IIo* pIoStream) :
+    m_sCommandLine(sCommandLine),
+    m_sWorkingDir(sWorkingDir),
+    pIoStream(pIoStream)
   { }
 
   /**
@@ -58,17 +63,23 @@ public:
   virtual void* getStdFile() override;
   virtual CcStatus flush() override;
 
-  void run();
+  CcStatus check();
 
 private:
   CcStatus CreateConsole();
   CcStatus PrepareStartupInformation(void *psi);
 
 private:
+  PROCESS_INFORMATION pi;
+  CcWString m_sWorkingDir;
   CcWString m_sCommandLine;
   bool     bCancel = false;
-  CCHANDLE hStdin;
-  CCHANDLE hStdout;
-  CCHANDLE hConsole;
+  CCHANDLE hStdin = nullptr;
+  CCHANDLE hStdout = nullptr;
+  CCHANDLE hConsole = nullptr;
+  CCHANDLE inRead = nullptr;
+  CCHANDLE outWrite = nullptr;
   uint32   fdwSaveOldMode;
+  IWinPseudoConsolePassthroughThread* pThread = nullptr;
+  IIo* pIoStream = nullptr;
 };

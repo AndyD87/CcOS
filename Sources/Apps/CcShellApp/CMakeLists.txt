@@ -10,6 +10,10 @@ elseif(${CCOS_APPS_CCSHELLAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   set( SOURCE_FILES
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcShellAppWorker.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcShellAppWorker.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcShellApp.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcShellApp.h
   )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
@@ -23,6 +27,7 @@ elseif(${CCOS_APPS_CCSHELLAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                 CcKernel
                                 CcShell
+                                CcSsl
   )
 
   set_target_properties(${CURRENT_PROJECT} PROPERTIES FOLDER      "CcOS/${CURRENT_PROJECT_IDE_PATH}")

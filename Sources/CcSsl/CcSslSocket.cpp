@@ -426,11 +426,18 @@ int CcSslSocket::getError(int iReturnCode)
 
 CcString CcSslSocket::getErrorString(int iReturnCode)
 {
-  int iErrorCode = SSL_get_error(m_pPrivate->m_pSsl.ptr(), iReturnCode);
-  return "openssl-error " + CcString::fromInt(iReturnCode) + ": " + CcString(ERR_reason_error_string(iErrorCode)) + ": " + CcString(ERR_reason_error_string(iErrorCode));
+  if (m_pPrivate->m_pSsl.isValid())
+  {
+    int iErrorCode = SSL_get_error(m_pPrivate->m_pSsl.ptr(), iReturnCode);
+    return "openssl-error " + CcString::fromInt(iReturnCode) + ": " + CcString(ERR_reason_error_string(iErrorCode)) + ": " + CcString(ERR_reason_error_string(iErrorCode));
+  }
+  else
+  {
+    return "openssl-error Unknown: " + CcString::fromInt(iReturnCode);
+  }
 }
 
-bool CcSslSocket::loadCertificate(const CcString& sCertificateFile)
+bool CcSslSocket::loadCertificateFile(const CcString& sCertificateFile)
 {
   bool bRet = true;
   if (SSL_CTX_use_certificate_file(m_pPrivate->m_pSslCtx.ptr(), sCertificateFile.getOsPath().getCharString(), SSL_FILETYPE_PEM) != 1)
@@ -444,7 +451,36 @@ bool CcSslSocket::loadCertificate(const CcString& sCertificateFile)
   return bRet;
 }
 
-bool CcSslSocket::loadKey(const CcString& sKeyFile)
+bool CcSslSocket::loadCertificateString(const CcString& sCertificate)
+{
+  bool bRet = true;
+  BIO		*in;
+  if ((in = BIO_new_mem_buf(sCertificate.getCharString(), static_cast<int>(sCertificate.length()))) == NULL)
+  {
+    bRet = false;
+  }
+  else
+  {
+    X509* pKey = PEM_read_bio_X509(in, NULL, nullptr, nullptr);
+    if (pKey)
+    {
+      if (SSL_CTX_use_certificate(m_pPrivate->m_pSslCtx.ptr(), pKey) != 1)
+      {
+        CCDEBUG(getErrorString(ERR_get_error()));
+        bRet = false;
+      }
+      else
+      {
+        bRet = true;
+      }
+      X509_free(pKey);
+    }
+    BIO_free(in);
+  }
+  return bRet;
+}
+
+bool CcSslSocket::loadKeyFile(const CcString& sKeyFile)
 {
   bool bRet = true;
   if (SSL_CTX_use_PrivateKey_file(m_pPrivate->m_pSslCtx.ptr(), sKeyFile.getOsPath().getCharString(), SSL_FILETYPE_PEM) != 1)
@@ -459,6 +495,43 @@ bool CcSslSocket::loadKey(const CcString& sKeyFile)
     {
       CCDEBUG(getErrorString(ERR_get_error()));
     }
+  }
+  return bRet;
+}
+
+bool CcSslSocket::loadKeyString(const CcString& sKeyFile)
+{
+  bool bRet = true;
+  BIO		*in;
+  if ((in = BIO_new_mem_buf(sKeyFile.getCharString(), static_cast<int>(sKeyFile.length()))) == NULL)
+  {
+    bRet = false;
+  }
+  else
+  {
+    EVP_PKEY* pKey = PEM_read_bio_PrivateKey(in, NULL, nullptr, nullptr);
+    if (pKey)
+    {
+      if (SSL_CTX_use_PrivateKey(m_pPrivate->m_pSslCtx.ptr(), pKey) != 1)
+      {
+        CCDEBUG(getErrorString(ERR_get_error()));
+        bRet = false;
+      }
+      else
+      {
+        // Check pvt key
+        if (1 != SSL_CTX_check_private_key(m_pPrivate->m_pSslCtx.ptr()))
+        {
+          CCDEBUG(getErrorString(ERR_get_error()));
+        }
+        else
+        {
+          bRet = true;
+        }
+      }
+      EVP_PKEY_free(pKey);
+    }
+    BIO_free(in);
   }
   return bRet;
 }

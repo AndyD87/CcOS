@@ -74,28 +74,19 @@ public:
 
   typedef class CcKernelSHARED CcList<CVariableDefinition> CVariableDefinitionList;
 
-  CcArguments() = default;
   ~CcArguments() = default;
 
   /**
-   * @brief Cunstructor with arguments coming from a typically main routine
-   * @param iArgc:  Number of Arguments stored in argv
-   * @param ppArgv: Arguments in a array of char strings.
+   * @brief Constructor with argument line to parse initialy
+   * @param sArgline: Line to parse for arguments
    */
-  CcArguments(int iArgc, char **ppArgv);
+  CcArguments(const CVariableDefinitionList& oVariables = {}, int iArgc = 0, char **ppArgv = nullptr);
 
   /**
    * @brief Constructor with argument line to parse initialy
    * @param sArgline: Line to parse for arguments
    */
-  CcArguments(const CcString& sArgline);
-
-  /**
-   * @brief Constructor with argument line to parse initialy
-   * @param sArgline: Line to parse for arguments
-   */
-  CcArguments(const CVariableDefinitionList& oVariables)
-  { setVariablesList(oVariables); }
+  CcArguments(const CVariableDefinitionList& oVariables, const CcString& sArgline);
 
   /**
    * @brief CopyConstructor

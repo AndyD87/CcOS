@@ -38,13 +38,15 @@ const CcString& CcArguments::CVariableDefinition::getName() const
   else return CcGlobalStrings::Empty;
 }
 
-CcArguments::CcArguments(int argc, char **argv)
+CcArguments::CcArguments(const CVariableDefinitionList& oVariables, int argc, char **argv)
 {
+  setVariablesList(oVariables);
   parse(argc, argv);
 }
 
-CcArguments::CcArguments(const CcString& sArgline)
+CcArguments::CcArguments(const CVariableDefinitionList& oVariables, const CcString& sArgline)
 {
+  setVariablesList(oVariables);
   parse(sArgline);
 }
 

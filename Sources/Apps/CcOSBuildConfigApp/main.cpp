@@ -51,7 +51,7 @@ void printHelp ()
 int main(int iArgc, char** ppArgv)
 {
   int iRet = 0;
-  CcArguments oArguments(iArgc, ppArgv);
+  CcArguments oArguments({}, iArgc, ppArgv);
   CcKernel::initCLI();
 
   if (oArguments.size() > 2)

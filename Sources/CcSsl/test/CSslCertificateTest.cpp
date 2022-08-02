@@ -77,13 +77,13 @@ bool CSslCertificateTest::testCreate()
   bool bSuccess = true;
   CcSslCertificate oCert;
   // Do it more than once, because we had a SIGSEV
-  bSuccess &= oCert.create(m_pPrivate->sPrivateKeyFile, m_pPrivate->sPublicKeyFile);
+  bSuccess &= oCert.createFiles(m_pPrivate->sPrivateKeyFile, m_pPrivate->sPublicKeyFile);
   bSuccess &= deleteTestFiles();
-  bSuccess &= oCert.create(m_pPrivate->sPrivateKeyFile, m_pPrivate->sPublicKeyFile);
+  bSuccess &= oCert.createFiles(m_pPrivate->sPrivateKeyFile, m_pPrivate->sPublicKeyFile);
   bSuccess &= deleteTestFiles();
-  bSuccess &= oCert.create(m_pPrivate->sPrivateKeyFile, m_pPrivate->sPublicKeyFile);
+  bSuccess &= oCert.createFiles(m_pPrivate->sPrivateKeyFile, m_pPrivate->sPublicKeyFile);
   bSuccess &= deleteTestFiles();
-  bSuccess &= oCert.create(m_pPrivate->sPrivateKeyFile, m_pPrivate->sPublicKeyFile);
+  bSuccess &= oCert.createFiles(m_pPrivate->sPrivateKeyFile, m_pPrivate->sPublicKeyFile);
   bSuccess &= deleteTestFiles();
   return true;
 }

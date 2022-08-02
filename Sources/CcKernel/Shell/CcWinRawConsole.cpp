@@ -132,15 +132,15 @@ CcStatus CcWinRawConsole::open(EOpenFlags)
       else
       {
         // Enable the window and mouse input events.
-        uint32_t fdwMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT;
-        if (!SetConsoleMode(hStdin, fdwMode))
-        {
-          CCDEBUG("SetConsoleMode");
-        }
-        else
-        {
+        //uint32_t fdwMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT;
+        //if (!SetConsoleMode(hStdin, fdwMode))
+        //{
+        //  CCDEBUG("SetConsoleMode");
+        //}
+        //else
+        //{
           oRet = true;
-        }
+        //}
       }
     }
   }

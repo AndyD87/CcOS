@@ -40,7 +40,7 @@
  */
 int main(int iArgc, char** ppArgv)
 {
-  CcRemoteDeviceServerService oSerivce(CcArguments(iArgc, ppArgv));
+  CcRemoteDeviceServerService oSerivce(CcArguments({}, iArgc, ppArgv));
   int iExitCode = oSerivce.exec().getErrorInt();
   return iExitCode;
 }

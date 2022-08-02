@@ -42,7 +42,7 @@ int main(int iArgc, char** ppArgv)
   int iError = 0;
   CcKernel::initCLI();
 
-  CcArguments oArguments(iArgc, ppArgv);
+  CcArguments oArguments({}, iArgc, ppArgv);
   if (oArguments.size() > 1)
   {
     if (oArguments[1].compareInsensitve("stack"))

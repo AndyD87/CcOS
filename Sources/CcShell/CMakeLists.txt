@@ -9,8 +9,6 @@ elseif(${CCOS_CCSHELL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   set( HEADER_FILES
         CcShell.h
-        CcTelnetServer.h
-        CcTelnetServerWorker.h
   )
 
   ########
@@ -19,8 +17,6 @@ elseif(${CCOS_CCSHELL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set( SOURCE_FILES
         ${HEADER_FILES}
         CcShell.cpp
-        CcTelnetServer.cpp
-        CcTelnetServerWorker.cpp
         config/default.xml
   )
 

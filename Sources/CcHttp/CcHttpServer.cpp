@@ -134,7 +134,7 @@ void CcHttpServer::run()
           if (CcFile::exists(m_pConfig->getSslKey()) == false ||
               CcFile::exists(m_pConfig->getSslCertificate()) == false)
           {
-            CcSslControl::createCert(
+            CcSslControl::createCertFiles(
               m_pConfig->getSslCertificate(),
               m_pConfig->getSslKey()
             );
@@ -152,8 +152,8 @@ void CcHttpServer::run()
       #ifdef CCSSL_ENABLED
         m_oSocket.lock();
         bool bSsl = (m_pConfig->isSslEnabled() == false ||
-                      (static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadKey(m_pConfig->getSslKey()) &&
-                        static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadCertificate(m_pConfig->getSslCertificate())
+                      (static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadKeyFile(m_pConfig->getSslKey()) &&
+                        static_cast<CcSslSocket*>(m_oSocket.getRawSocket())->loadCertificateFile(m_pConfig->getSslCertificate())
                         )
                     );
         m_oSocket.unlock();
