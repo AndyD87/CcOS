@@ -25,28 +25,13 @@
  */
 #pragma once
 
-#include "CcBase.h"
+#include "CcShellBase.h"
 #include "CcString.h"
 #include "IShell.h"
 #include "CcFile.h"
 #include "CcIoSwitch.h"
 
-#ifdef _MSC_VER
-# ifndef CcShellSHARED
-#   ifdef CcShell_EXPORTS
-//    Cmake definition for shared build is set
-#     define CcShellSHARED __declspec(dllexport)
-#   elif defined(CC_STATIC)
-//    CCOS will be build as static library no im-/export
-#     define CcShellSHARED
-#   else
-//    if no definition found, we are on importing as dll
-#     define CcShellSHARED __declspec(dllimport)
-#   endif
-# endif
-#else
-# define CcShellSHARED
-#endif
+class CcShellWorker;
 
 /**
  * @brief Shell application to be started with own script interpreter.
@@ -63,7 +48,8 @@ public:
    * @brief Destructor
    */
   virtual ~CcShell();
+
 private:
-  IIo*       m_pStreamControl = nullptr;
-  CcIoSwitch m_oIoStream;
+  IIo*                      m_pStreamControl = nullptr;
+  CcIoSwitch                m_oIoStream;
 };

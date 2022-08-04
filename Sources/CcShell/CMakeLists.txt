@@ -9,6 +9,10 @@ elseif(${CCOS_CCSHELL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   ########
   set( HEADER_FILES
         CcShell.h
+        CcShellBase.h
+        Package/CPackage.h
+        Package/CPackageInput.h
+        Package/CPackageLogin.h
   )
 
   ########
@@ -17,7 +21,9 @@ elseif(${CCOS_CCSHELL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   set( SOURCE_FILES
         ${HEADER_FILES}
         CcShell.cpp
-        config/default.xml
+        Package/CPackage.cpp
+        Package/CPackageInput.cpp
+        Package/CPackageLogin.cpp
   )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )

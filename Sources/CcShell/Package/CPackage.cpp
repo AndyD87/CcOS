@@ -16,39 +16,30 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CBufferTest
- **/
-#pragma once
-
-#include "CcBase.h"
-#include "CcTest.h"
-
-/**
- * @brief Class implementation
+ * @brief     Implementation of Class CPackageInput
  */
-class CBufferTest : public CcTest<CBufferTest>
-{
-public:
-  /**
-   * @brief Constructor
-   */
-  CBufferTest();
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CBufferTest();
-private:
-  bool testBasic();
-  bool testCollapsing();
-  bool testBufferCollapsing();
-  bool testBufferTransfering();
-  bool testBufferRemove();
-  bool testBufferRemoveChunks();
-  bool testBufferParitialCollapsing();
-};
+#include "CPackage.h"
+
+namespace NShell
+{
+
+CPackage* CPackage::create(uint16 uiPayload)
+{
+  CPackage* pPackage = nullptr;
+  CCNEWARRAYTYPE(pBuffer, char, uiPayload + sizeof(CPackage) - sizeof(CPackage::pData));
+  pPackage = reinterpret_cast<CPackage*>(pBuffer);
+  return pPackage;
+}
+
+void CPackage::remove(CPackage* pPackage)
+{
+  char* pBuffer = reinterpret_cast<char*>(pPackage);
+  CCDELETEARR(pBuffer);
+}
+
+}

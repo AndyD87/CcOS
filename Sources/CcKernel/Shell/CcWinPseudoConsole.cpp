@@ -105,9 +105,27 @@ size_t CcWinPseudoConsole::write(const void* pBuffer, size_t uSize)
 {
   size_t uiRet = SIZE_MAX;
   DWORD uiReadSize = 0;
-  if (WriteFile(hStdin, pBuffer, static_cast<DWORD>(uSize), &uiReadSize, nullptr))
+  // Filter Input
+  const unsigned char* pcBuffer = static_cast<const unsigned char*>(pBuffer);
+  size_t uiSizeProcessed = 0;
+  size_t uiLastWriteStart = 0;
+  while (uiSizeProcessed < uSize)
   {
-    uiRet = uiReadSize;
+    switch (pcBuffer[uiSizeProcessed])
+    {
+      // Filter \n it is not transported in windows consoles
+      case '\n':
+        if (WriteFile(hStdin, pcBuffer + uiLastWriteStart, static_cast<DWORD>(uiSizeProcessed - uiLastWriteStart), &uiReadSize, nullptr));
+        uiSizeProcessed++;
+        uiLastWriteStart = uiSizeProcessed;
+        break;
+      default:
+        uiSizeProcessed++;
+    }
+  }
+  if (uiLastWriteStart < uiSizeProcessed)
+  {
+    if (WriteFile(hStdin, pcBuffer + uiLastWriteStart, static_cast<DWORD>(uiSizeProcessed - uiLastWriteStart), &uiReadSize, nullptr));
   }
   return uiRet;
 }
@@ -231,7 +249,7 @@ CcStatus CcWinPseudoConsole::CreateConsole()
     }
     else
     {
-      COORD size = {80, INT16_MAX};
+      COORD size = {INT16_MAX, INT16_MAX};
       HRESULT hr = CreatePseudoConsole(size, inRead, outWrite, 0, &hConsole);
       if (FAILED(hr))
       {

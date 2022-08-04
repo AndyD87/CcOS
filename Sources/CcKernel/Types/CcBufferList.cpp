@@ -291,14 +291,40 @@ void CcBufferList::collapse()
   m_uiPosition = 0;
 }
 
-void* CcBufferList::getBuffer()
+void* CcBufferList::getBuffer(size_t uiMinSize)
 {
-  collapse();
-  if(size()>0)
-    return (at(0).getArray());
-  else
-    return nullptr;
-}
+  void* pBuffer = nullptr;
+  if (uiMinSize > size())
+  {
+    collapse();
+    if (size() > 0)
+      return (at(0).getArray());
+  }
+  else if(getChunkCount() > 0)
+  {
+    // Calculate number of buffers to reach uiMinSize
+    size_t uiRequired = 0;
+    for (CcByteArray& oData : *this)
+    {
+      uiRequired += oData.size();
+      if (uiRequired >= uiMinSize)
+      {
+        break;
+      }
+    }
+    size_t uiTransfered = at(0).size();
+    at(0).resize(uiRequired);
+    iterator oIter = begin();
+    oIter++;
+    while (uiTransfered < uiRequired)
+    {
+      at(0).write(oIter->getArray(), oIter->size(), uiTransfered);
+      uiTransfered += oIter->size();
+      oIter = removeIterator(oIter);
+    }
+    pBuffer = at(0).getArray();
+  }
+  return pBuffer;}
 
 void* CcBufferList::getCurrentBuffer()
 {

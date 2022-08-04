@@ -21,34 +21,44 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CBufferTest
- **/
+ * @brief     Class CPackage
+ */
 #pragma once
 
-#include "CcBase.h"
-#include "CcTest.h"
+#include "CcShellBase.h"
 
+#pragma pack(push, 1)
+namespace NShell
+{
 /**
- * @brief Class implementation
+ * @brief Basic input transport for shell
  */
-class CBufferTest : public CcTest<CBufferTest>
+class CcShellSHARED CPackage
 {
 public:
+  enum class EType : uint16
+  {
+    None  = 0,
+    Login = 1,
+    Input = 2,
+  };
   /**
-   * @brief Constructor
+   * @brief Default shell instance with reading and writin from stdin.
    */
-  CBufferTest();
+  CPackage() = default;
 
   /**
    * @brief Destructor
    */
-  virtual ~CBufferTest();
-private:
-  bool testBasic();
-  bool testCollapsing();
-  bool testBufferCollapsing();
-  bool testBufferTransfering();
-  bool testBufferRemove();
-  bool testBufferRemoveChunks();
-  bool testBufferParitialCollapsing();
+  ~CPackage() = default;
+
+  CPackage* create(uint16 uiPayload);
+  void      remove(CPackage* pPackage);
+
+  uint16 uiType;
+  uint16 uiSize;
+  char   pData[1];
 };
+}
+
+#pragma pack(pop)

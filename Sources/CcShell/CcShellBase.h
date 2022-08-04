@@ -17,38 +17,29 @@
 /**
  * @file
  *
- * @copyright Andreas Dirmeier (C) 2017
+ * @copyright Andreas Dirmeier (C) 2022
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CBufferTest
- **/
+ * @brief     Defining CcShell basics
+ */
 #pragma once
 
 #include "CcBase.h"
-#include "CcTest.h"
 
-/**
- * @brief Class implementation
- */
-class CBufferTest : public CcTest<CBufferTest>
-{
-public:
-  /**
-   * @brief Constructor
-   */
-  CBufferTest();
-
-  /**
-   * @brief Destructor
-   */
-  virtual ~CBufferTest();
-private:
-  bool testBasic();
-  bool testCollapsing();
-  bool testBufferCollapsing();
-  bool testBufferTransfering();
-  bool testBufferRemove();
-  bool testBufferRemoveChunks();
-  bool testBufferParitialCollapsing();
-};
+#ifdef _MSC_VER
+# ifndef CcShellSHARED
+#   ifdef CcShell_EXPORTS
+//    Cmake definition for shared build is set
+#     define CcShellSHARED __declspec(dllexport)
+#   elif defined(CC_STATIC)
+//    CCOS will be build as static library no im-/export
+#     define CcShellSHARED
+#   else
+//    if no definition found, we are on importing as dll
+#     define CcShellSHARED __declspec(dllimport)
+#   endif
+# endif
+#else
+# define CcShellSHARED
+#endif

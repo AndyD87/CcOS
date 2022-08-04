@@ -38,6 +38,7 @@ CBufferTest::CBufferTest() :
   appendTestMethod("Test transfering buffer", &CBufferTest::testBufferTransfering);
   appendTestMethod("Test removing buffer", &CBufferTest::testBufferRemove);
   appendTestMethod("Test removing chunks", &CBufferTest::testBufferRemoveChunks);
+  appendTestMethod("Test collapsing partial", &CBufferTest::testBufferParitialCollapsing);
 }
 
 CBufferTest::~CBufferTest()
@@ -250,6 +251,40 @@ bool CBufferTest::testBufferRemoveChunks()
           oBuffer.at(1).size() == 8)
       {
         bRet = true;
+      }
+    }
+  }
+  return bRet;
+}
+
+bool CBufferTest::testBufferParitialCollapsing()
+{
+  bool bRet = false;
+  CcBufferList oBuffer;
+  oBuffer.append("Test", sizeof("Test"));
+  oBuffer.append("Test", sizeof("Test"));
+  oBuffer.append("Test", sizeof("Test"));
+  oBuffer.append("Test", sizeof("Test"));
+  if (oBuffer.getChunkCount() == 4)
+  {
+    // Query more buffer than first
+    char* pBufferFirst = static_cast<char*>(oBuffer.getBuffer(6));
+    if (oBuffer.size() == 20 &&
+        oBuffer.getChunkCount() == 3)
+    {
+      // Query more exact first buffer size
+      char* pBufferSecond = static_cast<char*>(oBuffer.getBuffer(sizeof("Test")*2));
+      if (oBuffer.size() == 20 &&
+          oBuffer.getChunkCount() == 3)
+      {
+        CcByteArray oTestBuffer;
+        oTestBuffer.append("Test", sizeof("Test"));
+        oTestBuffer.append("Test", sizeof("Test"));
+        if (pBufferFirst == pBufferSecond &&
+            CcStatic::memcmp(pBufferSecond, oTestBuffer.getArray(), oTestBuffer.size()) == 0)
+        {
+          bRet = true;
+        }
       }
     }
   }

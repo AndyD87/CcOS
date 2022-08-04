@@ -51,7 +51,7 @@ int main(int iArgc, char** ppArgv)
       oStack.init();
       ISocket* pSocket = oStack.getSocket(ESocketType::TCP);
       CcSocket oSocket(pSocket);
-      CcHttpServer oHttpServer(80);
+      CcHttpServer oHttpServer(443);
       CcConsole::writeLine("Start Server");
       iError = oHttpServer.exec().getErrorInt();
       if (iError == 0)

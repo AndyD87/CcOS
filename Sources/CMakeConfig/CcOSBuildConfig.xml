@@ -49,7 +49,7 @@
     </Project>
     <Project>
       <Name>openssl</Name>
-      <Version>1.1.0.5</Version>
+      <Version>1.1.1.16</Version>
       <Active>1</Active>
       <Prebuild>true</Prebuild>
       <Static>true</Static>

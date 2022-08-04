@@ -24,12 +24,12 @@
  **/
 #pragma once
 
-#include "CcApp.h"
+#include "CcShell.h"
 #include "CcArguments.h"
 #include "CcVector.h"
 #include "Network/CcSocket.h"
 
-class CcShellAppWorker;
+class CcShellWorker;
 
 /**
  * @brief CcShellApp implementation
@@ -58,11 +58,12 @@ public:
 private:
   void runServer();
   void runSsh();
-  void runClient();
+  void runConnect();
+  void runSconnect();
   void runLocal();
 
 private:
   CcArguments                 m_oArguments;
-  CcVector<CcShellAppWorker*> m_oWorker;
+  CcVector<CcShellWorker*>    m_oWorker;
   CcSocket                    m_Socket;
 };

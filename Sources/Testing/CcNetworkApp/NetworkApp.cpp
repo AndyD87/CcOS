@@ -32,7 +32,7 @@
 #include "CcDevice.h"
 
 NetworkApp::NetworkApp():
-m_HttpServer(CcCommonPorts::CcTestBase + CcCommonPorts::HTTP),
+m_HttpServer(CcCommonPorts::CcTestBase + CcCommonPorts::HTTPS),
 m_FtpServer(CcCommonPorts::CcTestBase + CcCommonPorts::FTP),
 m_oUdpEchoServer(CcCommonPorts::CcTestBase),
 m_oTcpEchoServer(CcCommonPorts::CcTestBase)

@@ -30,18 +30,23 @@
 #include "CcSystem.h"
 #include "CcServiceSystem.h"
 #include "CcService.h"
-#include "CcShell.h"
-#include "CcShellAppWorker.h"
+#include "CcShellApp.h"
+#include "CcShellWorker.h"
 #include "Network/CcCommonPorts.h"
 #include "CcSslSocket.h"
 #include "CcSslControl.h"
+#include "CcConsole.h"
+#ifdef WINDOWS
+  #include "Shell/CcWinRawConsole.h"
+#endif
 
 CcShellApp::CcShellApp() :
   m_oArguments(
     {
       {"server",       CcVariant::EType::Switch},
-      {"connect",      CcVariant::EType::Switch},
       {"sserver",      CcVariant::EType::Switch},
+      {"connect",      CcVariant::EType::String},
+      {"sconnect",     CcVariant::EType::String},
       {"-address",     CcVariant::EType::String}
     }
   )
@@ -55,20 +60,29 @@ CcShellApp::~CcShellApp()
 void CcShellApp::run()
 {
   CcStatus oStatus;
-  if (m_oArguments.contains("server") &&
-      m_oArguments.getValue("server").getBool())
+  if (!m_oArguments.isValid())
+  {
+    m_oArguments.writeHelp(CcConsole::getOutStream());
+  }
+  else if ( m_oArguments.contains("server") &&
+            m_oArguments.getValue("server").getBool())
   {
     runServer();
   }
-  else if (m_oArguments.contains("client") &&
-           m_oArguments.getValue("client").getBool())
+  else if (m_oArguments.contains("connect") &&
+           m_oArguments.getValue("connect").getBool())
   {
-    runClient();
+    runConnect();
   }
   else if ( m_oArguments.contains("sserver") &&
             m_oArguments.getValue("sserver").getBool())
   {
     runSsh();
+  }
+  else if (m_oArguments.contains("sconnect") &&
+           m_oArguments.getValue("sconnect").getBool())
+  {
+    runSconnect();
   }
   else
   {
@@ -100,7 +114,7 @@ void CcShellApp::runServer()
         temp = m_Socket.accept();
         if (temp != nullptr)
         {
-          CCNEWTYPE(pWorker, CcShellAppWorker, this, temp);
+          CCNEWTYPE(pWorker, CcShellWorker, this, temp, false);
           pWorker->start();
           pWorker->setEcho(false);
           m_oWorker.add(pWorker);
@@ -127,7 +141,7 @@ void CcShellApp::runServer()
 
 void CcShellApp::runSsh()
 {
-  CCDEBUG("Shell-Server starting on Port: " + CcString::fromNumber(CcCommonPorts::CcRemoteShell));
+  CCDEBUG("Shell-Server starting on Port: " + CcString::fromNumber(CcCommonPorts::CcRemoteSShell));
   ISocket *temp;
   m_Socket = CCNEW_INLINE(CcSslSocket);
   (static_cast<CcSslSocket*>(m_Socket.getRawSocket()))->initServer();
@@ -139,7 +153,7 @@ void CcShellApp::runSsh()
   );
   (static_cast<CcSslSocket*>(m_Socket.getRawSocket()))->loadCertificateString(sCert);
   (static_cast<CcSslSocket*>(m_Socket.getRawSocket()))->loadKeyString(sKey);
-  if (m_Socket.bind(CcCommonPorts::CcRemoteShell))
+  if (m_Socket.bind(CcCommonPorts::CcRemoteSShell))
   {
     if (m_Socket.listen())
     {
@@ -148,7 +162,7 @@ void CcShellApp::runSsh()
         temp = m_Socket.accept();
         if (temp != nullptr)
         {
-          CCNEWTYPE(pWorker, CcShellAppWorker, this, temp);
+          CCNEWTYPE(pWorker, CcShellWorker, this, temp, false);
           pWorker->start();
           pWorker->setEcho(false);
           m_oWorker.add(pWorker);
@@ -173,13 +187,19 @@ void CcShellApp::runSsh()
   }
 }
 
-void CcShellApp::runClient()
+void CcShellApp::runConnect()
+{
+  CcString sTarget = m_oArguments.getValue("connect").getString();
+
+}
+
+void CcShellApp::runSconnect()
 {
 
 }
 
 void CcShellApp::runLocal()
 {
-  CcShell oShell;
+  CcShellApp oShell;
   setExitCode(oShell.exec());
 }

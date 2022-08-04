@@ -16,39 +16,11 @@
  **/
 /**
  * @file
- *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CBufferTest
- **/
-#pragma once
-
-#include "CcBase.h"
-#include "CcTest.h"
-
-/**
- * @brief Class implementation
+ * @brief     Implementation of Class CPackageInput
  */
-class CBufferTest : public CcTest<CBufferTest>
-{
-public:
-  /**
-   * @brief Constructor
-   */
-  CBufferTest();
 
-  /**
-   * @brief Destructor
-   */
-  virtual ~CBufferTest();
-private:
-  bool testBasic();
-  bool testCollapsing();
-  bool testBufferCollapsing();
-  bool testBufferTransfering();
-  bool testBufferRemove();
-  bool testBufferRemoveChunks();
-  bool testBufferParitialCollapsing();
-};
+#include "CPackageInput.h"

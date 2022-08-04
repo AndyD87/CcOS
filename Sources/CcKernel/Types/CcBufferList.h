@@ -184,9 +184,10 @@ public:
 
   /**
    * @brief Get pointer to full buffer it will collapse before.
+   * @param uiMinSize: Size of buffer required without split
    * @return Pointer full buffer
    */
-  void* getBuffer();
+  void* getBuffer(size_t uiMinSize = SIZE_MAX);
 
   /**
    * @brief Get buffer on current position

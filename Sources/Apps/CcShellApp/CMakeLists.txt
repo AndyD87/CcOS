@@ -9,11 +9,11 @@ elseif(${CCOS_APPS_CCSHELLAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
   # Add Source Files
   ########
   set( SOURCE_FILES
-        ${CMAKE_CURRENT_LIST_DIR}/main.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/CcShellAppWorker.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/CcShellAppWorker.h
-        ${CMAKE_CURRENT_LIST_DIR}/CcShellApp.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/CcShellApp.h
+        CcShellApp.cpp
+        CcShellApp.h
+        CcShellWorker.cpp
+        CcShellWorker.h
+        main.cpp
   )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
