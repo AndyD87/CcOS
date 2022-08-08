@@ -134,7 +134,7 @@ private:
   CcString                m_sSslKey = s_sDefaultSslKey;
   CcString                m_sSslCertificate = s_sDefaultSslCertificate;
   CcDateTime              m_oComTimeout = s_oDefaultTimeout;
-  bool                    m_bSslEnabled = true;
+  bool                    m_bSslEnabled = s_bDefaultSslEnabled;
   CcHttpTransferEncoding  m_oDefaultEncoding;
   uint32                  m_uiMaxWorker = s_uiDefaultMaxWorker;
   uint32                  m_uiMaxTransferPacketSize = s_uiDefaultMaxTransferPacketSize;
