@@ -318,7 +318,7 @@ CcStatus IShell::execLine(CcStringList& oArguments)
       {
         bCommandFound = true;
 
-#ifdef WINDOWS
+#ifdef _MSC_VER
         CCNEWTYPE(pProcess, CcWinPseudoConsole, sPath, getWorkingDirectory(), m_pIoStream);
         if (pProcess && pProcess->open(EOpenFlags::ReadWrite))
         {

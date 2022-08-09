@@ -24,6 +24,8 @@
  */
 #pragma once
 
+#ifdef _MSC_VER
+
 #include "CcBase.h"
 #include "CcObject.h"
 #include "IIo.h"
@@ -71,8 +73,8 @@ private:
 
 private:
   PROCESS_INFORMATION pi;
-  CcWString m_sWorkingDir;
   CcWString m_sCommandLine;
+  CcWString m_sWorkingDir;
   bool     bCancel = false;
   CCHANDLE hStdin = nullptr;
   CCHANDLE hStdout = nullptr;
@@ -83,3 +85,5 @@ private:
   IWinPseudoConsolePassthroughThread* pThread = nullptr;
   IIo* pIoStream = nullptr;
 };
+
+#endif // _MSC_VER

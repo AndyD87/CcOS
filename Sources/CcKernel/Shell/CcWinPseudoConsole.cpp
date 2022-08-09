@@ -34,6 +34,8 @@
 #include "IThread.h"
 #include <stdio.h>
 
+#ifdef _MSC_VER
+
 class IWinPseudoConsolePassthroughThread : public IThread
 {
 public:
@@ -115,7 +117,7 @@ size_t CcWinPseudoConsole::write(const void* pBuffer, size_t uSize)
     {
       // Filter \n it is not transported in windows consoles
       case '\n':
-        if (WriteFile(hStdin, pcBuffer + uiLastWriteStart, static_cast<DWORD>(uiSizeProcessed - uiLastWriteStart), &uiReadSize, nullptr));
+        WriteFile(hStdin, pcBuffer + uiLastWriteStart, static_cast<DWORD>(uiSizeProcessed - uiLastWriteStart), &uiReadSize, nullptr);
         uiSizeProcessed++;
         uiLastWriteStart = uiSizeProcessed;
         break;
@@ -125,7 +127,7 @@ size_t CcWinPseudoConsole::write(const void* pBuffer, size_t uSize)
   }
   if (uiLastWriteStart < uiSizeProcessed)
   {
-    if (WriteFile(hStdin, pcBuffer + uiLastWriteStart, static_cast<DWORD>(uiSizeProcessed - uiLastWriteStart), &uiReadSize, nullptr));
+    WriteFile(hStdin, pcBuffer + uiLastWriteStart, static_cast<DWORD>(uiSizeProcessed - uiLastWriteStart), &uiReadSize, nullptr);
   }
   return uiRet;
 }
@@ -137,14 +139,14 @@ CcStatus CcWinPseudoConsole::open(EOpenFlags)
 
   if (!CreateConsole())
   {
-    printf("Can't create console: %u\n", GetLastError());
+    CCERROR("Can't create console: " + CcString::fromNumber(GetLastError()));
   }
   else
   {
-    STARTUPINFOEX si;
+    STARTUPINFOEXW si;
     if (!PrepareStartupInformation(&si))
     {
-      printf("Can't prepare startup info: %u\n", GetLastError());
+      CCERROR("Can't prepare startup info: " + CcString::fromNumber(GetLastError()));
     }
     else
     {
@@ -316,3 +318,5 @@ CcStatus CcWinPseudoConsole::PrepareStartupInformation(void* pvsi)
   }
   return oStatus;
 }
+
+#endif // _MSC_VER

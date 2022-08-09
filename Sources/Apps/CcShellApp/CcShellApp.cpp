@@ -200,6 +200,6 @@ void CcShellApp::runSconnect()
 
 void CcShellApp::runLocal()
 {
-  CcShellApp oShell;
+  CcShell oShell;
   setExitCode(oShell.exec());
 }
