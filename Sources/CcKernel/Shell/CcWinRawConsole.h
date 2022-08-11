@@ -29,6 +29,8 @@
 #include "IIo.h"
 #include "CcVector.h"
 
+#ifdef WINDOWS
+
 /**
  * @brief Abstract Class for inheriting to every IODevice
  */
@@ -62,3 +64,5 @@ private:
   CCHANDLE hStdout;
   uint32   fdwSaveOldMode;
 };
+
+#endif // WINDOWS

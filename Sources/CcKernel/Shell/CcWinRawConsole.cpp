@@ -23,8 +23,11 @@
  * @brief     Class CcWinRawConsole
  */
 
-#include "IIo.h"
 #include "CcWinRawConsole.h"
+
+#ifdef WINDOWS
+
+#include "IIo.h"
 #include "CcConsole.h"
 #include "CcString.h"
 #include "CcWString.h"
@@ -202,3 +205,5 @@ CcStatus CcWinRawConsole::flush()
   CcStatus oRet = EStatus::NotSupported;
   return oRet;
 }
+
+#endif // WINDOWS
