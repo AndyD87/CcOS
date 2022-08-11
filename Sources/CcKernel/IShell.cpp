@@ -94,6 +94,7 @@ IShell::~IShell()
 void IShell::run()
 {
   writeLine("Welcome to CcOS Basic Shell");
+  CcStringList oArguments;
   while(isRunning() && isConnectionActive())
   {
     if(m_pIoStream)
@@ -108,7 +109,7 @@ void IShell::run()
       if (isConnectionActive())
       {
         // Handle the line
-        CcStringList oArguments = CcStringUtil::getArguments(m_sRead);
+        oArguments = CcStringUtil::getArguments(m_sRead);
         setExitCode(execLine(oArguments));
       }
       else
@@ -181,9 +182,9 @@ size_t IShell::readLine()
   m_uiLastRead = SIZE_MAX;
   if(m_oReadLineBuffer.size())
   {
-    size_t uiLastRead = CCMIN(m_oReadLineBuffer.size(), m_oTransferBuffer.size());
-    m_oTransferBuffer.write(m_oReadLineBuffer.getArray(), uiLastRead);
-    m_oReadLineBuffer.remove(0, uiLastRead);
+    m_uiLastRead = CCMIN(m_oReadLineBuffer.size(), m_oTransferBuffer.size());
+    m_oTransferBuffer.write(m_oReadLineBuffer.getArray(), m_uiLastRead);
+    m_oReadLineBuffer.remove(0, m_uiLastRead);
   }
   else
   {
@@ -317,49 +318,53 @@ CcStatus IShell::execLine(CcStringList& oArguments)
       if (sPath.length())
       {
         bCommandFound = true;
-
-#ifdef _MSC_VER
-        CCNEWTYPE(pProcess, CcWinPseudoConsole, sPath, getWorkingDirectory(), m_pIoStream);
-        if (pProcess && pProcess->open(EOpenFlags::ReadWrite))
-        {
-          CcByteArray oData;
-          oData.resize(1024);
-          size_t uiReadSize;
-          do
+        m_bCanceled = false;
+        #ifdef _MSC_VER
+          CCNEW(m_pActiveProcess, CcWinPseudoConsole, sPath, getWorkingDirectory(), m_pIoStream);
+          if (m_pActiveProcess && m_pActiveProcess->open(EOpenFlags::ReadWrite))
           {
-            uiReadSize = m_pIoStream->readArray(oData, false);
-            if(uiReadSize > 0 && uiReadSize < oData.size())
-              pProcess->writeArray(oData, uiReadSize);
-          } while (pProcess->check() && uiReadSize < oData.size());
-          pProcess->close();
-          CCDELETE(pProcess);
-        }
-#else
-        CCNEW(m_pActiveProcess, CcProcess, sPath);
-        IShellPassthroughThread oPassThroughThread(m_pActiveProcess, m_pIoStream);
-
-        m_pActiveProcess->setArguments(oArguments);
-        m_pActiveProcess->setWorkingDirectory(getWorkingDirectory());
-        m_pActiveProcess->registerOnStateChange(NewCcEvent(this, IShell::cancelOnStop));
-
-        m_pActiveProcess->start();
-        oPassThroughThread.start();
-
-        CcByteArray oReadBuffer;
-        oReadBuffer.resize(1024);
-        while (m_pActiveProcess->getCurrentState() != EThreadState::Stopped)
-        {
-          size_t uiRead = m_pIoStream->readArray(oReadBuffer, false);
-          if (uiRead &&
-              uiRead < oReadBuffer.size() &&
-              m_pIoStream)
-          {
-            m_pActiveProcess->pipe().writeArray(oReadBuffer, uiRead);
+            CcByteArray oData;
+            oData.resize(1024);
+            size_t uiReadSize;
+            do
+            {
+              uiReadSize = m_pIoStream->readArray(oData, false);
+              if(uiReadSize > 0 && uiReadSize < oData.size())
+                m_pActiveProcess->writeArray(oData, uiReadSize);
+            } while (m_pActiveProcess->check() && uiReadSize < oData.size());
+            m_pActiveProcess->close();
+            CCDELETE(m_pActiveProcess);
           }
-        }
-        oPassThroughThread.stop();
-        CCDELETE(m_pActiveProcess);
-#endif
+        #else
+          CCNEW(m_pActiveProcess, CcProcess, sPath);
+          IShellPassthroughThread oPassThroughThread(m_pActiveProcess, m_pIoStream);
+
+          m_pActiveProcess->setArguments(oArguments);
+          m_pActiveProcess->setWorkingDirectory(getWorkingDirectory());
+          m_pActiveProcess->registerOnStateChange(NewCcEvent(this, IShell::cancelOnStop));
+
+          m_pActiveProcess->start();
+          oPassThroughThread.start();
+
+          CcByteArray oReadBuffer;
+          oReadBuffer.resize(1024);
+          while (m_pActiveProcess->getCurrentState() != EThreadState::Stopped)
+          {
+            size_t uiRead = m_pIoStream->readArray(oReadBuffer, false);
+            if (uiRead &&
+                uiRead < oReadBuffer.size() &&
+                m_pIoStream)
+            {
+              m_pActiveProcess->pipe().writeArray(oReadBuffer, uiRead);
+            }
+          }
+          oPassThroughThread.stop();
+          CCDELETE(m_pActiveProcess);
+        #endif
+          if (m_bCanceled)
+          {
+            writeLine("");
+          }
       }
     }
     if (bCommandFound == false)
@@ -408,7 +413,13 @@ void IShell::onKernelShutdown(CcKernelShutdownEvent* pEvent)
       }
       else if (m_pActiveProcess)
       {
-        m_pActiveProcess->stop();
+        m_bCanceled = true;
+        #ifdef _MSC_VER
+          m_pActiveProcess->close();
+          m_pIoStream->cancel();
+        #else
+          m_pActiveProcess->stop();
+        #endif
         pEvent->bContinueShutdown = false;
       }
       else

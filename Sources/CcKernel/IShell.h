@@ -38,6 +38,7 @@ class CcKernelShutdownEvent;
 class CcProcess;
 
 #ifdef _MSC_VER
+class CcWinPseudoConsole;
 template class CcKernelSHARED CcVector<IShellCommand*>;
 #endif
 
@@ -94,7 +95,11 @@ private:
   bool                      m_bEchoInput = true;
   CcMutex                   m_oActiveCommandLock;
   IShellCommand*            m_pActiveCommand = nullptr;
+#ifdef _MSC_VER
+  CcWinPseudoConsole*       m_pActiveProcess = nullptr;
+#else
   CcProcess*                m_pActiveProcess = nullptr;
+#endif
 
   size_t    m_uiLastRead = 0;
   size_t    m_uiLastWritten = 0;
@@ -102,6 +107,7 @@ private:
   CcString  m_sWorkingDir;
   CcString  m_sPrefix;
   CcStringMap m_oEnvironmentVariables;
+  bool      m_bCanceled = false;
 
   CcVector<IShellCommand*> m_oCommands;
   CcVector<IShellCommand*> m_oCreatedCommands;

@@ -33,6 +33,7 @@
 #include "CcWString.h"
 #include "CcStringUtil.h"
 #include "CcGlobalStrings.h"
+#include "CcKernel.h"
 #include <windows.h>
 #include <stdio.h>
 
@@ -52,46 +53,61 @@ size_t CcWinRawConsole::read(void* pBuffer, size_t uSize)
   size_t uiRet = 0;
   DWORD dw;
   bool bFinishRead = false;
+  CcString oStringBuffer;
+  DWORD cNumRead = 1;
   while (uiRet < uSize && !bFinishRead && !bCancel)
   {
-    DWORD cNumRead;
-    // Wait for the events.
-    if (!ReadConsoleInputW(
+    if (PeekConsoleInputW(
       hStdin,      // input buffer handle
       &irInBuf,     // buffer to read into
       1,         // size of read buffer
-      &cNumRead)) // number of records read
+      &cNumRead) && cNumRead)
     {
-      CCDEBUG("ReadConsoleInput");
-    }
-    else if(!bCancel)
-    {
-      switch (irInBuf.EventType)
+      // Wait for the events.
+      if (!ReadConsoleInputW(
+        hStdin,      // input buffer handle
+        &irInBuf,     // buffer to read into
+        1,         // size of read buffer
+        &cNumRead)) // number of records read
       {
-        case KEY_EVENT: // keyboard input
-          if (irInBuf.Event.KeyEvent.bKeyDown)
-          {
-            CcString oString(&irInBuf.Event.KeyEvent.uChar.UnicodeChar, 1);
-            CcStatic::memcpy(pBuffer, oString.getCharString(), CCMIN(oString.length(), uSize));
-            uiRet += CCMIN(oString.length(), uSize);
-            bFinishRead = true;
-          }
-          else
-          {
-            WriteConsoleInputW(GetStdHandle(STD_OUTPUT_HANDLE), &irInBuf, 1, &dw);
-          }
-          break;
-
-        case MOUSE_EVENT: // mouse input
-        case WINDOW_BUFFER_SIZE_EVENT: // scrn buf. resizing
-        case FOCUS_EVENT:  // disregard focus events
-        case MENU_EVENT:   // disregard menu events
-          WriteConsoleInputW(GetStdHandle(STD_OUTPUT_HANDLE), &irInBuf, 1, &dw);
-          break;
-        default:
-          //CCDEBUG("Unknown event type");
-          break;
+        CCDEBUG("ReadConsoleInput");
       }
+      else if (!bCancel && cNumRead)
+      {
+        switch (irInBuf.EventType)
+        {
+          case KEY_EVENT: // keyboard input
+            if (irInBuf.Event.KeyEvent.bKeyDown)
+            {
+              oStringBuffer.appendWchar(irInBuf.Event.KeyEvent.uChar.UnicodeChar);
+            }
+            else
+            {
+              WriteConsoleInputW(GetStdHandle(STD_OUTPUT_HANDLE), &irInBuf, 1, &dw);
+            }
+            break;
+
+          case MOUSE_EVENT: // mouse input
+          case WINDOW_BUFFER_SIZE_EVENT: // scrn buf. resizing
+          case FOCUS_EVENT:  // disregard focus events
+          case MENU_EVENT:   // disregard menu events
+            WriteConsoleInputW(GetStdHandle(STD_OUTPUT_HANDLE), &irInBuf, 1, &dw);
+            break;
+          default:
+            //CCDEBUG("Unknown event type");
+            break;
+        }
+      }
+    }
+    else if (oStringBuffer.size())
+    {
+      CcStatic::memcpy(pBuffer, oStringBuffer.getCharString(), CCMIN(oStringBuffer.length(), uSize));
+      uiRet += CCMIN(oStringBuffer.length(), uSize);
+      break;
+    }
+    else if (!cNumRead)
+    {
+      CcKernel::sleep(10);
     }
   }
   return uiRet;
@@ -172,20 +188,10 @@ CcStatus CcWinRawConsole::cancel()
 {
   CcStatus oRet = EStatus::AllOk;
   bCancel = true;
-  INPUT_RECORD ir[2];
-  for (int i = 0; i < 2; i++)
-  {
-    KEY_EVENT_RECORD *kev = &ir[i].Event.KeyEvent;
-    ir[i].EventType = KEY_EVENT;
-    kev->bKeyDown = i == 0;    //<-true, than false
-    kev->dwControlKeyState = 0;
-    kev->wRepeatCount = 1;
-    kev->uChar.UnicodeChar = VK_RETURN;
-    kev->wVirtualKeyCode = VK_RETURN;
-    kev->wVirtualScanCode = static_cast<WORD>(MapVirtualKey(VK_RETURN, MAPVK_VK_TO_VSC));
-  }
+  INPUT_RECORD ir;
+  ir.Event.FocusEvent.bSetFocus = TRUE;
   DWORD dw;
-  WriteConsoleInput(GetStdHandle(STD_INPUT_HANDLE), ir, 2, &dw);
+  WriteConsoleInput(GetStdHandle(STD_INPUT_HANDLE), &ir, 1, &dw);
   return oRet;
 }
 

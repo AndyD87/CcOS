@@ -49,11 +49,11 @@ public:
   {
     CcByteArray oReadBuffer;
     oReadBuffer.resize(1024);
-    size_t uiRead;
-    while (m_pStream && m_pProcess)// m_pProcess->getCurrentState() != EThreadState::Stopped)
+    size_t uiRead = 0;
+    while (m_pStream && m_pProcess && uiRead < oReadBuffer.size())// m_pProcess->getCurrentState() != EThreadState::Stopped)
     {
       uiRead = m_pProcess->readArray(oReadBuffer, false);
-      if (uiRead && m_pStream)
+      if (uiRead && m_pStream && uiRead < oReadBuffer.size())
         m_pStream->writeArray(oReadBuffer, uiRead);
     }
     m_pStream = nullptr;
@@ -77,7 +77,6 @@ public:
 CcWinPseudoConsole::~CcWinPseudoConsole()
 {
   close();
-  ClosePseudoConsole(hConsole);
   if (pi.hProcess) CloseHandle(pi.hProcess);
 }
 
@@ -182,6 +181,8 @@ CcStatus CcWinPseudoConsole::close()
   }
   CloseHandle(inRead);
   CloseHandle(outWrite);
+  ClosePseudoConsole(hConsole);
+  hConsole = nullptr;
   inRead = nullptr;
   outWrite = nullptr;
   return oRet;
@@ -190,7 +191,7 @@ CcStatus CcWinPseudoConsole::close()
 CcStatus CcWinPseudoConsole::cancel()
 {
   CcStatus oRet = EStatus::AllOk;
-  if (!WriteFile(outWrite, "\n", 1, nullptr, nullptr))
+  if (!WriteFile(outWrite, "\0", 1, nullptr, nullptr))
   {
     DWORD dwError = GetLastError();
     CCDEBUG("cancel failed with " + CcString::fromNumber(dwError));
@@ -219,7 +220,8 @@ CcStatus CcWinPseudoConsole::flush()
 CcStatus CcWinPseudoConsole::check()
 {
   CcStatus oRet = EStatus::AlreadyStopped;
-  if (WAIT_TIMEOUT == WaitForSingleObject(pi.hProcess, 100))
+  if (hConsole &&
+      WAIT_TIMEOUT == WaitForSingleObject(pi.hProcess, 100))
   {
     oRet = EStatus::AllOk;
   }
