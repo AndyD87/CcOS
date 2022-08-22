@@ -58,7 +58,7 @@ CcStatus CcFilesystemDevice::remove(const CcString &Path) const
   return oResult;
 }
 
-CcFileInfoList CcFilesystemDevice::getFileList()
+CcFileInfoList CcFilesystemDevice::getFileList() const
 {
   CcFileInfoList oList;
   CcDeviceList oDeviceList = CcKernel::getDeviceList();

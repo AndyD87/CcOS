@@ -33,6 +33,7 @@
 #include "CcShell.h"
 #include "CcBufferList.h"
 #include "Package/CPackage.h"
+#include "CcShellApp.h"
 
 CcShellWorker::CcShellWorker(CcShellApp* pApplication, IIo* pIoStream, bool bRaw) :
   CcShell(pIoStream),
@@ -60,7 +61,6 @@ void CcShellWorker::run()
   }
   else
   {
-    size_t uiRead = 0;
     size_t uiLastRead = 0;
     CcByteArray oTransportBuffer;
     oTransportBuffer.resize(102400);
@@ -72,6 +72,17 @@ void CcShellWorker::run()
       {
         oPackageBuffer.append(oTransportBuffer.getArray(), uiLastRead);
         NShell::CPackage* pPackage = static_cast<NShell::CPackage*>(oPackageBuffer.getBuffer(sizeof(NShell::CPackage)));
+        if(pPackage)
+        {
+          switch(pPackage->getType())
+          {
+            case NShell::CPackage::EType::Login:
+              m_pApplication->getVersion();
+              break;
+            default:
+              break;
+          }
+        }
       }
     } while (m_pIoStream);
   }

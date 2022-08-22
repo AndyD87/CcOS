@@ -415,10 +415,10 @@ typedef void* CCHANDLE;
   #endif
 #endif
 
-#if !defined(__GNUC__) && !defined(__has_attribute)
+#if !defined(__has_attribute)
   #define __has_attribute(VAL) 0
 #endif
-#if defined(__GNUC__) || __has_attribute(always_inline)
+#if defined(__GNUC__) || __has_attribute (always_inline)
   #define CPPCODEC_ALWAYS_INLINE inline __attribute__((always_inline))
 #elif defined(_MSC_VER) && !__INTEL_COMPILER && _MSC_VER >= 1310 // since Visual Studio .NET 2003
   #define CC_FORCE_INLINE inline __forceinline

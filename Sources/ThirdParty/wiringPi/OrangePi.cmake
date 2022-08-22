@@ -60,4 +60,7 @@ set_target_properties(wiringPi PROPERTIES VERSION ${WIRINGPI_VERSION})
 target_link_libraries(wiringPi PUBLIC m pthread rt crypt)
 
 # Setup source directory for include
-target_include_directories(wiringPi PUBLIC source/wiringPi)
+target_include_directories(wiringPi PRIVATE source/wiringPi)
+target_include_directories( wiringPi INTERFACE
+                              $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/source/wiringPi>
+                              $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/wiringPi> )
