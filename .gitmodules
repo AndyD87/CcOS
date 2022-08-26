@@ -1,0 +1,3 @@
+[submodule "Sources/CMakeConfig/CcBuildConfig"]
+	path = Sources/CMakeConfig/CcBuildConfig
+	url = https://coolcow.de/projects/CcBuildConfig.git

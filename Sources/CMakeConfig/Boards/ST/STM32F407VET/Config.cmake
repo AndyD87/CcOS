@@ -1,4 +1,0 @@
-set(CCOS_BOARD_TYPE "STM32F407VET")
-
-# Setup CPU-Config
-include(${CMAKE_CURRENT_LIST_DIR}/../../../CPU/ST/STM32F407VET/Config.cmake)
