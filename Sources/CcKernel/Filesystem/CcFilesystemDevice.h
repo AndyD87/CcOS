@@ -48,5 +48,5 @@ public:
   virtual CcStatus mkdir(const CcString& Path) const override;
   virtual CcStatus remove(const CcString& Path) const override;
 
-  virtual CcFileInfoList getFileList();
+  virtual CcFileInfoList getFileList() const override;
 };

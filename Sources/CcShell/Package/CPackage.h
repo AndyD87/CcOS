@@ -54,6 +54,8 @@ public:
 
   CPackage* create(uint16 uiPayload);
   void      remove(CPackage* pPackage);
+  EType getType() const
+  { return static_cast<EType>(uiType); }
 
   uint16 uiType;
   uint16 uiSize;

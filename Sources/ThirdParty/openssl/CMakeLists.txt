@@ -81,7 +81,9 @@ elseif(${CCOS_THIRDPARTY_OPENSSL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     if( OPENSSL_FOUND )
       message("- OpenSsl found")
       add_library(CcThirdPartySsl INTERFACE)
-      target_include_directories(CcThirdPartySsl INTERFACE ${OPENSSL_INCLUDE_DIR})
+      target_include_directories( CcThirdPartySsl INTERFACE
+                                    $<BUILD_INTERFACE:${OPENSSL_INCLUDE_DIR}>
+                                    $<INSTALL_INTERFACE:$<INSTALL_PREFIX>/include/openssl> )
       target_link_libraries     (CcThirdPartySsl INTERFACE ${OPENSSL_LIBRARIES})
       #add_library(CcOS::ThirParty::ssl ALIAS CcThirdPartySsl)
       CcTargetInstall(CcThirdPartySsl)
