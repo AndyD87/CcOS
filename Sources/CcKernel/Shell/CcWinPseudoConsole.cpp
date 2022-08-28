@@ -193,8 +193,7 @@ CcStatus CcWinPseudoConsole::cancel()
   CcStatus oRet = EStatus::AllOk;
   if (!WriteFile(outWrite, "\0", 1, nullptr, nullptr))
   {
-    DWORD dwError = GetLastError();
-    CCDEBUG("cancel failed with " + CcString::fromNumber(dwError));
+    CCDEBUG_LASTERROR("CcWinPseudoConsole::cancel failed with");
   }
   if (hStdout) CloseHandle(hStdout);
   return oRet;

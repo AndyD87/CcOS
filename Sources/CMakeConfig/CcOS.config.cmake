@@ -15,28 +15,6 @@ include(${CCOS_CONFIG_DIR}/CcBuildConfig/CcBuildConfig.cmake)
 ################################################################################
 include(${CCOS_CONFIG_DIR}/ProjectMacros.cmake )
 
-################################################################################
-# Setup Cache directory if not yet defined
-################################################################################
-if(NOT DEFINED CC_CACHE_DIR)
-  if(DEFINED ENV{CC_CACHE_DIR})
-    file(TO_CMAKE_PATH  $ENV{CC_CACHE_DIR} CC_CACHE_DIR)
-  else()
-    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/../../Cache)
-      set( CC_CACHE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../Cache)
-    else()
-      set( CC_CACHE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../Cache)
-    endif()
-  endif()
-  if(NOT EXISTS ${CC_CACHE_DIR})
-    file(MAKE_DIRECTORY ${CC_CACHE_DIR})
-  endif()
-elseif(NOT EXISTS ${CC_CACHE_DIR})
-  file(MAKE_DIRECTORY ${CC_CACHE_DIR})
-endif()
-message("- Cache directory: ${CC_CACHE_DIR}")
-
-
 macro(CcOSLoadProjects)
   ################################################################################
   # Precheck all configurations and load thirdparty if required

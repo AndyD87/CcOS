@@ -1,33 +1,6 @@
 set(CCOS_CMAKECONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig)
 
 ################################################################################
-# Set Filters to keep FolderStructurs for IDEs like VisualStudios
-################################################################################
-macro( CcOSGetKnownBoard BoardName TargetDir )
-  string(TOLOWER ${BoardName} BoardNameLower)
-  if   (${BoardNameLower} STREQUAL "orangepizero")
-    set(${TargetDir} "Boards/OrangePi/Zero/Config.cmake")
-  elseif(${BoardNameLower} STREQUAL "stm32f4discovery")
-    set(${TargetDir} "Boards/ST/STM32F4Discovery/Config.cmake")
-  elseif(${BoardNameLower} STREQUAL "stm32f407vet")
-    set(${TargetDir} "Boards/ST/STM32F407VET/Config.cmake")
-  elseif(${BoardNameLower} STREQUAL "stm32f3discovery")
-    set(${TargetDir} "Boards/ST/STM32F3Discovery/Config.cmake")
-  elseif(${BoardNameLower} STREQUAL "stm32f103c8")
-    set(${TargetDir} "Boards/ST/STM32F103C8/Config.cmake")
-  elseif(${BoardNameLower} STREQUAL "stm3220geval")
-    set(${TargetDir} "Boards/ST/STM3220GEVAL/Config.cmake")
-  elseif(${BoardNameLower} STREQUAL "esp8266")
-    set(${TargetDir} "Boards/espressif/ESP8266/Config.cmake")
-  elseif(${BoardNameLower} STREQUAL "mingw")
-    # MinGW Board is just used for automatic downloading toolchain
-    set(${TargetDir} "Boards/MinGW/Config.cmake")
-  else()
-    set(${TargetDir} "")
-  endif()
-endmacro()
-
-################################################################################
 # Set Cmake Version Info to Project
 ################################################################################
 macro (CcSetOSVersion ProjectName )

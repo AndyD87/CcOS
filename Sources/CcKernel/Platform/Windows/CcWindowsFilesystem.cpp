@@ -81,7 +81,7 @@ CcStatus CcWindowsFilesystem::mkdir(const CcString& Path) const
       }
       else
       {
-        CCDEBUG("CreateDirectory Failed with: " + CcString::fromNumber(GetLastError()));
+        CCDEBUG_LASTERROR("CcWindowsFilesystem::mkdir failed with:");        
         return false;
       }
     }
@@ -105,7 +105,7 @@ CcStatus CcWindowsFilesystem::remove(const CcString& Path) const
     }
     else
     {
-      CCDEBUG("DeleteFile failed with: " + CcString::fromNumber(GetLastError()));
+      CCDEBUG_LASTERROR("CcWindowsFilesystem::remove failed with:");        
     }
   }
   else
@@ -116,7 +116,7 @@ CcStatus CcWindowsFilesystem::remove(const CcString& Path) const
     }
     else
     {
-      CCDEBUG("DeleteFile failed with: " + CcString::fromNumber(GetLastError()));
+      CCDEBUG_LASTERROR("CcWindowsFilesystem::remove failed with:");        
     }
   }
   return bRet;

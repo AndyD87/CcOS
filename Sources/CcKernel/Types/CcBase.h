@@ -234,6 +234,27 @@ typedef void* CCHANDLE;
   #endif // __cplusplus
 #endif
 
+//! Setup global Debug definitions
+//! @{
+#ifndef DEBUG
+  #ifdef _DEBUG
+    #ifndef DEBUG
+      #define DEBUG //!< If a System is just defining _DEBUG not DEBUG, define it too.
+    #endif
+  #endif
+
+  #ifdef __GNUC__
+    #ifdef NDEBUG
+      #ifdef DEBUG
+        #undef DEBUG
+      #endif
+    #else
+      #define DEBUG //!< If a System is just defining NDEBUG not DEBUG, define it too.
+    #endif
+  #endif
+#endif
+//! @}
+
 #if defined(_MSC_VER) && !defined(CCKERNEL_MODE)
 # ifndef CcKernelSHARED
 #   ifdef CcKernel_EXPORTS
@@ -396,25 +417,6 @@ typedef void* CCHANDLE;
   #define CCFALLTHROUGH CCUNUSED(0)
 #endif
 
-/**
- * Setup global Debug definitions,
- */
-#ifdef _DEBUG
-#ifndef DEBUG
-#define DEBUG //!< If a System is just defining _DEBUG not DEBUG, define it too.
-#endif
-#endif
-
-#ifdef __GNUC__
-  #ifdef NDEBUG
-    #ifdef DEBUG
-      #undef DEBUG
-    #endif
-  #else
-    #define DEBUG //!< If a System is just defining NDEBUG not DEBUG, define it too.
-  #endif
-#endif
-
 #if !defined(__has_attribute)
   #define __has_attribute(VAL) 0
 #endif
@@ -462,6 +464,22 @@ typedef void* CCHANDLE;
   #define CCINFO(MSG)     (void)0 //!< if DEBUG is defined, Write Info message with info tag to debug output
   #define CCWARNING(MSG)  (void)0 //!< if DEBUG is defined, Write Warning message with warning tag to debug output
   #define CCERROR(MSG)    (void)0 //!< if DEBUG is defined, Write Error message with error tag to debug output
+#endif
+
+#ifdef DEBUG
+  #define ONDEBUG(RUN) RUN
+#else
+  #define ONDEBUG(RUN) (void)0
+#endif
+
+#ifdef WINDOWS
+  #define CCDEBUG_LASTERROR(MSG)            \
+    ONDEBUG(DWORD _dw_Error=GetLastError());  \
+    CCDEBUG(MSG " " + CcString::fromNumber(_dw_Error))
+#elif LINUX
+  #define CCDEBUG_LASTERROR(MSG)    \
+    ONDEBUG(int _i_Error=errno);      \
+    CCDEBUG(MSG " " + CcString::fromNumber(_i_Error))
 #endif
 
 //! Define platform defending file descriptor for network sockets.

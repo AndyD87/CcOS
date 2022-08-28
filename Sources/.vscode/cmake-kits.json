@@ -1,9 +1,15 @@
 [
     {
+        "name":"VS2022",
+        "cmakeSettings": {
+            "Win64":"Visual Studio 17 2022 Win64"
+        }
+    },
+    {
         "name":"STM32F407VET",
         "cmakeSettings": {
             "CCOS_BOARD":"STM32F407VET",
-            "CMAKE_GENERATOR":"Unix Makefiles"
+            "generator":"Unix Makefiles"
         }
     },
     {
