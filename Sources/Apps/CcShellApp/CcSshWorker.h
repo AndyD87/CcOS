@@ -1,18 +1,18 @@
 /*
- * This file is part of CcShellApp.
+ * This file is part of CcSshWorker.
  *
- * CcShellApp is free software: you can redistribute it and/or modify
+ * CcSshWorker is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * CcShellApp is distributed in the hope that it will be useful,
+ * CcSshWorker is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public License
- * along with CcShellApp.  If not, see <http://www.gnu.org/licenses/>.
+ * along with CcSshWorker.  If not, see <http://www.gnu.org/licenses/>.
  **/
 /**
  * @file
@@ -20,50 +20,53 @@
  * @author    Andreas Dirmeier
  * @par       Web: http://coolcow.de
  * @par       Language   C++ ANSI V3
- * @brief     Class CcShellApp
+ * @brief     Class CcSshWorker
  **/
 #pragma once
 
 #include "CcShell.h"
-#include "CcArguments.h"
-#include "CcVector.h"
-#include "Network/CcSocket.h"
+#include "IIo.h"
+#include "Ssh/Types.h"
 
-class CcShellWorker;
+class CcShellApp;
 
 /**
- * @brief CcShellApp implementation
+ * @brief CcSshWorker implementation
  *        Main class wich is loaded to start Application.
  */
-class CcShellApp : public CcApp
+class CcSshWorker : public CcShell
 {
 public:
+  enum class EState : uint16
+  {
+    Startup = 0,
+    Handshake,
+    Error = UINT16_MAX
+  };
   /**
    * @brief Constructor
    */
-  CcShellApp();
+  CcSshWorker(CcShellApp* pApplication, IIo* pIoStream);
 
   /**
    * @brief Destructor
    */
-  virtual ~CcShellApp();
+  virtual ~CcSshWorker();
 
-  /**
-   * @brief Main method
-   */
   virtual void run() override;
 
-  CcStatus parseArguments(int iArgs, char** pArgs);
+  EState getState() const
+  { return m_eState; }
+  
+  void setState(EState eState)
+  { m_eState = eState; }
 
 private:
-  void runServer();
-  void runSsh();
-  void runConnect();
-  void runSconnect();
-  void runLocal();
+  void execPackage();
 
 private:
-  CcArguments           m_oArguments;
-  CcVector<IThread*>    m_oWorker;
-  CcSocket              m_Socket;
+  CcShellApp* m_pApplication;
+  IIo*        m_pIoStream;
+  EState      m_eState = EState::Startup;
+  CcByteArray m_oPackage;
 };

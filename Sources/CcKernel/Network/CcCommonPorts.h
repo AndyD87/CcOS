@@ -46,7 +46,7 @@ namespace CcCommonPorts
   static const uint16 CcRemoteDevice  = 27510;  //!< Default port for CcRemoteDevice requests
   static const uint16 CcRemoteDeviceIfc  = 27511;  //!< Default port for CcRemoteDevice interface at ip 0.0.0.0
   static const uint16 YobitTrader     = 27520;  //!< Yobit trader application interface
-  static const uint16 CcRemoteSShell  = 27522;  //!< Default port for CcRemoteDevice requests
+  static const uint16 CcRemoteSsh     = 27522;  //!< Default port for CcRemoteDevice requests
   static const uint16 CcRemoteShell   = 27523;  //!< Default port for CcRemoteDevice requests
 
   static const uint16 CcTestBase      = 10000;  //!< Test port base offset

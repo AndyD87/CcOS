@@ -84,6 +84,6 @@ void CcShellWorker::run()
           }
         }
       }
-    } while (m_pIoStream);
+    } while (m_pIoStream && uiLastRead > 0 && uiLastRead < oTransportBuffer.size());
   }
 }

@@ -13,6 +13,10 @@ elseif(${CCOS_APPS_CCSHELLAPP_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         CcShellApp.h
         CcShellWorker.cpp
         CcShellWorker.h
+        CcSshWorker.cpp
+        CcSshWorker.h
+		Ssh/Types.cpp
+		Ssh/Types.h
         main.cpp
   )
 

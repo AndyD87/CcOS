@@ -32,6 +32,7 @@
 #include "CcService.h"
 #include "CcShellApp.h"
 #include "CcShellWorker.h"
+#include "CcSshWorker.h"
 #include "Network/CcCommonPorts.h"
 #include "CcSslSocket.h"
 #include "CcSslControl.h"
@@ -44,9 +45,8 @@ CcShellApp::CcShellApp() :
   m_oArguments(
     {
       {"server",       CcVariant::EType::Switch},
-      {"sserver",      CcVariant::EType::Switch},
-      {"connect",      CcVariant::EType::String},
-      {"sconnect",     CcVariant::EType::String},
+      {"connect",      CcVariant::EType::Switch},
+      {"ssh",          CcVariant::EType::Switch},
       {"-address",     CcVariant::EType::String}
     }
   )
@@ -55,6 +55,11 @@ CcShellApp::CcShellApp() :
 
 CcShellApp::~CcShellApp()
 {
+  for (IThread* pWorker : m_oWorker)
+  {
+    CCDELETE(pWorker);
+  }
+  m_oWorker.clear();
 }
 
 void CcShellApp::run()
@@ -74,15 +79,10 @@ void CcShellApp::run()
   {
     runConnect();
   }
-  else if ( m_oArguments.contains("sserver") &&
-            m_oArguments.getValue("sserver").getBool())
+  else if ( m_oArguments.contains("ssh") &&
+            m_oArguments.getValue("ssh").getBool())
   {
     runSsh();
-  }
-  else if (m_oArguments.contains("sconnect") &&
-           m_oArguments.getValue("sconnect").getBool())
-  {
-    runSconnect();
   }
   else
   {
@@ -141,19 +141,10 @@ void CcShellApp::runServer()
 
 void CcShellApp::runSsh()
 {
-  CCDEBUG("Shell-Server starting on Port: " + CcString::fromNumber(CcCommonPorts::CcRemoteSShell));
+  CCDEBUG("Ssh-Server starting on Port: " + CcString::fromNumber(CcCommonPorts::CcRemoteSsh));
   ISocket *temp;
-  m_Socket = CCNEW_INLINE(CcSslSocket);
-  (static_cast<CcSslSocket*>(m_Socket.getRawSocket()))->initServer();
-  CcString sKey;
-  CcString sCert;
-  CcSslControl::createCertStrings(
-    sCert,
-    sKey
-  );
-  (static_cast<CcSslSocket*>(m_Socket.getRawSocket()))->loadCertificateString(sCert);
-  (static_cast<CcSslSocket*>(m_Socket.getRawSocket()))->loadKeyString(sKey);
-  if (m_Socket.bind(CcCommonPorts::CcRemoteSShell))
+  m_Socket = CCNEW_INLINE(CcSocket, ESocketType::TCP);
+  if (m_Socket.bind(CcCommonPorts::CcRemoteSsh))
   {
     if (m_Socket.listen())
     {
@@ -162,7 +153,7 @@ void CcShellApp::runSsh()
         temp = m_Socket.accept();
         if (temp != nullptr)
         {
-          CCNEWTYPE(pWorker, CcShellWorker, this, temp, false);
+          CCNEWTYPE(pWorker, CcSshWorker, this, temp);
           pWorker->start();
           pWorker->setEcho(false);
           m_oWorker.add(pWorker);
