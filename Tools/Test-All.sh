@@ -62,6 +62,15 @@ then
         echo Test-OrangePi.sh failed >> Test.log
     fi
     echo Test-OrangePi.sh succeeded >> Test.log
+
+    # Use ESP8266
+    sh Test-ESP8266.sh
+    if [ $? -ne 0 ]
+    then
+        exit -1
+        echo Test-ESP8266.sh failed >> Test.log
+    fi
+    echo Test-ESP8266.sh succeeded >> Test.log
 elif matches $ARCHITECTURE "arm"
 then
     echo "Run cross compile tests not available on arm"
