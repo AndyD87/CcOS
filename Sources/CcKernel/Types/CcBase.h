@@ -476,7 +476,7 @@ typedef void* CCHANDLE;
   #define CCDEBUG_LASTERROR(MSG)            \
     ONDEBUG(DWORD _dw_Error=GetLastError());  \
     CCDEBUG(MSG " " + CcString::fromNumber(_dw_Error))
-#elif LINUX
+#elif defined(LINUX)
   #define CCDEBUG_LASTERROR(MSG)    \
     ONDEBUG(int _i_Error=errno);      \
     CCDEBUG(MSG " " + CcString::fromNumber(_i_Error))

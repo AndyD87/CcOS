@@ -5,6 +5,9 @@ elseif( ${CCOS_CCKERNELMODULE_ACTIVE} GREATER ${CCOS_BUILDLEVEL} AND
   set ( CURRENT_PROJECT           CcKernelModule )
   set ( CURRENT_PROJECT_IDE_PATH  ""    )
 
+  set ( CCKERNELMODULE_DIR  ${CMAKE_CURRENT_LIST_DIR}                   CACHE INTERNAL "")
+  set ( CCKERNEL_TYPES_DIR  ${CMAKE_CURRENT_LIST_DIR}/../CcKernel/Types CACHE INTERNAL "")
+
   #########
   ## Add Source Files
   #########

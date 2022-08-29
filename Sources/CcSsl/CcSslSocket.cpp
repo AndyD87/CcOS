@@ -184,12 +184,7 @@ size_t CcSslSocket::read(void *pBuffer, size_t uBufferSize)
         }
         case SSL_ERROR_SYSCALL:
         {
-          #ifdef LINUX
-             int iError = errno;
-             CCDEBUG("unknown error on SSL_read" + CcString::fromInt(iError));
-             CCUNUSED_RELEASE(iError);
-          #endif
-
+          CCDEBUG_LASTERROR("unknown error on SSL_read");
           break;
         }
         default:
