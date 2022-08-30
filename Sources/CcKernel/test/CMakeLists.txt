@@ -90,9 +90,9 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
                                 CcKernel
                                 CcTesting
   )
-  add_dependencies( ${CURRENT_PROJECT}
-                    CcTesting4Test
-  )
+  #add_dependencies( ${CURRENT_PROJECT}
+  #                  CcTesting4Test
+  #)
 
   CcAddTest( ${CURRENT_PROJECT} )
 

@@ -68,4 +68,5 @@ private: // methods
 private:
   CcXmlFile m_oXmlFile;
   CcList<CcOSBuildConfigPlatform> m_oPlatformlist;
+  CcString m_sProjectName;
 };
