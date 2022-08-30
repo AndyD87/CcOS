@@ -1577,7 +1577,7 @@ CcString& CcString::prepend(const CcByteArray &toAppend, size_t pos, size_t len)
 
 CcString& CcString::setOsPath(const CcString&  sPathToSet)
 {
-  return set(sPathToSet.getReplace(CcGlobalStrings::Seperators::BackSlash, CcGlobalStrings::Seperators::Slash).getCharString());
+  return set(sPathToSet.getReplace(CcGlobalStrings::Seperators::BackSlash, CcGlobalStrings::Seperators::Slash));
 }
 
 CcString& CcString::appendIp(const CcIp& oIpAddr)
