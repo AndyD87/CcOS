@@ -32,5 +32,23 @@
             "CCOS_BOARD":"STM32F103C8",
             "CMAKE_GENERATOR":"Unix Makefiles"
         }
+    },
+    {
+        "name":"mingw x64",
+        "cmakeSettings": {
+            "CCOS_BOARD":"MinGW",
+            "CMAKE_SYSTEM_PROCESSOR":"x64",
+            "MINGW_VERSION":"6",
+            "generator":"Unix Makefiles"
+        }
+    },
+    {
+        "name":"mingw x86",
+        "cmakeSettings": {
+            "CCOS_BOARD":"MinGW",
+            "CMAKE_SYSTEM_PROCESSOR":"x86",
+            "MINGW_VERSION":"6",
+            "generator":"Unix Makefiles"
+        }
     }
 ]
