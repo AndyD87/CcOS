@@ -9,7 +9,9 @@
 ################################################################################
 cmake_minimum_required (VERSION 3.4)
 
-set(CCOS_PROJECT       TRUE)
+if(NOT CMAKE_PROJECT_NAME)
+  set(CCOS_PROJECT       TRUE)
+endif()
 set(CMAKE_PROJECT_NAME "CcOS")
 
 if($ENV{TEST_CCOS})
@@ -79,15 +81,17 @@ CcOSLoadProjects()
 ################################################################################
 # Do not build apps for generic platform
 ################################################################################
-if(WINDOWS OR LINUX)
-  ################################################################################
-  # Add Testing-Apps too
-  ################################################################################
-  if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Testing)
-    add_subdirectory(Testing)
+if(CCOS_PROJECT)
+  if(WINDOWS OR LINUX)
+    ################################################################################
+    # Add Testing-Apps too
+    ################################################################################
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Testing)
+      add_subdirectory(Testing)
+    endif()
+  else()
+    add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Testing/GenericTest)
   endif()
-else()
-  add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Testing/GenericTest)
 endif()
 
 ################################################################################

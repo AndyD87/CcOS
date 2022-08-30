@@ -40,12 +40,19 @@ static const uint8 s_uiBase64OutputDivider = 4; //!< Base devider for base 64 co
 size_t CcStringUtil::strlen(const char* pcString, size_t uiMaxLen)
 {
   size_t uiRet = SIZE_MAX;
-  for (size_t i=0; i < uiMaxLen; i++)
+  if (pcString == nullptr)
   {
-    if (pcString[i] == 0)
+    uiRet = 0;
+  }
+  else
+  {
+    for (size_t i = 0; i < uiMaxLen; i++)
     {
-      uiRet = i;
-      break;
+      if (pcString[i] == 0)
+      {
+        uiRet = i;
+        break;
+      }
     }
   }
   return uiRet;
@@ -55,106 +62,142 @@ int CcStringUtil::strcmp(const char* pcString1, const char* pcString2, size_t ui
 {
   int iRet = 0;
   size_t i = 0;
-  while( iRet == 0 && i < uiLen )
+  if (pcString1 == nullptr || pcString2 == nullptr)
   {
-    if(pcString1[i] == 0 && pcString2[i] == 0)
+    if (pcString1 == pcString2)
     {
-      break;
+      iRet = 0;
     }
-    else if(pcString1[i] != pcString2[i])
+    else if (pcString1 == nullptr)
     {
-      iRet = pcString1[i] - pcString2[i];
-      break;
+      iRet = 1;
     }
-    i++;
+    else
+    {
+      iRet = -1;
+    }
+  }
+  else
+  {
+    while (iRet == 0 && i < uiLen)
+    {
+      if (pcString1[i] == 0 && pcString2[i] == 0)
+      {
+        break;
+      }
+      else if (pcString1[i] != pcString2[i])
+      {
+        iRet = pcString1[i] - pcString2[i];
+        break;
+      }
+      i++;
+    }
   }
   return iRet;
 }
 
 char* CcStringUtil::strchr(char* pcString, char cToFind)
 {
-  char* pcCurrent = pcString;
-  while(*pcCurrent != 0)
+  if (pcString != nullptr)
   {
-    if(*pcCurrent == cToFind)
-      return pcCurrent;
-    pcCurrent++;
+    char* pcCurrent = pcString;
+    while (*pcCurrent != 0)
+    {
+      if (*pcCurrent == cToFind)
+        return pcCurrent;
+      pcCurrent++;
+    }
   }
   return nullptr;
 }
 
 size_t CcStringUtil::findChar(const wchar_t* pcString, wchar_t cToFind, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+  if (pcString != nullptr)
   {
-    if(pcString[i] == '\0' && cToFind != '\0')
-      return SIZE_MAX;
-    if (pcString[i] == cToFind)
-      return i;
+    for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+    {
+      if (pcString[i] == '\0' && cToFind != '\0')
+        return SIZE_MAX;
+      if (pcString[i] == cToFind)
+        return i;
+    }
   }
   return SIZE_MAX;
 }
 
 size_t CcStringUtil::findChar(const char* pcString, char cToFind, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+  if (pcString != nullptr)
   {
-    if(pcString[i] == '\0' && cToFind != '\0')
-      return SIZE_MAX;
-    if (pcString[i] == cToFind)
-      return i;
+    for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+    {
+      if (pcString[i] == '\0' && cToFind != '\0')
+        return SIZE_MAX;
+      if (pcString[i] == cToFind)
+        return i;
+    }
   }
   return SIZE_MAX;
 }
 
 size_t CcStringUtil::findCharEscaped(const char* pcString, char cToFind, char cEscape, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+  if (pcString != nullptr)
   {
-    if(pcString[i] == '\0' && cToFind != '\0')
-      return SIZE_MAX;
-    else if (pcString[i] == cEscape)
-      i++;
-    else if (pcString[i] == cToFind)
-      return i;
+    for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+    {
+      if (pcString[i] == '\0' && cToFind != '\0')
+        return SIZE_MAX;
+      else if (pcString[i] == cEscape)
+        i++;
+      else if (pcString[i] == cToFind)
+        return i;
+    }
   }
   return SIZE_MAX;
 }
 
 size_t CcStringUtil::findCharEscapedSkipQuotes(const char* pcString, char cToFind, char cEscape, char cQoute, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+  if (pcString != nullptr)
   {
-    if (pcString[i] == '\0' && cToFind != '\0')
-      return SIZE_MAX;
-    else if (pcString[i] == cEscape)
-      i++;
-    else if (pcString[i] == cQoute)
-      for (i++; i < uiLength + uiOffset; i++)
-      {
-        if (pcString[i] == '\0' && cToFind != '\0')
-          return SIZE_MAX;
-        else if (pcString[i] == cEscape)
-          i++;
-        else if (pcString[i] == cQoute)
-          break;
-      }
-    else if (pcString[i] == cToFind)
-      return i;
+    for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+    {
+      if (pcString[i] == '\0' && cToFind != '\0')
+        return SIZE_MAX;
+      else if (pcString[i] == cEscape)
+        i++;
+      else if (pcString[i] == cQoute)
+        for (i++; i < uiLength + uiOffset; i++)
+        {
+          if (pcString[i] == '\0' && cToFind != '\0')
+            return SIZE_MAX;
+          else if (pcString[i] == cEscape)
+            i++;
+          else if (pcString[i] == cQoute)
+            break;
+        }
+      else if (pcString[i] == cToFind)
+        return i;
+    }
   }
   return SIZE_MAX;
 }
 
 size_t CcStringUtil::findCharOf(const char* pcString, size_t uiLength, const char* pcToFind, size_t uiToFindSize, char& cFound)
 {
-  for (size_t i = 0; i < uiLength; i++)
+  if (pcString != nullptr)
   {
-    for (size_t j = 0; j < uiToFindSize; j++)
+    for (size_t i = 0; i < uiLength; i++)
     {
-      if (pcString[i] == pcToFind[j])
+      for (size_t j = 0; j < uiToFindSize; j++)
       {
-        cFound = pcToFind[j];
-        return i;
+        if (pcString[i] == pcToFind[j])
+        {
+          cFound = pcToFind[j];
+          return i;
+        }
       }
     }
   }
@@ -164,20 +207,25 @@ size_t CcStringUtil::findCharOf(const char* pcString, size_t uiLength, const cha
 size_t CcStringUtil::findLastChar(const char* pcString, size_t uiLength, char cToFind)
 {
   size_t uiPos = SIZE_MAX;
-  for (size_t i = 0; i < uiLength; i++)
+  if (pcString != nullptr)
   {
-    if (pcString[i] == cToFind || pcString[i] == '\0')
-      uiPos = i;
+    for (size_t i = 0; i < uiLength; i++)
+    {
+      if (pcString[i] == cToFind || pcString[i] == '\0')
+        uiPos = i;
+    }
   }
   return uiPos;
 }
 
 size_t CcStringUtil::findNextWhiteSpace(const char* pcString, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+  if (pcString != nullptr)
   {
-    switch (pcString[i])
+    for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
     {
+      switch (pcString[i])
+      {
       case ' ':
       case '\t':
       case '\n':
@@ -187,6 +235,7 @@ size_t CcStringUtil::findNextWhiteSpace(const char* pcString, size_t uiOffset, s
         return i;
       case '\0':
         return SIZE_MAX;
+      }
     }
   }
   return SIZE_MAX;
@@ -194,10 +243,12 @@ size_t CcStringUtil::findNextWhiteSpace(const char* pcString, size_t uiOffset, s
 
 size_t CcStringUtil::findNextNotWhiteSpace(const char* pcString, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+  if (pcString != nullptr)
   {
-    switch (pcString[i])
+    for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
     {
+      switch (pcString[i])
+      {
       case ' ':
       case '\t':
       case '\n':
@@ -209,6 +260,7 @@ size_t CcStringUtil::findNextNotWhiteSpace(const char* pcString, size_t uiOffset
         return SIZE_MAX;
       default:
         return i;
+      }
     }
   }
   return SIZE_MAX;
@@ -297,12 +349,15 @@ bool CcStringUtil::isNumber(const char toTest)
 size_t CcStringUtil::strlen(const wchar_t* pcString, size_t uiMaxLen)
 {
   size_t uiRet = SIZE_MAX;
-  for (size_t i = 0; i < uiMaxLen; i++)
+  if (pcString != nullptr)
   {
-    if (pcString[i] == 0)
+    for (size_t i = 0; i < uiMaxLen; i++)
     {
-      uiRet = i;
-      break;
+      if (pcString[i] == 0)
+      {
+        uiRet = i;
+        break;
+      }
     }
   }
   return uiRet;
@@ -312,33 +367,54 @@ int CcStringUtil::strcmp(const wchar_t* pcString1, const wchar_t* pcString2, siz
 {
   int iRet = 0;
   size_t i = 0;
-  while (iRet == 0 && i < uiLen)
+  if (pcString1 == nullptr || pcString2 == nullptr)
   {
-    if (pcString1[i] == 0 && pcString2[i] == 0)
+    if (pcString1 == pcString2)
     {
-      break;
+      iRet = 0;
     }
-    else if (pcString1[i] < pcString2[i])
+    else if (pcString1 == nullptr)
     {
-      iRet = -static_cast<int>(i);
+      iRet = 1;
     }
-    else if (pcString1[i] > pcString2[i])
+    else
     {
-      iRet = static_cast<int>(i);
+      iRet = -1;
     }
-    i++;
+  }
+  else
+  {
+    while (iRet == 0 && i < uiLen)
+    {
+      if (pcString1[i] == 0 && pcString2[i] == 0)
+      {
+        break;
+      }
+      else if (pcString1[i] < pcString2[i])
+      {
+        iRet = -static_cast<int>(i);
+      }
+      else if (pcString1[i] > pcString2[i])
+      {
+        iRet = static_cast<int>(i);
+      }
+      i++;
+    }
   }
   return iRet;
 }
 
 wchar_t* CcStringUtil::strchr(wchar_t* pcString, wchar_t cToFind)
 {
-  wchar_t* pcCurrent = pcString;
-  while (*pcCurrent != 0)
+  if (pcString != nullptr)
   {
-    if (*pcCurrent == cToFind)
-      return pcCurrent;
-    pcCurrent++;
+    wchar_t* pcCurrent = pcString;
+    while (*pcCurrent != 0)
+    {
+      if (*pcCurrent == cToFind)
+        return pcCurrent;
+      pcCurrent++;
+    }
   }
   return nullptr;
 }
@@ -356,28 +432,34 @@ CcString& CcStringUtil::stripQuotes(CcString& sString, char cQuote)
 
 size_t CcStringUtil::findCharEscaped(const wchar_t* pcString, wchar_t cToFind, wchar_t cEscape, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+  if (pcString != nullptr)
   {
-    if(pcString[i] == '\0' && cToFind != '\0')
-      return SIZE_MAX;
-    else if (pcString[i] == cEscape)
-      i++;
-    else if (pcString[i] == cToFind)
-      return i;
+    for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+    {
+      if (pcString[i] == '\0' && cToFind != '\0')
+        return SIZE_MAX;
+      else if (pcString[i] == cEscape)
+        i++;
+      else if (pcString[i] == cToFind)
+        return i;
+    }
   }
-  return uiLength;
+  return SIZE_MAX;
 }
 
 size_t CcStringUtil::findCharOf(const wchar_t* pcString, size_t uiLength, const wchar_t* pcToFind, size_t uiToFindSize, wchar_t& cFound)
 {
-  for (size_t i = 0; i < uiLength; i++)
+  if (pcString != nullptr)
   {
-    for (size_t j = 0; j < uiToFindSize; j++)
+    for (size_t i = 0; i < uiLength; i++)
     {
-      if (pcString[i] == pcToFind[j])
+      for (size_t j = 0; j < uiToFindSize; j++)
       {
-        cFound = pcToFind[j];
-        return i;
+        if (pcString[i] == pcToFind[j])
+        {
+          cFound = pcToFind[j];
+          return i;
+        }
       }
     }
   }
@@ -386,10 +468,12 @@ size_t CcStringUtil::findCharOf(const wchar_t* pcString, size_t uiLength, const 
 
 size_t CcStringUtil::findNextWhiteSpace(const wchar_t* pcString, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+  if (pcString != nullptr)
   {
-    switch (pcString[i])
+    for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
     {
+      switch (pcString[i])
+      {
       case ' ':
       case '\t':
       case '\n':
@@ -399,6 +483,7 @@ size_t CcStringUtil::findNextWhiteSpace(const wchar_t* pcString, size_t uiOffset
         return i;
       case '\0':
         return SIZE_MAX;
+      }
     }
   }
   return SIZE_MAX;
@@ -406,10 +491,12 @@ size_t CcStringUtil::findNextWhiteSpace(const wchar_t* pcString, size_t uiOffset
 
 size_t CcStringUtil::findNextNotWhiteSpace(const wchar_t* pcString, size_t uiOffset, size_t uiLength)
 {
-  for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
+  if (pcString != nullptr)
   {
-    switch (pcString[i])
+    for (size_t i = uiOffset; i < uiLength + uiOffset; i++)
     {
+      switch (pcString[i])
+      {
       case ' ':
       case '\r':
       case '\n':
@@ -422,6 +509,7 @@ size_t CcStringUtil::findNextNotWhiteSpace(const wchar_t* pcString, size_t uiOff
         return SIZE_MAX;
       default:
         return i;
+      }
     }
   }
   return SIZE_MAX;
@@ -887,52 +975,87 @@ uint32 CcStringUtil::toUint32(const char* pcString, size_t uiLen, bool* pbOk, ui
 {
   uint32 uiRet = 0;
   bool bOk = false;
-  size_t uiPos = 0;
+  if (pcString != nullptr)
+  {
+    size_t uiPos = 0;
 
-  if (pcString[uiPos] == 'x' ||
-    (uiPos < uiLen + 1 &&
-     pcString[uiPos] == '0' &&
-     pcString[uiPos + 1] == 'x')
+    if (pcString[uiPos] == 'x' ||
+      (uiPos < uiLen + 1 &&
+        pcString[uiPos] == '0' &&
+        pcString[uiPos + 1] == 'x')
       )
-  {
-    uiBase = 16;
-  }
-  if (uiBase == 16)
-  {
-    if (uiLen > 0 && pcString[uiPos] == 'x')   uiPos++;
-    else if (uiLen > 1 && pcString[uiPos + 1] == 'x') uiPos += 2;
-    while (uiPos < uiLen)
     {
-      uint32 uiNextValue = UINT32_MAX;
-      if (pcString[uiPos] >= '0' && pcString[uiPos] <= '9')
+      uiBase = 16;
+    }
+    if (uiBase == 16)
+    {
+      if (uiLen > 0 && pcString[uiPos] == 'x')   uiPos++;
+      else if (uiLen > 1 && pcString[uiPos + 1] == 'x') uiPos += 2;
+      while (uiPos < uiLen)
       {
-        uiNextValue = pcString[uiPos] - '0';
-      }
-      else if (pcString[uiPos] >= 'a' && pcString[uiPos] <= 'f')
-      {
-        uiNextValue = (pcString[uiPos] - 'a') + 10;
-      }
-      else if (pcString[uiPos] >= 'A' && pcString[uiPos] <= 'F')
-      {
-        uiNextValue = (pcString[uiPos] - 'A') + 10;
-      }
-      if (uiRet <= (UINT32_MAX / 16))
-      {
-        if (uiNextValue < 0x10)
+        uint32 uiNextValue = UINT32_MAX;
+        if (pcString[uiPos] >= '0' && pcString[uiPos] <= '9')
         {
-          bOk = true;
-          uint32 uiNext = uiRet << 4;
-          uiNext = uiNext + uiNextValue;
+          uiNextValue = pcString[uiPos] - '0';
+        }
+        else if (pcString[uiPos] >= 'a' && pcString[uiPos] <= 'f')
+        {
+          uiNextValue = (pcString[uiPos] - 'a') + 10;
+        }
+        else if (pcString[uiPos] >= 'A' && pcString[uiPos] <= 'F')
+        {
+          uiNextValue = (pcString[uiPos] - 'A') + 10;
+        }
+        if (uiRet <= (UINT32_MAX / 16))
+        {
+          if (uiNextValue < 0x10)
+          {
+            bOk = true;
+            uint32 uiNext = uiRet << 4;
+            uiNext = uiNext + uiNextValue;
+            if (uiNext < uiRet)
+            {
+              bOk = false;
+              break;
+            }
+            else
+            {
+              uiRet = uiNext;
+              uiPos++;
+            }
+          }
+          else
+          {
+            bOk = false;
+            break;
+          }
+        }
+        else
+        {
+          bOk = false;
+          break;
+        }
+      }
+    }
+    else if (uiPos < uiLen)
+    {
+      while (uiPos < uiLen &&
+        pcString[uiPos] >= '0' &&
+        pcString[uiPos] <= '9')
+      {
+        bOk = true;
+        if (uiRet <= (UINT32_MAX / 10))
+        {
+          uint32 uiNext = uiRet * 10;
+          uiNext = uiNext + pcString[uiPos] - '0';
           if (uiNext < uiRet)
           {
             bOk = false;
             break;
           }
           else
-          {
             uiRet = uiNext;
-            uiPos++;
-          }
+          uiPos++;
         }
         else
         {
@@ -940,43 +1063,11 @@ uint32 CcStringUtil::toUint32(const char* pcString, size_t uiLen, bool* pbOk, ui
           break;
         }
       }
-      else
+      if (uiPos < uiLen &&
+        !CcStringUtil::isWhiteSpace(pcString[uiPos]))
       {
         bOk = false;
-        break;
       }
-    }
-  }
-  else if (uiPos < uiLen)
-  {
-    while (uiPos < uiLen &&
-           pcString[uiPos] >= '0' &&
-           pcString[uiPos] <= '9')
-    {
-      bOk = true;
-      if (uiRet <= (UINT32_MAX / 10))
-      {
-        uint32 uiNext = uiRet * 10;
-        uiNext = uiNext + pcString[uiPos] - '0';
-        if (uiNext < uiRet)
-        {
-          bOk = false;
-          break;
-        }
-        else
-          uiRet = uiNext;
-        uiPos++;
-      }
-      else
-      {
-        bOk = false;
-        break;
-      }
-    }
-    if(uiPos < uiLen &&
-       !CcStringUtil::isWhiteSpace(pcString[uiPos]))
-    {
-      bOk = false;
     }
   }
   if (pbOk != nullptr)
@@ -990,90 +1081,93 @@ uint64 CcStringUtil::toUint64(const char* pcString, size_t uiLen, bool* pbOk, ui
 {
   uint64 uiRet = 0;
   bool bOk = false;
-  size_t uiPos = 0;
+  if (pcString != nullptr)
+  {
+    size_t uiPos = 0;
 
-  if (pcString[uiPos] == 'x' ||
-    (uiPos < uiLen + 1 &&
-     pcString[uiPos] == '0' &&
-     pcString[uiPos + 1] == 'x')
+    if (pcString[uiPos] == 'x' ||
+      (uiPos < uiLen + 1 &&
+        pcString[uiPos] == '0' &&
+        pcString[uiPos + 1] == 'x')
       )
-  {
-    uiBase = 16;
-  }
-  if (uiBase == 16)
-  {
-    if (uiLen > 0 && pcString[uiPos] == 'x')   uiPos++;
-    else if (uiLen > 1 && pcString[uiPos + 1] == 'x') uiPos += 2;
-    while (uiPos < uiLen)
     {
-      uint64 uiNextValue = UINT64_MAX;
-      if (pcString[uiPos] >= '0' && pcString[uiPos] <= '9')
+      uiBase = 16;
+    }
+    if (uiBase == 16)
+    {
+      if (uiLen > 0 && pcString[uiPos] == 'x')   uiPos++;
+      else if (uiLen > 1 && pcString[uiPos + 1] == 'x') uiPos += 2;
+      while (uiPos < uiLen)
       {
-        uiNextValue = pcString[uiPos] - '0';
-      }
-      else if (pcString[uiPos] >= 'a' && pcString[uiPos] <= 'f')
-      {
-        uiNextValue = (pcString[uiPos] - 'a') + 10;
-      }
-      else if (pcString[uiPos] >= 'A' && pcString[uiPos] <= 'F')
-      {
-        uiNextValue = (pcString[uiPos] - 'A') + 10;
-      }
-      if (uiRet <= (UINT64_MAX / 16))
-      {
-        if (uiNextValue < 0x10)
+        uint64 uiNextValue = UINT64_MAX;
+        if (pcString[uiPos] >= '0' && pcString[uiPos] <= '9')
         {
-          bOk = true;
-          uint64 uiNext = uiRet << 4;
-          uiNext = uiNext + uiNextValue;
+          uiNextValue = pcString[uiPos] - '0';
+        }
+        else if (pcString[uiPos] >= 'a' && pcString[uiPos] <= 'f')
+        {
+          uiNextValue = (pcString[uiPos] - 'a') + 10;
+        }
+        else if (pcString[uiPos] >= 'A' && pcString[uiPos] <= 'F')
+        {
+          uiNextValue = (pcString[uiPos] - 'A') + 10;
+        }
+        if (uiRet <= (UINT64_MAX / 16))
+        {
+          if (uiNextValue < 0x10)
+          {
+            bOk = true;
+            uint64 uiNext = uiRet << 4;
+            uiNext = uiNext + uiNextValue;
+            if (uiNext < uiRet)
+            {
+              bOk = false;
+              break;
+            }
+            else
+            {
+              uiRet = uiNext;
+              uiPos++;
+            }
+          }
+          else
+          {
+            bOk = false;
+            break;
+          }
+        }
+        else
+        {
+          bOk = false;
+          break;
+        }
+      }
+    }
+    else if (uiPos < uiLen)
+    {
+      while (uiPos < uiLen &&
+        pcString[uiPos] >= '0' &&
+        pcString[uiPos] <= '9')
+      {
+        bOk = true;
+        if (uiRet <= (UINT64_MAX / 10))
+        {
+          uint64 uiNext = uiRet * 10;
+          uiNext = uiNext + pcString[uiPos] - '0';
           if (uiNext < uiRet)
           {
             bOk = false;
             break;
           }
           else
-          {
             uiRet = uiNext;
-            uiPos++;
-          }
+          uiPos++;
         }
         else
         {
           bOk = false;
           break;
         }
-      }
-      else
-      {
-        bOk = false;
-        break;
-      }
-    }
-  }
-  else if (uiPos < uiLen)
-  {
-    while (uiPos < uiLen &&
-           pcString[uiPos] >= '0' &&
-           pcString[uiPos] <= '9')
-    {
-      bOk = true;
-      if (uiRet <= (UINT64_MAX / 10))
-      {
-        uint64 uiNext = uiRet * 10;
-        uiNext = uiNext + pcString[uiPos] - '0';
-        if (uiNext < uiRet)
-        {
-          bOk = false;
-          break;
-        }
-        else
-          uiRet = uiNext;
-        uiPos++;
-      }
-      else
-      {
-        bOk = false;
-        break;
       }
     }
   }
@@ -1088,90 +1182,94 @@ uint32 CcStringUtil::toUint32(const wchar_t* pcString, size_t uiLen, bool* pbOk,
 {
   uint32 uiRet = 0;
   bool bOk = false;
-  size_t uiPos = 0;
 
-  if (pcString[uiPos] == 'x' ||
-    (uiPos < uiLen + 1 &&
-     pcString[uiPos] == '0' &&
-     pcString[uiPos + 1] == 'x')
+  if (pcString != nullptr)
+  {
+    size_t uiPos = 0;
+
+    if (pcString[uiPos] == 'x' ||
+      (uiPos < uiLen + 1 &&
+        pcString[uiPos] == '0' &&
+        pcString[uiPos + 1] == 'x')
       )
-  {
-    uiBase = 16;
-  }
-  if (uiBase == 16)
-  {
-    if (uiLen > 0 && pcString[uiPos] == 'x')   uiPos++;
-    else if (uiLen > 1 && pcString[uiPos + 1] == 'x') uiPos += 2;
-    while (uiPos < uiLen)
     {
-      uint32 uiNextValue = UINT32_MAX;
-      if (pcString[uiPos] >= '0' && pcString[uiPos] <= '9')
+      uiBase = 16;
+    }
+    if (uiBase == 16)
+    {
+      if (uiLen > 0 && pcString[uiPos] == 'x')   uiPos++;
+      else if (uiLen > 1 && pcString[uiPos + 1] == 'x') uiPos += 2;
+      while (uiPos < uiLen)
       {
-        uiNextValue = pcString[uiPos] - '0';
-      }
-      else if (pcString[uiPos] >= 'a' && pcString[uiPos] <= 'f')
-      {
-        uiNextValue = (pcString[uiPos] - 'a') + 10;
-      }
-      else if (pcString[uiPos] >= 'A' && pcString[uiPos] <= 'F')
-      {
-        uiNextValue = (pcString[uiPos] - 'A') + 10;
-      }
-      if (uiRet <= (UINT32_MAX / 16))
-      {
-        if (uiNextValue < 0x10)
+        uint32 uiNextValue = UINT32_MAX;
+        if (pcString[uiPos] >= '0' && pcString[uiPos] <= '9')
         {
-          bOk = true;
-          uint32 uiNext = uiRet << 4;
-          uiNext = uiNext + uiNextValue;
+          uiNextValue = pcString[uiPos] - '0';
+        }
+        else if (pcString[uiPos] >= 'a' && pcString[uiPos] <= 'f')
+        {
+          uiNextValue = (pcString[uiPos] - 'a') + 10;
+        }
+        else if (pcString[uiPos] >= 'A' && pcString[uiPos] <= 'F')
+        {
+          uiNextValue = (pcString[uiPos] - 'A') + 10;
+        }
+        if (uiRet <= (UINT32_MAX / 16))
+        {
+          if (uiNextValue < 0x10)
+          {
+            bOk = true;
+            uint32 uiNext = uiRet << 4;
+            uiNext = uiNext + uiNextValue;
+            if (uiNext < uiRet)
+            {
+              bOk = false;
+              break;
+            }
+            else
+            {
+              uiRet = uiNext;
+              uiPos++;
+            }
+          }
+          else
+          {
+            bOk = false;
+            break;
+          }
+        }
+        else
+        {
+          bOk = false;
+          break;
+        }
+      }
+    }
+    else if (uiPos < uiLen)
+    {
+      while (uiPos < uiLen &&
+        pcString[uiPos] >= '0' &&
+        pcString[uiPos] <= '9')
+      {
+        bOk = true;
+        if (uiRet <= (UINT32_MAX / 10))
+        {
+          uint32 uiNext = uiRet * 10;
+          uiNext = uiNext + pcString[uiPos] - '0';
           if (uiNext < uiRet)
           {
             bOk = false;
             break;
           }
           else
-          {
             uiRet = uiNext;
-            uiPos++;
-          }
+          uiPos++;
         }
         else
         {
           bOk = false;
           break;
         }
-      }
-      else
-      {
-        bOk = false;
-        break;
-      }
-    }
-  }
-  else if (uiPos < uiLen)
-  {
-    while (uiPos < uiLen &&
-           pcString[uiPos] >= '0' &&
-           pcString[uiPos] <= '9')
-    {
-      bOk = true;
-      if (uiRet <= (UINT32_MAX / 10))
-      {
-        uint32 uiNext = uiRet * 10;
-        uiNext = uiNext + pcString[uiPos] - '0';
-        if (uiNext < uiRet)
-        {
-          bOk = false;
-          break;
-        }
-        else
-          uiRet = uiNext;
-        uiPos++;
-      }
-      else
-      {
-        bOk = false;
-        break;
       }
     }
   }
@@ -1186,90 +1284,94 @@ uint64 CcStringUtil::toUint64(const wchar_t* pcString, size_t uiLen, bool* pbOk,
 {
   uint64 uiRet = 0;
   bool bOk = false;
-  size_t uiPos = 0;
 
-  if (pcString[uiPos] == 'x' ||
-    (uiPos < uiLen + 1 &&
-     pcString[uiPos] == '0' &&
-     pcString[uiPos + 1] == 'x')
+  if (pcString != nullptr)
+  {
+    size_t uiPos = 0;
+
+    if (pcString[uiPos] == 'x' ||
+      (uiPos < uiLen + 1 &&
+        pcString[uiPos] == '0' &&
+        pcString[uiPos + 1] == 'x')
       )
-  {
-    uiBase = 16;
-  }
-  if (uiBase == 16)
-  {
-    if (uiLen > 0 && pcString[uiPos] == 'x')   uiPos++;
-    else if (uiLen > 1 && pcString[uiPos + 1] == 'x') uiPos += 2;
-    while (uiPos < uiLen)
     {
-      uint64 uiNextValue = UINT64_MAX;
-      if (pcString[uiPos] >= '0' && pcString[uiPos] <= '9')
+      uiBase = 16;
+    }
+    if (uiBase == 16)
+    {
+      if (uiLen > 0 && pcString[uiPos] == 'x')   uiPos++;
+      else if (uiLen > 1 && pcString[uiPos + 1] == 'x') uiPos += 2;
+      while (uiPos < uiLen)
       {
-        uiNextValue = pcString[uiPos] - '0';
-      }
-      else if (pcString[uiPos] >= 'a' && pcString[uiPos] <= 'f')
-      {
-        uiNextValue = (pcString[uiPos] - 'a') + 10;
-      }
-      else if (pcString[uiPos] >= 'A' && pcString[uiPos] <= 'F')
-      {
-        uiNextValue = (pcString[uiPos] - 'A') + 10;
-      }
-      if (uiRet <= (UINT64_MAX / 16))
-      {
-        if (uiNextValue < 0x10)
+        uint64 uiNextValue = UINT64_MAX;
+        if (pcString[uiPos] >= '0' && pcString[uiPos] <= '9')
         {
-          bOk = true;
-          uint64 uiNext = uiRet << 4;
-          uiNext = uiNext + uiNextValue;
+          uiNextValue = pcString[uiPos] - '0';
+        }
+        else if (pcString[uiPos] >= 'a' && pcString[uiPos] <= 'f')
+        {
+          uiNextValue = (pcString[uiPos] - 'a') + 10;
+        }
+        else if (pcString[uiPos] >= 'A' && pcString[uiPos] <= 'F')
+        {
+          uiNextValue = (pcString[uiPos] - 'A') + 10;
+        }
+        if (uiRet <= (UINT64_MAX / 16))
+        {
+          if (uiNextValue < 0x10)
+          {
+            bOk = true;
+            uint64 uiNext = uiRet << 4;
+            uiNext = uiNext + uiNextValue;
+            if (uiNext < uiRet)
+            {
+              bOk = false;
+              break;
+            }
+            else
+            {
+              uiRet = uiNext;
+              uiPos++;
+            }
+          }
+          else
+          {
+            bOk = false;
+            break;
+          }
+        }
+        else
+        {
+          bOk = false;
+          break;
+        }
+      }
+    }
+    else if (uiPos < uiLen)
+    {
+      while (uiPos < uiLen &&
+        pcString[uiPos] >= '0' &&
+        pcString[uiPos] <= '9')
+      {
+        bOk = true;
+        if (uiRet <= (UINT64_MAX / 10))
+        {
+          uint64 uiNext = uiRet * 10;
+          uiNext = uiNext + pcString[uiPos] - '0';
           if (uiNext < uiRet)
           {
             bOk = false;
             break;
           }
           else
-          {
             uiRet = uiNext;
-            uiPos++;
-          }
+          uiPos++;
         }
         else
         {
           bOk = false;
           break;
         }
-      }
-      else
-      {
-        bOk = false;
-        break;
-      }
-    }
-  }
-  else if (uiPos < uiLen)
-  {
-    while (uiPos < uiLen &&
-           pcString[uiPos] >= '0' &&
-           pcString[uiPos] <= '9')
-    {
-      bOk = true;
-      if (uiRet <= (UINT64_MAX / 10))
-      {
-        uint64 uiNext = uiRet * 10;
-        uiNext = uiNext + pcString[uiPos] - '0';
-        if (uiNext < uiRet)
-        {
-          bOk = false;
-          break;
-        }
-        else
-          uiRet = uiNext;
-        uiPos++;
-      }
-      else
-      {
-        bOk = false;
-        break;
       }
     }
   }
