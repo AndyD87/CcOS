@@ -50,12 +50,13 @@ public:
    * @param sOutputFile:  Target file to write to
    * @return True if all operations are done well.
    */
-  bool writeProjects(CcList<CcOSBuildConfigPlatform>& oProjectList, const CcString& sOutputFile);
+  bool writeProjects(const CcString& sProjectName, CcList<CcOSBuildConfigPlatform>& oProjectList, const CcString& sOutputFile);
 
 private:
   bool writeLegend();
   bool writeBasePath();
   bool writeCmakeSet(const CcString& sVariable, const CcString& sValue);
+  bool writeComponentsSelector(const CcString& sProjectName, CcOSBuildConfigPlatform& oPlatform);
   bool writeProjectSettings(CcSharedPointer<CcOSBuildConfigProject>& rProject);
   bool writeProjectActiveCheck(CcOSBuildConfigProjectList& oPlatform, CcSharedPointer<CcOSBuildConfigProject>& rProject);
   void setupIncomeDependencies(CcSharedPointer<CcOSBuildConfigProject>& rProject);

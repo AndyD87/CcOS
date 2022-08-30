@@ -59,6 +59,11 @@ bool CcOSBuildConfig::loadConfigFile(const CcString& sPathToConfig)
             CCDEBUG("Invalid version");
           }
         }
+        CcXmlNode& rName = rRootNode.getNode(CcOSBuildConfigGlobals::Tags::Name);
+        if (rName.isNotNull())
+        {
+          m_sProjectName = rName.innerText();
+        }
         if(bSuccess)
           bSuccess = readConfig(rRootNode, nullptr);
       }
@@ -91,7 +96,7 @@ void CcOSBuildConfig::writeAllProjects()
 bool CcOSBuildConfig::writeCmakeDefines(const CcString& sPathToCmakeFile)
 {
   CcOSBuildConfigCmake oCmakeFile;
-  return oCmakeFile.writeProjects(m_oPlatformlist, sPathToCmakeFile);
+  return oCmakeFile.writeProjects(m_sProjectName, m_oPlatformlist, sPathToCmakeFile);
 }
 
 void CcOSBuildConfig::insertToPlatformList(CcOSBuildConfigPlatform& oList, CcSharedPointer<CcOSBuildConfigProject> pProject)

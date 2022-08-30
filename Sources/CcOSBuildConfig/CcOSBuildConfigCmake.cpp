@@ -36,7 +36,7 @@ CcOSBuildConfigCmake::~CcOSBuildConfigCmake()
 {
 }
 
-bool CcOSBuildConfigCmake::writeProjects(CcList<CcOSBuildConfigPlatform>& oProjectList, const CcString& sOutputFile)
+bool CcOSBuildConfigCmake::writeProjects(const CcString& sProjectName, CcList<CcOSBuildConfigPlatform>& oProjectList, const CcString& sOutputFile)
 {
   m_oFile = CcFile(sOutputFile);
   bool bSuccess = true;
@@ -55,6 +55,7 @@ bool CcOSBuildConfigCmake::writeProjects(CcList<CcOSBuildConfigPlatform>& oProje
       writeLegend();
       writeBasePath();
       bSuccess &= m_oFile.writeLine("if(" + oPlatform.m_sName.getUpper() + ")");
+      writeComponentsSelector(sProjectName, oPlatform);
       for (CcSharedPointer<CcOSBuildConfigProject>& rpProject : oPlatform.m_oAllProjects)
       {
         writeProjectSettings(rpProject);
@@ -98,6 +99,24 @@ bool CcOSBuildConfigCmake::writeCmakeSet(const CcString& sVariable, const CcStri
   else
     bSuccess &= m_oFile.writeLine("    set(" + sVariable + CcGlobalStrings::Space + sValue + ")");
   bSuccess &= m_oFile.writeLine("  endif(NOT DEFINED " + sVariable + ")");
+  return bSuccess;
+}
+
+bool CcOSBuildConfigCmake::writeComponentsSelector(const CcString& sProjectName, CcOSBuildConfigPlatform& oPlatform)
+{
+  bool bSuccess = true;
+  bSuccess &= m_oFile.writeLine("  if(" + sProjectName + "_FIND_COMPONENTS)");
+  bSuccess &= m_oFile.writeLine("    set(CCOS_BUILDLEVEL 1)");
+  bSuccess &= m_oFile.writeLine("    foreach(COMPONENT ${" + sProjectName + "_FIND_COMPONENTS})");
+  for (CcSharedPointer<CcOSBuildConfigProject>& rProject : oPlatform.m_oAllProjects)
+  {
+    CcString sActiveDefine = rProject->getActiveDefineString();
+    bSuccess &= m_oFile.writeLine("    if(${COMPONENT} STREQUAL \"" + rProject->getName() + "\")");
+    bSuccess &= m_oFile.writeLine("      set(" + sActiveDefine + " 4)");
+    bSuccess &= m_oFile.writeLine("    endif()");
+  }
+  bSuccess &= m_oFile.writeLine("    endforeach()");
+  bSuccess &= m_oFile.writeLine("  endif()");
   return bSuccess;
 }
 
