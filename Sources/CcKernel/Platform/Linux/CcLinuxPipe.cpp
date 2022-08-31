@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
+#include <sys/ioctl.h>
 
 //! @brief Often called macro for closing an pipe if opened
 //! @param PIPE: Pipe to close
@@ -36,33 +37,29 @@
 
 CcLinuxPipe::CcLinuxPipe()
 {
-  if(pipe(m_iPipes[0]) != 0)
-  {
-    CCDEBUG("Error on creating pipes");
-  }
-  if(pipe(m_iPipes[1]) != 0)
-  {
-    CCDEBUG("Error on creating pipes");
-  }
 }
 
 CcLinuxPipe::~CcLinuxPipe()
 {
-  CCLINUXPIPE_CLOSE(m_iPipes[0][0]);
-  CCLINUXPIPE_CLOSE(m_iPipes[0][1]);
-  CCLINUXPIPE_CLOSE(m_iPipes[1][0]);
-  CCLINUXPIPE_CLOSE(m_iPipes[1][1]);
-  CCLINUXPIPE_CLOSE(m_iPipes[2][0]);
-  CCLINUXPIPE_CLOSE(m_iPipes[2][1]);
+  closePipe(0,0);
+  closePipe(0,1);
+  closePipe(1,0);
+  closePipe(1,1);
+  closePipe(2,0);
+  closePipe(2,1);
 }
-
-#include <sys/ioctl.h>
 
 size_t CcLinuxPipe::read(void *pBuffer, size_t uSize)
 {
   size_t uiRead = SIZE_MAX;
   if(m_iPipes[1][0] >= 0)
+  {
     uiRead = ::read(m_iPipes[1][0], pBuffer, uSize);
+    if(uiRead != 0 && uiRead <= uSize)
+    {
+      CCDEBUG("Pipe successfully read");
+    }
+  }
   return uiRead;
 }
 
@@ -86,7 +83,7 @@ CcStatus CcLinuxPipe::close()
 
 CcStatus CcLinuxPipe::cancel()
 {
-  CCLINUXPIPE_CLOSE(m_iPipes[1][0]);
+  closePipe(1, 0);
   return true;
 }
 
@@ -95,15 +92,42 @@ void CcLinuxPipe::closePipe(int iPipeDirection, int iPipenumber)
   CCLINUXPIPE_CLOSE(m_iPipes[iPipeDirection][iPipenumber]);
 }
 
+void CcLinuxPipe::init()
+{
+  if(pipe(m_iPipes[0]) != 0)
+  {
+    CCDEBUG("Error on creating pipes 0");
+  }
+  if(pipe(m_iPipes[1]) != 0)
+  {
+    CCDEBUG("Error on creating pipes 1");
+  }
+}
+
+void CcLinuxPipe::setupChild()
+{
+  closePipe(1,0);
+  dup2(m_iPipes[1][1], STDOUT_FILENO);
+  closePipe(2,0);
+  dup2(m_iPipes[2][1], STDERR_FILENO);
+  closePipe(0,1);
+  dup2(m_iPipes[0][0], STDIN_FILENO);
+}
+
+void CcLinuxPipe::setupParent()
+{
+}
+
 void CcLinuxPipe::closeChild()
 {
-  CCLINUXPIPE_CLOSE(m_iPipes[0][1]);
-  CCLINUXPIPE_CLOSE(m_iPipes[1][0]);
+  //closePipe(0,0);
+  //closePipe(1,1);
+  //closePipe(2,1);
 }
 
 void CcLinuxPipe::closeParent()
 {
-  CCLINUXPIPE_CLOSE(m_iPipes[0][0]);
-  CCLINUXPIPE_CLOSE(m_iPipes[1][1]);
-  CCLINUXPIPE_CLOSE(m_iPipes[2][1]);
+  //closePipe(0,1);
+  //closePipe(1,0);
+  //closePipe(2,0);
 }

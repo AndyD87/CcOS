@@ -47,15 +47,11 @@ CcLinuxProcessThread::~CcLinuxProcessThread()
 
 void CcLinuxProcessThread::run()
 {
+  static_cast<CcLinuxPipe&>(m_hProcess->pipe()).init();
   m_iChildId = fork();
   if(m_iChildId == 0)
   {
-    dup2(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipe(0,0), STDIN_FILENO);
-    dup2(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipe(1,1), STDOUT_FILENO);
-    dup2(static_cast<CcLinuxPipe&>(m_hProcess->pipe()).getPipe(2,1), STDERR_FILENO);
-    //static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closePipe(0,1);
-    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closePipe(1,0);
-    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closePipe(2,0);
+    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).setupChild();
 
     CcKernel::setEnvironmentVariable(CcGlobalStrings::EnvVars::AppNoIoBuffering, CcGlobalStrings::True);
 
@@ -79,12 +75,15 @@ void CcLinuxProcessThread::run()
     // Execute Process
     execvp(pArgv[0], pArgv);
     CCDELETEARR(pArgv);
+    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closeChild();
     exit(errno);
   }
   else if(m_iChildId > 0)
   {
+    static_cast<CcLinuxPipe&>(m_hProcess->pipe()).setupParent();
     m_bProcessStarted = true;
     int iStatus;
+
     waitpid(m_iChildId, &iStatus, 0);
     static_cast<CcLinuxPipe&>(m_hProcess->pipe()).closeParent();
     m_iChildId = -1;

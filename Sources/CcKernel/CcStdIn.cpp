@@ -126,15 +126,15 @@ size_t CcStdIn::readHidden(void* pBuffer, size_t uiSize)
   CCUNUSED(pBuffer);
   CCUNUSED(uiSize);
 #elif defined(LINUX)
-  struct termios tty;
-  tcgetattr(STDIN_FILENO, &tty);
-  tty.c_lflag &= ~ECHO;
-  tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+  //struct termios tty;
+  //tcgetattr(STDIN_FILENO, &tty);
+  //tty.c_lflag &= ~ECHO;
+  //tcsetattr(STDIN_FILENO, TCSANOW, &tty);
 
   uiRetValue = read(pBuffer, uiSize);
 
-  tty.c_lflag |= ECHO;
-  tcsetattr(STDIN_FILENO, TCSANOW, &tty);
+  //tty.c_lflag |= ECHO;
+  //tcsetattr(STDIN_FILENO, TCSANOW, &tty);
 #else
   CCUNUSED(pBuffer);
   CCUNUSED(uiSize);

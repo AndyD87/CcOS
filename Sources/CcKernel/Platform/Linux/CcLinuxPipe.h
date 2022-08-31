@@ -50,20 +50,26 @@ public:
   CcStatus cancel() override;
 
   /**
-   * @brief Get pipe from index
-   * @param iPipeDirection: Pipe direction index
-   * @param iPipenumber:    Pipe number from direction
-   * @return Target pipe number
-   */
-  int getPipe(int iPipeDirection, int iPipenumber)
-  { return m_iPipes[iPipeDirection][iPipenumber]; }
-
-  /**
    * @brief Close pipe from index and set -1
    * @param iPipeDirection: Pipe direction index
    * @param iPipenumber:    Pipe number from direction
    */
   void closePipe(int iPipeDirection, int iPipenumber);
+
+  /**
+   * @brief Close child pipes
+   */
+  void init();
+
+  /**
+   * @brief Close child pipes
+   */
+  void setupChild();
+
+  /**
+   * @brief Close parent pipes
+   */
+  void setupParent();
 
   /**
    * @brief Close child pipes
