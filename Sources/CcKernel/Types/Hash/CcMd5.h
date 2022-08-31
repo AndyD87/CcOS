@@ -88,6 +88,11 @@ public:
   virtual CcMd5& generate(const void *data, size_t size) override;
   virtual CcMd5& append(const void *data, size_t size) override;
   virtual CcMd5& finalize(const void *data, size_t size) override;
+  
+  virtual size_t getBlockSize() override
+  { return 512 / 8; }
+  virtual size_t getHashSize() override
+  { return 128 / 8; }
 
   //! @copydoc CcHash::generate(const CcByteArray& oByteArray)
   inline CcMd5& generate(const CcByteArray& oByteArray)

@@ -29,6 +29,8 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
           ${CMAKE_CURRENT_LIST_DIR}/CIniFileTest.h
           ${CMAKE_CURRENT_LIST_DIR}/CHashTest.cpp
           ${CMAKE_CURRENT_LIST_DIR}/CHashTest.h
+          ${CMAKE_CURRENT_LIST_DIR}/CHmacTest.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/CHmacTest.h
           ${CMAKE_CURRENT_LIST_DIR}/CKernelTest.cpp
           ${CMAKE_CURRENT_LIST_DIR}/CKernelTest.h
           ${CMAKE_CURRENT_LIST_DIR}/CListTest.cpp

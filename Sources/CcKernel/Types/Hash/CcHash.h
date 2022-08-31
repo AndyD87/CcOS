@@ -26,6 +26,7 @@
 
 #include "CcBase.h"
 #include "CcByteArray.h"
+#include "CcList.h"
 #include "IHash.h"
 
 /**
@@ -57,12 +58,34 @@ public:
   virtual IHash& setKey(const void* pcData, size_t uiLen) override;
   virtual const CcByteArray& encode(const void* pcData, size_t uiLen) override;
   virtual const CcByteArray& decode(const void* pcData, size_t uiLen) override;
+  virtual size_t getBlockSize() override;
+  virtual size_t getHashSize() override;
 
+public: // types
+  typedef IHash* (*THashCreate)(EHashType eType);
+  class CcKernelSHARED CHashCreateDefinition
+  {
+  public:
+    CHashCreateDefinition(EHashType eType = EHashType::Unknown, THashCreate pCreate = nullptr) :
+      eType(eType),
+      pCreate(pCreate)
+    {}
+
+    bool operator==(const CHashCreateDefinition& oToCompare) const
+    { return eType == oToCompare.eType && oToCompare.pCreate == oToCompare.pCreate; }
+
+    EHashType   eType;
+    THashCreate pCreate;
+  };
+
+  typedef class CcKernelSHARED CcList<CHashCreateDefinition> CHashCreateDefinitionList;
+
+public: // Methods
   /**
    * @brief Get currently set Hashtype
    * @return HashType as enum
    */
-  EHashType getHashType() const;
+  //EHashType getHashType() const;
 
   /**
    * @brief Set type of Hash algorithm to load to this Object.
@@ -137,7 +160,11 @@ public:
   inline const CcByteArray& decode(const CcByteArray& oByteArray)
   { return decode(oByteArray.getArray(), oByteArray.size()); }
 
+  static void registerAlgorithm(const CHashCreateDefinition oAlgorithm);
+  static void unregisterAlgorithm(const CHashCreateDefinition oAlgorithm);
+
 private:
   EHashType m_eHashType = EHashType::Unknown; //!< Current object loaded at m_pHashObject
   IHash* m_pHashObject = nullptr;    //!< HashObject with implemented hash algorithm. It is set to nullptr if m_eHashType is EHashType::Unknown.
+  static CHashCreateDefinitionList m_oRegisteredAlgorithms;
 };

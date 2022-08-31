@@ -1,6 +1,7 @@
 # setup project root dir
 set(CCOS_DIR ${CMAKE_CURRENT_LIST_DIR}/.. CACHE INTERNAL "")
 set(CCOS_CONFIG_DIR ${CMAKE_CURRENT_LIST_DIR})
+set(THIRDPARTY_DIR ${CMAKE_CURRENT_LIST_DIR}/../ThirdParty)
 
 if(NOT EXISTS ${CCOS_CONFIG_DIR}/CcBuildConfig/CcBuildConfig.cmake)
   execute_process(COMMAND git submodule init "${CCOS_CONFIG_DIR}/CcBuildConfig"

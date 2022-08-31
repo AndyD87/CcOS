@@ -53,6 +53,11 @@ public:
   virtual CcSqlEnDecode& finalize(const void* pData, size_t uiSize) override;
   virtual IHash& setKey(const void* pcData, size_t uiLen) override;
   virtual const CcByteArray& decode(const void* pcData, size_t uiLen) override;
+  
+  virtual size_t getBlockSize() override
+  { return CcSqlEnDecode_CryptoBufferSize; }
+  virtual size_t getHashSize() override
+  { return m_oValue.size(); }
 
 private: // Methods
   struct CRandom

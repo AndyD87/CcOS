@@ -20,71 +20,72 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcSslHmac
+ * @brief     Types for making exchanges more efficient or simple.
  */
 #pragma once
 
 #include "CcBase.h"
-#include "CcSsl.h"
 #include "CcByteArray.h"
-#include "Types/Hash/CcHash.h"
-#include "ESslHashAlgorithm.h"
-
-class CcString;
+#include "IHash.h"
 
 /**
- * @brief The CcSslHmac is a Hash class wich will be able to
- *        hash data data with a secret and different hash algortihms.
- *
- *        CcSslHmacs functionality is based on openssls HMAC_xxx methods
+ * @brief Create Crc32 Hashes with this class.
+ *        It is addtionally possible to continue an older Crc32 Session.
  */
-class CcSslSHARED CcSslHmac : public IHash
+class CcKernelSHARED CcHmac : public IHash
 {
 public:
   /**
-   * @brief Constructor for a Hmac Object
+   * @brief Constructor
    */
-  CcSslHmac();
+  CcHmac();
 
   /**
-   * @brief ~CcSslHmac
+   * @brief Constructor with predefined Hashing type
    */
-  virtual ~CcSslHmac();
+  CcHmac(EHashType eHashType);
+  
+  /**
+   * @brief ~CcHmac
+   */
+  virtual ~CcHmac();
 
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
    * @return true if they are the same, otherwise false
    */
-  bool operator==(const CcSslHmac& oToCompare) const;
+  bool operator==(const CcHmac& oToCompare) const;
 
   /**
    * @brief Compare two items
    * @param oToCompare: Item to compare to
    * @return true if they are not same, otherwise false
    */
-  bool operator!=(const CcSslHmac& oToCompare) const;
+  bool operator!=(const CcHmac& oToCompare) const;
 
   /**
    * @brief Directly generate hash from ByteArray
    * @param oByteArray: ByteArray to generate hash from
    * @return this
    */
-  CcSslHmac& operator=(const CcByteArray& oByteArray);
+  CcHmac& operator=(const CcByteArray& oByteArray);
 
   /**
    * @brief Directly generate hash from String
    * @param sString: String to generate hash from
    * @return this
    */
-  CcSslHmac& operator=(const CcString& sString);
+  CcHmac& operator=(const CcString& sString);
 
   /**
    * @brief Get current stored result value;
    * @return reference to stored result.
    */
   virtual const CcByteArray& getValue() override
-  { return m_oResult; }
+  {
+    return m_oResult;
+  }
 
   /**
    * @brief Get result as Hex-String
@@ -113,25 +114,22 @@ public:
    *         - EStatus::Error if initalizing failed.
    *         - EStatus::CommandInvalidParameter if eAlgorithm was a invalid or not implemented value
    */
-  CcStatus setHashAlgorithm(ESslHashAlgoritm eAlgorithm);
+  CcStatus setHashAlgorithm(EHashType eAlgorithm);
 
-  virtual CcSslHmac& generate(const void *data, size_t size) override;
-  virtual CcSslHmac& append(const void *data, size_t size) override;
-  virtual CcSslHmac& finalize(const void *data, size_t size) override;
-  
-  // Not yet supported
-  virtual size_t getBlockSize() override
-  { return 0; }
-  // Not yet supported
-  virtual size_t getHashSize() override
-  { return 0; }
+  virtual CcHmac& generate(const void *data, size_t size) override;
+  virtual CcHmac& append(const void *data, size_t size) override;
+  virtual CcHmac& finalize(const void *data, size_t size) override;
+  virtual size_t getBlockSize() override;
+  virtual size_t getHashSize() override;
 
 private: // methods
   void initValues();
+  void doHmac(CcByteArray& rPad, const void *pData, size_t uiSize, CcByteArray& oOut);
 private: // Types
   class CPrivate;
 private: // Member
-  CPrivate*   m_pPrivate = nullptr;
+  IHash*      m_pHash = nullptr;
   CcByteArray m_oSecret;
   CcByteArray m_oResult;
+  EHashType   m_eHashType = EHashType::Unknown;
 };

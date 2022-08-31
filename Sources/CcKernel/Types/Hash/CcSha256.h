@@ -84,6 +84,11 @@ public:
   virtual CcSha256& generate(const void* pcData, size_t uiLen) override;
   virtual CcSha256& append(const void* pcData, size_t uiLen) override;
   virtual CcSha256& finalize(const void* pcData, size_t uiLen) override;
+  
+  virtual size_t getBlockSize() override
+  { return 512 / 8; }
+  virtual size_t getHashSize() override
+  { return 256 / 8; }
 
   /**
    * @brief Set midstate of hashing

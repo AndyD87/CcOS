@@ -36,6 +36,7 @@
 #include "CStringUtilTest.h"
 #include "CTimeTest.h"
 #include "CHashTest.h"
+#include "CHmacTest.h"
 #include "CByteArrayTest.h"
 #include "CProcessTest.h"
 #include "CStatusTest.h"
@@ -94,6 +95,7 @@ int main(int iArgc, char** ppArgv)
   CcTestFramework_addTest(CWorkerTest);
   CcTestFramework_addTest(CUuidTest);
   CcTestFramework_addTest(CHashTest);
+  CcTestFramework_addTest(CHmacTest);
   CcTestFramework_addTest(CStringTest);
   CcTestFramework_addTest(CStringUtilTest);
   CcTestFramework_addTest(CPasswordTest);

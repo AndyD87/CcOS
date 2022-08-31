@@ -30,6 +30,8 @@
 #include "CcGlobalStrings.h"
 #include "CcStatic.h"
 
+CcList<CcHash::CHashCreateDefinition> CcHash::m_oRegisteredAlgorithms;
+
 CcHash::CcHash(EHashType eHashType) :
   m_eHashType(eHashType),
   m_pHashObject(nullptr)
@@ -99,6 +101,24 @@ const CcByteArray &CcHash::decode(const void* pData, size_t uiSize)
   return CcByteArray::getEmpty();
 }
 
+size_t CcHash::getBlockSize()
+{
+  if (m_pHashObject)
+  {
+    return m_pHashObject->getBlockSize();
+  }
+  return 0;
+}
+
+size_t CcHash::getHashSize()
+{
+  if (m_pHashObject)
+  {
+    return m_pHashObject->getHashSize();
+  }
+  return 0;
+}
+
 bool CcHash::setHashType(EHashType eHashType)
 {
   bool bRet = false;
@@ -123,6 +143,22 @@ bool CcHash::setHashType(EHashType eHashType)
       break;
     case EHashType::Unknown:
       break;
+    default:
+      for (CHashCreateDefinition& oDefinition : m_oRegisteredAlgorithms)
+      {
+        if (oDefinition.eType == eHashType &&
+            oDefinition.pCreate != nullptr)
+        {
+          m_pHashObject = oDefinition.pCreate(eHashType);
+
+        }
+        else if(oDefinition.eType == EHashType::Multiple)
+        {
+          m_pHashObject = oDefinition.pCreate(eHashType);
+        }
+        if (m_pHashObject)
+          break;
+      }
   }
   if(m_pHashObject)
     bRet = true;
@@ -145,4 +181,14 @@ bool CcHash::setHashType(const CcString& sHashType)
     setHashType(EHashType::Sha256);
   }
   return bRet;
+}
+
+void CcHash::registerAlgorithm(const CcHash::CHashCreateDefinition oAlgorithm)
+{
+  m_oRegisteredAlgorithms.append(oAlgorithm);
+}
+
+void CcHash::unregisterAlgorithm(const CcHash::CHashCreateDefinition oAlgorithm)
+{
+  m_oRegisteredAlgorithms.removeItem(oAlgorithm);
 }

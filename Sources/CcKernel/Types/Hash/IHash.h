@@ -31,7 +31,7 @@
 /**
  * @brief All known hashing algorithims within CcOS
  */
-enum class EHashType
+enum class EHashType : uint32
 {
   String = 0,  //!< Password is as simple string
   Unknown = 0, //!< Unknown Hash Type, handle it like a string
@@ -39,6 +39,9 @@ enum class EHashType
   Md5,
   Sha256,
   SqlEnDecode,
+  Multiple = 0x7fffffff,  //!< This definition indicates that underlying Algorithm can create
+                          //!  Objects of different types.
+  Custom = 0x80000000,    //!< All Algorithims defined later are unknown to CcOS
 };
 
 /**
@@ -58,6 +61,9 @@ public:
    * @return Get store result
    */
   virtual const CcByteArray& getValue() = 0;
+
+  virtual size_t getBlockSize() = 0;
+  virtual size_t getHashSize() = 0;
 
   /**
    * @brief Fully generate hash value from buffer.

@@ -44,6 +44,11 @@ public:
   CcCrc32();
   virtual ~CcCrc32() = default;
 
+  virtual size_t getBlockSize() override
+  { return 4; }
+  virtual size_t getHashSize() override
+  { return 4; }
+
   virtual const CcByteArray& getValue() override
   { return m_oCrcValue; }
   //! @return Get current value as uint32
