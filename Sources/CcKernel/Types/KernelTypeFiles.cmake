@@ -66,6 +66,7 @@ set(KERNEL_TYPE_HASH_HEADER
   Types/Hash/CcHmac.h
   Types/Hash/CcMd5.h
   Types/Hash/CcSqlEnDecode.h
+  Types/Hash/CcSha1.h
   Types/Hash/CcSha256.h
   Types/Hash/IHash.h
 )
@@ -79,6 +80,7 @@ set(KERNEL_TYPE_FILES
   Types/Hash/CcHmac.cpp
   Types/Hash/CcMd5.cpp
   Types/Hash/CcSqlEnDecode.cpp
+  Types/Hash/CcSha1.cpp
   Types/Hash/CcSha256.cpp
   Types/Hash/IHash.cpp
   

@@ -47,4 +47,6 @@ public:
 private:
   bool testNetExample();
   bool testSha256();
+  bool testSha1();
+  bool testMD5();
 };

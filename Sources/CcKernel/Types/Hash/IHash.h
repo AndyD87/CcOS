@@ -37,6 +37,7 @@ enum class EHashType : uint32
   Unknown = 0, //!< Unknown Hash Type, handle it like a string
   Crc32,
   Md5,
+  Sha1,
   Sha256,
   SqlEnDecode,
   Multiple = 0x7fffffff,  //!< This definition indicates that underlying Algorithm can create

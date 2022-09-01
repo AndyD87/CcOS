@@ -48,5 +48,6 @@ private:
   bool testMd5();
   bool testMd5Append();
   bool testSqlEnDecode();
+  bool testSha1();
   bool testIHash();
 };

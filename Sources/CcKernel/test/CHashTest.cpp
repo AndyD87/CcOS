@@ -25,6 +25,7 @@
 #include "CHashTest.h"
 #include "Hash/CcMd5.h"
 #include "Hash/CcSha256.h"
+#include "Hash/CcSha1.h"
 #include "CcString.h"
 #include "CcStringUtil.h"
 #include "CcConsole.h"
@@ -41,6 +42,7 @@ CHashTest::CHashTest() :
   appendTestMethod("Test md5", &CHashTest::testMd5);
   appendTestMethod("Test md5 append bug", &CHashTest::testMd5Append);
   appendTestMethod("Test sql encode decode", &CHashTest::testSqlEnDecode);
+  appendTestMethod("Test sha1", &CHashTest::testSha1);
   appendTestMethod("Test CcHash", &CHashTest::testIHash);
 }
 
@@ -206,6 +208,25 @@ bool CHashTest::testSqlEnDecode()
     }
   }
 
+  return bRet;
+}
+
+bool CHashTest::testSha1()
+{
+  bool bRet = false;
+  CcSha1 oHash1;
+  oHash1.generate("123456781", 9);
+  CcString sHash1 = oHash1.getValue().getHexString();
+  if (sHash1 == "90fbbcf2b72b5973ae42cd3a19ab4ae8a1bd210b")
+  {
+    // Reuse object
+    oHash1.generate("01234567890123456789012345678901234567890123456789012345678901234567890123456789", 80);
+    sHash1 = oHash1.getValue().getHexString();
+    if (sHash1 == "db9d100073836c9651690af5a74192fe6af1a2b6")
+    {
+      bRet = true;
+    }
+  }
   return bRet;
 }
 
