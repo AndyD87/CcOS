@@ -25,6 +25,7 @@
  */
 #include "CcHmac.h"
 #include "Hash/CcHash.h"
+#include "CcStatic.h"
 
 CcHmac::CcHmac()
 {
@@ -122,9 +123,9 @@ CcHmac& CcHmac::finalize(const void *pData, size_t uiSize)
   size_t sz;
   int i;
 
-  memset(k.getArray(), 0, sizeof(k));
-  memset(k_ipad.getArray(), 0x36, getBlockSize());
-  memset(k_opad.getArray(), 0x5c, getBlockSize());
+  CcStatic::memset(k.getArray(), 0, sizeof(k));
+  CcStatic::memset(k_ipad.getArray(), 0x36, getBlockSize());
+  CcStatic::memset(k_opad.getArray(), 0x5c, getBlockSize());
 
   if (m_oSecret.size() > getBlockSize()) 
   {
@@ -147,7 +148,7 @@ CcHmac& CcHmac::finalize(const void *pData, size_t uiSize)
   // Perform HMAC algorithm: ( https://tools.ietf.org/html/rfc2104 )
   //      `H(K XOR opad, H(K XOR ipad, data))`
   doHmac(k_ipad, pData, uiSize, ihash);
-  doHmac(k_opad, pData, uiSize, ohash);
+  doHmac(k_opad, ihash.getArray(), ihash.size(), ohash);
 
   sz = (m_oResult.size() > getHashSize()) ? getHashSize() : m_oResult.size();
   m_oResult.write(ohash.getArray(), sz);

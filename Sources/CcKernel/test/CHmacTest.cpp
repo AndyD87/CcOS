@@ -35,6 +35,7 @@ const CcString sTestUrl(TESTURL);
 CHmacTest::CHmacTest() :
   CcTest("CHmacTest")
 {
+  appendTestMethod("Test example from github", &CHmacTest::testNetExample);
   appendTestMethod("Test sha256 algorithm", &CHmacTest::testSha256);
 }
 
@@ -44,7 +45,22 @@ CHmacTest::~CHmacTest()
 
 const CcString c_sTestString1("Hallo");                                           //!< Test data from SslHmac
 const CcString c_sTestSecret1("0");                                               //!< Test data from SslHmac
-const CcString c_sTestResult1("927d1f23f16ae8ee5258a26e653f825632758ea7");        //!< Test data from SslHmac
+const CcString c_sTestResultSha256("72eaca7515e838af49876c7f56ea75d84870d08e1e237fc316c597e4abb026d0");        //!< Test data from SslHmac
+const CcString c_sTestResultSha1("927d1f23f16ae8ee5258a26e653f825632758ea7");        //!< Test data from SslHmac
+
+bool CHmacTest::testNetExample()
+{
+  bool bSuccess = false;
+  CcHmac oSha256(EHashType::Sha256);
+  oSha256.setSecretKey("super-secret-key");
+  oSha256.generateByteArray(CcByteArray("Hello World!", sizeof("Hello World!")-1));
+  CcString sString = oSha256.getHexString();
+  if (sString == "4b393abced1c497f8048860ba1ede46a23f1ff5209b18e9c428bddfbb690aad8")
+  {
+    bSuccess = true;
+  }
+  return bSuccess;
+}
 
 bool CHmacTest::testSha256()
 {
@@ -52,9 +68,10 @@ bool CHmacTest::testSha256()
   CcHmac oSha256(EHashType::Sha256);
   oSha256.setSecretKey(c_sTestSecret1);
   oSha256.generateByteArray(c_sTestString1);
-  if (oSha256.getHexString() != c_sTestResult1)
+  CcString sString = oSha256.getHexString();
+  if (sString == c_sTestResultSha256)
   {
-    bSuccess = false;
+    bSuccess = true;
   }
   return bSuccess;
 }

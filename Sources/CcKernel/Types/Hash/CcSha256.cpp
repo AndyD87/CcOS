@@ -62,27 +62,13 @@ const uint32 CcSha256::c_aK[64] = {
 CcSha256::CcSha256() :
   m_oResult((size_t)32)
 {
-  m_aState[0] = c_aInitState[0];
-  m_aState[1] = c_aInitState[1];
-  m_aState[2] = c_aInitState[2];
-  m_aState[3] = c_aInitState[3];
-  m_aState[4] = c_aInitState[4];
-  m_aState[5] = c_aInitState[5];
-  m_aState[6] = c_aInitState[6];
-  m_aState[7] = c_aInitState[7];
+  initValues();
 }
 
 CcSha256::CcSha256(const CcByteArray& oInputData) :
   m_oResult((size_t)32)
 {
-  m_aState[0] = c_aInitState[0];
-  m_aState[1] = c_aInitState[1];
-  m_aState[2] = c_aInitState[2];
-  m_aState[3] = c_aInitState[3];
-  m_aState[4] = c_aInitState[4];
-  m_aState[5] = c_aInitState[5];
-  m_aState[6] = c_aInitState[6];
-  m_aState[7] = c_aInitState[7];
+  initValues();
   generateByteArray(oInputData);
 }
 
@@ -112,6 +98,7 @@ CcSha256& CcSha256::operator=(const CcString& sString)
 
 CcSha256& CcSha256::generate(const void* pcData, size_t uiLen)
 {
+  initValues();
   return finalize(pcData, uiLen);
 }
 
@@ -189,6 +176,19 @@ void CcSha256::setMidstate(const CcByteArray& oMidstate, size_t uiLength)
     m_aState[i] = uiTemp;
   }
   m_uiLength = uiLength;
+}
+
+void CcSha256::initValues()
+{
+  m_uiLength = 0;
+  m_aState[0] = c_aInitState[0];
+  m_aState[1] = c_aInitState[1];
+  m_aState[2] = c_aInitState[2];
+  m_aState[3] = c_aInitState[3];
+  m_aState[4] = c_aInitState[4];
+  m_aState[5] = c_aInitState[5];
+  m_aState[6] = c_aInitState[6];
+  m_aState[7] = c_aInitState[7];
 }
 
 uint32 CcSha256::doRor32(uint32 word, unsigned int shift)

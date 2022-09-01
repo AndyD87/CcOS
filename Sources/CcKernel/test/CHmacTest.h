@@ -45,5 +45,6 @@ public:
   virtual ~CHmacTest();
 
 private:
+  bool testNetExample();
   bool testSha256();
 };

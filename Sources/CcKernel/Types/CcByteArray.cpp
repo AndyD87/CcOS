@@ -276,11 +276,7 @@ size_t CcByteArray::write(const void* pBuffer, size_t uSize, size_t uiOffset)
 {
   if (uSize + uiOffset <= CcVector::size())
   {
-    const char* pcBuffer = static_cast<const char*>(pBuffer);
-    for (size_t i = 0; i < uSize; i++)
-    {
-      at(uiOffset+i) = pcBuffer[i];
-    }
+    CcStatic::memcpy(getArray(uiOffset), pBuffer, uSize);
   }
   else
   {

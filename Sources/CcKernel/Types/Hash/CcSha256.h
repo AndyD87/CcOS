@@ -104,6 +104,7 @@ public:
   {return m_aState;}
 
 private:
+  void initValues();
   static uint32 doRor32(uint32 word, unsigned int shift);
   void doTransform(const uchar* input);
   static inline uint32 s0(uint32 x)
