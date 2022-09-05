@@ -26,6 +26,7 @@
 #include "Hash/CcCrc32.h"
 #include "Hash/CcMd5.h"
 #include "Hash/CcSha256.h"
+#include "Hash/CcSha1.h"
 #include "Hash/CcSqlEnDecode.h"
 #include "CcGlobalStrings.h"
 #include "CcStatic.h"
@@ -135,6 +136,10 @@ bool CcHash::setHashType(EHashType eHashType)
       break;
     case EHashType::Sha256:
       CCNEW(m_pHashObject, CcSha256);
+      m_eHashType = eHashType;
+      break;
+    case EHashType::Sha1:
+      CCNEW(m_pHashObject, CcSha1);
       m_eHashType = eHashType;
       break;
     case EHashType::SqlEnDecode:

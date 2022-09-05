@@ -38,9 +38,15 @@ CcHmac::CcHmac(EHashType eType) :
   setHashAlgorithm(eType);
 }
 
+CcHmac::CcHmac(IHash* pHash) :
+  m_pHash(pHash),
+  m_bOwner(false)
+{
+}
+
 CcHmac::~CcHmac()
 {
-  CCDELETE(m_pHash);
+  if(m_bOwner) CCDELETE(m_pHash);
 }
 
 bool CcHmac::operator==(const CcHmac& oToCompare) const
@@ -98,7 +104,7 @@ CcHmac& CcHmac::append(const void *pData, size_t uiSize)
 CcStatus CcHmac::setHashAlgorithm(EHashType eAlgorithm)
 {
   CcStatus bRet = false;
-  CCDELETE(m_pHash);
+  if(m_bOwner) CCDELETE(m_pHash);
   CCNEWTYPE(pHash, CcHash);
   if (pHash->setHashType(eAlgorithm))
   {
@@ -121,7 +127,6 @@ CcHmac& CcHmac::finalize(const void *pData, size_t uiSize)
   CcByteArray ihash(getHashSize());
   CcByteArray ohash(getHashSize());
   size_t sz;
-  int i;
 
   CcStatic::memset(k.getArray(), 0, sizeof(k));
   CcStatic::memset(k_ipad.getArray(), 0x36, getBlockSize());
@@ -139,7 +144,7 @@ CcHmac& CcHmac::finalize(const void *pData, size_t uiSize)
     k.write(m_oSecret.getArray(), m_oSecret.size());
   }
 
-  for (i = 0; i < getBlockSize(); i++) 
+  for (size_t i = 0; i < getBlockSize(); i++) 
   {
     k_ipad[i] ^= k[i];
     k_opad[i] ^= k[i];
@@ -161,7 +166,6 @@ void CcHmac::initValues()
 
 void CcHmac::doHmac(CcByteArray& rPad, const void *pData, size_t uiSize, CcByteArray& oOut)
 {
-  void* result;
   CcByteArray oBuf;
   oBuf.resize(rPad.size() + uiSize);
 
