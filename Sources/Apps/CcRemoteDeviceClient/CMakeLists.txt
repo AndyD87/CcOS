@@ -24,7 +24,6 @@ elseif(${CCOS_APPS_CCREMOTEDEVICECLIENT_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
                                 CcKernel
-                                CcGui
                                 CcRemoteDevice
   )
 

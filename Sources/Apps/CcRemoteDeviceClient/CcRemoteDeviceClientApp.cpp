@@ -42,7 +42,7 @@ public:
 };
 
 CcRemoteDeviceClientApp::CcRemoteDeviceClientApp(int argc, char** argv) :
-  CcGuiApplication(CcRemoteDeviceGlobals::Names::ClientAppName),
+  CcApp(CcRemoteDeviceGlobals::Names::ClientAppName),
   m_oArguments({}, argc, argv)
 {
   CCNEW(m_pPrivate, CPrivate);
@@ -57,23 +57,8 @@ CcRemoteDeviceClientApp::~CcRemoteDeviceClientApp()
 
 void CcRemoteDeviceClientApp::run()
 {
-  if (m_bNoGui)
-  {
-    // Start cli
     CcKernel::initCLI();
     CcConsole::writeLine(CcRemoteDeviceGlobals::Names::ClientAppName + " started");
-  }
-  else
-  {
-    // Start gui
-    CcKernel::deinitCLI();
-    CcGuiApplication::run();
-  }
-}
-
-void CcRemoteDeviceClientApp::onWindowLoaded()
-{
-  // Gui started, setup window.
 }
 
 void CcRemoteDeviceClientApp::parseArgs()
@@ -85,10 +70,6 @@ void CcRemoteDeviceClientApp::parseArgs()
       if (m_oArguments[uiArgument] == "-h")
       {
         printHelp();
-      }
-      else if (m_oArguments[uiArgument] == "--console")
-      {
-        m_bNoGui = true;
       }
       else
       {

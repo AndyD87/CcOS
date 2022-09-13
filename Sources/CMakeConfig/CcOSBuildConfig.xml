@@ -136,22 +136,6 @@
     </Platforms>
   </Project>
   <Project>
-    <Name>CcGui</Name>
-    <Version></Version>
-    <Active>1</Active>
-    <Prebuild>false</Prebuild>
-    <Static>true</Static>
-    <StaticRuntime>true</StaticRuntime>
-    <Dependencies>
-      <Dependency>CcKernel</Dependency>
-    </Dependencies>
-    <Platforms>
-      <Platform>Windows</Platform>
-      <Platform>Linux</Platform>
-      <Platform>Generic</Platform>
-    </Platforms>
-  </Project>
-  <Project>
     <Name>CcMedia</Name>
     <Version></Version>
     <Active>1</Active>
@@ -636,7 +620,6 @@
       <Static>false</Static>
       <StaticRuntime>false</StaticRuntime>
       <Dependencies>
-        <Dependency>CcGui</Dependency>
         <Dependency>CcRemoteDevice</Dependency>
       </Dependencies>
       <Platforms>

@@ -24,14 +24,14 @@
  **/
 #pragma once
 
-#include "CcGuiApplication.h"
+#include "CcApp.h"
 #include "CcArguments.h"
 
 /**
  * @brief CcRemoteDeviceClientApp implementation
  *        Main class wich is loaded to start Application.
  */
-class CcRemoteDeviceClientApp : public CcGuiApplication
+class CcRemoteDeviceClientApp : public CcApp
 {
 public:
   /**
@@ -46,14 +46,7 @@ public:
    */
   virtual ~CcRemoteDeviceClientApp();
 
-  /**
-   * @brief Disable gui, it has to be done befor start
-   */
-  void setNoGui()
-  { m_bNoGui = true; }
-
   virtual void run() override;
-  virtual void onWindowLoaded() override;
 
 private:
   class CPrivate;
@@ -63,5 +56,4 @@ private:
 private:
   CPrivate*             m_pPrivate = nullptr;  //!< Private data for applicaton.
   CcArguments           m_oArguments;
-  bool                  m_bNoGui = false;
 };
