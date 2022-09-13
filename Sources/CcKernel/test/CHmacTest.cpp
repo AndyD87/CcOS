@@ -37,6 +37,7 @@ CHmacTest::CHmacTest() :
 {
   appendTestMethod("Test example from github", &CHmacTest::testNetExample);
   appendTestMethod("Test sha1 algorithm", &CHmacTest::testSha1);
+  appendTestMethod("Test known sha1 values", &CHmacTest::testSha1Known);
   appendTestMethod("Test sha256 algorithm", &CHmacTest::testSha256);
   appendTestMethod("Test MD5 algorithm", &CHmacTest::testMD5);
 }
@@ -73,6 +74,21 @@ bool CHmacTest::testSha1()
   oSha256.generateByteArray(c_sTestString1);
   CcString sString = oSha256.getHexString();
   if (sString == c_sTestResultSha1)
+  {
+    bSuccess = true;
+  }
+  return bSuccess;
+}
+
+bool CHmacTest::testSha1Known()
+{
+  bool bSuccess = false;
+  CcHmac oSha256(EHashType::Sha1);
+  oSha256.setSecretKey("TestKeyGenerate");
+  uint64 uiCounter = 5648002115885334528;
+  oSha256.finalize(&uiCounter, sizeof(uiCounter));
+  CcString sString = oSha256.getHexString();
+  if (sString == "34db38fa83015a903e0dbea179c1c1841485c70b")
   {
     bSuccess = true;
   }

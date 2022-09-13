@@ -48,7 +48,7 @@ CcOtp& CcOtp::finalize(const void* pData, size_t uiSize)
 {
   if(uiSize == 8)
   {
-    m_oHash.finalize(pData, sizeof(uiSize));
+    m_oHash.finalize(pData, uiSize);
 
     m_oResult = m_oHash.getValue();
   }
