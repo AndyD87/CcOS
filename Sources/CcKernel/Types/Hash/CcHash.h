@@ -72,7 +72,7 @@ public: // types
     {}
 
     bool operator==(const CHashCreateDefinition& oToCompare) const
-    { return eType == oToCompare.eType && oToCompare.pCreate == oToCompare.pCreate; }
+    { return eType == oToCompare.eType && pCreate == oToCompare.pCreate; }
 
     EHashType   eType;
     THashCreate pCreate;

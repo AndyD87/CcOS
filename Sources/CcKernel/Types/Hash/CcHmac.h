@@ -42,8 +42,15 @@ public:
 
   /**
    * @brief Constructor with predefined Hashing type
+   * @param eHashType: Target Hashtype to use
    */
   CcHmac(EHashType eHashType);
+  
+  /**
+   * @brief Constructor with predefined Hashing type
+   * @param pHashAlgorithm: Predefined Hash algorithm to user
+   */
+  CcHmac(IHash* pHashAlgorithm);
   
   /**
    * @brief ~CcHmac
@@ -105,7 +112,9 @@ public:
    * @return true if data was set successfully
    */
   bool setSecretKey(const CcString& sSecretString);
-
+  
+  virtual IHash& setKey(const void* pcData, size_t uiLen)
+  { m_oSecret.set(static_cast<const char*>(pcData), uiLen); }
   /**
    * @brief Set target Hash Algorthim for this hmac
    * @param eAlgorithm: Algorithm defined as enum
@@ -129,6 +138,7 @@ private: // Types
   class CPrivate;
 private: // Member
   IHash*      m_pHash = nullptr;
+  bool        m_bOwner = true;
   CcByteArray m_oSecret;
   CcByteArray m_oResult;
   EHashType   m_eHashType = EHashType::Unknown;
