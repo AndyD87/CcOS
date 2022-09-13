@@ -15,4 +15,4 @@ CMakeLists.txt.user*
 QtCreatorDeployment.txt
 
 # Generated version files
-#endif /*.rc
+*.rc

@@ -161,7 +161,6 @@ void CcHmac::initValues()
 
 void CcHmac::doHmac(CcByteArray& rPad, const void *pData, size_t uiSize, CcByteArray& oOut)
 {
-  void* result;
   CcByteArray oBuf;
   oBuf.resize(rPad.size() + uiSize);
 
