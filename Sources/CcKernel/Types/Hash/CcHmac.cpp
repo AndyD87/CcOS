@@ -128,7 +128,7 @@ CcHmac& CcHmac::finalize(const void *pData, size_t uiSize)
   CcByteArray ohash(getHashSize());
   size_t sz;
 
-  CcStatic::memset(k.getArray(), 0, sizeof(k));
+  CcStatic::memset(k.getArray(), 0, getBlockSize());
   CcStatic::memset(k_ipad.getArray(), 0x36, getBlockSize());
   CcStatic::memset(k_opad.getArray(), 0x5c, getBlockSize());
 

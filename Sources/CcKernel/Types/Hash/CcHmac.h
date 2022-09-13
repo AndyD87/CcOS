@@ -114,7 +114,8 @@ public:
   bool setSecretKey(const CcString& sSecretString);
   
   virtual IHash& setKey(const void* pcData, size_t uiLen)
-  { m_oSecret.set(static_cast<const char*>(pcData), uiLen); }
+  { m_oSecret.set(static_cast<const char*>(pcData), uiLen); return *this; }
+
   /**
    * @brief Set target Hash Algorthim for this hmac
    * @param eAlgorithm: Algorithm defined as enum

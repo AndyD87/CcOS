@@ -58,6 +58,7 @@
 #include "CGenericMallocTest.h"
 #include "CWorkerTest.h"
 #include "CBoardSupportTest.h"
+#include "COtpTest.h"
 
 #include "CcTestFramework.h"
 #include "CcMemoryMonitor.h"
@@ -96,6 +97,7 @@ int main(int iArgc, char** ppArgv)
   CcTestFramework_addTest(CUuidTest);
   CcTestFramework_addTest(CHashTest);
   CcTestFramework_addTest(CHmacTest);
+  CcTestFramework_addTest(COtpTest);
   CcTestFramework_addTest(CStringTest);
   CcTestFramework_addTest(CStringUtilTest);
   CcTestFramework_addTest(CPasswordTest);

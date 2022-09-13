@@ -53,7 +53,7 @@ public:
   virtual const CcByteArray& getValue() override
   { return m_oResult; }
   virtual IHash& setKey(const void* pcData, size_t uiLen)
-  { m_oHash.setKey(pcData, uiLen); }
+  { m_oHash.setKey(pcData, uiLen); return *this;}
 
   virtual CcOtp& generate(const void* pData, size_t uiSize) override;
   virtual CcOtp& append(const void* pData, size_t uiSize) override;
@@ -66,6 +66,11 @@ public:
   { return finalize(oByteArray.getArray(), oByteArray.size());}
   inline CcOtp& finalize()
   { return finalize(nullptr, 0);}
+
+  CcOtp& finalizeCurrentTime();
+  CcOtp& finalizeCounter(uint64 uiCounter);
+
+  CcString getDigits(size_t uiSize);
 
 private:
   CcByteArray   m_oResult;    //!< Red value
