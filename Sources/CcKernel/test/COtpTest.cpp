@@ -26,6 +26,7 @@
 #include "Hash/CcOtp.h"
 #include "CcStringUtil.h"
 #include "CcByteArray.h"
+#include "CcKernel.h"
 
 //! Define a test url to be parsed successfully
 #define TESTURL "https://username:password@hostname.dom:80/Path/to"
@@ -36,6 +37,7 @@ COtpTest::COtpTest() :
   CcTest("COtpTest")
 {
   appendTestMethod("Test basic", &COtpTest::testBasic);
+  appendTestMethod("Test time based", &COtpTest::testTOTP);
 }
 
 COtpTest::~COtpTest()
@@ -66,5 +68,32 @@ bool COtpTest::testBasic()
     CcTestFramework::writeError("Target6dig:  627585");
     CcTestFramework::writeError("Target8dig:  61627585");
   }
+  return bSuccess;
+}
+
+bool COtpTest::testTOTP()
+{
+  bool bSuccess = false;
+  CcDateTime oTime = CcKernel::getDateTime();
+  uint64 uiTimeStamp = oTime.getTimestampS();
+
+  CcString oTestString("TestKeyGenerate");
+
+  CcOtp oTotpTest;
+  oTotpTest.setKey(oTestString.getCharString(), oTestString.length());
+  oTotpTest.finalizeCurrentTime();
+
+  CcOtp oHotpTest;
+  oHotpTest.setKey(oTestString.getCharString(), oTestString.length());
+  oHotpTest.finalizeCounter((uiTimeStamp - CcOtp::s_DefaultBaseTime) / CcOtp::s_DefaultTimesteps);
+
+  CcTestFramework::writeInfo("TOTP Result:  " + oTotpTest.getDigits(6));
+  CcTestFramework::writeInfo("HOTP Result:  " + oHotpTest.getDigits(6));
+
+  if (oTotpTest.getValue() == oHotpTest.getValue())
+  {
+    bSuccess = true;
+  }
+
   return bSuccess;
 }

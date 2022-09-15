@@ -48,6 +48,8 @@ private:
   bool test1();
   bool baseEncodings();
   bool base64Known();
+  bool base32();
+  bool base32hex();
   bool testStringConversions();
   bool testInteger();
   bool testUnsignedInteger();

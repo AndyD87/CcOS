@@ -1756,3 +1756,13 @@ CcString operator+(const char* pcL, const CcByteArray& oByteArray)
   sString.append(oByteArray);
   return sString;
 }
+
+
+void CcString::setLength(size_t uiLength)
+{
+  if (uiLength <= m_uiReserved - 1)
+  {
+    m_uiLength = uiLength;
+    m_pBuffer[m_uiLength] = 0;
+  }
+}

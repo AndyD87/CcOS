@@ -67,11 +67,16 @@ public:
   inline CcOtp& finalize()
   { return finalize(nullptr, 0);}
 
-  CcOtp& finalizeCurrentTime();
+  CcOtp& finalizeCurrentTime()
+  { return finalizeTotp(s_DefaultTimesteps, s_DefaultBaseTime); }
   CcOtp& finalizeCounter(uint64 uiCounter);
+  CcOtp& finalizeTotp(uint64 uiTimesteps, int64 uiBaseTime);
 
   CcString getDigits(size_t uiSize);
 
+public:
+  static const int64  s_DefaultBaseTime;
+  static const uint64 s_DefaultTimesteps;
 private:
   CcByteArray   m_oResult;    //!< Red value
   CcHmac        m_oHash;

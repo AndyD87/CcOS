@@ -35,6 +35,8 @@ CStringTest::CStringTest() :
   appendTestMethod("Basic test", &CStringTest::test1);
   appendTestMethod("Test encodings", &CStringTest::baseEncodings);
   appendTestMethod("Test known base64 strings", &CStringTest::base64Known);
+  appendTestMethod("Test base32 encode/decode", &CStringTest::base32);
+  appendTestMethod("Test base32hex encode/decode", &CStringTest::base32hex);
   appendTestMethod("Test conversion Bytes<>String", &CStringTest::testStringConversions);
   appendTestMethod("Test numbers", &CStringTest::testInteger);
   appendTestMethod("Test unsigned", &CStringTest::testUnsignedInteger);
@@ -133,6 +135,69 @@ bool CStringTest::base64Known()
      oBase64Encoded == pResultString)
   {
     bSuccess = true;
+  }
+  return bSuccess;
+}
+
+bool CStringTest::base32()
+{
+  bool bSuccess = false;
+  static const char* pTestString = "Hallo Welt! Heute ist ein toller Tag. Viel Erfolg!  ";
+  static const char* pResultString = "JBQWY3DPEBLWK3DUEEQEQZLVORSSA2LTOQQGK2LOEB2G63DMMVZCAVDBM4XCAVTJMVWCARLSMZXWYZZBEAQA====";
+  CcByteArray oTestData(pTestString);
+  CcString oBase32Encoded = CcStringUtil::encodeBase32(oTestData);
+  CcByteArray oBase32Decoded = CcStringUtil::decodeBase32(oBase32Encoded);
+  if (oBase32Encoded == pResultString &&
+      oBase32Decoded == pTestString)
+  {
+    bSuccess = true;
+    for (size_t uiSize = 0; uiSize < 128; uiSize++)
+    {
+      CcByteArray oTestString;
+      for (size_t uiGenSize = 0; uiGenSize < uiSize; uiGenSize++)
+      {
+        // APpend test pattern U=0x55;
+        oTestString.append('U');
+      }
+      CcByteArray oResultString = CcStringUtil::decodeBase32(CcStringUtil::encodeBase32(oTestString));
+      if (oTestString != oResultString)
+      {
+        bSuccess = false;
+        break;
+      }
+    }
+  }
+  return bSuccess;
+}
+
+bool CStringTest::base32hex()
+{
+  bool bSuccess = false;
+  static const char* pTestString = "Hallo Welt! Heute ist ein toller Tag. Viel Erfolg!  ";
+  static const char* pResultString = "91GMOR3F41BMAR3K44G4GPBLEHII0QBJEGG6AQBE41Q6UR3CCLP20L31CSN20LJ9CLM20HBICPNMOPP140G0====";
+  CcByteArray oTestData(pTestString);
+  CcString oBase32Encoded = CcStringUtil::encodeBase32Hex(oTestData);
+  CcByteArray oBase32Decoded = CcStringUtil::decodeBase32Hex(oBase32Encoded);
+  if (oBase32Encoded == pResultString &&
+      oBase32Decoded == pTestString)
+  {
+    bSuccess = true;
+    bSuccess = true;
+    for (size_t uiSize = 0; uiSize < 128; uiSize++)
+    {
+      CcByteArray oTestString;
+      for (size_t uiGenSize = 0; uiGenSize < uiSize; uiGenSize++)
+      {
+        // APpend test pattern U=0x55;
+        oTestString.append('U');
+      }
+      CcByteArray oResultString = CcStringUtil::decodeBase32Hex(CcStringUtil::encodeBase32Hex(oTestString));
+      if (oTestString != oResultString)
+      {
+        bSuccess = false;
+        break;
+      }
+    }
   }
   return bSuccess;
 }

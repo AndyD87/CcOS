@@ -315,11 +315,43 @@ public:
   static CcString getOctalStringFromByte(char uiByte);
 
   /**
+   * @brief Encode byte array and generate Base32 string
+   *        The used alphabet: ABCDEFGHIJKLMNOPQRSTUVWXYZ234567
+   * @param toEncode: Binary data to encode
+   * @return Encoded Base32 String in Upper case
+   */
+  static CcString encodeBase32(const CcByteArray& toEncode);
+
+  /**
+   * @brief Encode byte array and generate Base32 string
+   *        The used alphabet: 0123456789ABCDEFGHIJKLMNOPQRSTUV
+   * @param toEncode: Binary data to encode
+   * @return Encoded Base32 String in Upper case
+   */
+  static CcString encodeBase32Hex(const CcByteArray& toEncode);
+
+  /**
    * @brief Encode byte array and generate Base64 string
    * @param toEncode: Binary data to encode
    * @return Encoded Base64 String
    */
   static CcString encodeBase64(const CcByteArray& toEncode);
+
+  /**
+   * @brief Decode Base32 string to binary data.
+   *        The used alphabet: ABCDEFGHIJKLMNOPQRSTUVWXYZ234567
+   * @param toDecode: String to decode
+   * @return Decoded data as binary array
+   */
+  static CcByteArray decodeBase32(const CcString& toDecode);
+
+  /**
+   * @brief Decode Base32 string to binary data.
+   *        The used alphabet: 0123456789ABCDEFGHIJKLMNOPQRSTUV
+   * @param toDecode: String to decode
+   * @return Decoded data as binary array
+   */
+  static CcByteArray decodeBase32Hex(const CcString& toDecode);
 
   /**
    * @brief Decode Base64 string to binary data.
@@ -544,4 +576,7 @@ private:
   static char getBase64EncodedUrlStringChar(char cIn);
   static char getBase64DecodedStringChar(char cIn);
   static char getBase64DecodedUrlStringChar(char cIn);
+  static CcString getBase32Encoded(const CcByteArray& toEncode);
+  static CcByteArray getBase32Decoded(const CcString& ToDecode);
+
 };

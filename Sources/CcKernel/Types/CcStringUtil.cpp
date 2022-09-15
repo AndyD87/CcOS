@@ -601,6 +601,44 @@ CcString CcStringUtil::getOctalStringFromByte(char uiByte)
   return sRet;
 }
 
+CcString CcStringUtil::encodeBase32(const CcByteArray& toEncode)
+{
+  CcString sEncoded = getBase32Encoded(toEncode);
+  for (size_t uiPos = 0; uiPos < sEncoded.length(); uiPos++)
+  {
+    if (sEncoded[uiPos] < 26)
+    {
+      sEncoded[uiPos] = 'A' + sEncoded[uiPos];
+    }
+    else
+    {
+      sEncoded[uiPos] = '2' + (sEncoded[uiPos] - 26);
+    }
+  }
+  size_t uiMissing = sEncoded.length() % 8;
+  while (uiMissing-- > 0) sEncoded.append('=');
+  return sEncoded;
+}
+
+CcString CcStringUtil::encodeBase32Hex(const CcByteArray& toEncode)
+{
+  CcString sEncoded = getBase32Encoded(toEncode);
+  for (size_t uiPos = 0; uiPos < sEncoded.length(); uiPos++)
+  {
+    if (sEncoded[uiPos] < 10)
+    {
+      sEncoded[uiPos] = '0' + sEncoded[uiPos];
+    }
+    else
+    {
+      sEncoded[uiPos] = 'A' + (sEncoded[uiPos] - 10);
+    }
+  }
+  size_t uiMissing = sEncoded.length() % 8;
+  while (uiMissing-- > 0) sEncoded.append('=');
+  return sEncoded;
+}
+
 CcString CcStringUtil::encodeBase64(const CcByteArray& toEncode)
 {
   char c1, c2, c3, c4;
@@ -652,6 +690,60 @@ CcString CcStringUtil::encodeBase64(const CcByteArray& toEncode)
       break;
   }
   return sRet;
+}
+
+CcByteArray CcStringUtil::decodeBase32(const CcString& toDecode)
+{
+  CcString sConverted(toDecode);
+  for (size_t uiPos = 0; uiPos < toDecode.length(); uiPos++)
+  {
+    if (sConverted[uiPos] == '=')
+    {
+      break;
+    }
+    else if (sConverted[uiPos] <= '7')
+    {
+      sConverted[uiPos] = (sConverted[uiPos] - '2') + 26;
+    }
+    else if (sConverted[uiPos] <= 'Z')
+    {
+      sConverted[uiPos] = sConverted[uiPos] - 'A';
+    }
+    else if (sConverted[uiPos] <= 'z')
+    {
+      sConverted[uiPos] = sConverted[uiPos] - 'a';
+    }
+  }
+  size_t uiMissing = sConverted.length() % 8;
+  while (uiMissing-- > 0) sConverted.append('=');
+  return getBase32Decoded(sConverted);
+}
+
+CcByteArray CcStringUtil::decodeBase32Hex(const CcString& toDecode)
+{
+  CcString sConverted(toDecode);
+  for (size_t uiPos = 0; uiPos < toDecode.length(); uiPos++)
+  {
+    if (sConverted[uiPos] == '=')
+    {
+      break;
+    }
+    else if (sConverted[uiPos] <= '9')
+    {
+      sConverted[uiPos] = sConverted[uiPos] - '0';
+    }
+    else if (sConverted[uiPos] <= 'A')
+    {
+      sConverted[uiPos] = (sConverted[uiPos] - 'A') + 10;
+    }
+    else if (sConverted[uiPos] <= 'a')
+    {
+      sConverted[uiPos] = (sConverted[uiPos] - 'a') + 10;
+    }
+  }
+  size_t uiMissing = sConverted.length() % 8;
+  while (uiMissing-- > 0) sConverted.append('=');
+  return getBase32Decoded(sConverted);
 }
 
 CcByteArray CcStringUtil::decodeBase64(const CcString& toDecode)
@@ -1733,4 +1825,140 @@ CcByteArray CcStringUtil::decodeBaseX(const CcString& toDecode, const char* pcAl
     oReturn.append('\0');
   oReturn.append(oDecoded);
   return oReturn;
+}
+
+CcString CcStringUtil::getBase32Encoded(const CcByteArray& toEncode)
+{
+  CcString sEncoded;
+  for (size_t uiOuterIndex = 0; uiOuterIndex < toEncode.size(); uiOuterIndex += 5)
+  {
+    bool bNextIndexAvailable = true;
+    for (size_t uiInnerIndex = 0; uiInnerIndex < 8 && bNextIndexAvailable; uiInnerIndex++)
+    {
+      char iCurrentValue = 0;
+      switch (uiInnerIndex % 8)
+      {
+      case 0:
+        iCurrentValue = (toEncode[uiOuterIndex] & 0xf8) >> 3;
+        break;
+      case 1:
+        iCurrentValue = (toEncode[uiOuterIndex] & 0x07) << 2;
+        if (uiOuterIndex + 1 < toEncode.size())
+        {
+          iCurrentValue |= (toEncode[uiOuterIndex + 1] & 0xc0) >> 6;
+        }
+        else
+        {
+          bNextIndexAvailable = false;
+        }
+        break;
+      case 2:
+        iCurrentValue = (toEncode[uiOuterIndex + 1] & 0x3E) >> 1;
+        break;
+      case 3:
+        iCurrentValue = (toEncode[uiOuterIndex + 1] & 0x01) << 4;
+        if (uiOuterIndex + 2 < toEncode.size())
+        {
+          iCurrentValue |= (toEncode[uiOuterIndex + 2] & 0xf0) >> 4;
+        }
+        else
+        {
+          bNextIndexAvailable = false;
+        }
+        break;
+      case 4:
+        iCurrentValue = (toEncode[uiOuterIndex + 2] & 0x0f) << 1;
+        if (uiOuterIndex + 3 < toEncode.size())
+        {
+          iCurrentValue |= (toEncode[uiOuterIndex + 3] & 0x80) >> 7;
+        }
+        else
+        {
+          bNextIndexAvailable = false;
+        }
+        break;
+      case 5:
+        iCurrentValue = (toEncode[uiOuterIndex + 3] & 0x7c) >> 2;
+        break;
+      case 6:
+        iCurrentValue = (toEncode[uiOuterIndex + 3] & 0x03) << 3;
+        if (uiOuterIndex + 4 < toEncode.size())
+        {
+          iCurrentValue |= (toEncode[uiOuterIndex + 4] & 0xe0) >> 5;
+        }
+        else
+        {
+          bNextIndexAvailable = false;
+        }
+        break;
+      case 7:
+        iCurrentValue = (toEncode[uiOuterIndex + 4] & 0x1f);
+        break;
+      }
+      sEncoded.append(iCurrentValue);
+    }
+  }
+  return sEncoded;
+}
+
+CcByteArray CcStringUtil::getBase32Decoded(const CcString& ToDecode)
+{
+  CcString sEncoded;
+  CcByteArray oData((ToDecode.length() / 8) * 5);
+  for (size_t uiPos = 0, uiOutPos=0; uiPos + 7 < ToDecode.length(); uiPos += 8, uiOutPos +=5)
+  {
+    // Byte 1
+    if (ToDecode[uiPos + 0] != '=' && ToDecode[uiPos + 1] != '=')
+    {
+      oData[uiOutPos + 0] = ((ToDecode[uiPos + 0] & 0x1f) << 3) | ((ToDecode[uiPos + 1] & 0x1c) >> 2);
+    }
+    else if (ToDecode[uiPos + 0] != '=')
+    {
+      oData.resize(uiOutPos);
+      break;
+    }
+
+    // Bye 2
+    if (ToDecode[uiPos + 1] != '=' && ToDecode[uiPos + 2] != '=' && ToDecode[uiPos + 3] != '=')
+    {
+      oData[uiOutPos + 1] = ((ToDecode[uiPos + 1] & 0x03) << 6) | ((ToDecode[uiPos + 2] & 0x1f) << 1) | ((ToDecode[uiPos + 3] & 0x10) >> 4);
+    }
+    else if (ToDecode[uiPos + 1] != '=')
+    {
+      oData.resize(uiOutPos + 1);
+      break;
+    }
+
+    if (ToDecode[uiPos + 3] != '=' && ToDecode[uiPos + 4] != '=')
+    {
+      oData[uiOutPos + 2] = ((ToDecode[uiPos + 3] & 0x0f) << 4) | ((ToDecode[uiPos + 4] & 0x1e) >> 1);
+    }
+    else if (ToDecode[uiPos + 3] != '=')
+    {
+      oData.resize(uiOutPos + 2);
+      break;
+    }
+
+    if (ToDecode[uiPos + 4] != '=' && ToDecode[uiPos + 5] != '=' && ToDecode[uiPos + 6] != '=')
+    {
+      oData[uiOutPos + 3] = ((ToDecode[uiPos + 4] & 0x01) << 7) | ((ToDecode[uiPos + 5] & 0x1f) << 2) | ((ToDecode[uiPos + 6] & 0x18) >> 3);
+    }
+    else if (ToDecode[uiPos + 4] != '=')
+    {
+      oData.resize(uiOutPos + 3);
+      break;
+    }
+
+    if (ToDecode[uiPos + 6] != '=' && ToDecode[uiPos + 7] != '=')
+    {
+      oData[uiOutPos + 4] = ((ToDecode[uiPos + 6] & 0x07) << 5) | ((ToDecode[uiPos + 7] & 0x1f) >> 0);
+    }
+    else if (ToDecode[uiPos + 6] != '=')
+    {
+      oData.resize(uiOutPos + 4);
+      break;
+    }
+
+  }
+  return oData;
 }

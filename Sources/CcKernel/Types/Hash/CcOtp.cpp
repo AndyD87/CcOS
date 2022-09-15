@@ -28,6 +28,9 @@
 #include "CcStatic.h"
 #include "CcKernel.h"
 
+const int64 CcOtp::s_DefaultBaseTime = 0;
+const uint64 CcOtp::s_DefaultTimesteps = 30;
+
 CcOtp::CcOtp() :
   m_oHash(EHashType::Sha1),
   m_oResult(static_cast<size_t>(32))
@@ -55,10 +58,18 @@ CcOtp& CcOtp::finalize(const void* pData, size_t uiSize)
   return *this;
 }
 
-CcOtp& CcOtp::finalizeCurrentTime()
+CcOtp& CcOtp::finalizeTotp(uint64 uiTimesteps, int64 uiBaseTime)
 {
-  uint64 uiCounter = CcKernel::getDateTime().getTimestampUs();
-  return finalize(&uiCounter, sizeof(uiCounter));
+  uint64 uiCounter = CcKernel::getDateTime().getTimestampS();
+  if (uiTimesteps > 0)
+  {
+    uiCounter = (uiCounter - uiBaseTime) / uiTimesteps;
+    return finalizeCounter(uiCounter);
+  }
+  else
+  {
+    return *this;
+  }
 }
 
 CcOtp& CcOtp::finalizeCounter(uint64 uiCounter)

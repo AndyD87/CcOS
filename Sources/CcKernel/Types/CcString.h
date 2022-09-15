@@ -1422,6 +1422,13 @@ public:
    * @return Handle to this
    */
   CcString& operator=(CcByteArray&& oToMove) NOEXCEPT;
+
+  /**
+   * @brief Set length to a lower value than reserverd - 1.
+   *        The sign on uiLength becomes 0
+   * @param uiLength: New Length of string
+   */
+  void setLength(size_t uiLength);
 #ifdef WINDOWS
 public:
 
