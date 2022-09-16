@@ -31,6 +31,7 @@
 #include "CcServiceSystem.h"
 #include "CcService.h"
 #include "CcShell.h"
+#include "CcShellApp.h"
 
 #include "Ssh/Types.h"
 
@@ -39,7 +40,7 @@ CcSshWorker::CcSshWorker(CcShellApp* pApplication, IIo* pIoStream) :
   m_pApplication(pApplication),
   m_pIoStream(pIoStream)
 {
-
+  m_pApplication->getVersion();
 }
 
 CcSshWorker::~CcSshWorker()

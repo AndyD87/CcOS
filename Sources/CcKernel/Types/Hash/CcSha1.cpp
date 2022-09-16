@@ -29,7 +29,7 @@
 //! Size of data buffer
 #define SHA1_DATASIZE (8*sizeof(uint32))
 #define ROL32(a, n) (((a) << (n)) | ((a) >> (32 - (n))))
-#define W(t)       w[t&0x0F]
+#define W(t)       w[(t)&0x0F]
 
 //! SHA-1 auxiliary functions
 #define CH(x, y, z) (((x) & (y)) | (~(x) & (z)))
@@ -105,7 +105,6 @@ CcSha1& CcSha1::append(const void* pcData, size_t uiLen)
 CcSha1& CcSha1::finalize(const void* pvData, size_t uiLen)
 {
   uint32 i;
-  size_t paddingSize;
   const uchar* pData = static_cast<const uchar*>(pvData);
   while (uiLen > 64)
   {
@@ -118,16 +117,6 @@ CcSha1& CcSha1::finalize(const void* pvData, size_t uiLen)
   //Length of the original message (before padding)
   m_uiLength += uiLen;
   uint64_t totalSize = m_uiLength * 8;
-
-  //Pad the message so that its length is congruent to 56 modulo 64
-  if (uiLen < 56)
-  {
-    paddingSize = 56 - uiLen;
-  }
-  else
-  {
-    paddingSize = 64 + 56 - uiLen;
-  }
 
   CcByteArray aData;
   aData.resize(64, 0);

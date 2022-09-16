@@ -41,7 +41,6 @@ CcShellWorker::CcShellWorker(CcShellApp* pApplication, IIo* pIoStream, bool bRaw
   m_pIoStream(pIoStream),
   m_bRaw(bRaw)
 {
-
 }
 
 CcShellWorker::~CcShellWorker()

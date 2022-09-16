@@ -32,8 +32,8 @@ const int64 CcOtp::s_DefaultBaseTime = 0;
 const uint64 CcOtp::s_DefaultTimesteps = 30;
 
 CcOtp::CcOtp() :
-  m_oHash(EHashType::Sha1),
-  m_oResult(static_cast<size_t>(32))
+  m_oResult(static_cast<size_t>(32)),
+  m_oHash(EHashType::Sha1)
 {
 }
 

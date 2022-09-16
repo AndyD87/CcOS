@@ -238,9 +238,9 @@ namespace CcSsh
     SSH_DISCONNECT_ILLEGAL_USER_NAME              = 15,
   };
 
-  static uint8 IS_OPTIONAL     = 0;
-  static uint8 IS_RECOMMENDED  = 1;
-  static uint8 IS_REQUIRED     = 2;
+  extern const uint8 IS_OPTIONAL   ;
+  extern const uint8 IS_RECOMMENDED;
+  extern const uint8 IS_REQUIRED   ;
 
   typedef struct
   {

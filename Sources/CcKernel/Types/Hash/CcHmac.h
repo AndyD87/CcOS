@@ -113,7 +113,7 @@ public:
    */
   bool setSecretKey(const CcString& sSecretString);
   
-  virtual IHash& setKey(const void* pcData, size_t uiLen)
+  virtual IHash& setKey(const void* pcData, size_t uiLen) override
   { m_oSecret.set(static_cast<const char*>(pcData), uiLen); return *this; }
 
   /**

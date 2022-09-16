@@ -28,6 +28,10 @@
 
 namespace CcSsh
 {
+  const uint8 IS_OPTIONAL     = 0;
+  const uint8 IS_RECOMMENDED  = 1;
+  const uint8 IS_REQUIRED     = 2;
+
   CcByteArray key_exchange::generateSupported()
   {
     CcByteArray oData;

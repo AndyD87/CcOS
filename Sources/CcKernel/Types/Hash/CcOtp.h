@@ -52,7 +52,7 @@ public:
 
   virtual const CcByteArray& getValue() override
   { return m_oResult; }
-  virtual IHash& setKey(const void* pcData, size_t uiLen)
+  virtual IHash& setKey(const void* pcData, size_t uiLen) override
   { m_oHash.setKey(pcData, uiLen); return *this;}
 
   virtual CcOtp& generate(const void* pData, size_t uiSize) override;
