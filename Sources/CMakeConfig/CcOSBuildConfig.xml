@@ -654,7 +654,7 @@
       </Dependencies>
       <Platforms>
         <Platform>Windows</Platform>
-        <!--<Platform>Linux</Platform>-->
+        <Platform>Linux</Platform>
       </Platforms>
     </Project>
   </Directory>
