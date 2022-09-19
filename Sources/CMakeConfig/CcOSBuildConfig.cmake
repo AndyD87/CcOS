@@ -116,6 +116,9 @@ if(WINDOWS)
     if(${COMPONENT} STREQUAL "CcVDisk")
       set(CCOS_APPS_CCVDISK_ACTIVE 4)
     endif()
+    if(${COMPONENT} STREQUAL "CcUsbDriver")
+      set(CCOS_APPS_CCUSBDRIVER_ACTIVE 4)
+    endif()
     endforeach()
   endif()
   ################################################################################
@@ -681,6 +684,11 @@ if(WINDOWS)
         set(CCOS_CCKERNELMODULE_ACTIVE 2)
       endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+    if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+      if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 1)
+        set(CCOS_CCKERNELMODULE_ACTIVE 2)
+      endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 1)
+    endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
   endif(${CCOS_CCKERNELMODULE_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcKernelModule")
@@ -2761,6 +2769,68 @@ if(WINDOWS)
     endif(${CCOS_CCMTP_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_CCMTP_ACTIVE)
 
+  ################################################################################
+  # CcUsbDriver
+  ################################################################################
+  if(NOT DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    set(CCOS_APPS_CCUSBDRIVER_ACTIVE 1)
+  endif(NOT DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+  if(NOT DEFINED CCOS_APPS_CCUSBDRIVER_VERSION)
+    set(CCOS_APPS_CCUSBDRIVER_VERSION 0.0.0.0)
+  endif(NOT DEFINED CCOS_APPS_CCUSBDRIVER_VERSION)
+  if(NOT DEFINED CCOS_APPS_CCUSBDRIVER_PREBUILD)
+    set(CCOS_APPS_CCUSBDRIVER_PREBUILD false)
+  endif(NOT DEFINED CCOS_APPS_CCUSBDRIVER_PREBUILD)
+  if(NOT DEFINED CCOS_APPS_CCUSBDRIVER_STATIC)
+    set(CCOS_APPS_CCUSBDRIVER_STATIC true)
+  endif(NOT DEFINED CCOS_APPS_CCUSBDRIVER_STATIC)
+  if(NOT DEFINED CCOS_APPS_CCUSBDRIVER_STATICRUNTIME)
+    set(CCOS_APPS_CCUSBDRIVER_STATICRUNTIME true)
+  endif(NOT DEFINED CCOS_APPS_CCUSBDRIVER_STATICRUNTIME)
+  # Check if required because of income dependencies
+  if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} EQUAL 1)
+  endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} EQUAL 1)
+  # Check if required because of own dependencies
+  if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} EQUAL 1)
+    if(NOT DEFINED CCOS_CCKERNELMODULE_ACTIVE)
+      message("Disable CcUsbDriver")
+      message("Dependency for CcUsbDriver not solved: CcKernelModule")
+      set(CCOS_APPS_CCUSBDRIVER_ACTIVE 0)
+    elseif(${CCOS_CCKERNELMODULE_ACTIVE} EQUAL 0)
+      message("Disable CcUsbDriver")
+      message("Dependency for CcUsbDriver not enabled but required: CcKernelModule")
+     set(CCOS_APPS_CCUSBDRIVER_ACTIVE 0)
+    endif(NOT DEFINED CCOS_CCKERNELMODULE_ACTIVE)
+  elseif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 1)
+    if(NOT DEFINED CCOS_CCKERNELMODULE_ACTIVE)
+      message(FATAL_ERROR "Dependency for CcUsbDriver not solved: CcKernelModule")
+    elseif(${CCOS_CCKERNELMODULE_ACTIVE} EQUAL 0)
+      message(FATAL_ERROR "Dependency for CcUsbDriver not enabled but required: CcKernelModule")
+    endif(NOT DEFINED CCOS_CCKERNELMODULE_ACTIVE)
+  endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} EQUAL 1)
+  # add project
+  add_subdirectory("${CC_CURRENT_CONFIG_DIR}/Apps/CcUsbDriver")
+  if(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+    if(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "mtp not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_MTP_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_MTP_ACTIVE)
+  if(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+    if(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "wiringPi not allowed on Windows")
+    endif(${CCOS_THIRDPARTY_WIRINGPI_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_THIRDPARTY_WIRINGPI_ACTIVE)
+  if(DEFINED CCOS_MODULES_PLATFORM_RASPBIAN_ACTIVE)
+    if(${CCOS_MODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "Raspbian not allowed on Windows")
+    endif(${CCOS_MODULES_PLATFORM_RASPBIAN_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_MODULES_PLATFORM_RASPBIAN_ACTIVE)
+  if(DEFINED CCOS_CCMTP_ACTIVE)
+    if(${CCOS_CCMTP_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcMtp not allowed on Windows")
+    endif(${CCOS_CCMTP_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_CCMTP_ACTIVE)
+
 endif(WINDOWS)
 ################################################################################
 # Config Check for cmake builds
@@ -2921,6 +2991,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # openssl
@@ -2960,6 +3035,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # mtp
@@ -2999,6 +3079,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # sqlite3
@@ -3033,6 +3118,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # wiringPi
@@ -3067,6 +3157,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcModule
@@ -3246,6 +3341,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcKernel
@@ -3438,6 +3538,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcKernelModule
@@ -3474,6 +3579,11 @@ if(LINUX)
         set(CCOS_CCKERNELMODULE_ACTIVE 2)
       endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 1)
     endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+    if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+      if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 1)
+        set(CCOS_CCKERNELMODULE_ACTIVE 2)
+      endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 1)
+    endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
   endif(${CCOS_CCKERNELMODULE_ACTIVE} EQUAL 1)
   # add project
   add_subdirectory("${CC_CURRENT_CONFIG_DIR}/CcKernelModule")
@@ -3487,6 +3597,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # Raspbian
@@ -3539,6 +3654,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcTestModule
@@ -3591,6 +3711,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcSsl
@@ -3657,6 +3782,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcFtp
@@ -3709,6 +3839,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcShell
@@ -3766,6 +3901,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcTftp
@@ -3818,6 +3958,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcMqtt
@@ -3870,6 +4015,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcMtp
@@ -3936,6 +4086,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcDocuments
@@ -4038,6 +4193,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcDhcp
@@ -4104,6 +4264,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcHttp
@@ -4195,6 +4360,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcMedia
@@ -4261,6 +4431,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcRemoteDevice
@@ -4351,6 +4526,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcBitcoin
@@ -4431,6 +4611,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcTesting
@@ -4483,6 +4668,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcSql
@@ -4535,6 +4725,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcOSBuildConfig
@@ -4601,6 +4796,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcAppInterfaces
@@ -4653,6 +4853,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcKernelModuleInterface
@@ -4705,6 +4910,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcDhcpServer
@@ -4757,6 +4967,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcShellApp
@@ -4823,6 +5038,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcHash
@@ -4875,6 +5095,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcKernelModuleTestDriver
@@ -4927,6 +5152,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcOSBuildConfigApp
@@ -4993,6 +5223,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcOSModuleLoader
@@ -5045,6 +5280,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcOSArgumentsApp
@@ -5111,6 +5351,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcOSResourceApp
@@ -5163,6 +5408,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcRemoteDeviceServer
@@ -5215,6 +5465,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcRemoteDeviceClient
@@ -5267,6 +5522,11 @@ if(LINUX)
       message(FATAL_ERROR "CcVDisk not allowed on Linux")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Linux")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
 endif(LINUX)
 ################################################################################
@@ -5480,6 +5740,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcVDisk not allowed on Generic")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Generic")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcModule
@@ -5789,6 +6054,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcVDisk not allowed on Generic")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Generic")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcKernel
@@ -6111,6 +6381,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcVDisk not allowed on Generic")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Generic")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcMqtt
@@ -6293,6 +6568,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcVDisk not allowed on Generic")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Generic")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcDocuments
@@ -6525,6 +6805,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcVDisk not allowed on Generic")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Generic")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcDhcp
@@ -6721,6 +7006,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcVDisk not allowed on Generic")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Generic")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcTesting
@@ -6903,6 +7193,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcVDisk not allowed on Generic")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Generic")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcDhcpServer
@@ -7085,6 +7380,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcVDisk not allowed on Generic")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Generic")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcHttp
@@ -7306,6 +7606,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcVDisk not allowed on Generic")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Generic")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcRemoteDevice
@@ -7526,6 +7831,11 @@ if(GENERIC)
       message(FATAL_ERROR "CcVDisk not allowed on Generic")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Generic")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
   ################################################################################
   # CcBitcoin
@@ -7736,5 +8046,10 @@ if(GENERIC)
       message(FATAL_ERROR "CcVDisk not allowed on Generic")
     endif(${CCOS_APPS_CCVDISK_ACTIVE} GREATER 0)
   endif(DEFINED CCOS_APPS_CCVDISK_ACTIVE)
+  if(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
+    if(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+      message(FATAL_ERROR "CcUsbDriver not allowed on Generic")
+    endif(${CCOS_APPS_CCUSBDRIVER_ACTIVE} GREATER 0)
+  endif(DEFINED CCOS_APPS_CCUSBDRIVER_ACTIVE)
 
 endif(GENERIC)

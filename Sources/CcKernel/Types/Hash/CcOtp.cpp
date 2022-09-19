@@ -26,7 +26,9 @@
 #include "CcByteArray.h"
 #include "CcString.h"
 #include "CcStatic.h"
-#include "CcKernel.h"
+#ifndef CCKERNEL_MODE
+  #include "CcKernel.h"
+#endif
 
 const int64 CcOtp::s_DefaultBaseTime = 0;
 const uint64 CcOtp::s_DefaultTimesteps = 30;
@@ -60,7 +62,11 @@ CcOtp& CcOtp::finalize(const void* pData, size_t uiSize)
 
 CcOtp& CcOtp::finalizeTotp(uint64 uiTimesteps, int64 uiBaseTime)
 {
+#ifndef CCKERNEL_MODE
   uint64 uiCounter = CcKernel::getDateTime().getTimestampS();
+#else
+  uint64 uiCounter = 0;
+#endif
   if (uiTimesteps > 0)
   {
     uiCounter = (uiCounter - uiBaseTime) / uiTimesteps;
@@ -75,7 +81,7 @@ CcOtp& CcOtp::finalizeTotp(uint64 uiTimesteps, int64 uiBaseTime)
 CcOtp& CcOtp::finalizeCounter(uint64 uiCounter)
 {
   uint64 endianness = 0xdeadbeef;
-  if ((*(const uint8_t *)&endianness) == 0xef) {
+  if ((*(const uint8 *)&endianness) == 0xef) {
     uiCounter = ((uiCounter & 0x00000000ffffffff) << 32) | ((uiCounter & 0xffffffff00000000) >> 32);
     uiCounter = ((uiCounter & 0x0000ffff0000ffff) << 16) | ((uiCounter & 0xffff0000ffff0000) >> 16);
     uiCounter = ((uiCounter & 0x00ff00ff00ff00ff) << 8)  | ((uiCounter & 0xff00ff00ff00ff00) >> 8);

@@ -116,7 +116,7 @@ CcSha1& CcSha1::finalize(const void* pvData, size_t uiLen)
 
   //Length of the original message (before padding)
   m_uiLength += uiLen;
-  uint64_t totalSize = m_uiLength * 8;
+  uint64 totalSize = m_uiLength * 8;
 
   CcByteArray aData;
   aData.resize(64, 0);

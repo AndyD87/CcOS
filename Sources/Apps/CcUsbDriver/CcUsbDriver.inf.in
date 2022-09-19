@@ -1,0 +1,48 @@
+[Version]
+Signature   = "$WINDOWS NT$"
+Class    =CcOS Devices
+ClassGuid={F8276D6F-3A2E-4668-AE74-35709D873B0E}
+Provider    = "CcOS"
+DriverVer   = @CcUsbDriver_TIMESTAMP@,@CcUsbDriver_VERSION_DOT@
+CatalogFile = CcUsbDriver.cat
+
+[DestinationDirs]
+DefaultDestDir = 12
+CcUsbDriver.DriverFiles = 12
+
+[Manufacturer]
+%Mfg%=CcUsbDriver,NTx86,NTamd64
+
+[HermesResources.NTx86]
+%DeviceDesc% = CcUsbDriver, USB\VID_0123&PID_4567
+
+[HermesResources.NTamd64]
+%DeviceDesc% = CcUsbDriver, USB\VID_0123&PID_4567
+
+[CcUsbDriver]
+CopyFiles=SourceDisksFiles
+
+[SourceDisksNames]
+1 = %Disk1%
+
+[SourceDisksFiles]
+CcUsbDriver.sys = 1
+
+[CcUsbDriver.Services]
+AddService = %ServiceName%,2,CcUsbDriver.Service
+
+[CcUsbDriver.DriverFiles]
+CcUsbDriver.sys
+
+[CcUsbDriver.Service]
+DisplayName    = %ServiceName%
+Description    = %ServiceDesc%
+ServiceBinary  = %12%\CcUsbDriver.sys
+ServiceType    = 1
+StartType      = 3
+ErrorControl   = 1
+LoadOrderGroup = "Base"
+
+[Strings]
+ServiceDesc = "CcUsbDriver"
+ServiceName = "CcUsbDriver"
