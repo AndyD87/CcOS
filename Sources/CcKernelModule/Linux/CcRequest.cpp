@@ -79,6 +79,7 @@ uint32 CcRequest::getIoCode()
 void* CcRequest::getInputBuffer(size_t uiMinSize)
 {
   void* pBuffer = NULL;
+  CCUNUSED(uiMinSize);
   return pBuffer;
 }
 
@@ -91,6 +92,7 @@ size_t CcRequest::getInputBufferSize()
 void* CcRequest::getOutputBuffer(size_t uiMinSize)
 {
   void* pBuffer = NULL;
+  CCUNUSED(uiMinSize);
   return pBuffer;
 }
 

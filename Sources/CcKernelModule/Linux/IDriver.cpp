@@ -35,7 +35,7 @@
 namespace NKernelModule
 {
 
-IDriver::IDriver(CcKernelModuleContext* pContext)
+IDriver::IDriver(CcKernelModuleContext* CCUNUSED_PARAM(pContext))
 {
   CCNEW(m_pContext, CContext);
   m_pContext->pDriver = this;

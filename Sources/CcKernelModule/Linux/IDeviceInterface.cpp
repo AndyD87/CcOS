@@ -46,10 +46,15 @@ CcRequest IDeviceInterface::createRequest(uint32 uiIoControlCode,
                                           uint32 uiOutputBufferSize)
 {
   CcRequest oRequest(nullptr);
+  CCUNUSED(uiIoControlCode);
+  CCUNUSED(pInputBuffer);
+  CCUNUSED(uiInputBufferSize);
+  CCUNUSED(pOutputBuffer);
+  CCUNUSED(uiOutputBufferSize);
   return oRequest;
 }
 
-CcStatus IDeviceInterface::sendRequest(CcRequest& oRequest)
+CcStatus IDeviceInterface::sendRequest(CcRequest& CCUNUSED_PARAM(oRequest))
 {
   CcStatus oStatus;
   return oStatus;

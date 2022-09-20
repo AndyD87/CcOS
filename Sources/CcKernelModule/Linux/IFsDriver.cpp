@@ -141,7 +141,7 @@ void IFsDriverDevice::ioControl(CcRequest& oRequest)
   oRequest.setStatus(EStatus::NotSupported);
 }
 
-void IFsDriverDevice::specificControl(ESpecificRequests eRequestType, CcRequest& oRequest)
+void IFsDriverDevice::specificControl(ESpecificRequests CCUNUSED_PARAM(eRequestType), CcRequest& oRequest)
 {
   oRequest.setStatus(EStatus::NotSupported);
 }

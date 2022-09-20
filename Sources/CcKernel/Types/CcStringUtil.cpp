@@ -1794,7 +1794,9 @@ CcByteArray CcStringUtil::decodeBaseX(const CcString& toDecode, const char* pcAl
       }
     }
     if (i >= uiBaseSize)
+    {
       CCERROR("Wrong Base58 String: " + toDecode);
+    }
   }
   while (uiZeroes < oEncodedString.size())
   {
