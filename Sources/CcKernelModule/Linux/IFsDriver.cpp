@@ -58,12 +58,10 @@ public:
 
 private:
   void checkMountVolume(CcRequest& oRequest);
-  IFsDriver* m_pFsDriver;
 };
 
 IFsDriverDevice::IFsDriverDevice(IFsDriver* pDriver) :
-  IDevice(pDriver, EType::FileSystem),
-  m_pFsDriver(pDriver)
+  IDevice(pDriver, EType::FileSystem)
 {
 }
 

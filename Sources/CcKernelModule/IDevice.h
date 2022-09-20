@@ -152,6 +152,11 @@ public:
    */
   virtual void specificControl(ESpecificRequests eRequestType, CcRequest& oRequest);
 
+  EType getDeviceType() const
+  { return m_eType; }
+
+  const IDriver* getDriver() const
+  { return m_pDriver; }
 protected:
   /**
    * @brief Get device context, initialized by subsystem
