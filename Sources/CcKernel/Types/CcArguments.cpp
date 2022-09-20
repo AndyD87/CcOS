@@ -26,8 +26,7 @@
 #include "CcStringUtil.h"
 #include "CcGlobalStrings.h"
 #include "IIo.h"
-#include "../CcLog.h"
-
+#include "CcMessageFormat.h"
 
 const CcString& CcArguments::CVariableDefinition::getName() const
 {
@@ -343,7 +342,7 @@ bool CcArguments::parse(CVariableDefinitionList& oActiveList, size_t uiPos)
             {
               // Missing value, we are at the end
               m_eValidity = false;
-              m_sErrorMessage = CcLog::formatErrorMessage("Required parameter missing: " + oDef.getName());
+              m_sErrorMessage = CcMessageFormat::formatErrorMessage("Required parameter missing: " + oDef.getName());
               break;
             }
           }
@@ -365,7 +364,7 @@ bool CcArguments::parse(CVariableDefinitionList& oActiveList, size_t uiPos)
     else if(pDef)
     {
       // Missing value, we are at the end
-      m_sErrorMessage = CcLog::formatErrorMessage("No value defined for: " + pDef->getName());
+      m_sErrorMessage = CcMessageFormat::formatErrorMessage("No value defined for: " + pDef->getName());
       m_eValidity = false;
     }
   }

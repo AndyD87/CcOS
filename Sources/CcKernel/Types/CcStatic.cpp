@@ -123,7 +123,11 @@ void* CcStatic::memcpySwapped(void* pDestination, const void* pSource, size_t ui
 CcStatus CcStatic::mlock(void *pMemory, size_t uiSize)
 {
   CcStatus oStatus(EStatus::NotSupported);
-#ifdef LINUX
+#if defined(LINUXKERNEL)
+  // LINUXKERNEL does not support this feature at the moment
+  CCUNUSED(pMemory);
+  CCUNUSED(uiSize);
+#elif defined(LINUX)
   oStatus.setSystemError(::mlock(pMemory, uiSize));
 #elif defined(WINDOWS) && !defined(CCKERNEL_MODE)
   if (!VirtualLock(pMemory, uiSize))
@@ -141,7 +145,11 @@ CcStatus CcStatic::mlock(void *pMemory, size_t uiSize)
 CcStatus CcStatic::munlock(void *pMemory, size_t uiSize)
 {
   CcStatus oStatus(EStatus::NotSupported);
-#ifdef LINUX
+#if defined(LINUXKERNEL)
+  // LINUXKERNEL does not support this feature at the moment
+  CCUNUSED(pMemory);
+  CCUNUSED(uiSize);
+#elif defined(LINUX)
   oStatus.setSystemError(::munlock(pMemory, uiSize));
 #elif defined(WINDOWS) && !defined(CCKERNEL_MODE)
   if (!VirtualUnlock(pMemory, uiSize))

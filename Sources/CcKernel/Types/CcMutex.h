@@ -28,6 +28,8 @@
 #ifdef USE_STD_MUTEX
   #include <mutex>
   #define CcMutex_Type std::mutex        //!< Force std::mutex as mutex base
+#elif defined(LINUXKERNEL)
+  #define CcMutex_Type volatile bool
 #elif defined(LINUX)
   #include <pthread.h>
   #define CcMutex_Type pthread_mutex_t   //!< Use linux pthread mutex as base for mutex handling

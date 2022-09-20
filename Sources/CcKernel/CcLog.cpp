@@ -26,6 +26,7 @@
 #include "stdio.h"
 #include "CcGlobalStrings.h"
 #include "CcConsole.h"
+#include "CcMessageFormat.h"
 
 CcLog::CcLog(const CcString& sOutputFile)
 {
@@ -50,6 +51,7 @@ size_t CcLog::write(const void* pBuffer, size_t uSize)
   }
   return uSize;
 }
+
 bool CcLog::setFilePath(const CcString& sOutputFile)
 {
   m_oOutputFile.setFilePath(sOutputFile);
@@ -81,51 +83,25 @@ void CcLog::writeLine(const CcString& sMsg)
 
 void CcLog::writeDebug(const CcString& sMsg)
 {
-  writeLine(formatDebugMessage(sMsg));
+  writeLine(CcMessageFormat::formatDebugMessage(sMsg));
 }
 
 void CcLog::writeVerbose(const CcString& sMsg)
 {
-  writeLine(formatVerboseMessage(sMsg));
+  writeLine(CcMessageFormat::formatVerboseMessage(sMsg));
 }
 
 void CcLog::writeInfo(const CcString& sMsg)
 {
-  writeLine(formatInfoMessage(sMsg));
+  writeLine(CcMessageFormat::formatInfoMessage(sMsg));
 }
 
 void CcLog::writeWarning(const CcString& sMsg)
 {
-  writeLine(formatWarningMessage(sMsg));
+  writeLine(CcMessageFormat::formatWarningMessage(sMsg));
 }
 
 void CcLog::writeError(const CcString& sMsg)
 {
-  writeLine(formatErrorMessage(sMsg));
+  writeLine(CcMessageFormat::formatErrorMessage(sMsg));
 }
-
-CcString CcLog::formatDebugMessage(const CcString& sMsg)
-{
-  return CcString() << "[dbg ] " << sMsg;
-}
-
-CcString CcLog::formatVerboseMessage(const CcString& sMsg)
-{
-  return CcString() << "[vbs ] " << sMsg;
-}
-
-CcString CcLog::formatInfoMessage(const CcString& sMsg)
-{
-  return CcString() << "[info] " << sMsg;
-}
-
-CcString CcLog::formatWarningMessage(const CcString& sMsg)
-{
-  return CcString() << "[warn] " << sMsg;
-}
-
-CcString CcLog::formatErrorMessage(const CcString& sMsg)
-{
-  return CcString() << "[err ] " << sMsg;
-}
-

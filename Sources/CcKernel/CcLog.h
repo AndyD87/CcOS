@@ -107,36 +107,6 @@ public:
   void writeError(const CcString& sMsg);
 
   /**
-   * @brief Format a debug message for log
-   * @param sMsg: Messag to write
-   */
-  static CcString formatDebugMessage(const CcString& sMsg);
-
-  /**
-   * @brief Format a verbose message for log
-   * @param sMsg: Messag to write
-   */
-  static CcString formatVerboseMessage(const CcString& sMsg);
-
-  /**
-   * @brief Format a info message for log
-   * @param sMsg: Messag to write
-   */
-  static CcString formatInfoMessage(const CcString& sMsg);
-
-  /**
-   * @brief Format a warning message for log
-   * @param sMsg: Messag to write
-   */
-  static CcString formatWarningMessage(const CcString& sMsg);
-
-  /**
-   * @brief Format a error message for log
-   * @param sMsg: Messag to write
-   */
-  static CcString formatErrorMessage(const CcString& sMsg);
-
-  /**
    * @brief Enable or disable console output. So every log message can be displayed
    *        on output too.
    * @param bEnable: True for enable output to console

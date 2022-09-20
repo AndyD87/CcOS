@@ -31,6 +31,8 @@
 CcMutex::CcMutex()
 {
 #ifdef USE_STD_MUTEX
+#elif defined(LINUXKERNEL)
+  m_oContext = false;
 #elif defined(LINUX)
   m_oContext = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 #elif defined(WINDOWSKERNEL)
@@ -46,6 +48,9 @@ CcMutex::CcMutex()
 CcMutex::~CcMutex()
 {
 #ifdef USE_STD_MUTEX
+#elif defined(LINUXKERNEL)
+  lock();
+  unlock();
 #elif defined(LINUX)
 #elif defined(WINDOWS)
   CCMONITORDELETE(m_oContext);
@@ -59,7 +64,9 @@ CcMutex::~CcMutex()
 void CcMutex::lock()
 {
 #ifdef USE_STD_MUTEX
-  m_oContext.lock();
+#elif defined(LINUXKERNEL)
+  while (isLocked() == true);
+  m_oContext = true;
 #elif defined(LINUX)
   pthread_mutex_lock(&m_oContext);
 #elif defined(WINDOWSKERNEL)
@@ -82,7 +89,11 @@ void CcMutex::lock()
 bool CcMutex::tryLock()
 {
 #ifdef USE_STD_MUTEX
-  return m_oContext.try_lock();
+#elif defined(LINUXKERNEL)
+  if(m_oContext == true)
+    return false;
+  else
+    return m_oContext = true;
 #elif defined(LINUX)
   return 0 == pthread_mutex_trylock(&m_oContext);
 #elif defined(WINDOWSKERNEL)
@@ -106,7 +117,8 @@ bool CcMutex::tryLock()
 void CcMutex::unlock()
 {
 #ifdef USE_STD_MUTEX
-  m_oContext.unlock();
+#elif defined(LINUXKERNEL)
+  m_oContext = false;
 #elif defined(LINUX)
   pthread_mutex_unlock(&m_oContext);
 #elif defined(WINDOWSKERNEL)
@@ -130,6 +142,8 @@ bool CcMutex::isLocked()
   {
     return true;
   }
+#elif defined(LINUXKERNEL)
+  return false;
 #elif defined(LINUX)
   if(0 == pthread_mutex_trylock(&m_oContext))
   {

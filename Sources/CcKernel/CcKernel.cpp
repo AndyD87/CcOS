@@ -55,6 +55,7 @@
 #include "CcServiceSystem.h"
 #include "Devices/CcBoardSupport.h"
 #include "CcFileSystemListItem.h"
+#include "CcMessageFormat.h"
 
 #ifdef LINUX
   #include <unistd.h>
@@ -656,23 +657,23 @@ void CcKernel::message(EMessage eType, const CcString& sMessage)
     switch(eType)
     {
       case EMessage::Warning:
-        CcConsole::writeLine(CcLog::formatWarningMessage(sMessage));
+        CcConsole::writeLine(CcMessageFormat::formatWarningMessage(sMessage));
         message(eType);
         break;
       case EMessage::Error:
-        CcConsole::writeLine(CcLog::formatErrorMessage(sMessage));
+        CcConsole::writeLine(CcMessageFormat::formatErrorMessage(sMessage));
         message(eType);
         break;
       case EMessage::Info:
-        CcConsole::writeLine(CcLog::formatInfoMessage(sMessage));
+        CcConsole::writeLine(CcMessageFormat::formatInfoMessage(sMessage));
         message(eType);
         break;
       case EMessage::Debug:
-        CcConsole::writeLine(CcLog::formatDebugMessage(sMessage));
+        CcConsole::writeLine(CcMessageFormat::formatDebugMessage(sMessage));
         message(eType);
         break;
       case EMessage::Verbose:
-        CcConsole::writeLine(CcLog::formatVerboseMessage(sMessage));
+        CcConsole::writeLine(CcMessageFormat::formatVerboseMessage(sMessage));
         message(eType);
         break;
     }

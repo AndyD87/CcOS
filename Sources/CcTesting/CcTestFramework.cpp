@@ -31,6 +31,7 @@
 #include "CcDirectory.h"
 #include "CcKernel.h"
 #include "CcList.h"
+#include "CcMessageFormat.h"
 
 class CcTestFramework::CPrivate
 {
@@ -109,19 +110,19 @@ void CcTestFramework::setInstantStart()
 
 void CcTestFramework::writeDebug(const CcString& sMessage)
 {
-  CcString sFormatedMessage = CcLog::formatDebugMessage(sMessage);
+  CcString sFormatedMessage = CcMessageFormat::formatDebugMessage(sMessage);
   writeLine(sFormatedMessage);
 }
 
 void CcTestFramework::writeInfo(const CcString& sMessage)
 {
-  CcString sFormatedMessage = CcLog::formatInfoMessage(sMessage);
+  CcString sFormatedMessage = CcMessageFormat::formatInfoMessage(sMessage);
   writeLine(sFormatedMessage);
 }
 
 void CcTestFramework::writeError(const CcString& sMessage)
 {
-  CcString sFormatedMessage = CcLog::formatErrorMessage(sMessage);
+  CcString sFormatedMessage = CcMessageFormat::formatErrorMessage(sMessage);
   writeLine(sFormatedMessage);
 }
 

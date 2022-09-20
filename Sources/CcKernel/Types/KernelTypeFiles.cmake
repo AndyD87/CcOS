@@ -22,6 +22,7 @@ set(KERNEL_TYPE_HEADER
   Types/CcList.h
   Types/CcListCommon.h
   Types/CcMap.h
+  Types/CcMessageFormat.h
   Types/CcMapCommon.h
   Types/CcMutex.h
   Types/CcPair.h
@@ -103,6 +104,7 @@ set(KERNEL_TYPE_FILES
   Types/CcIp.cpp
   Types/CcListCommon.cpp
   Types/CcMapCommon.cpp
+  Types/CcMessageFormat.cpp
   Types/CcMutex.cpp
   Types/CcPassword.cpp
   Types/CcPoint.cpp
