@@ -24,6 +24,7 @@
 #pragma once
 
 #include "CcBase.h"
+#include "CcMutex.h"
 #include "Devices/IUsbDevice.h"
 #include "usbh_conf.h"
 
@@ -54,8 +55,8 @@ public: //methods
   virtual CcStatus  onState(EState eState) override;
   virtual void      idle();
 
-  virtual void read(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize) override;
-  virtual void write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize) override;
+  virtual size_t read(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize) override;
+  virtual size_t write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize) override;
   virtual void stallEp(uint8 uiEndpoint) override;
   virtual void ctrlSendStatus() override;
   virtual void ctrlReceiveStatus() override;

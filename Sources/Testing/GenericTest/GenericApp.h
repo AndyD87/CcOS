@@ -46,6 +46,6 @@ private:
 
 private:
   CcUsbCdc* m_pCdcDevice              = nullptr;
-  //CcUsbBulkTransfer* m_pBulkTransfer  = nullptr;
+  CcUsbBulkTransfer* m_pBulkTransfer  = nullptr;
   IShell*   m_pShell                  = nullptr;
 };

@@ -55,8 +55,8 @@ void GenericApp::run()
       oDeviceDescriptor.uiDeviceProtocol        = 0x01;
       oDeviceDescriptor.uiBcd                   = 0x0200;
       oDeviceDescriptor.uiMaxPacketSize         = 64;
-      oDeviceDescriptor.uiVendorId  	          = 0x1234;
-      oDeviceDescriptor.uiProductId             = 0x1234;
+      oDeviceDescriptor.uiVendorId  	          = 0x16D0;
+      oDeviceDescriptor.uiProductId             = 0x077c;
       oDeviceDescriptor.uiBcdDevice             = 0x0200;
       oDeviceDescriptor.uiManufacturerStringIdx = 1;
       oDeviceDescriptor.uiProductStringIdx      = 2;
@@ -75,12 +75,27 @@ void GenericApp::run()
       oConfig.getConfig()->uiAttributes = 0xC0;
       oConfig.getConfig()->uiMaxPower   = 0x32;
 
+#ifndef BULK_TRANSFER
+      CCNEW(m_pBulkTransfer, CcUsbBulkTransfer, oUsbDevice);   
+      oStatus = m_pBulkTransfer->open(EOpenFlags::ReadWrite);
+      if(oStatus)
+      {
+        oStatus = oUsbDevice->start();
+        uchar pBuffer[64];
+        uchar uCnt = 0;
+        while(1)
+        {
+          for(size_t uiPos = 0; uiPos < 53; uiPos++)
+          {
+            pBuffer[uiPos] = uCnt++;
+          }
+          m_pBulkTransfer->write(pBuffer, 53);
+        }
+      }
+#else
       CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);
-      //CCNEW(m_pBulkTransfer, CcUsbBulkTransfer, oUsbDevice);   
       
       oStatus = m_pCdcDevice->open(EOpenFlags::ReadWrite);
-
-      //oStatus = m_pBulkTransfer->open(EOpenFlags::ReadWrite);
 
       if(oStatus)
       {
@@ -97,6 +112,7 @@ void GenericApp::run()
           }
         }
       }
+#endif
     }
 
     setExitCode(oStatus);

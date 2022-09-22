@@ -620,6 +620,7 @@ void STM32UsbDevice::doSetConfiguration()
     { 
       IUsbDevice::SEndpointDescriptor* pEndPoint = oConfig.getEndpoint(uiIdx);
       IUsbDevice::CConfigDescriptor::CEndpointInfo& oEndPointInfo = oConfig.getEndpointInfo(uiIdx);
+      oEndPointInfo.reset();
       
       HAL_StatusTypeDef uiHallResult = HAL_PCD_EP_Open(
                                           getPcdHandle(), 
@@ -702,32 +703,25 @@ void STM32UsbDevice::doInputData(uint8 uiEndpoint, uint8* pBuffer)
     if(pConfig)
     {
       CConfigDescriptor::CEndpointInfo& oEndpointInfo = pConfig->getEndpointInfo(uiIdx);
-      if(oEndpointInfo.oBufferList.getChunkCount() > 0)
+      if(oEndpointInfo.eState == EEnpointState::DataIn)
       {
-        if(oEndpointInfo.oBufferList[0].size() > oEndpointInfo.pDescriptor->wMaxPacketSize)
-        {
-          oEndpointInfo.oBufferList[0].remove(0, oEndpointInfo.pDescriptor->wMaxPacketSize);
-        }
-        else
-        {
-          oEndpointInfo.oBufferList.removeChunk(0);
-        }
         if(oEndpointInfo.oBufferList.getChunkCount() > 0)
         {
-          // Send next packet
-          HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, oEndpointInfo.oBufferList[0].cast<uint8>(), oEndpointInfo.oBufferList[0].size());
+          if(oEndpointInfo.oBufferList[0].size() > oEndpointInfo.pDescriptor->wMaxPacketSize)
+          {
+            HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, oEndpointInfo.oBufferList[0].cast<uint8>(), oEndpointInfo.pDescriptor->wMaxPacketSize);
+            oEndpointInfo.oBufferList[0].remove(0, oEndpointInfo.pDescriptor->wMaxPacketSize);
+          }
+          else
+          {
+            HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, oEndpointInfo.oBufferList[0].cast<uint8>(), oEndpointInfo.oBufferList[0].size());
+            oEndpointInfo.oBufferList.removeChunk(0);
+          }
         }
         else
         {
-          // Idle state, wait for new input
           oEndpointInfo.eState = EEnpointState::Idle;
         }
-      }
-      else
-      {
-        // Quit Package request, we have no package to send.
-        // Send Zero Length Package
-        HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, nullptr, 0);
       }
     }
     else
@@ -812,58 +806,73 @@ void STM32UsbDevice::doOutputData(uint8 uiEndpoint, uint8* pBuffer)
   }
 }
 
-void STM32UsbDevice::write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize)
+size_t STM32UsbDevice::write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize)
 {
+  size_t uiWritten = SIZE_MAX;
   CConfigDescriptor* pConfig = nullptr;
   if(uiEndpoint != 0)
   {
-    uint8 uiIdx = m_oDeviceDescriptor.findEndpoint(uiEndpoint, &pConfig);
-    if(pConfig)
+    if(m_eCurrentSate == EUsbState::Configured)
     {
-      CConfigDescriptor::CEndpointInfo& oEndpointInfo = pConfig->getEndpointInfo(uiIdx);
-      
-      if(oEndpointInfo.oBufferList.size() < oEndpointInfo.uiMaxBufferList)
-        oEndpointInfo.oBufferList.append(pBuffer, uiSize);
-      else
+      uint8 uiIdx = m_oDeviceDescriptor.findEndpoint(uiEndpoint, &pConfig);
+      if(pConfig)
       {
-        IUsbDevice::debugMessage("Buffer exceeded");
-      }
+        CConfigDescriptor::CEndpointInfo& oEndpointInfo = pConfig->getEndpointInfo(uiIdx);
 
-      // Check if write is already active
-      if( m_eCurrentSate == EUsbState::Configured && 
-          oEndpointInfo.eState == EEnpointState::Idle)
-      {
-        oEndpointInfo.eState = EEnpointState::DataIn;
-        HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, oEndpointInfo.oBufferList[0].cast<uint8>(), oEndpointInfo.oBufferList[0].size());
+        // Check if write is already active
+        if(oEndpointInfo.eState == EEnpointState::Idle)
+        {
+          oEndpointInfo.eState = EEnpointState::DataIn;
+          HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, const_cast<uint8*>(pBuffer), uiSize);
+          uiWritten = uiSize;
+        }
+        else
+        {
+          if(oEndpointInfo.oBufferList.size() < oEndpointInfo.uiMaxBufferList)
+          {
+            oEndpointInfo.oBufferList.append(pBuffer, uiSize);
+            uiWritten = uiSize;
+          }
+          else
+          {
+            IUsbDevice::debugMessage("Buffer exceeded");
+          }
+        }
       }
     }
   }
   else
   {
+    uiWritten = uiSize;
     m_uiWriteSize = uiSize;
     m_eEp0State = EEnpointState::DataIn;
     if(HAL_OK == HAL_PCD_EP_Transmit(getPcdHandle(), uiEndpoint, const_cast<uint8*>(pBuffer), uiSize))
     {
     }
   }
+  return uiWritten;
 }
 
-void STM32UsbDevice::read(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize)
+size_t STM32UsbDevice::read(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize)
 {
+  size_t uiRead = SIZE_MAX;
   if(uiEndpoint != 0)
   {
+    uiRead = uiSize;
     if(HAL_OK == HAL_PCD_EP_Receive(getPcdHandle(), uiEndpoint, pBuffer, uiSize))
     {
     }
   }
   else
   {
+    uiRead = uiSize;
     m_uiReadSize = uiSize;
     m_eEp0State = EEnpointState::DataOut;
     if(HAL_OK == HAL_PCD_EP_Receive(getPcdHandle(), uiEndpoint, pBuffer, uiSize))
     {
     }
   }
+  return uiRead;
 }
 
 void STM32UsbDevice::stallEp(uint8 uiEndpoint)

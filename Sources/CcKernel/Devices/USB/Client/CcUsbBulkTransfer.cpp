@@ -65,9 +65,17 @@ size_t CcUsbBulkTransfer::write(const void* pBuffer, size_t uSize)
     uiWritten = 0;
     while(uSize > 0)
     {
-      m_oUsbDevice.getDevice()->write(m_uiOutEp, static_cast<const uint8*>(pBuffer), CCMIN(UINT16_MAX, static_cast<uint16>(uSize)));
-      uiWritten += CCMIN(UINT16_MAX, uSize);
-      uSize -= CCMIN(UINT16_MAX, uSize);
+      size_t uiTransaction = m_oUsbDevice.getDevice()->write(m_uiOutEp, static_cast<const uint8*>(pBuffer), CCMIN(UINT16_MAX, static_cast<uint16>(uSize)));
+      if(uiTransaction <= uSize)
+      {
+        uiWritten += CCMIN(UINT16_MAX, uSize);
+        uSize -= CCMIN(UINT16_MAX, uSize);
+      }
+      else
+      {
+        uiWritten = uiTransaction;
+        break;
+      }
     }
   }
   return uiWritten;

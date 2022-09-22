@@ -109,6 +109,12 @@ IUsbDevice::CConfigDescriptor::~CConfigDescriptor()
   m_oBuffer.clear();
 }
 
+void IUsbDevice::CConfigDescriptor::CEndpointInfo::reset()
+{
+  oBufferList.clear();
+  eState = EEnpointState::Idle;
+}
+
 IUsbDevice::SInterfaceAssociationDescriptor* IUsbDevice::CConfigDescriptor::createInterfaceAssociation(uint8 uiInterfaceCount)
 {
   uint32 uiCurrentOffset = static_cast<uint32>(m_oBuffer.size());

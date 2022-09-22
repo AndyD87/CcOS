@@ -276,6 +276,8 @@ public:
       uint32                uiMaxBufferList=64;
       CcEvent               oOnChange;
       SEndpointDescriptor*  pDescriptor;
+
+      void reset();
     };
 
     class CcKernelSHARED CInterfaceInfo
@@ -368,8 +370,8 @@ public:
    */
   virtual ~IUsbDevice();
 
-  virtual void read(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize) = 0;
-  virtual void write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize) = 0;
+  virtual size_t read(uint8 uiEndpoint, uint8* pBuffer, uint16 uiSize) = 0;
+  virtual size_t write(uint8 uiEndpoint, const uint8* pBuffer, uint16 uiSize) = 0;
   virtual void stallEp(uint8 uiEndpoint) = 0;
   virtual void ctrlSendStatus() = 0;
   virtual void ctrlReceiveStatus() = 0;
