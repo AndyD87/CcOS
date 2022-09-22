@@ -89,7 +89,9 @@ void GenericApp::run()
           {
             pBuffer[uiPos] = uCnt++;
           }
-          m_pBulkTransfer->write(pBuffer, 53);
+          // Resend until all data is written
+          while(53 < m_pBulkTransfer->write(pBuffer, 53))
+          {}
         }
       }
 #else
