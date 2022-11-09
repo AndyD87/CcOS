@@ -53,6 +53,7 @@ enum class EStatus : uint32
   NotPermitted            = 0x0000000e, //!< Current operation is not permitted
   AccessDenied            = 0x0000000f, //!< Access denied
   AlreadyExisting         = 0x00000010, //!< Object already existing
+  NotConnected            = 0x00000011, //!< Object is in an unconnected state
 
   IoDeviceError   = 0x00020000, //!< Unspecified IO Device error occured
 

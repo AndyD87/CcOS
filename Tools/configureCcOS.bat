@@ -15,7 +15,7 @@ echo ###########################################################################
 echo # Start building tools
 mkdir "%SOLUTION_DIR:/=\%"
 cd "%SOLUTION_DIR%"
-cmake %CMAKE_DIR% -DCC_OUTPUT_DIR=%TOOLSOUTPUT%
+cmake %CMAKE_DIR% -DCC_OUTPUT_DIR=%TOOLSOUTPUT% -DCMAKE_BUILD_TYPE=Release
 cmake --build . --target CcOSBuildConfigApp --config Release
 
 cd %TOOLSOUTPUT%
@@ -26,7 +26,7 @@ set PATH=%PATH%;%TOOLS_DIR%
 echo del /S /Q "%SOLUTION_DIR%"
 
 echo ################################################################################
-echo # Start configuration
+echo # Start configuration in %TOOLS_DIR%
 
 CcOSBuildConfigApp.exe config2cmake "%CMAKE_DIR%/CMakeConfig/CcOSBuildConfig.xml" "%CMAKE_DIR%/CMakeConfig/CcOSBuildConfig.cmake"
 mkdir "%SOLUTION_DIR:/=\%"

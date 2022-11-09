@@ -37,3 +37,6 @@
 
 //! Version-String of CcOS
 #define CCOS_VERSION_STRING "1.4.0.0"
+
+//! Version-String of CcOS
+#define CCOS_VERSION_COMMA 1,4,0,0

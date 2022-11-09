@@ -205,9 +205,7 @@ public:
   const CcStringList& getUnparsed() const
   { return m_oUnparsed; }
 
-  const CcVariant& getValue(const CcString& sKey)
-  { return m_oVariablesParsed.getValue(sKey); }
-
+  const CcVariant& getValue(const CcString& sKey);
   //! @return Get last parsing validation information.
   CcStatus isValid() const
   { return m_eValidity; }

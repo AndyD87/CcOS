@@ -59,7 +59,7 @@ public:
     }
   }
 
-  int32 i2c_smbus_access(int m_iDevice, char read_write, uint8 command, int size, union i2c_smbus_data *data)
+  int32 i2c_smbus_access(char read_write, uint8 command, int size, union i2c_smbus_data *data)
   {
     struct i2c_smbus_ioctl_data args;
     int32 err;
@@ -81,7 +81,7 @@ public:
     if(m_iDevice >= 0)
     {
       union i2c_smbus_data data;
-      int iError = i2c_smbus_access(m_iDevice, I2C_SMBUS_READ, 0, I2C_SMBUS_BYTE, &data);
+      int iError = i2c_smbus_access(I2C_SMBUS_READ, 0, I2C_SMBUS_BYTE, &data);
       if(iError != 0)
       {
         CCDEBUG(CcString("Error on I2C read byte: ") << CcString::fromNumber(errno));
@@ -100,9 +100,7 @@ public:
     size_t uiReturn = SIZE_MAX;
     if(m_iDevice >= 0)
     {
-      union i2c_smbus_data data;
-      data.byte = uiByte;
-      int iError = i2c_smbus_access(m_iDevice, I2C_SMBUS_WRITE, 0, I2C_SMBUS_BYTE, &data);
+      int iError = i2c_smbus_access(I2C_SMBUS_WRITE, uiByte, I2C_SMBUS_BYTE, nullptr);
       if(iError != 0)
       {
         CCDEBUG(CcString("Error on I2C write byte: ") << CcString::fromNumber(errno));
@@ -188,7 +186,7 @@ public:
         }
         data.block[0] = uiTransferSize;
 
-        int iError = i2c_smbus_access(m_iDevice, I2C_SMBUS_READ, uiRegister, I2C_SMBUS_I2C_BLOCK_BROKEN , &data);
+        int iError = i2c_smbus_access(I2C_SMBUS_READ, uiRegister, I2C_SMBUS_I2C_BLOCK_BROKEN , &data);
         if(iError != 0)
         {
           CCDEBUG(CcString("Error on I2C read block: " + CcString::fromNumber(uiRegister, 16)) << CcString::fromNumber(errno));
@@ -230,7 +228,7 @@ public:
         data.block[0] = uiTransferSize;
         CcStatic::memcpy(data.block + 1, puBuffer, uiTransferSize);
 
-        int iError = i2c_smbus_access(m_iDevice, I2C_SMBUS_WRITE, uiRegister, I2C_SMBUS_I2C_BLOCK_BROKEN , &data);
+        int iError = i2c_smbus_access(I2C_SMBUS_WRITE, uiRegister, I2C_SMBUS_I2C_BLOCK_BROKEN , &data);
         if(iError != 0)
         {
           CCDEBUG(CcString("Error on I2C write block: " + CcString::fromNumber(uiRegister, 16)) << CcString::fromNumber(errno));

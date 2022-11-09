@@ -130,13 +130,6 @@ public:
   CcString(const CcByteArray& baString);
 
   /**
-   * @brief Import a ByteArray as String.
-   * @param baString: ByteArray to import as String
-   */
-  CcString(CcByteArray&& baString)
-  { operator=(CCMOVE(baString)); }
-
-  /**
    * @brief Clean up and free all requested Memory
    */
   ~CcString();
@@ -1415,13 +1408,6 @@ public:
    * @return Handle to this
    */
   CcString& operator=(const CcString& sToCopy);
-
-  /**
-   * @brief Move content from an bytearray to this.
-   * @param oToMove: Array to receive new data from
-   * @return Handle to this
-   */
-  CcString& operator=(CcByteArray&& oToMove) NOEXCEPT;
 
   /**
    * @brief Set length to a lower value than reserverd - 1.

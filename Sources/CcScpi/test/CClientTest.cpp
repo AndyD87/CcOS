@@ -20,54 +20,27 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcApp
+ * @brief     Implemtation of class CClientTest
  */
-#include "CcApp.h"
+#include "CClientTest.h"
 #include "CcKernel.h"
-#include "CcEvent.h"
-#include "CcEventHandler.h"
-#include "CcVersion.h"
-#include "CcConsole.h"
+#include "CcFile.h"
+#include "CcDirectory.h"
+#include "CcProcess.h"
+#include "CcStringUtil.h"
 
-CcApp::CcApp() 
+CClientTest::CClientTest() :
+  CcTest("CClientTest")
 {
-  initApp();
+  appendTestMethod("Start test environment", &CClientTest::run);
 }
 
-/**
- * @brief Constructor
- */
-CcApp::CcApp(const CcString& sAppName, const CcVersion& oVersion, const CcUuid& oUuid) :
-  IThread(sAppName),
-  m_oVersion(oVersion),
-  m_oId(oUuid)
+CClientTest::~CClientTest()
 {
-  initApp();
 }
 
-CcApp::~CcApp()
+bool CClientTest::run()
 {
-  CcKernel::deregisterShutdownHandler(this);
-}
-
-CcStatus CcApp::exec()
-{
-  return startOnCurrent();
-}
-
-const CcVersion& CcApp::getVersion() const
-{
-  // return default version
-  return m_oVersion;
-}
-
-void CcApp::initApp()
-{
-// GENERIC OS will not shutdown at the moment, so save ressources!
-#ifndef GENERIC
-  if(CcKernel::getEnvironmentVariableExists(CcGlobalStrings::EnvVars::AppNoIoBuffering))
-  {
-    CcConsole::disableBuffering();
-  }
-#endif
+  bool bDownloadDone = false;
+  return bDownloadDone;
 }

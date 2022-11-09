@@ -16,58 +16,31 @@
  **/
 /**
  * @file
+ *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcApp
  */
-#include "CcApp.h"
-#include "CcKernel.h"
-#include "CcEvent.h"
-#include "CcEventHandler.h"
-#include "CcVersion.h"
-#include "CcConsole.h"
 
-CcApp::CcApp() 
-{
-  initApp();
-}
+#include "CcBase.h"
+#include "CcScpi.h"
+#include "CcString.h"
 
-/**
- * @brief Constructor
- */
-CcApp::CcApp(const CcString& sAppName, const CcVersion& oVersion, const CcUuid& oUuid) :
-  IThread(sAppName),
-  m_oVersion(oVersion),
-  m_oId(oUuid)
-{
-  initApp();
-}
 
-CcApp::~CcApp()
+namespace CcScpiGlobals
 {
-  CcKernel::deregisterShutdownHandler(this);
-}
-
-CcStatus CcApp::exec()
-{
-  return startOnCurrent();
-}
-
-const CcVersion& CcApp::getVersion() const
-{
-  // return default version
-  return m_oVersion;
-}
-
-void CcApp::initApp()
-{
-// GENERIC OS will not shutdown at the moment, so save ressources!
-#ifndef GENERIC
-  if(CcKernel::getEnvironmentVariableExists(CcGlobalStrings::EnvVars::AppNoIoBuffering))
+  namespace ErrorMsgs
   {
-    CcConsole::disableBuffering();
+    extern const CcScpiSHARED CcString NoError;
+    extern const CcScpiSHARED CcString FileNotFound;
+    extern const CcScpiSHARED CcString AccessViolation;
+    extern const CcScpiSHARED CcString DiskFull;
+    extern const CcScpiSHARED CcString IllegalOperation;
+    extern const CcScpiSHARED CcString UnknownTransfer;
+    extern const CcScpiSHARED CcString FileAlreadyExists;
+    extern const CcScpiSHARED CcString NoSuchUser;
+    extern const CcScpiSHARED CcString Termination;
+    extern const CcScpiSHARED CcString Unknown;
   }
-#endif
-}
+};

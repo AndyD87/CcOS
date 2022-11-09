@@ -30,8 +30,8 @@
 #include "CcUuid.h"
 #include "CcHandle.h"
 #include "CcStatus.h"
+#include "CcVersion.h"
 
-class CcVersion;
 class CcApp;
 
 template class CcKernelSHARED CcHandle<CcApp>;
@@ -59,25 +59,12 @@ public:
    * @brief Constructor
    * @param sAppName: Application name
    */
-  CcApp(const CcString& sAppName);
-
-  /**
-   * @brief Constructor
-   * @param sAppName: Application name
-   * @param oUuid: Uuid for unique identfication if application has one.
-   */
-  CcApp(const CcString& sAppName, const CcUuid& oUuid);
+  CcApp(const CcString& sAppName, const CcVersion& oVersion = {}, const CcUuid& oUuid = {});
 
   /**
    * @brief Destructor
    */
   virtual ~CcApp();
-
-  /**
-   * @brief Get Version of current application.
-   * @return current Version
-   */
-  virtual CcVersion getVersion() const;
 
   /**
    * @brief Start Application and wait for execution is done.
@@ -94,6 +81,12 @@ public:
   const CcUuid& getUuid()
     { return m_oId; }
 
+  /**
+   * @brief Get Version of current application.
+   * @return current Version
+   */
+  const CcVersion& getVersion() const;
+
 protected:
   /**
    * @brief Update unique id from inheriting class.
@@ -102,7 +95,7 @@ protected:
    * @return void
    */
   inline void setUuid(const CcUuid& oNewUuid)
-    { m_oId = oNewUuid; }
+  { m_oId = oNewUuid; }
 
   /**
    * @brief Update application name from inheriting class.
@@ -111,11 +104,15 @@ protected:
    * @return void
    */
   inline void setName(const CcString& sNewName)
-    { IThread::setName(sNewName); }
+  { IThread::setName(sNewName); }
+
+  inline void setVersion(const CcVersion& oVersion)
+  { m_oVersion = oVersion; }
 
 private:
   void initApp();
 
 private:
-  CcUuid m_oId;                         //!< Unique Id for identify application
+  CcVersion m_oVersion;                    //!< Verstion value of the application
+  CcUuid    m_oId;                         //!< Unique Id for identify application
 };

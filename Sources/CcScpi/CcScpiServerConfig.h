@@ -20,54 +20,45 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcApp
+ * @brief     Class CcScpiServerConfig
  */
-#include "CcApp.h"
-#include "CcKernel.h"
-#include "CcEvent.h"
-#include "CcEventHandler.h"
-#include "CcVersion.h"
-#include "CcConsole.h"
+#pragma once
 
-CcApp::CcApp() 
-{
-  initApp();
-}
+#include "CcBase.h"
+#include "CcScpi.h"
+#include "CcHandle.h"
 
 /**
- * @brief Constructor
+ * @brief Button for GUI Applications
  */
-CcApp::CcApp(const CcString& sAppName, const CcVersion& oVersion, const CcUuid& oUuid) :
-  IThread(sAppName),
-  m_oVersion(oVersion),
-  m_oId(oUuid)
+class CcScpiSHARED CcScpiServerConfig
 {
-  initApp();
-}
+public:
+  /**
+   * @brief Constructor
+   *        Default Port is set to 69
+   */
+  CcScpiServerConfig();
 
-CcApp::~CcApp()
-{
-  CcKernel::deregisterShutdownHandler(this);
-}
+  /**
+   * @brief Destructor
+   */
+  ~CcScpiServerConfig();
 
-CcStatus CcApp::exec()
-{
-  return startOnCurrent();
-}
+  //! @return Get port of tftp server
+  uint16 getPort() const
+  { return m_uiPort; }
 
-const CcVersion& CcApp::getVersion() const
-{
-  // return default version
-  return m_oVersion;
-}
+  //! @param uiPort: Set port number for server to listen at
+  void setPort(uint16 uiPort)
+  { m_uiPort = uiPort; }
+private:
+  uint16      m_uiPort;   //!< Port where Socket is listen on.
+};
 
-void CcApp::initApp()
-{
-// GENERIC OS will not shutdown at the moment, so save ressources!
-#ifndef GENERIC
-  if(CcKernel::getEnvironmentVariableExists(CcGlobalStrings::EnvVars::AppNoIoBuffering))
-  {
-    CcConsole::disableBuffering();
-  }
+#ifdef _MSC_VER
+template class CcScpiSHARED CcHandle<CcScpiServerConfig>;
 #endif
-}
+
+//! Handle for tftp config
+typedef CcHandle<CcScpiServerConfig> CcScpiServerConfigHandle;

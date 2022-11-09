@@ -1695,14 +1695,6 @@ CcString& CcString::operator=(const CcString& sToCopy)
   return *this;
 }
 
-CcString& CcString::operator=(CcByteArray&& oToMove) NOEXCEPT
-{
-  deleteBuffer();
-  oToMove.extract(m_pBuffer, m_uiLength);
-  m_uiReserved = m_uiLength;
-  return *this;
-}
-
 void CcString::allocateBuffer(size_t uiSize)
 {
   if(uiSize == 0)

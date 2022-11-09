@@ -156,6 +156,23 @@ CcString CcArguments::getLine() const
   return sLine;
 }
 
+const CcVariant& CcArguments::getValue(const CcString& sKey)
+{
+  if (m_oVariablesParsed.containsKey(sKey))
+  {
+    return m_oVariablesParsed.getValue(sKey);
+  }
+  CVariableDefinition* pDef = findVariableDefinition(m_oVariables, sKey);
+  if (pDef)
+  {
+    CcVariant oValue(pDef->sDefault);
+    oValue.convert(pDef->eType);
+    m_oVariablesParsed.append(sKey, oValue);
+    return m_oVariablesParsed.last().getValue();
+  }
+  return CcVariant::oNullVariant;
+}
+
 bool CcArguments::parse(const CcString& sLine)
 {
   const uint8 _STATE_NO_STATE = 0;
@@ -236,7 +253,6 @@ bool CcArguments::contains(const CcString& sKey)
 
 void CcArguments::writeHelp(IIo& oOutput)
 {
-  oOutput.writeString("Commands");
   oOutput.writeString(CcGlobalStrings::EolOs);
   for (const CVariableDefinition& sArgument : m_oVariables)
   {
@@ -296,6 +312,8 @@ bool CcArguments::parse()
 {
   size_t uiPos = 0;
   m_oUnparsed = *this;
+  // Start at 1, ignore application path
+  m_oUnparsed.remove(0);
   return parse(m_oVariables, uiPos);
 }
 

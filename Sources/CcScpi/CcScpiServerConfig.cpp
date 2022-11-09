@@ -20,54 +20,19 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcApp
+ * @brief     Implementation of Class CcScpiServerConfig
+ *            Protocol: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
  */
-#include "CcApp.h"
 #include "CcKernel.h"
-#include "CcEvent.h"
-#include "CcEventHandler.h"
-#include "CcVersion.h"
-#include "CcConsole.h"
+#include "CcScpiServerConfig.h"
+#include "Network/CcCommonPorts.h"
+#include "CcScpiGlobals.h"
 
-CcApp::CcApp() 
+CcScpiServerConfig::CcScpiServerConfig()
 {
-  initApp();
+  m_uiPort = CcCommonPorts::SCPI;
 }
 
-/**
- * @brief Constructor
- */
-CcApp::CcApp(const CcString& sAppName, const CcVersion& oVersion, const CcUuid& oUuid) :
-  IThread(sAppName),
-  m_oVersion(oVersion),
-  m_oId(oUuid)
+CcScpiServerConfig::~CcScpiServerConfig()
 {
-  initApp();
-}
-
-CcApp::~CcApp()
-{
-  CcKernel::deregisterShutdownHandler(this);
-}
-
-CcStatus CcApp::exec()
-{
-  return startOnCurrent();
-}
-
-const CcVersion& CcApp::getVersion() const
-{
-  // return default version
-  return m_oVersion;
-}
-
-void CcApp::initApp()
-{
-// GENERIC OS will not shutdown at the moment, so save ressources!
-#ifndef GENERIC
-  if(CcKernel::getEnvironmentVariableExists(CcGlobalStrings::EnvVars::AppNoIoBuffering))
-  {
-    CcConsole::disableBuffering();
-  }
-#endif
 }

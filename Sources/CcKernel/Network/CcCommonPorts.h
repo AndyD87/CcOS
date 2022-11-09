@@ -37,8 +37,9 @@ namespace CcCommonPorts
   static const uint16 HTTP            =    80;  //!< Default HTTP port
   static const uint16 HTTPS           =   443;  //!< Default HTTPS port
   static const uint16 MQTT            =  1883;  //!< Default MQTT port
-  static const uint16 BITCOIN_RPC     =  8332;  //!< Default MQTTS port
-  static const uint16 BITCOIN_CHAIN   =  8333;  //!< Default MQTTS port
+  static const uint16 SCPI            =  5025;  //!< Default SCPI port
+  static const uint16 BITCOIN_RPC     =  8332;  //!< Default Bitoin remote port
+  static const uint16 BITCOIN_CHAIN   =  8333;  //!< Default Bitcoin chain port
   static const uint16 MQTT_SSL        =  8883;  //!< Default MQTTS port
 
   static const uint16 CcOSOffset      = 27500;  //!< This offset for all CcOS default used ports

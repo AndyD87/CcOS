@@ -3,7 +3,7 @@
 ################################################################################
 if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
 
-  set ( CURRENT_PROJECT CcMqttTest )
+  set ( CURRENT_PROJECT ${CURRENT_PROJECT}Test )
 
   ########
   # Add Source Files
@@ -21,7 +21,7 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
 
   CcAddExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
 
-  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing/CcNetwork")
+  set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing/${CURRENT_PROJECT_IDE_PATH}")
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
                                 CcMqtt

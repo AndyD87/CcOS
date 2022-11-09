@@ -8,24 +8,21 @@ if("${CMAKE_PROJECT_NAME}" STREQUAL "CcOS")
   ########
   # Add Source Files
   ########
-  file (GLOB SOURCE_FILES
-        "*.c"
-        "*.cpp"
-        "*.h")
+  set (SOURCE_FILES
+        "main.cpp"
+        "CServerTest.cpp"
+        "CServerTest.h"
+        "CClientTest.cpp"
+        "CClientTest.h")
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
-
-  if(WINDOWS)
-    CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
-  endif()
 
   CcAddExecutable( ${CURRENT_PROJECT} ${SOURCE_FILES} )
 
   set_property( TARGET ${CURRENT_PROJECT} PROPERTY FOLDER "CcOS/Testing/${CURRENT_PROJECT_IDE_PATH}")
 
   target_link_libraries ( ${CURRENT_PROJECT} LINK_PRIVATE
-                                CcSsl
-                                CcKernel
+                                CcScpi
                                 CcTesting )
 
   CcAddTest(${CURRENT_PROJECT})

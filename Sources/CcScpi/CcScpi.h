@@ -16,58 +16,28 @@
  **/
 /**
  * @file
+ *
  * @copyright Andreas Dirmeier (C) 2017
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcApp
  */
-#include "CcApp.h"
-#include "CcKernel.h"
-#include "CcEvent.h"
-#include "CcEventHandler.h"
-#include "CcVersion.h"
-#include "CcConsole.h"
 
-CcApp::CcApp() 
-{
-  initApp();
-}
+#include "CcBase.h"
 
-/**
- * @brief Constructor
- */
-CcApp::CcApp(const CcString& sAppName, const CcVersion& oVersion, const CcUuid& oUuid) :
-  IThread(sAppName),
-  m_oVersion(oVersion),
-  m_oId(oUuid)
-{
-  initApp();
-}
-
-CcApp::~CcApp()
-{
-  CcKernel::deregisterShutdownHandler(this);
-}
-
-CcStatus CcApp::exec()
-{
-  return startOnCurrent();
-}
-
-const CcVersion& CcApp::getVersion() const
-{
-  // return default version
-  return m_oVersion;
-}
-
-void CcApp::initApp()
-{
-// GENERIC OS will not shutdown at the moment, so save ressources!
-#ifndef GENERIC
-  if(CcKernel::getEnvironmentVariableExists(CcGlobalStrings::EnvVars::AppNoIoBuffering))
-  {
-    CcConsole::disableBuffering();
-  }
+#ifdef _MSC_VER
+# ifndef CcScpiSHARED
+#   ifdef CcScpi_EXPORTS
+//    Cmake definition for shared build is set
+#     define CcScpiSHARED __declspec(dllexport)
+#   elif defined(CC_STATIC)
+//    CCOS will be build as static library no im-/export
+#     define CcScpiSHARED
+#   else
+//    if no definition found, we are on importing as dll
+#     define CcScpiSHARED __declspec(dllimport)
+#   endif
+# endif
+#else
+# define CcScpiSHARED
 #endif
-}

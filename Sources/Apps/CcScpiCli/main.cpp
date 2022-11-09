@@ -20,54 +20,22 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcApp
+ * @brief    Entry point for Application
  */
-#include "CcApp.h"
-#include "CcKernel.h"
-#include "CcEvent.h"
-#include "CcEventHandler.h"
-#include "CcVersion.h"
-#include "CcConsole.h"
 
-CcApp::CcApp() 
-{
-  initApp();
-}
+#include "CcBase.h"
+#include "CcKernel.h"
+#include "CcScpiCli.h"
 
 /**
- * @brief Constructor
+ * @brief Default application entry point
+ * @param iArgc:  Argument count in ppArgv
+ * @param ppArgv: Passed arguments from callup
+ * @return Exitcode, default 0 if no error occured
  */
-CcApp::CcApp(const CcString& sAppName, const CcVersion& oVersion, const CcUuid& oUuid) :
-  IThread(sAppName),
-  m_oVersion(oVersion),
-  m_oId(oUuid)
+int main(int iArgc, char** ppArgv)
 {
-  initApp();
-}
-
-CcApp::~CcApp()
-{
-  CcKernel::deregisterShutdownHandler(this);
-}
-
-CcStatus CcApp::exec()
-{
-  return startOnCurrent();
-}
-
-const CcVersion& CcApp::getVersion() const
-{
-  // return default version
-  return m_oVersion;
-}
-
-void CcApp::initApp()
-{
-// GENERIC OS will not shutdown at the moment, so save ressources!
-#ifndef GENERIC
-  if(CcKernel::getEnvironmentVariableExists(CcGlobalStrings::EnvVars::AppNoIoBuffering))
-  {
-    CcConsole::disableBuffering();
-  }
-#endif
+  CcScpiCli oShell;
+  oShell.parseArguments(iArgc, ppArgv);
+  return oShell.exec().getErrorInt();
 }

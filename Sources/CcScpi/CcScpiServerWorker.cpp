@@ -20,54 +20,34 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcApp
+ * @brief     Implementation of Class CcScpiServerWorker
+ *           Protocol: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
  */
-#include "CcApp.h"
 #include "CcKernel.h"
-#include "CcEvent.h"
-#include "CcEventHandler.h"
-#include "CcVersion.h"
-#include "CcConsole.h"
+#include "IThread.h"
+#include "CcScpiServerWorker.h"
+#include "CcScpiServer.h"
+#include "CcScpiGlobals.h"
+#include "CcFile.h"
+#include "CcGlobalStrings.h"
 
-CcApp::CcApp() 
+CcScpiServerWorker::CcScpiServerWorker(CcByteArray* inData, CcSocket oSocket, CcScpiServerConfigHandle hServerConfig) :
+  IWorker("CcScpiServerWorker"),
+  m_pSocket(oSocket),
+  m_InData(inData),
+  m_hServerConfig(hServerConfig)
 {
-  initApp();
 }
 
-/**
- * @brief Constructor
- */
-CcApp::CcApp(const CcString& sAppName, const CcVersion& oVersion, const CcUuid& oUuid) :
-  IThread(sAppName),
-  m_oVersion(oVersion),
-  m_oId(oUuid)
+CcScpiServerWorker::~CcScpiServerWorker()
 {
-  initApp();
+  CCDELETE(m_InData);
 }
 
-CcApp::~CcApp()
+void CcScpiServerWorker::run()
 {
-  CcKernel::deregisterShutdownHandler(this);
-}
-
-CcStatus CcApp::exec()
-{
-  return startOnCurrent();
-}
-
-const CcVersion& CcApp::getVersion() const
-{
-  // return default version
-  return m_oVersion;
-}
-
-void CcApp::initApp()
-{
-// GENERIC OS will not shutdown at the moment, so save ressources!
-#ifndef GENERIC
-  if(CcKernel::getEnvironmentVariableExists(CcGlobalStrings::EnvVars::AppNoIoBuffering))
+  if (m_InData->size() > 1)
   {
-    CcConsole::disableBuffering();
+
   }
-#endif
 }
