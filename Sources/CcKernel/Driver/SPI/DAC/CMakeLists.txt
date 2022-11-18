@@ -1,0 +1,11 @@
+########
+# Add Source Files
+########
+set( SOURCE_FILES
+      ${CMAKE_CURRENT_LIST_DIR}/DAC084S085CIMM.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/DAC084S085CIMM.h
+      ${CMAKE_CURRENT_LIST_DIR}/DAC7562T.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/DAC7562T.h
+)
+
+add_to_driver_sources(${SOURCE_FILES})

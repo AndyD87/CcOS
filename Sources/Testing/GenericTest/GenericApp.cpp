@@ -55,8 +55,8 @@ void GenericApp::run()
       oDeviceDescriptor.uiDeviceProtocol        = 0x01;
       oDeviceDescriptor.uiBcd                   = 0x0200;
       oDeviceDescriptor.uiMaxPacketSize         = 64;
-      oDeviceDescriptor.uiVendorId  	          = 0x16D0;
-      oDeviceDescriptor.uiProductId             = 0x077c;
+      oDeviceDescriptor.uiVendorId  	          = 0xaad;
+      oDeviceDescriptor.uiProductId             = 0x245;
       oDeviceDescriptor.uiBcdDevice             = 0x0200;
       oDeviceDescriptor.uiManufacturerStringIdx = 1;
       oDeviceDescriptor.uiProductStringIdx      = 2;
@@ -82,17 +82,17 @@ void GenericApp::run()
       {
         oStatus = oUsbDevice->start();
         uchar pBuffer[64];
-        uchar uCnt = 0;
-        while(1)
-        {
-          for(size_t uiPos = 0; uiPos < 53; uiPos++)
-          {
-            pBuffer[uiPos] = uCnt++;
-          }
-          // Resend until all data is written
-          while(53 < m_pBulkTransfer->write(pBuffer, 53))
-          {}
-        }
+        uchar uCnt = 1;
+        //while(1)
+        //{
+        //  for(size_t uiPos = 0; uiPos < 53; uiPos++)
+        //  {
+        //    pBuffer[uiPos] = uCnt++;
+        //  }
+        //  // Resend until all data is written
+        //  while(53 < m_pBulkTransfer->write(pBuffer, 53))
+        //  {}
+        //}
       }
 #else
       CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);

@@ -108,11 +108,11 @@ void CcScpiCli::run()
             if (!oStatus)
             {
               CcConsole::writeLine("[ERR] Failed to send data to device");
+              setExitCode(EStatus::NetworkError);
             }
             else
             {
               CcConsole::writeLine(sResult);
-              setExitCode(EStatus::NetworkError);
             }
           }
 

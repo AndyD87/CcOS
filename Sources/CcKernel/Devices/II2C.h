@@ -46,6 +46,11 @@ public:
   virtual size_t read(void* pBuffer, size_t uiSize) = 0;
   virtual size_t write(const void* pBuffer, size_t uiSize) = 0;
 
+  virtual size_t readByte(uint8& uiData)
+  { return read(&uiData, sizeof(uiData)); }
+  virtual size_t writeByte(uint8 uiData)
+  { return write(&uiData, sizeof(uiData)); }
+
   virtual size_t readRegister8(uint8 uiRegister, void* pBuffer, size_t uiSize);
   virtual size_t writeRegister8(uint8 uiRegister, void* pBuffer, size_t uiSize);
 

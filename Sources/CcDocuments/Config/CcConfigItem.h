@@ -37,10 +37,7 @@
 class CcDocumentsSHARED CcConfigItem
 {
 public:
-  CcConfigItem(CcConfigBinary::EType eType = CcConfigBinary::EType::Unknown, const CcString& sName = CcGlobalStrings::Empty) :
-    eType(eType),
-    sName(sName)
-  {}
+  CcConfigItem(CcConfigBinary::EType eType = CcConfigBinary::EType::Unknown, const CcString& sName = CcGlobalStrings::Empty);
 
   CcConfigBinary::EType eType;  //!< Type of item
   CcString              sName;  //!< Name of item to identify

@@ -25,3 +25,8 @@
  * @brief     Implemtation of class CcConfigBinary
  */
 #include "CcConfigItem.h"
+
+CcConfigItem::CcConfigItem(CcConfigBinary::EType eType, const CcString& sName) :
+  eType(eType),
+  sName(sName)
+{}

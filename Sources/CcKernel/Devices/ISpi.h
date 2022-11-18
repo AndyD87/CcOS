@@ -75,11 +75,21 @@ public:
 
   /**
    * @brief Read and write to same buffer on write command
-   * @param pBuffer:  Target buffer tor read from for output and write to on input
+   * @param pBuffer:  Target buffer for read from for output and write to on input
    * @param uSize:    Size of Buffer to write and maximum to read.
    * @return Size of buffer read.
    */
-  virtual size_t writeRead(void* pBuffer, size_t uSize) = 0;
+  virtual size_t writeRead(void* pBuffer, size_t uSize)
+  { return writeRead(pBuffer, pBuffer, uSize); }
+
+  /**
+   * @brief Read and write to same buffer on write command
+   * @param pWriteBuffer:  Target buffer to read from for output
+   * @param pReadBuffer:   Target buffer to write to on input
+   * @param uSize:    Size of Buffer to write and maximum to read.
+   * @return Size of buffer read.
+   */
+  virtual size_t writeRead(void* pWriteBuffer, void* pReadBuffer, size_t uSize) = 0;
 
   //! @return Get current mode of operation
   EMode getMode()

@@ -16,39 +16,42 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2017
+ * @copyright Andreas Dirmeier (C) 2021
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcSpiSimulation
+ * @brief     Class DAC084S085CIMM
  */
-#pragma once
 
+#pragma once
 #include "CcBase.h"
 #include "Devices/ISpi.h"
-#include "CcByteArray.h"
 
 /**
- * @brief Control the Input and Outputports on device
+ * @brief Driver for DAC084S085CIMM Chip
  */
-class CcKernelSHARED CcSpiSimulation : public ISpi
+class DAC084S085CIMM
 {
 public:
   /**
-   * @brief Destructor
+   * @brief Create DAC with target spi interface
+   * @para pSpiDevice: Target interface for communication
    */
-  virtual ~CcSpiSimulation() = default;
+  DAC084S085CIMM(ISpi* pSpiDevice);
 
-  virtual CcStatus setMode(EMode eMode) override;
-  virtual size_t read(void* pBuffer, size_t uSize) override;
-  virtual size_t write(const void* pBuffer, size_t uSize) override;
-  virtual CcStatus setFrequency(uint32 uiFrequency) override;
-  virtual uint32 getFrequency() override;
-  virtual size_t writeRead(void* pWriteBuffer, void* pReadBuffer, size_t uSize) override;
+  /**
+   * @brief Remove ADC
+   */
+  ~DAC084S085CIMM();
+
+  /**
+   * @brief Initialize ADC with it's init sequence and basic settings
+   * @return True if init succeeded
+   */
+  bool Init();
+
+  bool SetChannel(uint8_t uiChannel, uint16_t uiValue);
 
 private:
-  EMode       m_eMode       = EMode::Undefined;
-  uint32      m_uiFrequency = 0;
-  CcByteArray m_oDataIn;
-  CcByteArray m_oDataOut;
+  ISpi* m_pSpi;
 };

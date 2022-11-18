@@ -56,14 +56,14 @@ uint32 CcSpiSimulation::getFrequency()
   return m_uiFrequency;
 }
 
-size_t CcSpiSimulation::writeRead(void* pBuffer, size_t uSize)
+size_t CcSpiSimulation::writeRead(void* pWriteBuffer, void* pReadBuffer, size_t uSize)
 {
   if (m_oDataIn.size() < uSize)
     m_oDataIn.resize(uSize);
   if (m_oDataOut.size() < uSize)
     m_oDataOut.resize(uSize);
-  m_oDataOut.write(pBuffer, uSize);
-  m_oDataIn.read(pBuffer, uSize);
+  m_oDataOut.write(pWriteBuffer, uSize);
+  m_oDataIn.read(pReadBuffer, uSize);
   m_oEventHandler.call(nullptr);
   return uSize;
 }
