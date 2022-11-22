@@ -37,7 +37,7 @@ public:
   /**
    * @brief Constructor
    */
-  CcGpioPortPin(IGpioPort* pPort, uint8 uiPinNr) :
+  CcGpioPortPin(IGpioPort* pPort = nullptr, uint8 uiPinNr = 0) :
     m_pPort(pPort),
     m_uiPinNr(uiPinNr)
   {}

@@ -26,6 +26,8 @@
 
 #include "CcBase.h"
 #include "IDevice.h"
+#include "IDrawingArea.h"
+#include "CcColor.h"
 #include "Types/CcRectangle.h"
 
 // forward declarations
@@ -35,15 +37,22 @@ class CcGuiSubsystem;
  * @brief This class describes an Display Device wich is possible to
  *        show dot matrix.
  */
-class CcKernelSHARED IDisplay : public IDevice
+class CcKernelSHARED IDisplay : public IDevice, public IDrawingArea
 {
 public:
+  enum class EType
+  {
+    MonoChrome = 0,
+    GrayScale,
+    Color,
+  };
+
   /**
    * @brief Create this base class with it's size
    * @param oSize: Size of Display.
    */
   IDisplay(const CcSize& oSize) :
-    m_oSize(oSize)
+    IDrawingArea(oSize)
   {}
 
   /**
@@ -59,36 +68,18 @@ public:
   virtual void setBacklight( uint8 uiBrightness ) = 0;
 
   /**
-   * @brief Get an Drawing object wich is able to draw an a region in Display.
-   * @param oArea: Location in Display to query for Painting object
-   * @return Painting object or null if an error occured.
+   * @brief Set pixel value at specific location.
+   * @param uiX:    Target X Coordinate of pixel
+   * @param uiY:    Target Y Coordinate of pixel
+   * @param oValue: Color to set on this pixel
    */
-  virtual CcGuiSubsystem* getGuiSubSystem(const CcRectangle& oArea) = 0;
+  virtual void setPixel(int32 uiX, int32 uiY, const CcColor& oValue) = 0;
+  virtual void setPixel(int32 uiX, int32 uiY, uint8 uiGreyScaleValue) = 0;
+  virtual void setPixel(int32 uiX, int32 uiY, bool bMonochromValue) = 0;
 
-  /**
-   * @brief Get width of Display
-   * @return With as int32
-   */
-  int32 getWidth() const
-    {return m_oSize.getWidth();}
+  //! @return Get type of this imaging device
+  virtual EType getType() const = 0;
 
-  /**
-   * @brief Get height of Display
-   * @return With as int32
-   */
-  int32 getHeight() const
-    {return m_oSize.getHeight();}
-
-  /**
-   * @brief Set Curser to next Pixel in Dot Matrix.
-   */
-  void nextCursor();
-
+  virtual void draw() = 0;
 protected: //member
-  CcSize m_oSize;           //!< Size of display
-  CcPoint m_oCursor;        //!< Location of Cursor
-  int32 m_DrawStartX = 0;   //!< Current drawing Area Start coordinate X @todo replace with rectangle
-  int32 m_DrawStartY = 0;   //!< Current drawing Area Start coordinate Y @todo replace with rectangle
-  int32 m_DrawSizeX = 0;    //!< Current drawing Area width @todo replace with rectangle
-  int32 m_DrawSizeY = 0;    //!< Current drawing Area height @todo replace with rectangle
 };

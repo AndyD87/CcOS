@@ -16,32 +16,16 @@
  **/
 /**
  * @file
+ * @copyright Andreas Dirmeier (C) 2017
+ * @author    Andreas Dirmeier
+ * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Class CcDeviceGrayscaleMap
- */
-#pragma once
+ * @brief     Implementation of class SH1106
+ **/
 
-#include "CcBase.h"
-#include "Devices/IGrayscaleMap.h"
-#include "CcDevice.h"
+#include "SH1106.h"
+#include "CcKernel.h"
 
-/**
- * @brief Control the Input and Outputports on device
- */
-class CcKernelSHARED CcDeviceGrayscaleMap : public CcDevice
-{
-public:
-  /**
-   * @brief Create device with handle
-   * @param oHandle: Handle to init device
-   */
-  CcDeviceGrayscaleMap(const CcDevice& oHandle) :
-    CcDevice(oHandle)
-  {}
-  virtual ~CcDeviceGrayscaleMap() = default;
-
-  //! @return Get basic device handle
-  IGrayscaleMap* getDevice() const
-  { return CcDevice::getDevice<IGrayscaleMap>(); }
-
-};
+SH1106::SH1106(const CcSize& oSize, IIo& oCommunication, ETransportType eType) :
+  SDD1306(oSize, oCommunication, eType)
+{}

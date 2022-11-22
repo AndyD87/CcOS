@@ -20,17 +20,38 @@
  * @author    Andreas Dirmeier
  * @par       Web:      https://coolcow.de/projects/CcOS
  * @par       Language: C++11
- * @brief     Implementation of class SDD1306
- **/
+ * @brief     Class IDrawingArea
+ */
+#pragma once
 
-#include "SDD1306.h"
-#include "CcKernel.h"
+#include "CcBase.h"
+#include "CcSize.h"
+#include "CcPoint.h"
 
-SDD1306::SDD1306() :
-  IDisplay(CcSize(0,0))
+/**
+ * @brief Basic Class for all Devices in System.
+ */
+class CcKernelSHARED IDrawingArea :
+  public CcSize
 {
-}
+public:
+  IDrawingArea(const CcSize& oSize) :
+    CcSize(oSize)
+  {}
 
-SDD1306::~SDD1306()
-{
-}
+  /**
+   * @brief Destructor
+   *        Every derived device has to stop it self before destructor is called.
+   */
+  virtual ~IDrawingArea() = default;
+
+  virtual IDrawingArea* createDrawingArea(const CcRectangle& oArea);
+  virtual void removeDrawingArea(IDrawingArea* pArea);
+
+  virtual void setPixel(int32 iX, int32 iY) = 0;
+
+  void setPixel(const CcPoint& oPoint)
+  { setPixel(oPoint.getX(), oPoint.getY()); }
+protected:
+  CcPoint m_oCursor;       //!< Location of Cursor
+};

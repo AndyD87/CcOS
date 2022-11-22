@@ -79,8 +79,8 @@ public:
   inline const CcSize& getSize() const
   {return *this;}
   //! @return Get size of area
-  inline int32 getAreaSize() const
-  { return m_iWidth*m_iHeight;}
+  inline int64 getAreaSize() const
+  { return static_cast<int64>(m_iWidth)*m_iHeight;}
   //! @param iHeight: Set new height value
   inline void setHeight(int32 iHeight)
   { m_iHeight = iHeight; }

@@ -101,6 +101,21 @@ void CcColor::setColor(uint8 R, uint8 G, uint8 B, uint8 A)
   setColorA(A);
 }
 
+uint8 CcColor::toGrey() const
+{
+  uint16 uiValue = getR();
+  uiValue += getG();
+  uiValue += getB();
+  return static_cast<uint8>(uiValue / 3);
+}
+
+uint8 CcColor::toMonoChrome() const
+{
+  uint16 uiValue = getR();
+  uiValue += getG();
+  uiValue += getB();
+  return uiValue > 0;
+}
 
 uint16 CcColor::getColor16Bit( EColorType )
 {

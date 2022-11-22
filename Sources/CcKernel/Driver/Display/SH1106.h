@@ -19,20 +19,20 @@
  * @author    Andreas Dirmeier
  * @copyright  Andreas Dirmeier (C) 2022
  * @par       Language: C++11
- * @brief     Class SDD1306
+ * @brief     Class SH1106
  */
 #pragma once
 
 #include "CcBase.h"
-#include "Devices/IDisplay.h"
+#include "SDD1306.h"
 
 /**
- * @brief Display interface to SDD1306 Display driver.
+ * @brief Display interface to SH1106 Display driver.
  *        Currently not in use.
  */
-class CcKernelSHARED SDD1306 : public IDisplay
+class CcKernelSHARED SH1106 : public SDD1306
 {
 public: //methods
-  SDD1306();
-  virtual ~SDD1306();
+  SH1106(const CcSize& oSize, IIo& oCommunication, ETransportType eType);
+  virtual ~SH1106() = default;
 };

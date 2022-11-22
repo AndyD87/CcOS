@@ -73,13 +73,11 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Devices/CcDeviceEeprom.h
     Devices/CcDeviceGpioPin.h
     Devices/CcDeviceGpioPort.h
-    Devices/CcDeviceGrayscaleMap.h
     Devices/CcDeviceHdd.h
     Devices/CcDeviceI2C.h
     Devices/CcDeviceIoDevice.h
     Devices/CcDeviceLed.h
     Devices/CcDeviceNetwork.h
-    Devices/CcDevicePixMap.h
     Devices/CcDeviceSdCard.h
     Devices/CcDeviceSpi.h
     Devices/CcDeviceTimer.h
@@ -101,13 +99,11 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Devices/IEeprom.h
     Devices/IGpioPin.h
     Devices/IHdd.h
-    Devices/IGrayscaleMap.h
     Devices/II2C.h
     Devices/IIoDevice.h
     Devices/IGpioPort.h
     Devices/ILed.h
     Devices/INetwork.h
-    Devices/IPixMap.h
     Devices/ISdCard.h
     Devices/ITimer.h
     Devices/ITouch.h
@@ -234,7 +230,6 @@ elseif(${CCOS_CCKERNEL_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
     Devices/IEeprom.cpp
     Devices/IGpioPin.cpp
     Devices/IGpioPort.cpp
-    Devices/IGrayscaleMap.cpp
     Devices/IHdd.cpp
     Devices/II2C.cpp
     Devices/IIoDevice.cpp

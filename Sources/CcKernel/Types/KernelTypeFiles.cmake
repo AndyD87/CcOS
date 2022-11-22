@@ -58,6 +58,7 @@ set(KERNEL_TYPE_HEADER
   Types/CcVideoData.h
   Types/CcWString.h
   Types/IIo.h
+  Types/IDrawingArea.h
 )
 
 set(KERNEL_TYPE_HASH_HEADER
@@ -134,4 +135,5 @@ set(KERNEL_TYPE_FILES
   Types/CcVideoData.cpp
   Types/CcWString.cpp
   Types/IIo.cpp
+  Types/IDrawingArea.cpp
 )

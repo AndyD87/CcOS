@@ -23,21 +23,3 @@
  * @brief     Class IDisplay
  */
 #include "Devices/IDisplay.h"
-
-void IDisplay::nextCursor()
-{
-  if (m_oCursor.getX() < m_DrawSizeX - 1)
-  {
-    m_oCursor.setX(m_oCursor.getX()+1);
-  }
-  else{
-    m_oCursor.setX(m_DrawStartX);
-    if (m_oCursor.getY() < m_DrawSizeY - 1)
-    {
-      m_oCursor.setY(m_oCursor.getY() +1 );
-    }
-    else{
-      m_oCursor.setY(m_DrawStartY);
-    }
-  }
-}

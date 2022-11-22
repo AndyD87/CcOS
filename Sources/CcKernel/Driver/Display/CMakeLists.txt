@@ -1,7 +1,11 @@
-################################################################################
-# Check if Modules are required for Applications by reading config
-################################################################################
+########
+# Add Source Files
+########
+set(SOURCE_FILES
+      ${CMAKE_CURRENT_LIST_DIR}/SDD1306.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/SDD1306.h
+      ${CMAKE_CURRENT_LIST_DIR}/SH1106.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/SH1106.h
+)
 
-add_subdirectory(SDD1306)
-
-push_up_driver_vars()
+add_to_driver_sources(${SOURCE_FILES})

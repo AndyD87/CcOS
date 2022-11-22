@@ -127,6 +127,9 @@ public:
   void setColorA(uint8 A)
   {m_A=A;}
 
+  uint8 toGrey() const;
+  uint8 toMonoChrome() const;
+
   /**
    * @brief Get current value as 16 bit value in defined format
    * @param type: Target format of 16 bit output
