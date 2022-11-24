@@ -118,6 +118,5 @@ public:
 
   virtual void draw() = 0;
 
-  int32 writeLine(size_t uiLine, const CcString& sText, const SFontRectangle** pFont);
 protected: //member
 };
