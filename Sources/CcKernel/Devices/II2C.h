@@ -27,24 +27,30 @@
 
 #include "CcBase.h"
 #include "IDevice.h"
+#include "IIo.h"
 
-class CcKernelSHARED II2CSlave
+class CcKernelSHARED II2CClient : public IIo
 {
 public:
   /**
    * @brief Constructor
    */
-  II2CSlave(uint16 uiAddress) :
+  II2CClient(uint16 uiAddress) :
     m_uiAddress(uiAddress)
   {}
 
   /**
    * @brief Destructor
    */
-  virtual ~II2CSlave();
+  virtual ~II2CClient();
 
-  virtual size_t read(void* pBuffer, size_t uiSize) = 0;
-  virtual size_t write(const void* pBuffer, size_t uiSize) = 0;
+  virtual CcStatus open(EOpenFlags)
+  { return true; }
+  virtual CcStatus close()
+  { return true; }
+  virtual CcStatus cancel()
+  { return true; }
+
 
   virtual size_t readByte(uint8& uiData)
   { return read(&uiData, sizeof(uiData)); }
@@ -74,6 +80,7 @@ public:
    */
   virtual ~II2C();
 
-  virtual II2CSlave* createInterface(uint16 uiAddress) = 0;
+  virtual II2CClient* createInterface(uint16 uiAddress) = 0;
+  virtual void removeInterface(II2CClient* pInterface) = 0;
 };
 

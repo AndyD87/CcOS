@@ -25,7 +25,7 @@
 
 #include "PCF8574.h"
 
-PCF8574::PCF8574(II2CSlave* pIfc) :
+PCF8574::PCF8574(II2CClient* pIfc) :
   m_pIfc(pIfc)
 {
 }

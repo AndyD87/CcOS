@@ -38,7 +38,7 @@ public:
    * @param pIfc:       Interface to target I2C Port
    * @param uiAddress:  Client address on I2C Port
    */
-  PCF8574(II2CSlave* pIfc);
+  PCF8574(II2CClient* pIfc);
 
   /**
    * @brief Close all handles to interface
@@ -80,6 +80,6 @@ public:
    */
   bool write();
 private:
-  II2CSlave*  m_pIfc = nullptr;
+  II2CClient*  m_pIfc = nullptr;
   uint8       m_uiValue = 0xff; //! Dafault value as described in datasheet
 };

@@ -8,6 +8,8 @@ set(SOURCE_FILES
   main.cpp
   GenericApp.cpp 
   GenericService.cpp 
+  GenericService.cpp 
+  GenericTestFont.cpp
 )
 
 ########
@@ -16,6 +18,7 @@ set(SOURCE_FILES
 set(HEADER_FILES
   GenericApp.h 
   GenericService.h 
+  GenericTestFont.h
 )
 
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR}  )

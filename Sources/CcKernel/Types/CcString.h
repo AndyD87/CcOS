@@ -1424,6 +1424,15 @@ public:
   { return const_cast<char*>(getCharString()); }
 #endif
 
+  char* begin()
+  { return m_pBuffer; }
+  char* end()
+  { return m_pBuffer + m_uiLength; }
+  const char* begin() const
+  { return m_pBuffer; }
+  const char* end() const
+  { return m_pBuffer + m_uiLength; }
+
 private: // methods
   void allocateBuffer(size_t uiLength);
   void deleteBuffer();

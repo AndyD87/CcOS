@@ -46,4 +46,15 @@ public:
   //! @return Get basic device handle
   II2C* getDevice() const
   { return CcDevice::getDevice<II2C>(); }
+  
+  //! @return Get basic device handle
+  II2CClient* createInterface(uint16 uiAddress)
+  {
+    return getDevice()->createInterface(uiAddress);
+  }
+
+  void removeInterface(II2CClient* pInterface)
+  {
+    this->removeInterface(pInterface);
+  }
 };

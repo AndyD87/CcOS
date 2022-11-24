@@ -37,11 +37,11 @@
 #include <linux/i2c-dev.h>
 #include "CcFile.h"
 
-class CcLinuxI2C::CSlave : public II2CSlave
+class CcLinuxI2C::CSlave : public II2CClient
 {
 public:
   CSlave(const CcString& pDevice, uint16 uiAddress):
-    II2CSlave(uiAddress)
+    II2CClient(uiAddress)
   {
     // open a channel to the I2C device
     m_iDevice = open(pDevice.getCharString(), O_RDWR);
@@ -271,9 +271,9 @@ CcStatus CcLinuxI2C::onState(EState eState)
   return oReturn;
 }
 
-II2CSlave* CcLinuxI2C::createInterface(uint16 uiAddress)
+II2CClient* CcLinuxI2C::createInterface(uint16 uiAddress)
 {
-  II2CSlave* pSlave = nullptr;
+  II2CClient* pSlave = nullptr;
   if(getState() == EState::Running)
   {
     CCNEWTYPE(pOpiSlave, CSlave, "/dev/i2c-" + CcString::fromNumber(m_uiNr), uiAddress);

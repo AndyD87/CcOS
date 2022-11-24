@@ -33,6 +33,42 @@
 // forward declarations
 class CcGuiSubsystem;
 
+#pragma pack(push, 1)
+/**
+ * @brief Structure for describing an filled rectangular.
+ *        Containing data structure of row and columns is depending on it's width.
+ *        For size of a row, SFontRectangle_GetArrayWidth can be used to get it width of row in bytes.
+ */
+typedef struct
+{
+  unsigned char uiWidth;  //!< Width of rectangle
+  unsigned char uiHeight;  //!< Height of rectangle
+  unsigned char pData[];  //!< Pix map with size SFontRectangle_GetArrayWidth(this) * uiHeight.
+
+  inline bool getPixel(uint8 uiX, uint8 uiY) const
+  {
+    uint8 uiXDiv = uiX>>3;
+    return (0x1 & (pData[(uiY * GetArrayWidth()) + uiXDiv] >> (uiX & 0x7)));
+  }
+
+  /**
+   * @brief Get width of row in bytes
+   * @return number of real width in bytes.
+   */
+  inline unsigned char GetArrayWidth() const
+  {
+    unsigned char uiValue=0;
+    uiValue = uiWidth / 8;
+    if((uiWidth % 8) != 0)
+    {
+      uiValue++;
+    }
+    return uiValue;
+  }
+
+} SFontRectangle;
+#pragma pack(pop)
+
 /**
  * @brief This class describes an Display Device wich is possible to
  *        show dot matrix.
@@ -81,5 +117,7 @@ public:
   virtual EType getType() const = 0;
 
   virtual void draw() = 0;
+
+  int32 writeLine(size_t uiLine, const CcString& sText, const SFontRectangle** pFont);
 protected: //member
 };

@@ -25,6 +25,7 @@
 
 #include "Driver/CPU/ST/STM32F103/STM32F103.h"
 #include "Driver/CPU/ST/STM32F103/STM32F103Driver.h"
+#include "Driver/CPU/ST/STM32F103/STM32F103I2C.h"
 #include "Driver/CPU/ST/STM32F103/STM32F103Timer.h"
 #include "Driver/CPU/ST/STM32F103/STM32F103SystemGpioPort.h"
 #include "Driver/CPU/ST/STM32F103/STM32F103Cpu.h"
@@ -78,6 +79,9 @@ CcStatus STM32F103Driver::entry()
     IUsb* pUsbDevice = CCNEW_INLINE(STM32Usb);
     CcKernel::addDevice(CcDevice(pUsbDevice,EDeviceType::Usb));
   #endif
+
+  II2C* pI2C = CCNEW_INLINE(STM32F103I2C);
+  CcKernel::addDevice(CcDevice(pI2C,EDeviceType::I2C));
   
   return true;
 }

@@ -46,6 +46,8 @@ public: //methods
 
   SDD1306(const CcSize& oSize, IIo& oCommunication, ETransportType eType);
   virtual ~SDD1306();
+  
+  virtual CcStatus onState(EState eState) override;
 
   /**
    * @brief not available in OLED
@@ -55,12 +57,13 @@ public: //methods
 
   virtual EType getType() const override
   { return EType::MonoChrome; }
-
+  
   virtual void setPixel(int32 uiX, int32 uiY, const CcColor& oValue) override;
   virtual void setPixel(int32 uiX, int32 uiY, uint8 uiGreyScaleValue) override;
   virtual void setPixel(int32 uiX, int32 uiY, bool bMonochromValue) override;
 
   virtual void draw() override;
+  void fill(bool bOnOff);
 
   void setResetPin(const CcGpioPortPin oResetPin)
   { m_oResetPin = oResetPin; }
@@ -68,12 +71,13 @@ public: //methods
   { m_oCommandPin = oCommandPin; }
 
 private:
-  void Init();
-  void Deinit();
-  void Reset();
-  void On(void);
-  void Off(void);
-  void WriteByte(uint8_t dat, uint8_t cmd);
+  void init();
+  void deinit();
+  void reset();
+  void on(void);
+  void off(void);
+  void writeByte(uint8_t dat, uint8_t cmd);
+  void write(void* pData, size_t uiDataSize, uint8_t uiCmd);
 
 private:
   IIo&                m_oCommunication;

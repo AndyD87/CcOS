@@ -16,42 +16,31 @@
  **/
 /**
  * @file
- * @copyright Andreas Dirmeier (C) 2017
+ *
  * @author    Andreas Dirmeier
- * @par       Web:      https://coolcow.de/projects/CcOS
+ * @copyright  Andreas Dirmeier (C) 2022
  * @par       Language: C++11
- * @brief     Class II2C
+ * @brief     Class STM32F103I2C
  */
-#include "II2C.h"
+#pragma once
 
-II2C::II2C()
-{
-}
+#include "CcBase.h"
+#include "Devices/II2C.h"
+#include "STM32F103.h"
 
-II2C::~II2C()
+/**
+ * @brief Timer device for STM32F103
+ */
+class STM32F103I2C : public II2C
 {
-}
+public: //methods
+  STM32F103I2C();
+  virtual ~STM32F103I2C();
 
-II2CClient::~II2CClient()
-{
-}
-
-size_t II2CClient::readRegister8(uint8 uiRegister, void* pBuffer, size_t uiSize)
-{
-  size_t uiRead = write(&uiRegister, sizeof(uiRegister));
-  if(uiRead == sizeof(uiRegister))
-  {
-    uiRead = read(pBuffer, uiSize);
-  }
-  return uiRead;
-}
-
-size_t II2CClient::writeRegister8(uint8 uiRegister, void* pBuffer, size_t uiSize)
-{
-  size_t uiWritten = write(&uiRegister, sizeof(uiRegister));
-  if(uiWritten == sizeof(uiRegister))
-  {
-    uiWritten = write(pBuffer, uiSize);
-  }
-  return uiWritten;
-}
+  virtual CcStatus onState(EState eState) override;
+  
+  virtual II2CClient* createInterface(uint16 uiAddress) override;
+  virtual void removeInterface(II2CClient* pInterface) override;
+private: //member
+  I2C_HandleTypeDef m_hI2C1;
+};

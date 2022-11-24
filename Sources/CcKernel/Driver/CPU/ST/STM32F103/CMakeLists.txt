@@ -13,28 +13,30 @@ CcGitClone( "${STM32F1_DIR}"
 # Add Source Files
 ########
 list (APPEND SOURCE_FILES
-      "${CMAKE_CURRENT_LIST_DIR}/../../Common/ARM_CM3/CcThreadData_ARM_CM3.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/../../Common/CortexMx/malloc_lock.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/startup_stm32f103x6.s"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F103Cpu.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F103Driver.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F103SystemGpioPin.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F103SystemGpioPort.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F103Timer.cpp"
-      "${CMAKE_CURRENT_LIST_DIR}/../Common/STM32FX_IrqHandlers.cpp"
+      ${CMAKE_CURRENT_LIST_DIR}/../../Common/ARM_CM3/CcThreadData_ARM_CM3.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/../../Common/CortexMx/malloc_lock.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/startup_stm32f103x6.s
+      ${CMAKE_CURRENT_LIST_DIR}/STM32F103Cpu.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/STM32F103Driver.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/STM32F103I2C.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/STM32F103SystemGpioPin.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/STM32F103SystemGpioPort.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/STM32F103Timer.cpp
+      ${CMAKE_CURRENT_LIST_DIR}/../Common/STM32FX_IrqHandlers.cpp
 )
 
 ########
 # Add Source Files
 ########
 list (APPEND HEADER_FILES
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F103.h"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F103Cpu.h"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F103Driver.h"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F103SystemGpioPin.h"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F103SystemGpioPort.h"
-      "${CMAKE_CURRENT_LIST_DIR}/STM32F103Timer.h"
-      "${CMAKE_CURRENT_LIST_DIR}/stm32f1xx_hal_conf.h"
+      ${CMAKE_CURRENT_LIST_DIR}/STM32F103.h
+      ${CMAKE_CURRENT_LIST_DIR}/STM32F103Cpu.h
+      ${CMAKE_CURRENT_LIST_DIR}/STM32F103Driver.h
+      ${CMAKE_CURRENT_LIST_DIR}/STM32F103I2C.h
+      ${CMAKE_CURRENT_LIST_DIR}/STM32F103SystemGpioPin.h
+      ${CMAKE_CURRENT_LIST_DIR}/STM32F103SystemGpioPort.h
+      ${CMAKE_CURRENT_LIST_DIR}/STM32F103Timer.h
+      ${CMAKE_CURRENT_LIST_DIR}/stm32f1xx_hal_conf.h
 )
 
 ########
@@ -64,6 +66,7 @@ endif()
 # List all required source files
 list (APPEND STM_SOURCE_FILES
       "${STM32F1_DRIVERS_DIR}/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c"
+      "${STM32F1_DRIVERS_DIR}/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_i2c.c"
       "${STM32F1_DRIVERS_DIR}/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c"
       "${STM32F1_DRIVERS_DIR}/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c"
       "${STM32F1_DRIVERS_DIR}/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c"

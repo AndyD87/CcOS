@@ -28,25 +28,43 @@
 
 bool CcGpioPortPin::setDirection(EDirection eDirection, size_t uiValue)
 {
-  return m_pPort->setDirection(m_uiPinNr, eDirection, uiValue);
+  if(m_pPort)
+  {
+    return m_pPort->setDirection(m_uiPinNr, eDirection, uiValue);
+  }
+  return false;
 }
 
 CcGpioPortPin::EDirection CcGpioPortPin::getDirection()
 {
-  return m_pPort->getDirection(m_uiPinNr);
+  if(m_pPort)
+  {
+    return m_pPort->getDirection(m_uiPinNr);
+  }
 }
 
 void CcGpioPortPin::setValue(bool bValue)
 {
-  m_pPort->setPinValue(m_uiPinNr, bValue);
+  if(m_pPort)
+  {
+    m_pPort->setPinValue(m_uiPinNr, bValue);
+  }
 }
 
 bool CcGpioPortPin::getValue()
 {
-  return m_pPort->getPinValue(m_uiPinNr);
+  if(m_pPort)
+  {
+    return m_pPort->getPinValue(m_uiPinNr);
+  }
+  return false;
 }
 
 bool CcGpioPortPin::setSpeedValue(size_t uiValue)
 {
-  return m_pPort->setSpeedValue(m_uiPinNr, uiValue);
+  if(m_pPort)
+  {
+    return m_pPort->setSpeedValue(m_uiPinNr, uiValue);
+  }
+  return false;
 }

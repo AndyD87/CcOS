@@ -31,11 +31,11 @@
 /**
  * @brief Control the Input and Output ports on device
  */
-class CcKernelSHARED CcI2CSlaveSimulation : public II2CSlave
+class CcKernelSHARED CcI2CSlaveSimulation : public II2CClient
 {
 public:
   CcI2CSlaveSimulation(uint16 uiAddress) :
-    II2CSlave(uiAddress)
+    II2CClient(uiAddress)
   {}
 
   /**
@@ -62,6 +62,7 @@ public:
    */
   virtual ~CcI2CSimulation() = default;
 
-  virtual II2CSlave* createInterface(uint16 uiAddress) override;
-
+  virtual II2CClient* createInterface(uint16 uiAddress) override;
+  virtual void removeInterface(II2CClient* pInterface) override;
 };
+      

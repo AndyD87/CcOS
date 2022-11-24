@@ -87,7 +87,7 @@ int main(int iArgc, char** ppArgv)
   }
   if(oI2CDevice.isValid())
   {
-    II2CSlave* pInterface = oI2CDevice.getDevice()->createInterface(0x20);
+    II2CClient* pInterface = oI2CDevice.getDevice()->createInterface(0x20);
     if(pInterface)
     {
       CCDEBUG("Check interface register");

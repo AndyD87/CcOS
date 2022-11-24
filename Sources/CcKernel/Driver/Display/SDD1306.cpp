@@ -31,7 +31,7 @@
 #define WRITE_DATA        1	//!< write data
 
 #define PAGE_SIZE    8          //page size
-#define XLevelL		   0x02       //column low address
+#define XLevelL		   0x00       //column low address
 #define XLevelH		   0x10       //column high address
 #define YLevel       0xB0       //page address
 #define	Brightness	 0xFF
@@ -75,6 +75,23 @@ SDD1306::~SDD1306()
 {
 }
 
+CcStatus SDD1306::onState(EState eState)
+{
+  CcStatus bSuccess = true;
+  switch(eState)
+  {
+    case EState::Start:
+      init();
+      break;
+    case EState::Stop:
+      deinit();
+      break;
+    default:
+      break;
+  }
+  return bSuccess;
+}
+
 void SDD1306::setPixel(int32 uiX, int32 uiY, const CcColor& oValue)
 {
   setPixel(uiX, uiY, oValue.toMonoChrome());
@@ -87,79 +104,85 @@ void SDD1306::setPixel(int32 uiX, int32 uiY, uint8 uiGreyScaleValue)
 
 void SDD1306::setPixel(int32 uiX, int32 uiY, bool bMonochromValue)
 {
-  size_t uiPos = (uiY / PAGE_SIZE) * getWidth() + uiX;
-  if (uiPos < m_oBuffer.size())
+  if(uiX < getWidth() && uiY < getHeight())
   {
-    if (bMonochromValue)
+    size_t uiPos = (uiY / PAGE_SIZE) * getWidth() + uiX;
+    if (uiPos < m_oBuffer.size())
     {
-      m_oBuffer[uiPos] |= (1 << (uiY%PAGE_SIZE)) & 0xff;
-    }
-    else
-    {
-      m_oBuffer[uiPos] &= ~((1 << (uiY%PAGE_SIZE)) & 0xff);
+      if (bMonochromValue)
+      {
+        m_oBuffer[uiPos] |= (1 << (uiY%PAGE_SIZE)) & 0xff;
+      }
+      else
+      {
+        m_oBuffer[uiPos] &= ~((1 << (uiY%PAGE_SIZE)) & 0xff);
+      }
     }
   }
 }
 
 void SDD1306::draw()
 {
-  uint8 i, n;
-  for (i = 0; i < PAGE_SIZE; i++)
+  for (uint8 i = 0; i < PAGE_SIZE; i++)
   {
-    WriteByte(YLevel + i, WRITE_COMMAND); //Set page address(0~7)
-    WriteByte(XLevelL, WRITE_COMMAND);    //Set column low address
-    WriteByte(XLevelH, WRITE_COMMAND);    //Set column high address
-    for (n = 0; n < getWidth(); n++)
-    {
-      WriteByte(m_oBuffer[i*getWidth() + n], WRITE_DATA);
-    }
+    writeByte(YLevel + i, WRITE_COMMAND); //Set page address(0~7)
+    writeByte(XLevelL, WRITE_COMMAND);    //Set column low address
+    writeByte(XLevelH, WRITE_COMMAND);    //Set column high address
+    write(&m_oBuffer[i*getWidth()], getWidth(), WRITE_DATA);
   }
 }
 
-void SDD1306::Init()
+void SDD1306::fill(bool bOnOff)
 {
-  
-  Reset();     //reset OLED
+  if(bOnOff)
+    m_oBuffer.memset(0xff);
+  else
+    m_oBuffer.memset(0x00);
+}
+
+void SDD1306::init()
+{
+  reset();     //reset OLED
 
 	/**************initialise SH1106*****************/
-	Off(); //power off
-	WriteByte(CMD_DISPLAYOFF,		      WRITE_COMMAND);//--turn off oled panel
-	WriteByte(CMD_SWITCHCAPVCC,			  WRITE_COMMAND);//---set low column address
-	WriteByte(CMD_SETHIGHCOLUMN,			WRITE_COMMAND);//---set high column address
-	WriteByte(CMD_SETSTARTLINE,			  WRITE_COMMAND);//--set start line address  Set Mapping RAM Display Start Line (0x00~0x3F)
-	WriteByte(CMD_SETCONTRAST,			  WRITE_COMMAND);//--set contrast control register
-	//WriteByte(0xCF,			WRITE_COMMAND); // Set SEG Output Current Brightness
-	//WriteByte(0xA1,			WRITE_COMMAND);//--Set SEG/Column Mapping     0xa0 Left and right inversion 0xa1 normal
-	WriteByte(CMD_COMSCANDEC,			    WRITE_COMMAND);//Set COM/Row Scan Direction   0xc0 Up and Down inversion 0xc8 normal
-	WriteByte(CMD_NORMALDISPLAY,			WRITE_COMMAND);//--set normal display
-	WriteByte(CMD_SETMULTIPLEX,			  WRITE_COMMAND);//--set multiplex ratio(1 to 64)
-	WriteByte(0x3f,			              WRITE_COMMAND);//--1/64 duty
-	WriteByte(CMD_SETDISPLAYOFFSET,		WRITE_COMMAND);//-set display offset	Shift Mapping RAM Counter (0x00~0x3F)
-	WriteByte(0x00,			              WRITE_COMMAND);//-not offset
-	WriteByte(CMD_SETDISPLAYCLOCKDIV,	WRITE_COMMAND);//--set display clock divide ratio/oscillator frequency
-	WriteByte(0x80,			              WRITE_COMMAND);//--set divide ratio, Set Clock as 100 Frames/Sec
-	WriteByte(CMD_SETPRECHARGE,			  WRITE_COMMAND);//--set pre-charge period
-	WriteByte(0xF1,			              WRITE_COMMAND);//Set Pre-Charge as 15 Clocks & Discharge as 1 Clock
-	WriteByte(CMD_SETCOMPINS,			    WRITE_COMMAND);//--set com pins hardware configuration
-	WriteByte(0x12,			              WRITE_COMMAND);
-	WriteByte(CMD_SETVCOMDETECT,			WRITE_COMMAND);//--set vcomh
-	WriteByte(0x40,			              WRITE_COMMAND);//Set VCOM Deselect Level
-	WriteByte(CMD_MEMORYMODE,			    WRITE_COMMAND);//-Set Page Addressing Mode (0x00/0x01/0x02)
-	WriteByte(0x02,			              WRITE_COMMAND);//
-	WriteByte(CMD_CHARGEPUMP,			    WRITE_COMMAND);//--set Charge Pump enable/disable
-	WriteByte(0x14,			              WRITE_COMMAND);//--set(0x10) disable
-	WriteByte(CMD_DISPLAYALLON_RESUME,WRITE_COMMAND);// Disable Entire Display On (0xa4/0xa5)
-	WriteByte(CMD_NORMALDISPLAY,			WRITE_COMMAND);// Disable Inverse Display On (0xa6/a7)
-	WriteByte(CMD_DISPLAYON,          WRITE_COMMAND);//--turn on oled panel
-	On();          // power on
+	off(); //power off
+	writeByte(CMD_DISPLAYOFF,		      WRITE_COMMAND);//--turn off oled panel
+	writeByte(CMD_SWITCHCAPVCC,			  WRITE_COMMAND);//---set low column address
+	writeByte(CMD_SETHIGHCOLUMN,			WRITE_COMMAND);//---set high column address
+	writeByte(CMD_SETSTARTLINE,			  WRITE_COMMAND);//--set start line address  Set Mapping RAM Display Start Line (0x00~0x3F)
+	writeByte(CMD_SETCONTRAST,			  WRITE_COMMAND);//--set contrast control register
+	//writeByte(0xCF,			WRITE_COMMAND); // Set SEG Output Current Brightness
+	//writeByte(0xA1,			WRITE_COMMAND);//--Set SEG/Column Mapping     0xa0 Left and right inversion 0xa1 normal
+	writeByte(CMD_COMSCANDEC,			    WRITE_COMMAND);//Set COM/Row Scan Direction   0xc0 Up and Down inversion 0xc8 normal
+	writeByte(CMD_NORMALDISPLAY,			WRITE_COMMAND);//--set normal display
+	writeByte(CMD_SETMULTIPLEX,			  WRITE_COMMAND);//--set multiplex ratio(1 to 64)
+	writeByte(0x3f,			              WRITE_COMMAND);//--1/64 duty
+	writeByte(CMD_SETDISPLAYOFFSET,		WRITE_COMMAND);//-set display offset	Shift Mapping RAM Counter (0x00~0x3F)
+	writeByte(0x00,			              WRITE_COMMAND);//-not offset
+	writeByte(CMD_SETDISPLAYCLOCKDIV,	WRITE_COMMAND);//--set display clock divide ratio/oscillator frequency
+	writeByte(0x80,			              WRITE_COMMAND);//--set divide ratio, Set Clock as 100 Frames/Sec
+	writeByte(CMD_SETPRECHARGE,			  WRITE_COMMAND);//--set pre-charge period
+	writeByte(0xF1,			              WRITE_COMMAND);//Set Pre-Charge as 15 Clocks & Discharge as 1 Clock
+	writeByte(CMD_SETCOMPINS,			    WRITE_COMMAND);//--set com pins hardware configuration
+	writeByte(0x12,			              WRITE_COMMAND);
+	writeByte(CMD_SETVCOMDETECT,			WRITE_COMMAND);//--set vcomh
+	writeByte(0x40,			              WRITE_COMMAND);//Set VCOM Deselect Level
+	writeByte(CMD_MEMORYMODE,			    WRITE_COMMAND);//-Set Page Addressing Mode (0x00/0x01/0x02)
+	writeByte(0x02,			              WRITE_COMMAND);//
+	writeByte(CMD_CHARGEPUMP,			    WRITE_COMMAND);//--set Charge Pump enable/disable
+	writeByte(0x14,			              WRITE_COMMAND);//--set(0x10) disable
+	writeByte(CMD_DISPLAYALLON_RESUME,WRITE_COMMAND);// Disable Entire Display On (0xa4/0xa5)
+	writeByte(CMD_NORMALDISPLAY,			WRITE_COMMAND);// Disable Inverse Display On (0xa6/a7)
+	writeByte(CMD_DISPLAYON,          WRITE_COMMAND);//--turn on oled panel
+	on();          // power on
 }
 
-void SDD1306::Deinit()
+void SDD1306::deinit()
 {
-  Off();
+  off();
 }
 
-void SDD1306::Reset()
+void SDD1306::reset()
 {
   // switch reset pin high
   m_oResetPin.setValue(true);
@@ -171,21 +194,21 @@ void SDD1306::Reset()
   m_oResetPin.setValue(true);
 }
 
-void SDD1306::On()
+void SDD1306::on()
 {
-  WriteByte(CMD_CHARGEPUMP, WRITE_COMMAND); // SET DCDC command
-  WriteByte(0X14,           WRITE_COMMAND); // DCDC ON
-  WriteByte(CMD_DISPLAYON,  WRITE_COMMAND); // DISPLAY ON
+  writeByte(CMD_CHARGEPUMP, WRITE_COMMAND); // SET DCDC command
+  writeByte(0X14,           WRITE_COMMAND); // DCDC ON
+  writeByte(CMD_DISPLAYON,  WRITE_COMMAND); // DISPLAY ON
 }
 
-void SDD1306::Off()
+void SDD1306::off()
 {
-  WriteByte(CMD_CHARGEPUMP, WRITE_COMMAND);	// SET DCDC command
-  WriteByte(0X10,           WRITE_COMMAND); // DCDC OFF
-  WriteByte(CMD_DISPLAYOFF, WRITE_COMMAND);	// DISPLAY OFF
+  writeByte(CMD_CHARGEPUMP, WRITE_COMMAND);	// SET DCDC command
+  writeByte(0X10,           WRITE_COMMAND); // DCDC OFF
+  writeByte(CMD_DISPLAYOFF, WRITE_COMMAND);	// DISPLAY OFF
 }
 
-void SDD1306::WriteByte(uint8_t uiData, uint8_t uiCmd)
+void SDD1306::writeByte(uint8_t uiData, uint8_t uiCmd)
 {
   switch (m_eType)
   {
@@ -198,11 +221,61 @@ void SDD1306::WriteByte(uint8_t uiData, uint8_t uiCmd)
     m_oCommunication.write(oWRITE_DATA, sizeof(oWRITE_DATA));
     break;
   }
+  case SDD1306::ETransportType::eI2C:
+  {
+    uint8 oWRITE_DATA[2];
+    oWRITE_DATA[0]  = uiCmd == WRITE_COMMAND ? 0x00 : 0x40;
+    oWRITE_DATA[1]  = uiData;
+    m_oCommunication.write(oWRITE_DATA, sizeof(oWRITE_DATA));
+    break;
+  }
   default:
-    // @todo switch COMMAND pin low for command otherwise false
     if(uiCmd)
-    m_oCommandPin.setValue(true);
+      m_oCommandPin.setValue(true);
+    else
+      m_oCommandPin.setValue(false);
     m_oCommunication.write(&uiData, sizeof(uiData));
+    break;
+  }
+}
+
+void SDD1306::write(void* pData, size_t uiDataSize, uint8_t uiCmd)
+{
+  uint8* puiData = static_cast<uint8*>(pData);
+  switch (m_eType)
+  {
+  case ETransportType::eSpi3Wire:
+  {
+    for(size_t i=0; i< uiDataSize; i++)
+    {
+      writeByte(puiData[i], uiCmd);
+    } 
+    break;
+  }
+  case SDD1306::ETransportType::eI2C:
+  {
+    if(uiCmd == WRITE_COMMAND)
+    {
+      CcByteArray oWRITE_DATA((size_t)uiDataSize + 1);
+      oWRITE_DATA[0]  = uiCmd == WRITE_COMMAND ? 0x00 : 0x40;
+      oWRITE_DATA.write(pData, uiDataSize, 1);
+      m_oCommunication.write(oWRITE_DATA.getArray(), oWRITE_DATA.size());
+    }
+    else
+    {
+      CcByteArray oWRITE_DATA((size_t)uiDataSize + 1);
+      oWRITE_DATA[0]  = uiCmd == WRITE_COMMAND ? 0x00 : 0x40;
+      oWRITE_DATA.write(pData, uiDataSize, 1);
+      m_oCommunication.write(oWRITE_DATA.getArray(), oWRITE_DATA.size());
+    }
+    break;
+  }
+  default:
+    if(uiCmd)
+      m_oCommandPin.setValue(true);
+    else
+      m_oCommandPin.setValue(false);
+    m_oCommunication.write(pData, uiDataSize);
     break;
   }
 }

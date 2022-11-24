@@ -28,8 +28,12 @@
 #include "GenericApp.h"
 #include "CcKernel.h"
 #include "Devices/CcDeviceUsb.h"
+#include "Devices/CcDeviceI2C.h"
 #include "Devices/IUsbDevice.h"
+#include "Driver/Display/SDD1306.h"
+#include "CcSize.h"
 #include "IShell.h"
+#include "GenericTestFont.h"
 
 GenericApp::GenericApp()
 {
@@ -43,6 +47,35 @@ GenericApp::~GenericApp()
 void GenericApp::run()
 {
   CcStatus oStatus(false);
+  CcDeviceI2C oI2C = CcKernel::getDevice(EDeviceType::I2C);
+  if(oI2C.isValid())
+  { 
+    oI2C->start();
+    II2CClient* pClient = oI2C.createInterface(0x3c);
+    if(pClient)
+    {
+      SDD1306 oDisplay(CcSize(128,64), *pClient, SDD1306::ETransportType::eI2C);
+      oDisplay.start();
+      int iNextLine = 0;
+      iNextLine += oDisplay.writeLine(iNextLine, "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789", GenericTestFont_Used);
+      iNextLine += oDisplay.writeLine(iNextLine, "IP: 192.168.100.178", GenericTestFont_Used);
+      iNextLine += oDisplay.writeLine(iNextLine, "DHCP: static", GenericTestFont_Used);
+      //CcKernel::sleep(1000);
+      //for(int i=0; i<64; i++)
+      //{
+      //  oDisplay.setPixel(i, i, true);
+      //  oDisplay.setPixel(63-i, i, true);
+      //}
+      //for(int i=0; i<64; i++)
+      //{
+      //  oDisplay.setPixel(64+ i, i, true);
+      //  oDisplay.setPixel(127-i, i, true);
+      //}
+      oDisplay.draw();
+      CcKernel::sleep(1000);
+    }
+  }
+
   CcDeviceUsb oUsb = CcKernel::getDevice(EDeviceType::Usb);
   if(oUsb.isValid())
   {

@@ -39,7 +39,7 @@
 
 #define REGISTER_IOCON_BANK 0x80
 
-MCP23017::MCP23017(II2CSlave* pII2CDevice) :
+MCP23017::MCP23017(II2CClient* pII2CDevice) :
   m_pII2CDevice(pII2CDevice)
 {
 

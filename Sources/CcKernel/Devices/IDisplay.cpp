@@ -23,3 +23,33 @@
  * @brief     Class IDisplay
  */
 #include "Devices/IDisplay.h"
+
+int32 IDisplay::writeLine(size_t uiLine, const CcString& sText, const SFontRectangle** pFont)
+{
+  int32 iLinesWritten = 1;
+  int32 uiX = 0;
+  for(const char& pcSign : sText)
+  {
+    if(pcSign > 0)
+    {
+      const SFontRectangle* pSign = pFont[static_cast<uint32>(pcSign)];
+      int32 uiHeight = pSign->uiHeight + pSign->uiHeight/4;
+      int32 uiWidth  = pSign->uiWidth  + pSign->uiWidth /2;
+      if(uiX + uiWidth > getWidth())
+      {
+        uiLine++;
+        iLinesWritten++;
+        uiX=0;
+      }
+      for(uint8_t i=0;i<pSign->uiHeight;i++)
+      {
+        for(uint8_t j=0;j<pSign->uiWidth;j++)
+        {
+            setPixel(uiX+ j, (uiLine*uiHeight)+i, pSign->getPixel(j,i));
+        }
+      }
+      uiX += uiWidth;
+    }
+  }
+  return iLinesWritten;
+}

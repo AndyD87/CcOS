@@ -28,8 +28,6 @@
 
 #include "STM32F103.h"
 
-class STM32F103SystemGpioPinPrivate;
-
 /**
  * @brief Create pin on port of STM32F103 to manage with CcOS
  */
@@ -41,7 +39,7 @@ public: //methods
    * @param pPort:    Port of this pin
    * @param uiPinNr:  Pin number on port pPort.
    */
-  STM32F103SystemGpioPin(void* pPort, uint8 uiPinNr);
+  STM32F103SystemGpioPin(GPIO_TypeDef* pPort, uint8 uiPinNr);
   virtual ~STM32F103SystemGpioPin();
 
   virtual bool setDirection( EDirection eDirection, size_t uiValue = 0) override;
@@ -55,7 +53,9 @@ public: //methods
    * @brief Force reconfiguration of pin settings
    */
   void reconfigure();
-private:
+  
 private: //member
-  STM32F103SystemGpioPinPrivate* m_pPrivate;
+  GPIO_TypeDef*     pPort;
+  uint16            uiPinNr;
+  GPIO_InitTypeDef  oGpioInitStruct;
 };

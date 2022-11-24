@@ -26,6 +26,7 @@
         "limits": "cpp",
         "tuple": "cpp",
         "array": "cpp",
-        "optional": "cpp"
+        "optional": "cpp",
+        "typeinfo": "cpp"
     },
 }

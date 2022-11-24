@@ -28,7 +28,7 @@
 #include "CcByteArray.h"
 #include "Devices/IGpioPort.h"
 
-class II2CSlave;
+class II2CClient;
 class IGpioPort;
 class IGpioPin;
 
@@ -41,7 +41,7 @@ public:
   /**
    * @brief Constructor
    */
-  MCP23017(II2CSlave* pI2CDevice);
+  MCP23017(II2CClient* pI2CDevice);
 
   /**
    * @brief Destructor
@@ -60,5 +60,5 @@ public:
 private:
 
 private:
-  II2CSlave* m_pII2CDevice;
+  II2CClient* m_pII2CDevice;
 };

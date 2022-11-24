@@ -48,7 +48,8 @@ public:
   virtual IDrawingArea* createDrawingArea(const CcRectangle& oArea);
   virtual void removeDrawingArea(IDrawingArea* pArea);
 
-  virtual void setPixel(int32 iX, int32 iY) = 0;
+  virtual void setPixel(int32 iX, int32 iY)
+  { m_oCursor.setPoint(iX, iY); }
 
   void setPixel(const CcPoint& oPoint)
   { setPixel(oPoint.getX(), oPoint.getY()); }
