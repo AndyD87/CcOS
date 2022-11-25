@@ -47,7 +47,21 @@ size_t CcGenericConsole::readHidden(void* pBuffer, size_t uSize)
 
 size_t CcGenericConsole::write(const void* pBuffer, size_t uSize)
 {
-  return CcConsole::write(pBuffer, uSize);
+  const char* pString = static_cast<const char*>(pBuffer);
+  for(size_t uiPos = 0; uiPos < uSize; uiPos++)
+  {
+    switch(pString[uiPos])
+    {
+      case '\n':
+        appendToBuffer(m_sActiveString);
+        m_sActiveString.clear();
+        break;
+      default:
+        m_sActiveString += pString[uiPos];
+    }
+  }
+  drawLines();
+  return uSize;
 }
 
 CcStatus CcGenericConsole::open(EOpenFlags)
@@ -58,6 +72,7 @@ CcStatus CcGenericConsole::open(EOpenFlags)
     m_iLineHeight = m_pFont[0]->uiHeight + m_pFont[0]->uiHeight/4;
     m_iMaxLines = m_oDisplay.getDevice()->getHeight() / m_iLineHeight;
     m_iFirstLineOffset = m_oDisplay.getDevice()->getHeight() - (m_iLineHeight * m_iMaxLines);
+    if(m_iMaxLines > 1) m_iMaxLines--;
     oRet = true;
   }
   return oRet;
@@ -120,13 +135,19 @@ void CcGenericConsole::writeLine(const CcString& sLine)
   }
   if(uiNext > uiBegin)
   {
-    if(m_oOutputBuffer.size() == m_iMaxLines)
-    {
-      m_oOutputBuffer.remove(0);
-    }
-    m_oOutputBuffer.append(sLine.substr(uiBegin, uiNext));
+    appendToBuffer(sLine.substr(uiBegin, uiNext));
   }
+  m_sActiveString.clear();
   drawLines();
+}
+
+void CcGenericConsole::appendToBuffer(const CcString& sLine)
+{
+  if(m_oOutputBuffer.size() == m_iMaxLines)
+  {
+    m_oOutputBuffer.remove(0);
+  }
+  m_oOutputBuffer.append(sLine);
 }
 
 void CcGenericConsole::drawLines()
@@ -135,25 +156,31 @@ void CcGenericConsole::drawLines()
   int32 iLine = 0;
   for(const CcString& sLine : m_oOutputBuffer)
   {
-    int32 uiX = 0;
-    int32 uiLineOffset = m_iFirstLineOffset + (iLine * m_iLineHeight);
-    for(const char& pcSign : sLine)
-    {
-      if(pcSign > 0)
-      {
-        const SFontRectangle* pSign = m_pFont[static_cast<uint32>(pcSign)];
-        int32 uiWidth  = pSign->uiWidth  + pSign->uiWidth /2;
-        for(uint8_t i=0;i<pSign->uiHeight;i++)
-        {
-          for(uint8_t j=0;j<pSign->uiWidth;j++)
-          {
-              m_oDisplay.getDevice()->setPixel(uiX+ j, uiLineOffset + i, pSign->getPixel(j,i));
-          }
-        }
-        uiX += uiWidth;
-      }
-    }
+    drawLine(iLine, sLine);
     iLine++;
   }
+  drawLine(iLine, m_sActiveString);
   m_oDisplay.getDevice()->draw();
+}
+
+void CcGenericConsole::drawLine(int32 iLine, const CcString& sLine)
+{
+  int32 uiX = 0;
+  int32 uiLineOffset = m_iFirstLineOffset + (iLine * m_iLineHeight);
+  for(const char& pcSign : sLine)
+  {
+    if(pcSign > 0)
+    {
+      const SFontRectangle* pSign = m_pFont[static_cast<uint32>(pcSign)];
+      int32 uiWidth  = pSign->uiWidth  + pSign->uiWidth /2;
+      for(uint8_t i=0;i<pSign->uiHeight;i++)
+      {
+        for(uint8_t j=0;j<pSign->uiWidth;j++)
+        {
+            m_oDisplay.getDevice()->setPixel(uiX+ j, uiLineOffset + i, pSign->getPixel(j,i));
+        }
+      }
+      uiX += uiWidth;
+    }
+  }
 }

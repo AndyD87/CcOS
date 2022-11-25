@@ -171,6 +171,9 @@ private:
    */
   ~CcConsole() = delete;
 
+  static void lock();
+  static void unlock();
+
 private:
   static CcMutex*    s_pLock;
   static IIo*        s_pInput;

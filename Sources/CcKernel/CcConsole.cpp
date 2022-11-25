@@ -84,9 +84,9 @@ size_t CcConsole::read(void* pBuffer, size_t uSize)
   size_t uiRead = SIZE_MAX;
   if (s_pInput != nullptr)
   {
-    s_pLock->lock();
+    lock();
     uiRead = s_pInput->read(pBuffer, uSize);
-    s_pLock->unlock();
+    unlock();
   }
   return uiRead;
 }
@@ -96,9 +96,9 @@ size_t CcConsole::write(const void* pBuffer, size_t uSize)
   size_t uiWritten = SIZE_MAX;
   if (s_pOutput != nullptr)
   {
-    s_pLock->lock();
+    lock();
     uiWritten = s_pOutput->write(pBuffer, uSize);
-    s_pLock->unlock();
+    unlock();
   }
   return uiWritten;
 }
@@ -204,9 +204,9 @@ void CcConsole::writeLine(const CcString& sOutput)
 {
   if (s_pOutput != nullptr)
   {
-    s_pLock->lock();
+    lock();
     s_pOutput->writeLine(sOutput);
-    s_pLock->unlock();
+    unlock();
   }
 }
 
@@ -214,10 +214,10 @@ void CcConsole::writeSameLine(const CcString& sOutput)
 {
   if (s_pOutput != nullptr)
   {
-    s_pLock->lock();
+    lock();
     //s_pOutput->writeString(CcGlobalStrings::EolCr);
     s_pOutput->writeString(sOutput + CcGlobalStrings::EolCr);
-    s_pLock->unlock();
+    unlock();
   }
 }
 
@@ -271,4 +271,20 @@ IIo& CcConsole::getOutStream()
 IIo& CcConsole::getInStream()
 {
   return *s_pInput;
+}
+
+void CcConsole::lock()
+{
+  if(s_pLock)
+  {
+    s_pLock->lock();
+  }
+}
+
+void CcConsole::unlock()
+{
+  if(s_pLock)
+  {
+    s_pLock->unlock();
+  }
 }

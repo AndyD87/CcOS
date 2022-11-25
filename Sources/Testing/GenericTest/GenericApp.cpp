@@ -35,6 +35,7 @@
 #include "CcSize.h"
 #include "IShell.h"
 #include "GenericTestFont.h"
+#include "CcConsole.h"
 
 GenericApp::GenericApp()
 {
@@ -43,6 +44,8 @@ GenericApp::GenericApp()
 GenericApp::~GenericApp()
 {
   CCDELETE(m_pCdcDevice);
+  CCDELETE(m_pConsole);
+  CCDELETE(m_pDisplay);
 }
 
 void GenericApp::run()
@@ -55,25 +58,19 @@ void GenericApp::run()
     II2CClient* pClient = oI2C.createInterface(0x3c);
     if(pClient)
     {
-      SDD1306 oDisplay(CcSize(128,64), *pClient, SDD1306::ETransportType::eI2C);
-      oDisplay.start();
-      CcGenericConsole oConsole(&oDisplay, GenericTestFont_Used);
-      if(oConsole.open(EOpenFlags::ReadWrite))
+      m_pDisplay = CCNEW_INLINE(SDD1306, CcSize(128,64), *pClient, SDD1306::ETransportType::eI2C);
+      m_pDisplay->start();
+      m_pConsole = CCNEW_INLINE(CcGenericConsole, m_pDisplay, GenericTestFont_Used);
+      if(m_pConsole->open(EOpenFlags::ReadWrite))
       {
-        oConsole.writeLine("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789");
-        oConsole.writeLine("IP: 192.168.100.178");
-        oConsole.writeLine("DHCP: static");
-        //CcKernel::sleep(1000);
-        //for(int i=0; i<64; i++)
-        //{
-        //  oDisplay.setPixel(i, i, true);
-        //  oDisplay.setPixel(63-i, i, true);
-        //}
-        //for(int i=0; i<64; i++)
-        //{
-        //  oDisplay.setPixel(64+ i, i, true);
-        //  oDisplay.setPixel(127-i, i, true);
-        //}
+        m_pConsole->writeLine("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789");
+        m_pConsole->writeLine("IP: 192.168.100.178");
+        m_pConsole->writeLine("DHCP: static");
+        CcConsole::setOutputDevice(m_pConsole);
+        CcKernel::sleep(2000);
+        CcConsole::writeLine("Console set");
+        CcKernel::sleep(2000);
+        CcConsole::write("Active line", sizeof("Active line")-1);
       }
     }
   }

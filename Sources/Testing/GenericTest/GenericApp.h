@@ -33,6 +33,8 @@
 #include "Devices/USB/Client/CcUsbBulkTransfer.h"
 
 class IShell;
+class IDisplay;
+class CcGenericConsole;
 
 class GenericApp: public CcApp
 {
@@ -48,4 +50,6 @@ private:
   CcUsbCdc* m_pCdcDevice              = nullptr;
   CcUsbBulkTransfer* m_pBulkTransfer  = nullptr;
   IShell*   m_pShell                  = nullptr;
+  IDisplay*         m_pDisplay        = nullptr;
+  CcGenericConsole* m_pConsole        = nullptr;
 };

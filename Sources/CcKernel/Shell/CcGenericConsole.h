@@ -63,13 +63,16 @@ public:
   void writeLine(const CcString& sLine);
 
 private:
+  void appendToBuffer(const CcString& sLine);
   void drawLines();
+  void drawLine(int32 iLine, const CcString& sLine);
 private:
   CcDeviceDisplay         m_oDisplay;
   const SFontRectangle**  m_pFont;
   CcStringList            m_oOutputBuffer;
+  CcString                m_sActiveString;
 
-  int32                 m_iLineHeight = 0;
-  int32                 m_iFirstLineOffset = 0;
-  size_t                m_iMaxLines = 0;
+  int32                   m_iLineHeight = 0;
+  int32                   m_iFirstLineOffset = 0;
+  size_t                  m_iMaxLines = 0;
 };
