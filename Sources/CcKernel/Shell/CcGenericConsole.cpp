@@ -33,7 +33,7 @@ CcGenericConsole::~CcGenericConsole()
   close();
 }
 
-size_t CcGenericConsole::read(void* pBuffer, size_t uSize)
+size_t CcGenericConsole::read(void* CCUNUSED_PARAM(pBuffer), size_t CCUNUSED_PARAM(uSize))
 {
   size_t uiRet = SIZE_MAX;
   return uiRet;
@@ -55,9 +55,10 @@ CcStatus CcGenericConsole::open(EOpenFlags)
   CcStatus oRet = false;
   if(m_pFont)
   {
-    m_iLineHeight = m_pFont[0].uiHeight + m_pFont[0].uiHeight/4;
+    m_iLineHeight = m_pFont[0]->uiHeight + m_pFont[0]->uiHeight/4;
     m_iMaxLines = m_oDisplay.getDevice()->getHeight() / m_iLineHeight;
-    m_iFirstLineOffset = m_oDisplay.getDevice()->getHeight();
+    m_iFirstLineOffset = m_oDisplay.getDevice()->getHeight() - (m_iLineHeight * m_iMaxLines);
+    oRet = true;
   }
   return oRet;
 }
@@ -91,52 +92,68 @@ CcStatus CcGenericConsole::flush()
   return oRet;
 }
 
-int32 CcGenericConsole::writeLine(size_t uiLine, const CcString& sText, const SFontRectangle** pFont)
+
+void CcGenericConsole::writeLine(const CcString& sLine)
 {
-  int32 iLinesWritten = 1;
-  int32 uiX = 0;
-  for(const char& pcSign : sText)
-  {
+  int32 uiX=0;
+  size_t uiBegin = 0;
+  size_t uiNext = 0;
+  for(const char& pcSign : sLine)
+  { 
     if(pcSign > 0)
     {
-      const SFontRectangle* pSign = pFont[static_cast<uint32>(pcSign)];
+      const SFontRectangle* pSign = m_pFont[static_cast<uint32>(pcSign)];
       int32 uiWidth  = pSign->uiWidth  + pSign->uiWidth /2;
       if(uiX + uiWidth > m_oDisplay.getDevice()->getWidth())
       {
-        uiLine++;
-        iLinesWritten++;
-        uiX=0;
-      }
-      for(uint8_t i=0;i<pSign->uiHeight;i++)
-      {
-        for(uint8_t j=0;j<pSign->uiWidth;j++)
+        if(m_oOutputBuffer.size() == m_iMaxLines)
         {
-            m_oDisplay.getDevice()->setPixel(uiX+ j, (uiLine*uiHeight)+i, pSign->getPixel(j,i));
+          m_oOutputBuffer.remove(0);
         }
+        m_oOutputBuffer.append(sLine.substr(uiBegin, uiNext));
+        uiBegin = uiNext;
+        uiX=0;
       }
       uiX += uiWidth;
     }
+    uiNext++;
   }
-  return iLinesWritten;
+  if(uiNext > uiBegin)
+  {
+    if(m_oOutputBuffer.size() == m_iMaxLines)
+    {
+      m_oOutputBuffer.remove(0);
+    }
+    m_oOutputBuffer.append(sLine.substr(uiBegin, uiNext));
+  }
+  drawLines();
 }
 
-int32 CcGenericConsole::linesRequired(const CcString& sText, const SFontRectangle** pFont)
+void CcGenericConsole::drawLines()
 {
-  int32 iLinesWritten = 1;
-  int32 uiX=0;
-  for(const char& pcSign : sText)
+  m_oDisplay.getDevice()->fill(false);
+  int32 iLine = 0;
+  for(const CcString& sLine : m_oOutputBuffer)
   {
-    if(pcSign > 0)
+    int32 uiX = 0;
+    int32 uiLineOffset = m_iFirstLineOffset + (iLine * m_iLineHeight);
+    for(const char& pcSign : sLine)
     {
-      const SFontRectangle* pSign = pFont[static_cast<uint32>(pcSign)];
-      int32 uiWidth  = pSign->uiWidth  + pSign->uiWidth /2;
-      if(uiX + uiWidth > m_oDisplay.getDevice()->getWidth())
+      if(pcSign > 0)
       {
-        iLinesWritten++;
-        uiX=0;
+        const SFontRectangle* pSign = m_pFont[static_cast<uint32>(pcSign)];
+        int32 uiWidth  = pSign->uiWidth  + pSign->uiWidth /2;
+        for(uint8_t i=0;i<pSign->uiHeight;i++)
+        {
+          for(uint8_t j=0;j<pSign->uiWidth;j++)
+          {
+              m_oDisplay.getDevice()->setPixel(uiX+ j, uiLineOffset + i, pSign->getPixel(j,i));
+          }
+        }
+        uiX += uiWidth;
       }
-      uiX += uiWidth;
     }
+    iLine++;
   }
-  return iLinesWritten;
+  m_oDisplay.getDevice()->draw();
 }

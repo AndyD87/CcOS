@@ -27,6 +27,7 @@
         "tuple": "cpp",
         "array": "cpp",
         "optional": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "iomanip": "cpp"
     },
 }

@@ -63,7 +63,7 @@ public: //methods
   virtual void setPixel(int32 uiX, int32 uiY, bool bMonochromValue) override;
 
   virtual void draw() override;
-  void fill(bool bOnOff);
+  virtual void fill(bool bOnOff) override;
 
   void setResetPin(const CcGpioPortPin oResetPin)
   { m_oResetPin = oResetPin; }

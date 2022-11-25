@@ -40,7 +40,7 @@ public:
    * @brief Create an async interface for specific io device
    * @param pIoDevice: Target io device to make async
    */
-  CcGenericConsole(const CcDeviceDisplay& oDisplay, const SFontRectangle* pFont) : 
+  CcGenericConsole(const CcDeviceDisplay& oDisplay, const SFontRectangle** pFont) : 
     m_oDisplay(oDisplay),
     m_pFont(pFont)
   {}
@@ -60,15 +60,16 @@ public:
   virtual void* getStdFile() override;
   virtual CcStatus flush() override;
 
-private:
-  int32 writeLine(size_t uiLine, const CcString& sText, const SFontRectangle** pFont);
-  int32 linesRequired(const CcString& sText, const SFontRectangle** pFont);
-private:
-  CcDeviceDisplay       m_oDisplay;
-  const SFontRectangle* m_pFont;
-  CcStringList          m_oOutputBuffer;
+  void writeLine(const CcString& sLine);
 
-  int32                 m_iLineHeight;
-  int32                 m_iMaxLines;
-  int32                 m_iFirstLineOffset;
+private:
+  void drawLines();
+private:
+  CcDeviceDisplay         m_oDisplay;
+  const SFontRectangle**  m_pFont;
+  CcStringList            m_oOutputBuffer;
+
+  int32                 m_iLineHeight = 0;
+  int32                 m_iFirstLineOffset = 0;
+  size_t                m_iMaxLines = 0;
 };

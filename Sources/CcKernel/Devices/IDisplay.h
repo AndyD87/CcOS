@@ -117,6 +117,7 @@ public:
   virtual EType getType() const = 0;
 
   virtual void draw() = 0;
+  virtual void fill(bool bOnOff) = 0;
 
 protected: //member
 };

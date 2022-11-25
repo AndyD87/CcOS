@@ -39,9 +39,18 @@ public:
    * @brief Create device with handle
    * @param oHandle: Handle to init device
    */
+  CcDeviceDisplay(IDisplay* pHandle) :
+    CcDevice(pHandle, EDeviceType::Display)
+  {}
+
+  /**
+   * @brief Create device with handle
+   * @param oHandle: Handle to init device
+   */
   CcDeviceDisplay(const CcDevice& oHandle) :
     CcDevice(oHandle)
   {}
+  
   virtual ~CcDeviceDisplay() = default;
 
   //! @return Get basic device handle

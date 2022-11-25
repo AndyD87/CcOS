@@ -26,6 +26,7 @@
  */
 
 #include "GenericApp.h"
+#include "Shell/CcGenericConsole.h"
 #include "CcKernel.h"
 #include "Devices/CcDeviceUsb.h"
 #include "Devices/CcDeviceI2C.h"
@@ -56,23 +57,24 @@ void GenericApp::run()
     {
       SDD1306 oDisplay(CcSize(128,64), *pClient, SDD1306::ETransportType::eI2C);
       oDisplay.start();
-      int iNextLine = 0;
-      iNextLine += oDisplay.writeLine(iNextLine, "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789", GenericTestFont_Used);
-      iNextLine += oDisplay.writeLine(iNextLine, "IP: 192.168.100.178", GenericTestFont_Used);
-      iNextLine += oDisplay.writeLine(iNextLine, "DHCP: static", GenericTestFont_Used);
-      //CcKernel::sleep(1000);
-      //for(int i=0; i<64; i++)
-      //{
-      //  oDisplay.setPixel(i, i, true);
-      //  oDisplay.setPixel(63-i, i, true);
-      //}
-      //for(int i=0; i<64; i++)
-      //{
-      //  oDisplay.setPixel(64+ i, i, true);
-      //  oDisplay.setPixel(127-i, i, true);
-      //}
-      oDisplay.draw();
-      CcKernel::sleep(1000);
+      CcGenericConsole oConsole(&oDisplay, GenericTestFont_Used);
+      if(oConsole.open(EOpenFlags::ReadWrite))
+      {
+        oConsole.writeLine("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789");
+        oConsole.writeLine("IP: 192.168.100.178");
+        oConsole.writeLine("DHCP: static");
+        //CcKernel::sleep(1000);
+        //for(int i=0; i<64; i++)
+        //{
+        //  oDisplay.setPixel(i, i, true);
+        //  oDisplay.setPixel(63-i, i, true);
+        //}
+        //for(int i=0; i<64; i++)
+        //{
+        //  oDisplay.setPixel(64+ i, i, true);
+        //  oDisplay.setPixel(127-i, i, true);
+        //}
+      }
     }
   }
 
@@ -114,8 +116,8 @@ void GenericApp::run()
       if(oStatus)
       {
         oStatus = oUsbDevice->start();
-        uchar pBuffer[64];
-        uchar uCnt = 1;
+        //uchar pBuffer[64];
+        //uchar uCnt = 1;
         //while(1)
         //{
         //  for(size_t uiPos = 0; uiPos < 53; uiPos++)
