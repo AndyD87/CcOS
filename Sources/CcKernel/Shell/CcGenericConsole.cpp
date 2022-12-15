@@ -74,6 +74,7 @@ CcStatus CcGenericConsole::open(EOpenFlags)
     m_iFirstLineOffset = m_oDisplay.getDevice()->getHeight() - (m_iLineHeight * m_iMaxLines);
     if(m_iMaxLines > 1) m_iMaxLines--;
     oRet = true;
+    m_oDisplay.getDevice()->fill(false);
   }
   return oRet;
 }
@@ -152,7 +153,6 @@ void CcGenericConsole::appendToBuffer(const CcString& sLine)
 
 void CcGenericConsole::drawLines()
 {
-  m_oDisplay.getDevice()->fill(false);
   int32 iLine = 0;
   for(const CcString& sLine : m_oOutputBuffer)
   {
@@ -167,20 +167,36 @@ void CcGenericConsole::drawLine(int32 iLine, const CcString& sLine)
 {
   int32 uiX = 0;
   int32 uiLineOffset = m_iFirstLineOffset + (iLine * m_iLineHeight);
+  // Use half width of space sign between two signs
+  uint8_t uiSignSpace  = m_pFont[32]->uiWidth/2;
   for(const char& pcSign : sLine)
   {
     if(pcSign > 0)
     {
       const SFontRectangle* pSign = m_pFont[static_cast<uint32>(pcSign)];
-      int32 uiWidth  = pSign->uiWidth  + pSign->uiWidth /2;
+      int32 uiWidth  = pSign->uiWidth + uiSignSpace;
       for(uint8_t i=0;i<pSign->uiHeight;i++)
       {
         for(uint8_t j=0;j<pSign->uiWidth;j++)
         {
-            m_oDisplay.getDevice()->setPixel(uiX+ j, uiLineOffset + i, pSign->getPixel(j,i));
+            m_oDisplay.getDevice()->setPixel(uiX + j, uiLineOffset + i, pSign->getPixel(j,i));
+        }
+      }
+      for(uint8_t i=0;i<m_iLineHeight;i++)
+      {
+        for(uint8_t j=pSign->uiWidth ;j< uiWidth;j++)
+        {
+            m_oDisplay.getDevice()->setPixel(uiX + j, uiLineOffset + i, false);
         }
       }
       uiX += uiWidth;
+    }
+  }
+  for(int32 i=0; i< m_iLineHeight;i++)
+  {
+    for(int32 j= uiX; j< m_oDisplay.getDevice()->getWidth();j++)
+    {
+      m_oDisplay.getDevice()->setPixel(j, uiLineOffset + i, false);
     }
   }
 }

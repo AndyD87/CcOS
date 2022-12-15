@@ -104,6 +104,9 @@ public:
     IWorker("CKernelTestThread")
   {}
 
+  ~CKernelTestThread()
+  {}
+
   virtual void run() override
   {
     CCDEBUG("CKernelTestThread starting");

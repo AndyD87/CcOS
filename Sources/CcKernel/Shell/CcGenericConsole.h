@@ -74,5 +74,5 @@ private:
 
   int32                   m_iLineHeight = 0;
   int32                   m_iFirstLineOffset = 0;
-  size_t                  m_iMaxLines = 0;
+  int32                   m_iMaxLines = 0;
 };

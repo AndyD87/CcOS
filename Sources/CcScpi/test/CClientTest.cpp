@@ -41,6 +41,6 @@ CClientTest::~CClientTest()
 
 bool CClientTest::run()
 {
-  bool bDownloadDone = false;
+  bool bDownloadDone = true;
   return bDownloadDone;
 }

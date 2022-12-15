@@ -43,7 +43,7 @@ typedef struct
 {
   unsigned char uiWidth;  //!< Width of rectangle
   unsigned char uiHeight;  //!< Height of rectangle
-  unsigned char pData[];  //!< Pix map with size SFontRectangle_GetArrayWidth(this) * uiHeight.
+  unsigned char pData[1];  //!< Pix map with size SFontRectangle_GetArrayWidth(this) * uiHeight.
 
   inline bool getPixel(uint8 uiX, uint8 uiY) const
   {

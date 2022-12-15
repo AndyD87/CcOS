@@ -47,7 +47,7 @@ CcScpiCli::CcScpiCli() :
       {"-port",        CcVariant::EType::Uint16, "5025",      "Target device port, default is 5025"},
       {"-send",        CcVariant::EType::Switch, "",          "Request is send only"},
       {"-query",       CcVariant::EType::Switch, "",          "Request is send and request"},
-      {"-h",           CcVariant::EType::Switch, "",          "Print help message"}
+      {"-timeout",     CcVariant::EType::Uint64, "2000",      "Timeout to wait until query response is received in milliseconds"},      {"-h",           CcVariant::EType::Switch, "",          "Print help message"}
     }
   )
 {
@@ -67,6 +67,7 @@ void CcScpiCli::run()
   else if (m_oArguments.getUnparsed().size())
   {
     CcScpiClient oClient;
+    oClient.setTimeout(m_oArguments.getValue("-timeout").getUint64());
     oClient.setServer(m_oArguments.getValue("-address").getString());
     oClient.setPort(m_oArguments.getValue("-port").getString());
     if (oClient.connect())

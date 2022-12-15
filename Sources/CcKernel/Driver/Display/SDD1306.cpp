@@ -30,38 +30,40 @@
 #define WRITE_COMMAND     0	//!< write command
 #define WRITE_DATA        1	//!< write data
 
-#define PAGE_SIZE    8          //page size
-#define XLevelL		   0x00       //column low address
-#define XLevelH		   0x10       //column high address
-#define YLevel       0xB0       //page address
-#define	Brightness	 0xFF
+#define PAGE_SIZE    8          //<! page size
+#define XLevelL		   0x00       //<! column low address
+#define XLevelH		   0x10       //<! column high address
+#define YLevel       0xB0       //<! page address
 
-#define CMD_SETLOWCOLUMN          0x00
-#define CMD_EXTERNALVCC           0x01
-#define CMD_SWITCHCAPVCC          0x02
-#define CMD_SETHIGHCOLUMN         0x10
-#define CMD_MEMORYMODE            0x20
-#define CMD_COLUMNADDR            0x21
-#define CMD_PAGEADDR              0x22
-#define CMD_SETSTARTLINE          0x40
-#define CMD_SETCONTRAST           0x81
-#define CMD_CHARGEPUMP            0x8D
-#define CMD_SEGREMAP              0xA1
-#define CMD_DISPLAYALLON_RESUME   0xA4
-#define CMD_DISPLAYALLON          0xA5
-#define CMD_NORMALDISPLAY         0xA6
-#define CMD_INVERTDISPLAY         0xA7
-#define CMD_SETMULTIPLEX          0xA8
-#define CMD_DISPLAYOFF            0xAE
-#define CMD_DISPLAYON             0xAF
-#define CMD_PAGESTARTADDRESS      0xB0
-#define CMD_COMSCANINC            0xC0
-#define CMD_COMSCANDEC            0xC8
-#define CMD_SETDISPLAYOFFSET      0xD3
-#define CMD_SETDISPLAYCLOCKDIV    0xD5
-#define CMD_SETPRECHARGE          0xD9
-#define CMD_SETCOMPINS            0xDA
-#define CMD_SETVCOMDETECT         0xDB
+//<! @brief Commands for OLED control chip
+//<! @{
+#define CMD_SETLOWCOLUMN          0x00  //!< 
+#define CMD_EXTERNALVCC           0x01  //!< 
+#define CMD_SWITCHCAPVCC          0x02  //!< 
+#define CMD_SETHIGHCOLUMN         0x10  //!< 
+#define CMD_MEMORYMODE            0x20  //!< 
+#define CMD_COLUMNADDR            0x21  //!< 
+#define CMD_PAGEADDR              0x22  //!< 
+#define CMD_SETSTARTLINE          0x40  //!< 
+#define CMD_SETCONTRAST           0x81  //!< 
+#define CMD_CHARGEPUMP            0x8D  //!< 
+#define CMD_SEGREMAP              0xA1  //!< 
+#define CMD_DISPLAYALLON_RESUME   0xA4  //!< 
+#define CMD_DISPLAYALLON          0xA5  //!< 
+#define CMD_NORMALDISPLAY         0xA6  //!< 
+#define CMD_INVERTDISPLAY         0xA7  //!< 
+#define CMD_SETMULTIPLEX          0xA8  //!< 
+#define CMD_DISPLAYOFF            0xAE  //!< 
+#define CMD_DISPLAYON             0xAF  //!< 
+#define CMD_PAGESTARTADDRESS      0xB0  //!< 
+#define CMD_COMSCANINC            0xC0  //!< 
+#define CMD_COMSCANDEC            0xC8  //!< 
+#define CMD_SETDISPLAYOFFSET      0xD3  //!< 
+#define CMD_SETDISPLAYCLOCKDIV    0xD5  //!< 
+#define CMD_SETPRECHARGE          0xD9  //!< 
+#define CMD_SETCOMPINS            0xDA  //!< 
+#define CMD_SETVCOMDETECT         0xDB  //!< 
+//<! @}
 
 SDD1306::SDD1306(const CcSize& oSize, IIo& oCommunication, ETransportType eType) :
   IDisplay(oSize),
@@ -135,7 +137,7 @@ void SDD1306::draw()
 void SDD1306::fill(bool bOnOff)
 {
   if(bOnOff)
-    m_oBuffer.memset(0xff);
+    m_oBuffer.memset(-1);
   else
     m_oBuffer.memset(0x00);
 }

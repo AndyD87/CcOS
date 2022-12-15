@@ -83,6 +83,9 @@ public:
     oSystem(this, pInterface)
   {}
 
+  ~CcKernelPrivate()
+  {}
+
   const CcVersion& getVersion()
   {
     return s_oKernel.getVersion();
@@ -142,7 +145,7 @@ CcKernel::CcKernel()
   CcMemoryMonitor::init();
 
   CCNEW(m_pPrivate, CcKernelPrivate, &CcKernelPrivate::m_pInterface);
-  if (m_pPrivate != CcKernelPrivate::m_pInterface)
+   if (m_pPrivate != CcKernelPrivate::m_pInterface)
     CcMemoryMonitor::setInterface(&CcKernelPrivate::m_pInterface->oMemoryInterface);
   #ifdef MEMORYMONITOR_CHECK_KERNEL
     CcMemoryMonitor::enable();
@@ -198,8 +201,8 @@ CcKernel::~CcKernel()
     CcMemoryMonitor::disable();
   #endif
 
-  CcMemoryMonitor::setInterface(nullptr);
   CCDELETE(m_pPrivate);
+  CcMemoryMonitor::setInterface(nullptr);
   CcKernelPrivate::m_pInterface = nullptr;
 
   CcMemoryMonitor::deinit();
@@ -291,7 +294,6 @@ bool CcKernel::shutdown(CcKernelShutdownEvent::EReason eReason)
 
         CCVERBOSE("Kernel shutdown complete\r\n");
       }
-      CcKernelPrivate::m_pInterface = nullptr;
     }
     else
     {

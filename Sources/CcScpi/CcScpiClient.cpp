@@ -44,7 +44,7 @@ CcStatus CcScpiClient::connect()
   }
   else
   {
-    m_oSocket.setTimeout(CcDateTimeFromSeconds(2));
+    m_oSocket.setTimeout(CcDateTimeFromMSeconds(m_uiTimeoutMs));
   }
   return m_oStatus;
 }

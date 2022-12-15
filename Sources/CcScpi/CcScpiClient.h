@@ -67,10 +67,12 @@ public:
   void setPort(const CcString& sPort)
   { m_sPort = sPort; }
 
-
+  void setTimeout(uint64 uiTimeoutMs)
+  { m_uiTimeoutMs = uiTimeoutMs; }
 private:
   CcStatus m_oStatus;
   CcSocket m_oSocket;
   CcString m_sServer;
   CcString m_sPort;
+  uint64   m_uiTimeoutMs = 2000;
 };

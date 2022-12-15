@@ -52,7 +52,7 @@ bool CArgumentTest::testBasic()
       {"-output",     CcVariant::EType::String}
     }
   );
-  if (oArguments.parse(" -int32 https://coolcow.de Unparsed0 -request get -output \"Test File.html\" Unparsed1"))
+  if (oArguments.parse("Application.exe -int32 https://coolcow.de Unparsed0 -request get -output \"Test File.html\" Unparsed1"))
   {
     if (oArguments.contains("-int32") &&
         oArguments.contains("-request") &&
@@ -91,26 +91,26 @@ bool CArgumentTest::testFailedTypes()
       {"-output",     CcVariant::EType::Bool}
     }
   );
-  if (!oArguments.parse(" -int32 string"))
+  if (!oArguments.parse("Application.exe  -int32 string"))
   {
     bRet = false;
-    if (oArguments.parse(" -int32 20"))
+    if (oArguments.parse("Application.exe  -int32 20"))
     {
-      if (!oArguments.parse(" -int32 20000000000"))
+      if (!oArguments.parse("Application.exe  -int32 20000000000"))
       {
-        if (!oArguments.parse(" -int32 0x100000000"))
+        if (!oArguments.parse("Application.exe  -int32 0x100000000"))
         {
-          if (oArguments.parse(" -int32 -0x1") &&
+          if (oArguments.parse("Application.exe  -int32 -0x1") &&
               oArguments.getValue("-int32").isInt() &&
               oArguments.getValue("-int32").getInt32() == -1)
           {
-            if (oArguments.parse(" -int32 -1"))
+            if (oArguments.parse("Application.exe  -int32 -1"))
             {
-              if (!oArguments.parse(" -int32 2147483648"))
+              if (!oArguments.parse("Application.exe  -int32 2147483648"))
               { 
-                if (oArguments.parse(" -int32 -2147483648"))
+                if (oArguments.parse("Application.exe  -int32 -2147483648"))
                 {
-                  if (!oArguments.parse(" -int32 -2147483649"))
+                  if (!oArguments.parse("Application.exe  -int32 -2147483649"))
                   {
                     bRet = true;
                   }
@@ -125,17 +125,17 @@ bool CArgumentTest::testFailedTypes()
   if (bRet == true)
   {
     bRet = false;
-    if (oArguments.parse(" -uint32 20"))
+    if (oArguments.parse("Application.exe  -uint32 20"))
     {
-      if (!oArguments.parse(" -uint32 20000000000"))
+      if (!oArguments.parse("Application.exe  -uint32 20000000000"))
       {
-        if (!oArguments.parse(" -uint32 0x100000000"))
+        if (!oArguments.parse("Application.exe  -uint32 0x100000000"))
         {
-          if (oArguments.parse(" -uint32 0xffffffff") &&
+          if (oArguments.parse("Application.exe  -uint32 0xffffffff") &&
               !oArguments.getValue("-uint32").isInt() &&
               oArguments.getValue("-uint32").getUint32() == UINT32_MAX)
           {
-            if (!oArguments.parse(" -uint32 -1"))
+            if (!oArguments.parse("Application.exe  -uint32 -1"))
             {
               bRet = true;
             }
@@ -147,25 +147,25 @@ bool CArgumentTest::testFailedTypes()
   if (bRet == true)
   {
     bRet = false;
-    if (!oArguments.parse(" -int64 string"))
+    if (!oArguments.parse("Application.exe  -int64 string"))
     {
-      if (oArguments.parse(" -int64 20"))
+      if (oArguments.parse("Application.exe  -int64 20"))
       {
-        if (!oArguments.parse(" -int64 19223372036854775807"))
+        if (!oArguments.parse("Application.exe  -int64 19223372036854775807"))
         {
-          if (!oArguments.parse(" -int64 0x10000000000000000"))
+          if (!oArguments.parse("Application.exe  -int64 0x10000000000000000"))
           {
-            if (oArguments.parse(" -int64 -0x1") &&
+            if (oArguments.parse("Application.exe  -int64 -0x1") &&
                 oArguments.getValue("-int64").isInt() &&
                 oArguments.getValue("-int64").getInt64() == -1)
             {
-              if (oArguments.parse(" -int64 -1"))
+              if (oArguments.parse("Application.exe  -int64 -1"))
               {
-                if (!oArguments.parse(" -int64 9223372036854775808"))
+                if (!oArguments.parse("Application.exe  -int64 9223372036854775808"))
                 {
-                  if (oArguments.parse(" -int64 -9223372036854775808"))
+                  if (oArguments.parse("Application.exe  -int64 -9223372036854775808"))
                   {
-                    if (!oArguments.parse(" -int64 -9223372036854775809"))
+                    if (!oArguments.parse("Application.exe  -int64 -9223372036854775809"))
                     {
                       bRet = true;
                     }
@@ -181,17 +181,17 @@ bool CArgumentTest::testFailedTypes()
   if (bRet == true)
   {
     bRet = false;
-    if (oArguments.parse(" -uint64 20"))
+    if (oArguments.parse("Application.exe  -uint64 20"))
     {
-      if (!oArguments.parse(" -uint64 19223372036854775807"))
+      if (!oArguments.parse("Application.exe  -uint64 19223372036854775807"))
       {
-        if (!oArguments.parse(" -uint64 0x10000000000000000"))
+        if (!oArguments.parse("Application.exe  -uint64 0x10000000000000000"))
         {
-          if (oArguments.parse(" -uint64 0xffffffffffffffff") &&
+          if (oArguments.parse("Application.exe  -uint64 0xffffffffffffffff") &&
               !oArguments.getValue("-uint64").isInt() &&
               oArguments.getValue("-uint64").getUint64() == UINT64_MAX)
           {
-            if (!oArguments.parse(" -uint64 -1"))
+            if (!oArguments.parse("Application.exe  -uint64 -1"))
             {
               bRet = true;
             }
@@ -203,25 +203,25 @@ bool CArgumentTest::testFailedTypes()
   if (bRet == true)
   {
     bRet = false;
-    if (!oArguments.parse(" -int16 string"))
+    if (!oArguments.parse("Application.exe  -int16 string"))
     {
-      if (oArguments.parse(" -int16 20"))
+      if (oArguments.parse("Application.exe  -int16 20"))
       {
-        if (!oArguments.parse(" -int16 165535"))
+        if (!oArguments.parse("Application.exe  -int16 165535"))
         {
-          if (!oArguments.parse(" -int16 0x10000"))
+          if (!oArguments.parse("Application.exe  -int16 0x10000"))
           {
-            if (oArguments.parse(" -int16 -0x1") &&
+            if (oArguments.parse("Application.exe  -int16 -0x1") &&
                 oArguments.getValue("-int16").isInt() &&
                 oArguments.getValue("-int16").getInt16() == -1)
             {
-              if (oArguments.parse(" -int16 -1"))
+              if (oArguments.parse("Application.exe  -int16 -1"))
               {
-                if (!oArguments.parse(" -int16 32768"))
+                if (!oArguments.parse("Application.exe  -int16 32768"))
                 {
-                  if (oArguments.parse(" -int16 -32768"))
+                  if (oArguments.parse("Application.exe  -int16 -32768"))
                   {
-                    if (!oArguments.parse(" -int16 -32769"))
+                    if (!oArguments.parse("Application.exe  -int16 -32769"))
                     {
                       bRet = true;
                     }
@@ -237,17 +237,17 @@ bool CArgumentTest::testFailedTypes()
   if (bRet == true)
   {
     bRet = false;
-    if (oArguments.parse(" -uint16 20"))
+    if (oArguments.parse("Application.exe  -uint16 20"))
     {
-      if (!oArguments.parse(" -uint16 165535"))
+      if (!oArguments.parse("Application.exe  -uint16 165535"))
       {
-        if (!oArguments.parse(" -uint16 0x10000"))
+        if (!oArguments.parse("Application.exe  -uint16 0x10000"))
         {
-          if (oArguments.parse(" -uint16 0xffff") &&
+          if (oArguments.parse("Application.exe  -uint16 0xffff") &&
               !oArguments.getValue("-uint16").isInt() &&
               oArguments.getValue("-uint16").getUint16() == UINT16_MAX)
           {
-            if (!oArguments.parse(" -uint16 -1"))
+            if (!oArguments.parse("Application.exe  -uint16 -1"))
             {
               bRet = true;
             }
@@ -259,25 +259,25 @@ bool CArgumentTest::testFailedTypes()
   if (bRet == true)
   {
     bRet = false;
-    if (!oArguments.parse(" -int8 string"))
+    if (!oArguments.parse("Application.exe  -int8 string"))
     {
-      if (oArguments.parse(" -int8 20"))
+      if (oArguments.parse("Application.exe  -int8 20"))
       {
-        if (!oArguments.parse(" -int8 1255"))
+        if (!oArguments.parse("Application.exe  -int8 1255"))
         {
-          if (!oArguments.parse(" -int8 0x100"))
+          if (!oArguments.parse("Application.exe  -int8 0x100"))
           {
-            if (oArguments.parse(" -int8 -0x1") &&
+            if (oArguments.parse("Application.exe  -int8 -0x1") &&
                 oArguments.getValue("-int8").isInt() &&
                 oArguments.getValue("-int8").getInt8() == -1)
             {
-              if (oArguments.parse(" -int8 -1"))
+              if (oArguments.parse("Application.exe  -int8 -1"))
               {
-                if (!oArguments.parse(" -int8 128"))
+                if (!oArguments.parse("Application.exe  -int8 128"))
                 {
-                  if (oArguments.parse(" -int8 -128"))
+                  if (oArguments.parse("Application.exe  -int8 -128"))
                   {
-                    if (!oArguments.parse(" -int8 -129"))
+                    if (!oArguments.parse("Application.exe  -int8 -129"))
                     {
                       bRet = true;
                     }
@@ -293,17 +293,17 @@ bool CArgumentTest::testFailedTypes()
   if (bRet == true)
   {
     bRet = false;
-    if (oArguments.parse(" -uint8 20"))
+    if (oArguments.parse("Application.exe  -uint8 20"))
     {
-      if (!oArguments.parse(" -uint8 256"))
+      if (!oArguments.parse("Application.exe  -uint8 256"))
       {
-        if (!oArguments.parse(" -uint8 0x100"))
+        if (!oArguments.parse("Application.exe  -uint8 0x100"))
         {
-          if (oArguments.parse(" -uint8 0xff") &&
+          if (oArguments.parse("Application.exe  -uint8 0xff") &&
               !oArguments.getValue("-uint8").isInt() &&
               oArguments.getValue("-uint8").getUint8() == UINT8_MAX)
           {
-            if (!oArguments.parse(" -uint8 -1"))
+            if (!oArguments.parse("Application.exe  -uint8 -1"))
             {
               bRet = true;
             }
@@ -342,18 +342,18 @@ bool CArgumentTest::testRequirements()
   if (oArguments.parse(" -i input -o output -t test"))
   {
     // Arguments can not be found correctly but are required
-    if (!oArguments.parse(" -i -o output -t test") &&
+    if (!oArguments.parse("Application.exe  -i -o output -t test") &&
           oArguments.getErrorMessage().size() != 0)
     {
       // Arguments can not be found correctly but are not required
       // Verification of input value -o for argument -j has to be verified by application.
-      if (oArguments.parse(" -j -o output -t test") &&
+      if (oArguments.parse("Application.exe  -j -o output -t test") &&
           oArguments.getErrorMessage().size() == 0 &&
           oArguments.getValue("-j").getString() == "-o" &&
           oArguments.getValue("-t").getString() == "test" &&
           oArguments.getUnparsed().size() > 0 && oArguments.getUnparsed()[0] == "output")
       {
-        if (oArguments.parse(" -j input -o output -t test") &&
+        if (oArguments.parse("Application.exe  -j input -o output -t test") &&
             oArguments.getValue("-j").getString() == "input" &&
             oArguments.getValue("-o").getString() == "output" &&
             oArguments.getValue("-t").getString() == "test")

@@ -41,6 +41,7 @@ CcGpioPortPin::EDirection CcGpioPortPin::getDirection()
   {
     return m_pPort->getDirection(m_uiPinNr);
   }
+  return EDirection::Unknown;
 }
 
 void CcGpioPortPin::setValue(bool bValue)
