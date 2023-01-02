@@ -50,6 +50,7 @@ public:
   virtual CcStatus onState(EState eState) override;
 
   virtual II2CClient* createInterface(uint16 uiAddress) override;
+  virtual void removeInterface(II2CClient* pInterface) override;
 
 private:
   uint8                     m_uiNr;

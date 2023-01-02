@@ -110,6 +110,11 @@ size_t  CcM3U::getStreamBest() const
   return uiStream;
 }
 
+const CcM3U::CExtXStreamInf& CcM3U::getStreamInfo(size_t uiIndex) const
+{
+  return m_oStreams[uiIndex];
+}
+
 CcStatus CcM3U::downloadStream(size_t uiIndex, const CcString& sFile)
 {
   CcStatus oStatus = false;
@@ -143,7 +148,7 @@ CcStatus CcM3U::downloadStream(size_t uiIndex, const CcString& sFile)
                 m_oUrl.getProtocol() == "https")
             {
               CcUrl oInUrl = oStreamReader.m_oUrl;
-              oInUrl.setPath(oFileInf.sPath);
+              oInUrl.setUrl(oFileInf.sPath);
 
               CcHttpClient oInFile(oInUrl);
               CcConsole::writeLine("File " + CcString::fromNumber(++uiFilesWritten) + "/" + CcString::fromNumber(uiFilesToRead) + ": " + oInUrl.getUrl());

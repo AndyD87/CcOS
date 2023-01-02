@@ -44,7 +44,7 @@ public:
     II2CClient(uiAddress)
   {
     // open a channel to the I2C device
-    m_iDevice = open(pDevice.getCharString(), O_RDWR);
+    m_iDevice = ::open(pDevice.getCharString(), O_RDWR);
 
     if (m_iDevice < 0)
     {
@@ -56,6 +56,14 @@ public:
       {
         CCERROR(CcString("Could not open i2c slave device ") << uiAddress << " " << CcString::fromNumber(errno));
       }
+    }
+  }
+
+  ~CSlave()
+  {
+    if (m_iDevice >= 0)
+    {
+      ::close(m_iDevice);
     }
   }
 
@@ -280,4 +288,9 @@ II2CClient* CcLinuxI2C::createInterface(uint16 uiAddress)
     pSlave = pOpiSlave;
   }
   return pSlave;
+}
+
+void CcLinuxI2C::removeInterface(II2CClient* pInterface)
+{
+  CCDELETE(pInterface);
 }
