@@ -39,7 +39,7 @@ class CcGuiSubsystem;
  *        Containing data structure of row and columns is depending on it's width.
  *        For size of a row, SFontRectangle_GetArrayWidth can be used to get it width of row in bytes.
  */
-typedef struct
+typedef struct _SFontRectangle
 {
   unsigned char uiWidth;  //!< Width of rectangle
   unsigned char uiHeight;  //!< Height of rectangle

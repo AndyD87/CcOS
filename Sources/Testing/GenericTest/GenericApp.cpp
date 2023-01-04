@@ -67,7 +67,6 @@ void GenericApp::run()
       {
         CCDEBUG("Read failed");
       }
-      II2CClient* pClient = oI2C.createInterface(0x3c);
       m_pDisplay = CCNEW_INLINE(SDD1306, CcSize(128,64), *pClient, SDD1306::ETransportType::eI2C);
       m_pDisplay->start();
       m_pConsole = CCNEW_INLINE(CcGenericConsole, m_pDisplay, GenericTestFont_Used);
@@ -82,6 +81,7 @@ void GenericApp::run()
         CcKernel::sleep(2000);
         CcConsole::write("Active line", sizeof("Active line")-1);
       }
+      oI2C.removeInterface(pClient);
     }
   }
 

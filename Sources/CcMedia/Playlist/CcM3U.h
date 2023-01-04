@@ -100,15 +100,15 @@ public:
    */
   CcMediaSHARED virtual ~CcM3U();
 
-  void CcMediaSHARED clear();
+  CcMediaSHARED void clear();
 
-  CcStatus CcMediaSHARED open(const CcUrl& sUrl);
+  CcMediaSHARED CcStatus open(const CcUrl& sUrl);
 
-  size_t   CcMediaSHARED getStreamCount() const
+  inline size_t getStreamCount() const
   { return m_oStreams.size(); }
-  size_t   CcMediaSHARED getStreamBest() const;
-  const CExtXStreamInf& CcMediaSHARED getStreamInfo(size_t uiIndex) const;
-  CcStatus CcMediaSHARED downloadStream(size_t uiIndex, const CcString& sFile);
+  CcMediaSHARED size_t   getStreamBest() const;
+  CcMediaSHARED const CExtXStreamInf& getStreamInfo(size_t uiIndex) const;
+  CcMediaSHARED CcStatus downloadStream(size_t uiIndex, const CcString& sFile);
 
 private:
   CcStatus parseLines(const CcStringList& oLines);

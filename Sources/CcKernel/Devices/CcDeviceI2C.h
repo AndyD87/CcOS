@@ -55,6 +55,6 @@ public:
 
   void removeInterface(II2CClient* pInterface)
   {
-    this->removeInterface(pInterface);
+    getDevice()->removeInterface(pInterface);
   }
 };

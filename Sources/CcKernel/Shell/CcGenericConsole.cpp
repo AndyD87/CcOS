@@ -122,7 +122,7 @@ void CcGenericConsole::writeLine(const CcString& sLine)
       int32 uiWidth  = pSign->uiWidth  + pSign->uiWidth /2;
       if(uiX + uiWidth > m_oDisplay.getDevice()->getWidth())
       {
-        if(m_oOutputBuffer.size() == m_iMaxLines)
+        if(m_oOutputBuffer.size() == static_cast<size_t>(m_iMaxLines))
         {
           m_oOutputBuffer.remove(0);
         }
@@ -144,7 +144,7 @@ void CcGenericConsole::writeLine(const CcString& sLine)
 
 void CcGenericConsole::appendToBuffer(const CcString& sLine)
 {
-  if(m_oOutputBuffer.size() == m_iMaxLines)
+  if(m_oOutputBuffer.size() == static_cast<size_t>(m_iMaxLines))
   {
     m_oOutputBuffer.remove(0);
   }

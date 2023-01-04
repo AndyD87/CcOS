@@ -70,7 +70,7 @@ SDD1306::SDD1306(const CcSize& oSize, IIo& oCommunication, ETransportType eType)
   m_oCommunication(oCommunication),
   m_eType(eType)
 {
-  m_oBuffer.resize(getAreaSize() / 8);
+  m_oBuffer.resize(static_cast<size_t>(getAreaSize()) / 8);
 }
 
 SDD1306::~SDD1306()
