@@ -51,29 +51,39 @@ GenericApp::~GenericApp()
 void GenericApp::run()
 {
   CcStatus oStatus(false);
-  //CcDeviceI2C oI2C = CcKernel::getDevice(EDeviceType::I2C);
-  //if(oI2C.isValid())
-  //{ 
-  //  oI2C->start();
-  //  II2CClient* pClient = oI2C.createInterface(0x3c);
-  //  if(pClient)
-  //  {
-  //    m_pDisplay = CCNEW_INLINE(SDD1306, CcSize(128,64), *pClient, SDD1306::ETransportType::eI2C);
-  //    m_pDisplay->start();
-  //    m_pConsole = CCNEW_INLINE(CcGenericConsole, m_pDisplay, GenericTestFont_Used);
-  //    if(m_pConsole->open(EOpenFlags::ReadWrite))
-  //    {
-  //      m_pConsole->writeLine("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789");
-  //      m_pConsole->writeLine("IP: 192.168.100.178");
-  //      m_pConsole->writeLine("DHCP: static");
-  //      CcConsole::setOutputDevice(m_pConsole);
-  //      CcKernel::sleep(2000);
-  //      CcConsole::writeLine("Console set");
-  //      CcKernel::sleep(2000);
-  //      CcConsole::write("Active line", sizeof("Active line")-1);
-  //    }
-  //  }
-  //}
+  CcDeviceI2C oI2C = CcKernel::getDevice(EDeviceType::I2C);
+  if(oI2C.isValid())
+  { 
+    oI2C->start();
+    II2CClient* pClient = oI2C.createInterface(0x20);
+    if(pClient)
+    {
+      uint8 uiByte = 0;
+      if(pClient->writeByte(uiByte)) 
+      {
+        CCDEBUG("Read succeeded" + CcString::fromNumber(uiByte));
+      }
+      else
+      {
+        CCDEBUG("Read failed");
+      }
+      II2CClient* pClient = oI2C.createInterface(0x3c);
+      m_pDisplay = CCNEW_INLINE(SDD1306, CcSize(128,64), *pClient, SDD1306::ETransportType::eI2C);
+      m_pDisplay->start();
+      m_pConsole = CCNEW_INLINE(CcGenericConsole, m_pDisplay, GenericTestFont_Used);
+      if(m_pConsole->open(EOpenFlags::ReadWrite))
+      {
+        m_pConsole->writeLine("abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789");
+        m_pConsole->writeLine("IP: 192.168.100.178");
+        m_pConsole->writeLine("DHCP: static");
+        CcConsole::setOutputDevice(m_pConsole);
+        CcKernel::sleep(2000);
+        CcConsole::writeLine("Console set");
+        CcKernel::sleep(2000);
+        CcConsole::write("Active line", sizeof("Active line")-1);
+      }
+    }
+  }
 
   CcDeviceUsb oUsb = CcKernel::getDevice(EDeviceType::Usb);
   if(oUsb.isValid())

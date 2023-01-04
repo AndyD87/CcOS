@@ -171,7 +171,9 @@ STM32UsbDevice* s_pInstance = nullptr;
   CCEXTERNC void USB_LP_CAN1_RX0_IRQHandler(void)
   {
     if(s_pInstance)
+    {
       HAL_PCD_IRQHandler(s_pInstance->getPcdHandle());
+    }
   }
 #else
   /**
@@ -197,6 +199,8 @@ STM32UsbDevice::STM32UsbDevice()
 {
   s_pInstance = this;
   CcStatic_memsetZeroObject(m_oPcdHandle);
+  // Disable USB on startup
+  HAL_Custom_MspStartup();
 }
 
 STM32UsbDevice::~STM32UsbDevice()
@@ -215,7 +219,8 @@ CcStatus STM32UsbDevice::onState(EState eState)
       {
         if(HAL_OK != HAL_PCD_Start(getPcdHandle()))
         {
-          bSuccess = false;      }
+          bSuccess = false;      
+        }
         else
         {
           registerIdle();

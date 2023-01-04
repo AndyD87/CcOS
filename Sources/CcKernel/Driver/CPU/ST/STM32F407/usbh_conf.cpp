@@ -1,6 +1,28 @@
 #include "CcBase.h"
 #include "usbh_conf.h"
 
+void HAL_Custom_MspStartup()
+{
+  // Disable Pins on startup
+  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  
+  GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Alternate = 0;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  
+  GPIO_InitStruct.Pin = GPIO_PIN_14|GPIO_PIN_15;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.Alternate = 0;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+}
+
 void HAL_Custom_MspInit(PCD_HandleTypeDef* pcdHandle)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {};
@@ -34,10 +56,6 @@ void HAL_Custom_MspInit(PCD_HandleTypeDef* pcdHandle)
   }
   else if(pcdHandle->Instance==USB_OTG_HS)
   {
-  /* USER CODE BEGIN USB_OTG_HS_MspInit 0 */
-
-  /* USER CODE END USB_OTG_HS_MspInit 0 */
-
     __HAL_RCC_GPIOB_CLK_ENABLE();
     /**USB_OTG_HS GPIO Configuration
     PB13     ------> USB_OTG_HS_VBUS
@@ -62,9 +80,6 @@ void HAL_Custom_MspInit(PCD_HandleTypeDef* pcdHandle)
     /* Peripheral interrupt init */
     HAL_NVIC_SetPriority(OTG_HS_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(OTG_HS_IRQn);
-  /* USER CODE BEGIN USB_OTG_HS_MspInit 1 */
-
-  /* USER CODE END USB_OTG_HS_MspInit 1 */
   }
 }
 
@@ -72,9 +87,6 @@ void HAL_Custom_MspDeinit(PCD_HandleTypeDef* pcdHandle)
 {
   if(pcdHandle->Instance==USB_OTG_FS)
   {
-  /* USER CODE BEGIN USB_OTG_FS_MspDeInit 0 */
-
-  /* USER CODE END USB_OTG_FS_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_USB_OTG_FS_CLK_DISABLE();
 
@@ -87,15 +99,11 @@ void HAL_Custom_MspDeinit(PCD_HandleTypeDef* pcdHandle)
     /* Peripheral interrupt Deinit*/
     HAL_NVIC_DisableIRQ(OTG_FS_IRQn);
 
-  /* USER CODE BEGIN USB_OTG_FS_MspDeInit 1 */
-
-  /* USER CODE END USB_OTG_FS_MspDeInit 1 */
+    // Back to defaults
+    HAL_Custom_MspStartup();
   }
   else if(pcdHandle->Instance==USB_OTG_HS)
   {
-  /* USER CODE BEGIN USB_OTG_HS_MspDeInit 0 */
-
-  /* USER CODE END USB_OTG_HS_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_USB_OTG_HS_CLK_DISABLE();
 
@@ -108,10 +116,9 @@ void HAL_Custom_MspDeinit(PCD_HandleTypeDef* pcdHandle)
 
     /* Peripheral interrupt Deinit*/
     HAL_NVIC_DisableIRQ(OTG_HS_IRQn);
-
-  /* USER CODE BEGIN USB_OTG_HS_MspDeInit 1 */
-
-  /* USER CODE END USB_OTG_HS_MspDeInit 1 */
+    
+    // Back to defaults
+    HAL_Custom_MspStartup();
   }
 }
 

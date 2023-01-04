@@ -1,22 +1,35 @@
 #include "CcBase.h"
 #include "usbh_conf.h"
 
+void HAL_Custom_MspStartup()
+{
+  // Init pins
+  GPIO_InitTypeDef GPIO_InitStruct = {};
+  GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+}
+
 void HAL_Custom_MspInit(PCD_HandleTypeDef* pcdHandle)
 {
   if(pcdHandle->Instance==USB)
   {
-  /* USER CODE BEGIN USB_MspInit 0 */
+    // Init pins
+    GPIO_InitTypeDef GPIO_InitStruct = {};
+    GPIO_InitStruct.Pin = GPIO_PIN_11|GPIO_PIN_12;
+    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
-  /* USER CODE END USB_MspInit 0 */
     /* Peripheral clock enable */
     __HAL_RCC_USB_CLK_ENABLE();
 
     /* Peripheral interrupt init */
     HAL_NVIC_SetPriority(USB_LP_CAN1_RX0_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(USB_LP_CAN1_RX0_IRQn);
-  /* USER CODE BEGIN USB_MspInit 1 */
-
-  /* USER CODE END USB_MspInit 1 */
   }
 }
 
@@ -24,18 +37,14 @@ void HAL_Custom_MspDeinit(PCD_HandleTypeDef* pcdHandle)
 {
   if(pcdHandle->Instance==USB)
   {
-  /* USER CODE BEGIN USB_MspDeInit 0 */
-
-  /* USER CODE END USB_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_USB_CLK_DISABLE();
 
     /* Peripheral interrupt Deinit*/
     HAL_NVIC_DisableIRQ(USB_LP_CAN1_RX0_IRQn);
 
-  /* USER CODE BEGIN USB_MspDeInit 1 */
-
-  /* USER CODE END USB_MspDeInit 1 */
+    // Back to default
+    HAL_Custom_MspStartup();
   }
 }
 

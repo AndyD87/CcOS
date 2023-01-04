@@ -110,6 +110,7 @@
 #endif
 
 /* Exported functions ------------------------------------------------------- */
+CCEXTERNC void HAL_Custom_MspStartup();
 CCEXTERNC void HAL_Custom_MspInit(PCD_HandleTypeDef* pcdHandle);
 CCEXTERNC void HAL_Custom_MspDeinit(PCD_HandleTypeDef* pcdHandle);
 
