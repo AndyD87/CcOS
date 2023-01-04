@@ -107,6 +107,7 @@ public:
   size_t   CcMediaSHARED getStreamCount() const
   { return m_oStreams.size(); }
   size_t   CcMediaSHARED getStreamBest() const;
+  const CExtXStreamInf& CcMediaSHARED getStreamInfo(size_t uiIndex) const;
   CcStatus CcMediaSHARED downloadStream(size_t uiIndex, const CcString& sFile);
 
 private:
