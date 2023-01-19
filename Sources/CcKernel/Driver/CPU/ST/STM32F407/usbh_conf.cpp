@@ -4,6 +4,7 @@
 void HAL_Custom_MspStartup()
 {
   // Disable Pins on startup
+  GPIO_InitTypeDef GPIO_InitStruct = {};
   GPIO_InitStruct.Pin = GPIO_PIN_13;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;

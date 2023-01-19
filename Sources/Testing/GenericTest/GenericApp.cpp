@@ -98,7 +98,7 @@ void GenericApp::run()
       oDeviceDescriptor.uiBcd                   = 0x0200;
       oDeviceDescriptor.uiMaxPacketSize         = 64;
       oDeviceDescriptor.uiVendorId  	          = 0xaad;
-      oDeviceDescriptor.uiProductId             = 0x15e;
+      oDeviceDescriptor.uiProductId             = 0x28D;
       oDeviceDescriptor.uiBcdDevice             = 0x0200;
       oDeviceDescriptor.uiManufacturerStringIdx = 1;
       oDeviceDescriptor.uiProductStringIdx      = 2;

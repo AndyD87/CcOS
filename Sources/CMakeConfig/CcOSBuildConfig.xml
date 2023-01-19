@@ -475,6 +475,22 @@
   <Directory>
     <Name>Apps</Name>
     <Project>
+      <Name>CcConvert</Name>
+      <Version></Version>
+      <Active>1</Active>
+      <Prebuild>false</Prebuild>
+      <Static>false</Static>
+      <StaticRuntime>false</StaticRuntime>
+      <Platforms>
+        <Platform>Windows</Platform>
+        <Platform>Linux</Platform>
+      </Platforms>
+      <Dependencies>
+        <Dependency>CcKernel</Dependency>
+        <Dependency>CcMedia</Dependency>
+      </Dependencies>
+    </Project>
+    <Project>
       <Name>CcDhcpServer</Name>
       <Version></Version>
       <Active>1</Active>

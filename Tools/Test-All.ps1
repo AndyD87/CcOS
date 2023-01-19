@@ -273,7 +273,7 @@ Function Test-Stm()
     ResetDirs
     cd $SolutionDir
 
-    $oBoards = @("STM32F4Discovery", "stm32f3discovery")
+    $oBoards = @("STM32F4Discovery", "stm32f3discovery", "stm32f103c8", "stm32f407vet", "sTm3220GeVal" )
 
     foreach($sBoard in $oBoards)
     {
