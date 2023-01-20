@@ -37,25 +37,25 @@ class CcGuiSubsystem;
 /**
  * @brief Structure for describing an filled rectangular.
  *        Containing data structure of row and columns is depending on it's width.
- *        For size of a row, SFontRectangle_GetArrayWidth can be used to get it width of row in bytes.
+ *        For size of a row, getArrayWidth can be used to get it width of row in bytes.
  */
 typedef struct _SFontRectangle
 {
   unsigned char uiWidth;  //!< Width of rectangle
   unsigned char uiHeight;  //!< Height of rectangle
-  unsigned char pData[1];  //!< Pix map with size SFontRectangle_GetArrayWidth(this) * uiHeight.
+  unsigned char pData[1];  //!< Pix map with size SFontRectangle_getArrayWidth(this) * uiHeight.
 
   inline bool getPixel(uint8 uiX, uint8 uiY) const
   {
     uint8 uiXDiv = uiX>>3;
-    return (0x1 & (pData[(uiY * GetArrayWidth()) + uiXDiv] >> (uiX & 0x7)));
+    return (0x1 & (pData[(uiY * getArrayWidth()) + uiXDiv] >> (uiX & 0x7)));
   }
 
   /**
    * @brief Get width of row in bytes
    * @return number of real width in bytes.
    */
-  inline unsigned char GetArrayWidth() const
+  inline unsigned char getArrayWidth() const
   {
     unsigned char uiValue=0;
     uiValue = uiWidth / 8;

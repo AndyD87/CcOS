@@ -42,7 +42,8 @@ enum class EImageType : uint16
   Gif,
   Pbm,
   Pgm,
-  Ppm
+  Ppm,
+  Pixmap
 };
 
 /**

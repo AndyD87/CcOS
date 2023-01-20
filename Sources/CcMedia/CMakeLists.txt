@@ -12,6 +12,7 @@ elseif(${CCOS_CCMEDIA_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         CcVideo.h
         IImageConverter.h
         Image/CImageBmp.h
+        Image/CImagePixmap.h
         Image/CImagePpm.h
         Playlist/CcM3U.h
   )
@@ -23,6 +24,7 @@ elseif(${CCOS_CCMEDIA_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         CcVideo.cpp
         IImageConverter.cpp
         Image/CImageBmp.cpp
+        Image/CImagePixmap.cpp
         Image/CImagePpm.cpp
         Playlist/CcM3U.cpp
   )

@@ -93,6 +93,7 @@ public:
    * @return Reference to pixel in area.
    */
   CPixel& getPixel(uint32 uiX, uint32 uiY);
+  const CPixel& getPixel(uint32 uiX, uint32 uiY) const;
 
   /**
    * @brief Get Red value of pixel on coordinate

@@ -27,6 +27,7 @@
 #include "IImageConverter.h"
 #include "Image/CImageBmp.h"
 #include "Image/CImagePpm.h"
+#include "Image/CImagePixmap.h"
 
 size_t                               CcImage::m_iInit(0);
 CcMutex                              CcImage::m_oConverterListLock;
@@ -42,6 +43,8 @@ CcImage::CcImage()
     m_pConverterList.append(pBmp);
     CCNEWTYPE(pPpm, NImage::CImagePpm);
     m_pConverterList.append(pPpm);
+    CCNEWTYPE(pPixmap, NImage::CImagePixmap);
+    m_pConverterList.append(pPixmap);
     m_oConverterListLock.unlock();
   }
   m_iInit++;
@@ -70,18 +73,22 @@ bool CcImage::loadFile(const CcString& sPathToFile)
   {
     m_oBuffer = cFile.readAll();
     cFile.close();
-    if (m_oBuffer.size() > 0)
-      bSuccess = true;
+    m_eType = findType(m_oBuffer);
+    bSuccess = m_eType != EImageType::Unknown;
   }
   return bSuccess;
 }
 
-bool CcImage::convert(EImageType Type, void* Settings)
+CcByteArray CcImage::convert(EImageType Type, void* Settings)
 {
-  bool bSuccess = false;
-  CCUNUSED(Type);
+  CcByteArray oData;
   CCUNUSED(Settings);
-  return bSuccess;
+  NImage::IImageConverter* pConverter = getConverter(Type);
+  if (pConverter)
+  {
+    oData = pConverter->convertFromRaw(getRaw());
+  }
+  return oData;
 }
 
 bool CcImage::setBuffer(const CcByteArray& oToCopy, EImageType eType)

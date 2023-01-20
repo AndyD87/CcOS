@@ -71,6 +71,11 @@ void CcImageRaw::resize(uint32 uiX, uint32 uiY)
 #endif
 }
 
+const CcImageRaw::CPixel& CcImageRaw::getPixel(uint32 uiX, uint32 uiY) const
+{
+  return m_pData[uiX + (uiY * getX())];
+}
+
 CcImageRaw::CPixel& CcImageRaw::getPixel(uint32 uiX, uint32 uiY)
 {
   return m_pData[uiX + (uiY * getX())];

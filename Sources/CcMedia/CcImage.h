@@ -73,12 +73,12 @@ public:
   bool writeFile(const CcString& sPathToFile);
 
   /**
-   * @brief Convert current Image
+   * @brief Convert current Image to an other type
    * @param Type: Type Image has to be converted to.
-   * @param Settings: Setting of target Image to convert to
-   * @return true if conversion succeeded.
+   * @param Settings: *Reserved Setting of target Image to convert to
+   * @return Data of new image format
    */
-  bool convert(EImageType Type, void* Settings);
+  CcByteArray convert(EImageType Type, void* Settings = nullptr);
 
   /**
    * @brief Insert image buffer.

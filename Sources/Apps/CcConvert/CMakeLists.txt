@@ -12,6 +12,8 @@ elseif(${CCOS_APPS_CCCONVERT_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
         ${CMAKE_CURRENT_LIST_DIR}/main.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcConvert.cpp
         ${CMAKE_CURRENT_LIST_DIR}/CcConvert.h
+        ${CMAKE_CURRENT_LIST_DIR}/CcConvertImage.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/CcConvertImage.h
   )
 
   include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )

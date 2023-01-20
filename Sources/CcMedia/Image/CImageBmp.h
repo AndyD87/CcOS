@@ -60,6 +60,7 @@ private:
   void copyImageData32Bit(CcImageRaw& oRaw, const void* pImageData);
   void copyImageData24Bit(CcImageRaw& oRaw, const void* pImageData);
   void copyImageData16Bit(CcImageRaw& oRaw, const void* pImageData);
+  void copyImageData1Bit(CcImageRaw& oRaw, const void* pImageData, uint32 uiColorTables);
 };
 
 } // namespace NImage

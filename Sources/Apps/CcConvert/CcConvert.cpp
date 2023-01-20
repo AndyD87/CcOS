@@ -34,6 +34,7 @@
 #include "CcConsole.h"
 #include "CcOSVersion.h"
 #include "CcMessageFormat.h"
+#include "CcConvertImage.h"
 
 #ifdef WINDOWS
   #include "Shell/CcWinRawConsole.h"
@@ -46,7 +47,7 @@ CcConvert::CcConvert() :
       {"-input",     CcVariant::EType::String, "", "Input file"},
       {"-output",    CcVariant::EType::String, "", "Output file"},
       {"-type",      CcVariant::EType::String, "", "Select one of the next conversion options:\n"
-                                                   " img2array"}
+                                                   " img2pixmap"}
     }
   )
 {
@@ -70,7 +71,25 @@ void CcConvert::run()
     CcString sType   = m_oArguments.getValue("-type").getString();
     if (sInput.length() && sOutput.length() && sType.length())
     {
-
+      if (sType == "img2pixmap")
+      {
+        CcConvertImage oImage;
+        if (oImage.loadFile(sInput))
+        {
+          CcFile oFile(sOutput);
+          if (oFile.open(EOpenFlags::Write))
+          {
+            oFile.writeArray(oImage.convert(EImageType::Pixmap));
+            oFile.close();
+            setExitCode(EStatus::NoError);
+          }
+        }
+        else
+        {
+          CcConsole::writeLine(CcMessageFormat::formatErrorMessage("Input is not a image"));
+          setExitCode(EStatus::CommandInvalidParameter);
+        }
+      }
     }
     else
     {
@@ -81,7 +100,7 @@ void CcConvert::run()
   }
   else
   {
-    CcConsole::writeLine(CcMessageFormat::formatErrorMessage("To much parameter"));
+    CcConsole::writeLine(CcMessageFormat::formatErrorMessage("Unknown parameter"));
     oStatus = EStatus::CommandRequiredParameter;
     writeHelp();
   }

@@ -137,7 +137,13 @@ CcImageRaw CImageBmp::convertToRaw(const CcByteArray& oInput)
       {
         if (pHeader->oInfo.uiCompression == CImageBmp_BI_RGB)
         {
-          if      (pHeader->oInfo.uiBitCount == 24)
+          if (pHeader->oInfo.uiBitCount == 1)
+          {
+            const void* pImageData = static_cast<const void*>(oInput.getArray() + pHeader->uiOffBits);
+            oImage.resize(static_cast<uint32>(pHeader->oInfo.iWidth), static_cast<uint32>(pHeader->oInfo.iHeight));
+            copyImageData1Bit(oImage, pImageData, pHeader->oInfo.uiClrUsed);
+          }
+          else if      (pHeader->oInfo.uiBitCount == 24)
           {
             const void* pImageData = static_cast<const void*>(oInput.getArray() + pHeader->uiOffBits);
             oImage.resize(static_cast<uint32>(pHeader->oInfo.iWidth),
@@ -210,5 +216,42 @@ void CImageBmp::copyImageData16Bit(CcImageRaw& oRaw, const void* pImageData)
     oRaw.getBuffer()[i].RGBA.G = pItems[i].getG();
     oRaw.getBuffer()[i].RGBA.B = pItems[i].getB();
     oRaw.getBuffer()[i].RGBA.A = 0xff;
+  }
+}
+
+void CImageBmp::copyImageData1Bit(CcImageRaw& oRaw, const void* pImageData, uint32 uiColorTables)
+{
+  CCUNUSED(uiColorTables);
+  const uint8* pItems = CCVOIDPTRCONSTCAST(uint8*, pImageData);
+  uint64 uiWidthBoundary = oRaw.getWidth();
+  if(oRaw.getWidth() % 32)
+  {
+    uiWidthBoundary += (32 - ((oRaw.getWidth()) % 32));
+  }
+  for (uint32 y = 0; y < oRaw.getHeight(); y++)
+  {
+    for (uint32 x = 0; x < oRaw.getWidth(); x++)
+    {
+      uint64 uiOffset = ((oRaw.getHeight()-y-1)*oRaw.getWidth()) + x;
+      uint64 uiPixelOffset = (y*uiWidthBoundary) + x;
+      uint32 uiPixelByteOffset  = static_cast<uint32>(uiPixelOffset /8);
+      uint32 uiPixelBitOffset   = static_cast<uint32>(uiPixelOffset % 8);
+      uint32 uiPixel = pItems[uiPixelByteOffset] & (1 << (7-uiPixelBitOffset));
+      if (uiPixel)
+      {
+        oRaw.getBuffer()[uiOffset].RGBA.R = 0xff;
+        oRaw.getBuffer()[uiOffset].RGBA.G = 0xff;
+        oRaw.getBuffer()[uiOffset].RGBA.B = 0xff;
+        oRaw.getBuffer()[uiOffset].RGBA.A = 0xff;
+      }
+      else
+      {
+        oRaw.getBuffer()[uiOffset].RGBA.R = 0x00;
+        oRaw.getBuffer()[uiOffset].RGBA.G = 0x00;
+        oRaw.getBuffer()[uiOffset].RGBA.B = 0x00;
+        oRaw.getBuffer()[uiOffset].RGBA.A = 0xff;
+      }
+    }
+    // boundary to 32bit
   }
 }
