@@ -28,10 +28,6 @@
 #include "CcKernel.h"
 #include "CcFile.h"
 
-#ifdef WINDOWS
-  #include "Shell/CcWinRawConsole.h"
-#endif
-
 CcConvertImage::CcConvertImage()
 {
 }
@@ -44,12 +40,5 @@ bool CcConvertImage::loadImage(const CcString& sImage)
 {
   bool bSuccess = false;
   bSuccess = loadFile(sImage);
-  return bSuccess;
-}
-
-bool CcConvertImage::convertToPixmap(const CcString& sImage)
-{
-  bool bSuccess = false;
-  CcByteArray oData = CcImage::convert(EImageType::Pixmap, nullptr);
   return bSuccess;
 }

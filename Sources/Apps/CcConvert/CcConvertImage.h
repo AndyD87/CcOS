@@ -46,6 +46,4 @@ public:
   ~CcConvertImage();
 
   bool loadImage(const CcString& sImage);
-  bool convertToPixmap(const CcString& sImage);
-
 };

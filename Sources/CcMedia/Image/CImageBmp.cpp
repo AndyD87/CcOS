@@ -66,6 +66,21 @@ public:
   uint8 uiB;
   uint8 uiG;
   uint8 uiR;
+
+  inline uint8 getR() const
+  {
+    return uiR;
+  }
+
+  inline uint8 getG() const
+  {
+    return uiG;
+  }
+
+  inline uint8 getB() const
+  {
+    return uiB;
+  }
 };
 
 class CImageBmp::CRgb32
@@ -75,6 +90,21 @@ public:
   uint8 uiG;
   uint8 uiR;
   uint8 uiReserved;
+
+  inline uint8 getR() const
+  {
+    return uiR;
+  }
+
+  inline uint8 getG() const
+  {
+    return uiG;
+  }
+
+  inline uint8 getB() const
+  {
+    return uiB;
+  }
 };
 
 class CImageBmp::CRgb16
@@ -131,41 +161,41 @@ CcImageRaw CImageBmp::convertToRaw(const CcByteArray& oInput)
   {
     if (oInput.size() > 14)
     {
-      const CBmpHeader* pHeader = CCVOIDPTRCONSTCAST(CBmpHeader*, oInput.getArray());
-      if (oInput.size() >= pHeader->uiSize &&
-          oInput.size() >= pHeader->uiOffBits)
+      m_pHeader = CCVOIDPTRCONSTCAST(CBmpHeader*, oInput.getArray());
+      if (oInput.size() >= m_pHeader->uiSize &&
+          oInput.size() >= m_pHeader->uiOffBits)
       {
-        if (pHeader->oInfo.uiCompression == CImageBmp_BI_RGB)
+        if (m_pHeader->oInfo.uiCompression == CImageBmp_BI_RGB)
         {
-          if (pHeader->oInfo.uiBitCount == 1)
+          if (m_pHeader->oInfo.uiBitCount == 1)
           {
-            const void* pImageData = static_cast<const void*>(oInput.getArray() + pHeader->uiOffBits);
-            oImage.resize(static_cast<uint32>(pHeader->oInfo.iWidth), static_cast<uint32>(pHeader->oInfo.iHeight));
-            copyImageData1Bit(oImage, pImageData, pHeader->oInfo.uiClrUsed);
+            const void* pImageData = static_cast<const void*>(oInput.getArray() + m_pHeader->uiOffBits);
+            oImage.resize(static_cast<uint32>(m_pHeader->oInfo.iWidth), static_cast<uint32>(m_pHeader->oInfo.iHeight));
+            copyImageData1Bit(oImage, pImageData, m_pHeader->oInfo.uiClrUsed);
           }
-          else if      (pHeader->oInfo.uiBitCount == 24)
+          else if      (m_pHeader->oInfo.uiBitCount == 24)
           {
-            const void* pImageData = static_cast<const void*>(oInput.getArray() + pHeader->uiOffBits);
-            oImage.resize(static_cast<uint32>(pHeader->oInfo.iWidth),
-              static_cast<uint32>(pHeader->oInfo.iHeight));
+            const void* pImageData = static_cast<const void*>(oInput.getArray() + m_pHeader->uiOffBits);
+            oImage.resize(static_cast<uint32>(m_pHeader->oInfo.iWidth),
+              static_cast<uint32>(m_pHeader->oInfo.iHeight));
             copyImageData24Bit(oImage, pImageData);
           }
-          else if (pHeader->oInfo.uiBitCount == 16)
+          else if (m_pHeader->oInfo.uiBitCount == 16)
           {
-            const void* pImageData = static_cast<const void*>(oInput.getArray() + pHeader->uiOffBits);
-            oImage.resize(static_cast<uint32>(pHeader->oInfo.iWidth),
-              static_cast<uint32>(pHeader->oInfo.iHeight));
-            copyImageData24Bit(oImage, pImageData);
+            const void* pImageData = static_cast<const void*>(oInput.getArray() + m_pHeader->uiOffBits);
+            oImage.resize(static_cast<uint32>(m_pHeader->oInfo.iWidth),
+              static_cast<uint32>(m_pHeader->oInfo.iHeight));
+            copyImageData16Bit(oImage, pImageData);
           }
-          else if (pHeader->oInfo.uiBitCount == 32)
+          else if (m_pHeader->oInfo.uiBitCount == 32)
           {
-            const void* pImageData = static_cast<const void*>(oInput.getArray() + pHeader->uiOffBits);
-            oImage.resize(static_cast<uint32>(pHeader->oInfo.iWidth),
-              static_cast<uint32>(pHeader->oInfo.iHeight));
+            const void* pImageData = static_cast<const void*>(oInput.getArray() + m_pHeader->uiOffBits);
+            oImage.resize(static_cast<uint32>(m_pHeader->oInfo.iWidth),
+              static_cast<uint32>(m_pHeader->oInfo.iHeight));
             copyImageData32Bit(oImage, pImageData);
           }
         }
-        else if (pHeader->oInfo.uiCompression == CImageBmp_BI_BITFIELDS)
+        else if (m_pHeader->oInfo.uiCompression == CImageBmp_BI_BITFIELDS)
         {
         }
       }
@@ -182,40 +212,67 @@ CcByteArray CImageBmp::convertFromRaw(const CcImageRaw& oInput)
 
 void CImageBmp::copyImageData32Bit(CcImageRaw& oRaw, const void* pImageData)
 {
-  uint64 uiBufferSize = oRaw.getPixelCount();
   const CRgb32* pItems = CCVOIDPTRCONSTCAST(CRgb32*, pImageData);
-  for (uint64 i = 0; i < uiBufferSize; i++)
+  uint64 uiOffsetBmp = 0;
+  for (uint32 y = 0; y < oRaw.getHeight(); y++)
   {
-    oRaw.getBuffer()[i].RGBA.R = pItems[i].uiR;
-    oRaw.getBuffer()[i].RGBA.G = pItems[i].uiG;
-    oRaw.getBuffer()[i].RGBA.B = pItems[i].uiB;
-    oRaw.getBuffer()[i].RGBA.A = 0xff;
+    for (uint32 x = 0; x < oRaw.getWidth(); x++)
+    {
+      uint64 uiOffset = 0;
+      if (m_pHeader && m_pHeader->oInfo.iHeight > 0)
+        uiOffset = ((oRaw.getHeight() - y - 1)*oRaw.getWidth()) + x;
+      else
+        uiOffset = uiOffsetBmp;
+      oRaw.getBuffer()[uiOffset].RGBA.R = pItems[uiOffsetBmp].getR();
+      oRaw.getBuffer()[uiOffset].RGBA.G = pItems[uiOffsetBmp].getG();
+      oRaw.getBuffer()[uiOffset].RGBA.B = pItems[uiOffsetBmp].getB();
+      oRaw.getBuffer()[uiOffset].RGBA.A = 0xff;
+      uiOffsetBmp++;
+    }
   }
 }
 
 void CImageBmp::copyImageData24Bit(CcImageRaw& oRaw, const void* pImageData)
 {
-  uint64 uiBufferSize = oRaw.getPixelCount();
   const CRgb24* pItems = CCVOIDPTRCONSTCAST(CRgb24*, pImageData);
-  for (uint64 i = 0; i < uiBufferSize; i++)
+  uint64 uiOffsetBmp = 0;
+  for (uint32 y = 0; y < oRaw.getHeight(); y++)
   {
-    oRaw.getBuffer()[i].RGBA.R = pItems[i].uiR;
-    oRaw.getBuffer()[i].RGBA.G = pItems[i].uiG;
-    oRaw.getBuffer()[i].RGBA.B = pItems[i].uiB;
-    oRaw.getBuffer()[i].RGBA.A = 0xff;
+    for (uint32 x = 0; x < oRaw.getWidth(); x++)
+    {
+      uint64 uiOffset = 0;
+      if (m_pHeader && m_pHeader->oInfo.iHeight > 0)
+        uiOffset = ((oRaw.getHeight() - y - 1)*oRaw.getWidth()) + x;
+      else
+        uiOffset = uiOffsetBmp;
+      oRaw.getBuffer()[uiOffset].RGBA.R = pItems[uiOffsetBmp].getR();
+      oRaw.getBuffer()[uiOffset].RGBA.G = pItems[uiOffsetBmp].getG();
+      oRaw.getBuffer()[uiOffset].RGBA.B = pItems[uiOffsetBmp].getB();
+      oRaw.getBuffer()[uiOffset].RGBA.A = 0xff;
+      uiOffsetBmp++;
+    }
   }
 }
 
 void CImageBmp::copyImageData16Bit(CcImageRaw& oRaw, const void* pImageData)
 {
-  uint64 uiBufferSize = oRaw.getPixelCount();
   const CRgb16* pItems = CCVOIDPTRCONSTCAST(CRgb16*, pImageData);
-  for (uint64 i = 0; i < uiBufferSize; i++)
+  uint64 uiOffsetBmp = 0;
+  for (uint32 y = 0; y < oRaw.getHeight(); y++)
   {
-    oRaw.getBuffer()[i].RGBA.R = pItems[i].getR();
-    oRaw.getBuffer()[i].RGBA.G = pItems[i].getG();
-    oRaw.getBuffer()[i].RGBA.B = pItems[i].getB();
-    oRaw.getBuffer()[i].RGBA.A = 0xff;
+    for (uint32 x = 0; x < oRaw.getWidth(); x++)
+    {
+      uint64 uiOffset = 0;
+      if (m_pHeader && m_pHeader->oInfo.iHeight > 0)
+        uiOffset = ((oRaw.getHeight() - y - 1)*oRaw.getWidth()) + x;
+      else
+        uiOffset = uiOffsetBmp;
+      oRaw.getBuffer()[uiOffset].RGBA.R = pItems[uiOffsetBmp].getR();
+      oRaw.getBuffer()[uiOffset].RGBA.G = pItems[uiOffsetBmp].getG();
+      oRaw.getBuffer()[uiOffset].RGBA.B = pItems[uiOffsetBmp].getB();
+      oRaw.getBuffer()[uiOffset].RGBA.A = 0xff;
+      uiOffsetBmp++;
+    }
   }
 }
 
@@ -232,7 +289,11 @@ void CImageBmp::copyImageData1Bit(CcImageRaw& oRaw, const void* pImageData, uint
   {
     for (uint32 x = 0; x < oRaw.getWidth(); x++)
     {
-      uint64 uiOffset = ((oRaw.getHeight()-y-1)*oRaw.getWidth()) + x;
+      uint64 uiOffset = 0;
+      if(m_pHeader && m_pHeader->oInfo.iHeight > 0)
+        uiOffset = ((oRaw.getHeight() - y - 1)*oRaw.getWidth()) + x;
+      else
+        uiOffset = (y*oRaw.getWidth()) + x;
       uint64 uiPixelOffset = (y*uiWidthBoundary) + x;
       uint32 uiPixelByteOffset  = static_cast<uint32>(uiPixelOffset /8);
       uint32 uiPixelBitOffset   = static_cast<uint32>(uiPixelOffset % 8);
