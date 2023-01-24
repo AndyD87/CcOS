@@ -55,14 +55,18 @@ private:
   class CRgb32;
   class CRgb24;
   class CRgb16;
+  class CRgb8;
+  class CColorTable;
 
 private:
   void copyImageData32Bit(CcImageRaw& oRaw, const void* pImageData);
   void copyImageData24Bit(CcImageRaw& oRaw, const void* pImageData);
   void copyImageData16Bit(CcImageRaw& oRaw, const void* pImageData);
+  void copyImageData8Bit(CcImageRaw& oRaw, const void* pImageData);
   void copyImageData1Bit(CcImageRaw& oRaw, const void* pImageData, uint32 uiColorTables);
 
-  const CBmpHeader* m_pHeader = nullptr;
+  const CBmpHeader* m_pHeader       = nullptr;
+  const CColorTable* m_pColorTable  = nullptr;
 };
 
 } // namespace NImage

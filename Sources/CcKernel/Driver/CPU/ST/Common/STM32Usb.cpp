@@ -24,6 +24,8 @@
 
 STM32Usb::STM32Usb()
 {
+  // Disable USB on startup
+  HAL_Custom_MspStartup();
 }
 
 STM32Usb::~STM32Usb()

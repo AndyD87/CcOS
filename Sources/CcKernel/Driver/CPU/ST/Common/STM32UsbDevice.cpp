@@ -199,8 +199,6 @@ STM32UsbDevice::STM32UsbDevice()
 {
   s_pInstance = this;
   CcStatic_memsetZeroObject(m_oPcdHandle);
-  // Disable USB on startup
-  HAL_Custom_MspStartup();
 }
 
 STM32UsbDevice::~STM32UsbDevice()
