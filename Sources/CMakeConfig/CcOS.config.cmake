@@ -32,5 +32,3 @@ macro(CcAddProject ProjectName Relpath)
   list(APPEND CC_PROJECTS ${ProjectName}
   set(CC_PROJECTS_${ProjectName}_PATH ${RelPath})
 endmacro()
-
-CcAddProject()
