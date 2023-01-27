@@ -151,7 +151,7 @@ CcStatus CcM3U::downloadStream(size_t uiIndex, const CcString& sFile)
               oInUrl.setUrl(oFileInf.sPath);
 
               CcHttpClient oInFile(oInUrl);
-              CcConsole::writeLine("File " + CcString::fromNumber(++uiFilesWritten) + "/" + CcString::fromNumber(uiFilesToRead) + ": " + oInUrl.getUrl());
+              CcConsole::writeLine("File " + CcString::fromSize(++uiFilesWritten) + "/" + CcString::fromSize(uiFilesToRead) + ": " + oInUrl.getUrl());
               oInFile.setOutputDevice(&oOutput);
               if ((oStatus = oInFile.execGet()) != true)
               {

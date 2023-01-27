@@ -461,7 +461,7 @@ void CcFtpServerWorker::parseCommand(const CcString& sCommandLine)
       CcFile file(sTemp);
       if (file.isFile())
       {
-        size_t size = file.size();
+        uint64 size = file.size64();
         sTemp = "213 " + CcString::fromNumber(size) + "\r\n";
       }
       else

@@ -167,7 +167,7 @@ bool CcTftpServerWorker::parseRequest(const CcString& sRequest)
           {
             uiOptionsToAck++;
             m_pPrivate->m_uiTSize = m_pPrivate->oFile.size();
-            CcString sFileSize = CcString::fromNumber(m_pPrivate->m_uiTSize);
+            CcString sFileSize = CcString::fromSize(m_pPrivate->m_uiTSize);
             oSendOACK.append(oCommandList[i].getByteArray());
             oSendOACK.append('\0');
             oSendOACK.append(sFileSize.getByteArray());

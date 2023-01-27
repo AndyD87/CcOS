@@ -1,60 +1,56 @@
-if(NOT DEFINED CCOS_CCMQTT_ACTIVE OR NOT DEFINED CCOS_BUILDLEVEL)
-elseif(${CCOS_CCMQTT_ACTIVE} GREATER ${CCOS_BUILDLEVEL})
+set ( CURRENT_PROJECT           CcMqtt )
+set ( CURRENT_PROJECT_IDE_PATH   )
 
-  set ( CURRENT_PROJECT           CcMqtt )
-  set ( CURRENT_PROJECT_IDE_PATH   )
+########
+# Add Header Files
+########
+set( HEADER_FILES
+      CcMqttClientConfig.h
+      CcMqttClient.h
+      CcMqttGlobals.h
+      CcMqtt.h
+)
 
-  ########
-  # Add Header Files
-  ########
-  set( HEADER_FILES
-        CcMqttClientConfig.h
-        CcMqttClient.h
-        CcMqttGlobals.h
-        CcMqtt.h
-  )
+########
+# Add Source Files
+########
+set( SOURCE_FILES
+      ${HEADER_FILES}
+      CcMqttClientConfig.cpp
+      CcMqttClient.cpp
+      CcMqttGlobals.cpp
+)
 
-  ########
-  # Add Source Files
-  ########
-  set( SOURCE_FILES
-        ${HEADER_FILES}
-        CcMqttClientConfig.cpp
-        CcMqttClient.cpp
-        CcMqttGlobals.cpp
-  )
+set(CcMqtt_LIBRARIES CcKernel)
+set(CcMqtt_DEFINITIONS )
 
-  set(CcMqtt_LIBRARIES CcKernel)
-  set(CcMqtt_DEFINITIONS )
+include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
 
-  include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
-
-  if(WINDOWS)
-    CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
-  endif()
-
-  if( CCOS_THIRDPARTY_OPENSSL_ACTIVE GREATER ${CCOS_BUILDLEVEL} )
-    list( APPEND CcMqtt_DEFINITIONS -DCCSSL_ENABLED)
-    list( APPEND CcMqtt_LIBRARIES CcSsl)
-  endif()
-
-  add_definitions(${CcMqtt_DEFINITIONS})
-  CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES})
-
-  set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
-  CcTargetHeaders( ${CURRENT_PROJECT} "${HEADER_FILES}")
-
-  target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
-                                ${CcMqtt_LIBRARIES} )
-
-  #################
-  # Post configuration steps
-  #################
-  CcTargetIncludes( ${CURRENT_PROJECT} )
-  CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
-
-  ########
-  # Add an unity-test, if available
-  ########
-  CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)
+if(WINDOWS)
+  CcOSGenerateRcFileToCurrentDir(${CURRENT_PROJECT} SOURCE_FILES )
 endif()
+
+if(TARGET CcSsl)
+  list( APPEND CcMqtt_DEFINITIONS -DCCSSL_ENABLED)
+  list( APPEND CcMqtt_LIBRARIES CcSsl)
+endif()
+
+add_definitions(${CcMqtt_DEFINITIONS})
+CcAddLibrary( ${CURRENT_PROJECT} ${CC_LINK_TYPE} ${SOURCE_FILES})
+
+set_target_properties( ${CURRENT_PROJECT} PROPERTIES FOLDER "CcOS/${CURRENT_PROJECT_IDE_PATH}")
+CcTargetHeaders( ${CURRENT_PROJECT} "${HEADER_FILES}")
+
+target_link_libraries ( ${CURRENT_PROJECT} LINK_PUBLIC
+                              ${CcMqtt_LIBRARIES} )
+
+#################
+# Post configuration steps
+#################
+CcTargetIncludes( ${CURRENT_PROJECT} )
+CcOSLibSettings(${CURRENT_PROJECT} TRUE TRUE ${SOURCE_FILES})
+
+########
+# Add an unity-test, if available
+########
+CcAddTestDir(${CMAKE_CURRENT_SOURCE_DIR}/test)
