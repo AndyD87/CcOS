@@ -27,3 +27,10 @@ macro(CcOSLoadProjects)
   set(CC_CURRENT_CONFIG_DIR ${CMAKE_CURRENT_SOURCE_DIR})
   include( ${CCOS_CONFIG_DIR}/CcOSBuildConfig.cmake )
 endmacro()
+
+macro(CcAddProject ProjectName Relpath)
+  list(APPEND CC_PROJECTS ${ProjectName}
+  set(CC_PROJECTS_${ProjectName}_PATH ${RelPath})
+endmacro()
+
+CcAddProject()

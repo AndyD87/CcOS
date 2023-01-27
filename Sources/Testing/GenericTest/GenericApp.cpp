@@ -97,8 +97,8 @@ void GenericApp::run()
       oDeviceDescriptor.uiDeviceProtocol        = 0x01;
       oDeviceDescriptor.uiBcd                   = 0x0200;
       oDeviceDescriptor.uiMaxPacketSize         = 64;
-      oDeviceDescriptor.uiVendorId              = 0x0123;
-      oDeviceDescriptor.uiProductId             = 0x4567;
+      oDeviceDescriptor.uiVendorId              = 0x16d0; //!< MCS VID
+      oDeviceDescriptor.uiProductId             = 0x1200; //!< CcOS PID
       oDeviceDescriptor.uiBcdDevice             = 0x0200;
       oDeviceDescriptor.uiManufacturerStringIdx = 1;
       oDeviceDescriptor.uiProductStringIdx      = 2;
@@ -116,30 +116,12 @@ void GenericApp::run()
       oConfig.getConfig()->uiConfiguration = 0;
       oConfig.getConfig()->uiAttributes = 0xC0;
       oConfig.getConfig()->uiMaxPower   = 0x32;
-#define BULK_TRANSFER
-#ifndef BULK_TRANSFER
+      
+      CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);
+      oStatus = m_pCdcDevice->open(EOpenFlags::ReadWrite);
+      
       CCNEW(m_pBulkTransfer, CcUsbBulkTransfer, oUsbDevice);   
       oStatus = m_pBulkTransfer->open(EOpenFlags::ReadWrite);
-      if(oStatus)
-      {
-        oStatus = oUsbDevice->start();
-        //uchar pBuffer[64];
-        //uchar uCnt = 1;
-        //while(1)
-        //{
-        //  for(size_t uiPos = 0; uiPos < 53; uiPos++)
-        //  {
-        //    pBuffer[uiPos] = uCnt++;
-        //  }
-        //  // Resend until all data is written
-        //  while(53 < m_pBulkTransfer->write(pBuffer, 53))
-        //  {}
-        //}
-      }
-#else
-      CCNEW(m_pCdcDevice, CcUsbCdc, oUsbDevice);
-      
-      oStatus = m_pCdcDevice->open(EOpenFlags::ReadWrite);
 
       if(oStatus)
       {
@@ -147,16 +129,27 @@ void GenericApp::run()
         if(oStatus)
         {
           CCNEW(m_pShell, IShell);   
-          m_pShell->init(m_pCdcDevice);
           m_pShell->initDefaultCommands();
+          m_pShell->init(m_pCdcDevice);
           m_pShell->registerOnStateChange(NewCcEvent(this, GenericApp::onShellStateChanged));
           oStatus = m_pShell->start();
           if(oStatus)
           {
+            uchar pBuffer[64];
+            uchar uCnt = 1;
+            while(1)
+            {
+              for(size_t uiPos = 0; uiPos < 53; uiPos++)
+              {
+                pBuffer[uiPos] = uCnt++;
+              }
+              // Resend until all data is written
+              m_pBulkTransfer->write(pBuffer, 53);
+              CcKernel::sleep(100);
+            }
           }
         }
       }
-#endif
     }
     setExitCode(oStatus);
   }
