@@ -29,15 +29,15 @@ set( DIRECTORIES ${CMAKE_CURRENT_SOURCE_DIR} )
 
 
 if( WINDOWS AND NOT GCC)
-list( APPEND SOURCE_FILES "CcWmiInterface.cpp")
-list( APPEND HEADER_FILES "CcWmiInterface.h")
-#for mingw for testing list( APPEND LIBRARIES    libcomsuppw )
+  list( APPEND SOURCE_FILES "CcWmiInterface.cpp")
+  list( APPEND HEADER_FILES "CcWmiInterface.h")
+  #for mingw for testing list( APPEND LIBRARIES    libcomsuppw )
 endif()
 
-if( CCOS_THIRDPARTY_SQLITE3_ACTIVE )
-list( APPEND SOURCE_FILES "CcSqlite.cpp")
-list( APPEND HEADER_FILES "CcSqlite.h")
-list( APPEND LIBRARIES    CcOS::ThirParty::sqlite3 )
+if( TARGET CcThirdPartySqlite3 )
+  list( APPEND SOURCE_FILES "CcSqlite.cpp")
+  list( APPEND HEADER_FILES "CcSqlite.h")
+  list( APPEND LIBRARIES    CcOS::ThirParty::sqlite3 )
 endif()
 
 include_directories( ${DIRECTORIES} )

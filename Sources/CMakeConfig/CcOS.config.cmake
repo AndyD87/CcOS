@@ -16,68 +16,11 @@ include(${CCOS_CONFIG_DIR}/CcBuildConfig/CcBuildConfig.cmake)
 ################################################################################
 include(${CCOS_CONFIG_DIR}/ProjectMacros.cmake )
 
-set(CC_PROJECTS)
-
-macro(CcOSLoadProject Target)
-  set(PROJECT_FOUND TRUE)
-  ################################################################################
-  # Precheck all configurations and load thirdparty if required
-  ################################################################################
-  foreach(Project ${CC_PROJECTS})
-    if("${Project}" STREQUAL "${Target}")
-      if(NOT ${CC_PROJECTS_${Project}_LOADED} AND NOT TARGET ${Project})
-        # Mark project as loaded
-        set(CC_PROJECTS_${Project}_LOADED TRUE)
-        # Load all dependencies before project
-        foreach(ProjectDepends ${CC_PROJECTS_${Project}_DEPENDS})
-          CcOSLoadProject(${ProjectDepends})
-        endforeach()
-        # Load project by path
-        add_subdirectory(${CC_PROJECTS_${Project}_PATH})
-        set(PROJECT_FOUND TRUE)
-        break()
-      endif()
-    endif()
-  endforeach()
-  if(NOT ${PROJECT_FOUND})
-    message(FATAL_ERROR "Failed to setup project: ${Target}")
-  endif()
-endmacro()
-
-macro(CcOSLoadProjects)
-  ################################################################################
-  # Precheck all configurations and load thirdparty if required
-  ################################################################################
-  foreach(Project ${CC_PROJECTS})
-    if(DEFINED CC_PROJECTS_${Project}_SYSTEM)
-      foreach(System ${CC_PROJECTS_${Project}_SYSTEM})
-        if(${System} STREQUAL "${CMAKE_SYSTEM_NAME}")
-          CcOSLoadProject(${Project})
-        endif()
-      endforeach()
-    else()
-      CcOSLoadProject(${Project})
-    endif()
-  endforeach()
-endmacro()
-
-macro(CcAddProject ProjectName Relpath)
-  set(DoAppend FALSE)
-  set(oneValueArgs VERSION)
-  set(multiValueArgs SYSTEM DEPENDS)
-  cmake_parse_arguments(Project "" "${oneValueArgs}" "${multiValueArgs}" ${ARGN} )
-
-  list(APPEND CC_PROJECTS ${ProjectName})
-  set(CC_PROJECTS_${ProjectName}_PATH ${Relpath})
-  set(CC_PROJECTS_${ProjectName}_LOADED FALSE)
-  if(DEFINED Project_SYSTEM)
-    set(CC_PROJECTS_${ProjectName}_SYSTEM ${Project_SYSTEM})
-  endif()
-  if(DEFINED Project_DEPENDS)
-    set(CC_PROJECTS_${ProjectName}_DEPENDS ${Project_DEPENDS})
-  endif()
-endmacro()
-
+CcAddProject(CcTestModule             Modules/CcTestModule    SYSTEM Windows Linux          DEPENDS CcKernel)
+CcAddProject(openssl                  ThirdParty/openssl      SYSTEM Windows Linux)
+CcAddProject(mtp                      ThirdParty/mtp          SYSTEM Windows Linux)
+CcAddProject(sqlite3                  ThirdParty/sqlite3      SYSTEM Windows Linux)
+CcAddProject(wiringPi                 ThirdParty/wiringPi     SYSTEM Windows Linux)
 CcAddProject(CcAppInterfaces          CcAppInterfaces         SYSTEM Windows Linux Generic DEPENDS CcKernel)
 CcAddProject(CcBitcoin                CcBitcoin               SYSTEM Windows Linux Generic DEPENDS CcKernel)
 CcAddProject(CcDhcp                   CcDhcp                  SYSTEM Windows Linux Generic DEPENDS CcKernel)
@@ -94,7 +37,7 @@ CcAddProject(CcMtp                    CcMtp                   SYSTEM Windows Lin
 CcAddProject(CcRemoteDevice           CcRemoteDevice          SYSTEM Windows Linux Generic DEPENDS CcKernel)
 CcAddProject(CcScpi                   CcScpi                  SYSTEM Windows Linux Generic DEPENDS CcKernel)
 CcAddProject(CcShell                  CcShell                 SYSTEM Windows Linux Generic DEPENDS CcKernel)
-CcAddProject(CcSql                    CcSql                   SYSTEM Windows Linux Generic DEPENDS CcKernel)
+CcAddProject(CcSql                    CcSql                   SYSTEM Windows Linux Generic DEPENDS CcKernel sqlite3)
 CcAddProject(CcSsl                    CcSsl                   SYSTEM Windows Linux         DEPENDS CcKernel)
 CcAddProject(CcTesting                CcTesting               SYSTEM Windows Linux Generic DEPENDS CcKernel)
 CcAddProject(CcTftp                   CcTftp                  SYSTEM Windows Linux Generic DEPENDS CcKernel)
@@ -113,8 +56,3 @@ CcAddProject(CcShellApp               Apps/CcShellApp               SYSTEM Windo
 CcAddProject(CcUsbDriver              Apps/CcUsbDriver              SYSTEM Windows Linux    DEPENDS CcKernelModule)
 CcAddProject(CcVDisk                  Apps/CcVDisk                  SYSTEM Windows Linux    DEPENDS CcKernelModule)
 #CcAddProject(Raspbian                 Modules/Platform/Raspbian     )
-CcAddProject(CcTestModule             Modules/CcTestModule    SYSTEM Windows Linux          DEPENDS CcKernel)
-CcAddProject(openssl                  ThirdParty/openssl      SYSTEM Windows Linux)
-CcAddProject(mtp                      ThirdParty/mtp          SYSTEM Windows Linux)
-CcAddProject(sqlite3                  ThirdParty/sqlite3      SYSTEM Windows Linux)
-CcAddProject(wiringPi                 ThirdParty/wiringPi     SYSTEM Windows Linux)

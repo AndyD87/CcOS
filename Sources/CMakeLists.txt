@@ -76,7 +76,14 @@ message("- Compiler-ID: ${CMAKE_CXX_COMPILER_ID}")
 # Load all Projects
 ################################################################################
 CcBuildConfigLoad()
-CcOSLoadProjects()
+
+if(NOT CcOS_LOAD_PROJECTS)
+  CcLoadProjects()
+else()
+  foreach(Project ${CcOS_LOAD_PROJECTS})
+    CcLoadProject(${Project})
+  endforeach()
+endif()
 
 ################################################################################
 # Do not build apps for generic platform
