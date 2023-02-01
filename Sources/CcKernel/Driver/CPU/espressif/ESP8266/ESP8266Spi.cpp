@@ -168,6 +168,7 @@ size_t ESP8266Spi::read(void* pBuffer, size_t uSize)
 size_t ESP8266Spi::write(const void* pBuffer, size_t uSize)
 {
   m_pCurrentTransfer      = static_cast<const char*>(pBuffer);
+  m_pCurrentReceive       = nullptr;
   m_uiCurrentTransferSize = uSize;
 
   m_oTransferLock.lock();
@@ -178,8 +179,18 @@ size_t ESP8266Spi::write(const void* pBuffer, size_t uSize)
   return uSize;
 }
 
-size_t ESP8266Spi::writeRead(void* pBuffer, size_t uSize)
+size_t ESP8266Spi::writeRead(void* pWriteBuffer, void* pReadBuffer, size_t uSize)
 {
+  m_pCurrentTransfer      = static_cast<const char*>(pWriteBuffer);
+  m_pCurrentReceive       = static_cast<const char*>(pReadBuffer);
+  m_uiCurrentTransferSize = uSize;
+
+  m_oTransferLock.lock();
+  writeNext();
+
+  m_oTransferLock.lock();
+  m_oTransferLock.unlock();
+  return uSize;
   return uSize;
 }
 
@@ -255,11 +266,17 @@ void ESP8266Spi::writeNext()
   trans.cmd = nullptr;
   trans.addr = nullptr;
   trans.mosi = CCVOIDPTRCAST(uint32*,const_cast<char*>(m_pCurrentTransfer));
-  trans.miso = nullptr;
+  trans.miso = CCVOIDPTRCAST(uint32*,const_cast<char*>(m_pCurrentReceive));
   trans.bits.val = 0;
   trans.bits.cmd = 0;
-  trans.bits.mosi = uSize;
-  trans.bits.miso = 0;
+  if(m_pCurrentTransfer)
+    trans.bits.mosi = uSize;
+  else
+    trans.bits.mosi = 0;
+  if(m_pCurrentReceive)
+    trans.bits.miso = uSize;
+  else
+    trans.bits.miso = 0;
   spi_trans(HSPI_HOST, trans);
 
   m_pCurrentTransfer += uSize/8;

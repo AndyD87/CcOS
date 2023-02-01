@@ -51,7 +51,7 @@ public:
 
   virtual size_t read(void* pBuffer, size_t uSize) override;
   virtual size_t write(const void* pBuffer, size_t uSize) override;
-  virtual size_t writeRead(void* pBuffer, size_t uSize) override;
+  virtual size_t writeRead(void* pWriteBuffer, void* pReadBuffer, size_t uSize) override;
   virtual CcStatus open(EOpenFlags) override;
   virtual CcStatus close() override;
   virtual CcStatus cancel() override;
@@ -71,6 +71,7 @@ private:
   size_t          m_uiOffset = 0;
   CcMutex         m_oTransferLock;
   const char*     m_pCurrentTransfer = nullptr;
+  const char*     m_pCurrentReceive = nullptr;
   size_t          m_uiCurrentTransferSize = 0;
   static ESP8266Spi* s_pSpi;
 };
