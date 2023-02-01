@@ -79,11 +79,11 @@ then
     exit -1
 fi
 
-make RUN_CMAKE
-if [ $? -ne 0 ]
-then
-    exit -1
-fi
+#make RUN_CMAKE
+#if [ $? -ne 0 ]
+#then
+#    exit -1
+#fi
 
 make -j $CPU
 if [ $? -ne 0 ]
