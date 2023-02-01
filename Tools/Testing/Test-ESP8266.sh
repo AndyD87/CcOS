@@ -3,8 +3,7 @@
 ####################################################
 TOOLS_DIR=$(pwd)/..
 cd ..
-cd ..
-SOLUTION_POSTFIX=".Solution.ECL.Testing"
+SOLUTION_POSTFIX=".Solution.ESP8266.Testing"
 TARGET_DIR=$(pwd)
 TARGET_DIR_FIXED="$TARGET_DIR$SOLUTION_POSTFIX"
 CC_CACHE_DIR=$TOOLS_DIR/../../Cache
@@ -43,6 +42,9 @@ then
   fi
 fi
 
+##########
+# Test Debug
+##########
 cmake -G "Eclipse CDT4 - Unix Makefiles" "$TOOLS_DIR/../Sources" -DCMAKE_ECLIPSE_VERSION=4.9 -DCCOS_BOARD=ESP8266 -DCMAKE_BUILD_TYPE=Debug -DCC_CACHE_DIR="$CC_CACHE_DIR"
 if [ $? -ne 0 ]
 then
@@ -61,15 +63,11 @@ then
     exit -1
 fi
 
-# Test not possible for generic device
-#make test
-#if [ $? -ne 0 ]
-#then
-#    exit -1
-#fi
-
 cd "$TOOLS_DIR"
 rm -rf "$TARGET_DIR_FIXED"
+##########
+# Test Release
+##########
 mkdir "$TARGET_DIR_FIXED"
 cd "$TARGET_DIR_FIXED"
 
@@ -78,12 +76,6 @@ if [ $? -ne 0 ]
 then
     exit -1
 fi
-
-#make RUN_CMAKE
-#if [ $? -ne 0 ]
-#then
-#    exit -1
-#fi
 
 make -j $CPU
 if [ $? -ne 0 ]

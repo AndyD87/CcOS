@@ -9,9 +9,6 @@
 ################################################################################
 cmake_minimum_required (VERSION 3.4)
 
-if(NOT CMAKE_PROJECT_NAME)
-  set(CCOS_PROJECT       TRUE)
-endif()
 set(CMAKE_PROJECT_NAME "CcOS")
 
 if($ENV{TEST_CCOS})
@@ -77,18 +74,12 @@ message("- Compiler-ID: ${CMAKE_CXX_COMPILER_ID}")
 ################################################################################
 CcBuildConfigLoad()
 
+# Next variable is only defined by FindCcOS.cmake
 if(NOT CcOS_LOAD_PROJECTS)
   CcLoadProjects()
-else()
-  foreach(Project ${CcOS_LOAD_PROJECTS})
-    CcLoadProject(${Project})
-  endforeach()
-endif()
-
-################################################################################
-# Do not build apps for generic platform
-################################################################################
-if(CCOS_PROJECT)
+  ################################################################################
+  # Do not build apps for generic platform
+  ################################################################################
   if(WINDOWS OR LINUX)
     ################################################################################
     # Add Testing-Apps too
@@ -98,7 +89,11 @@ if(CCOS_PROJECT)
     endif()
   else()
     add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Testing/GenericTest)
-  endif()
+  endif()  
+else()
+  foreach(Project ${CcOS_LOAD_PROJECTS})
+    CcLoadProject(${Project})
+  endforeach()
 endif()
 
 ################################################################################
