@@ -38,7 +38,7 @@ message("-- Default build type: ${CMAKE_BUILD_TYPE}")
 # Setup Globals
 ################################################################################
 include(${CMAKE_CURRENT_LIST_DIR}/VERSION.cmake )
-include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/CcOS.config.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/CMakeConfig/Config.cmake)
 
 ################################################################################
 # Setup Output Directory if not set
@@ -114,7 +114,7 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/Doxygen)
 #CcExportDirectory(cmake/Configs     ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Configs)
 #CcExportDirectory(cmake/CPU         ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CPU)
 #CcExportDirectory(cmake/Toolchains  ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Toolchains)
-#CcExportFiles(cmake ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcOS.config.cmake)
+#CcExportFiles(cmake ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/Config.cmake)
 #CcExportFiles(cmake ${CMAKE_CURRENT_SOURCE_DIR}/CMakeConfig/CcMacros.cmake)
 
 set(CPACK_PACKAGE_DESCRIPTION         ${CMAKE_PROJECT})
